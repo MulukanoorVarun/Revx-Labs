@@ -1,0 +1,17 @@
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-annotation-experimental-1.1.0-0 /home/varun/.gradle/caches/transforms-3/238c4b9ab7a6b78f590ae4b491e7bdd6/transformed/jetified-annotation-experimental-1.1.0/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-window-1.0.0-beta04-1 /home/varun/.gradle/caches/transforms-3/334798d3a2fab815100795af6ab4828f/transformed/jetified-window-1.0.0-beta04/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-core-1.6.0-2 /home/varun/.gradle/caches/transforms-3/34e5ec6834f5dfbf547001777273e5ab/transformed/core-1.6.0/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-android-maps-utils-3.6.0-3 /home/varun/.gradle/caches/transforms-3/5e3bf971de02390794e7ebef955fad85/transformed/jetified-android-maps-utils-3.6.0/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-play-services-base-18.0.1-4 /home/varun/.gradle/caches/transforms-3/77713207ed9b14f1d1e55e726cb25b03/transformed/jetified-play-services-base-18.0.1/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-window-java-1.0.0-beta04-5 /home/varun/.gradle/caches/transforms-3/777203783d4195e8a4259115cf7654af/transformed/jetified-window-java-1.0.0-beta04/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-play-services-maps-18.2.0-6 /home/varun/.gradle/caches/transforms-3/89d3f50fd587bb3a9e030a08e48fd352/transformed/jetified-play-services-maps-18.2.0/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-jetified-play-services-basement-18.0.0-7 /home/varun/.gradle/caches/transforms-3/8c2f209956e2c9f2caae1fe51b950685/transformed/jetified-play-services-basement-18.0.0/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-main-8 /home/varun/.pub-cache/hosted/pub.dev/google_maps_flutter_android-2.14.5/android/src/main/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-release-9 /home/varun/.pub-cache/hosted/pub.dev/google_maps_flutter_android-2.14.5/android/src/release/res
+io.flutter.plugins.googlemaps.google_maps_flutter_android-packaged_res-10 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/intermediates/packaged_res/release
+io.flutter.plugins.googlemaps.google_maps_flutter_android-pngs-11 /home/varun/Documents/VarunWorkSpace/revxpharma/build/google_maps_flutter_android/generated/res/pngs/release
+io.flutter.plugins.googlemaps.google_maps_flutter_android-resValues-12 /home/varun/Documents/VarunWorkSpace/revxpharma/build/google_maps_flutter_android/generated/res/resValues/release
+io.flutter.plugins.googlemaps.google_maps_flutter_android-rs-13 /home/varun/Documents/VarunWorkSpace/revxpharma/build/google_maps_flutter_android/generated/res/rs/release
+io.flutter.plugins.googlemaps.google_maps_flutter_android-mergeReleaseResources-14 /home/varun/Documents/VarunWorkSpace/revxpharma/build/google_maps_flutter_android/intermediates/incremental/release/mergeReleaseResources/merged.dir
+io.flutter.plugins.googlemaps.google_maps_flutter_android-mergeReleaseResources-15 /home/varun/Documents/VarunWorkSpace/revxpharma/build/google_maps_flutter_android/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+io.flutter.plugins.googlemaps.google_maps_flutter_android-merged_res-16 /home/varun/Documents/VarunWorkSpace/revxpharma/build/google_maps_flutter_android/intermediates/merged_res/release

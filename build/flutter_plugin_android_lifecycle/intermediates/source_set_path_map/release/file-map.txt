@@ -1,0 +1,12 @@
+io.flutter.plugins.flutter_plugin_android_lifecycle-jetified-annotation-experimental-1.1.0-0 /home/varun/.gradle/caches/transforms-3/238c4b9ab7a6b78f590ae4b491e7bdd6/transformed/jetified-annotation-experimental-1.1.0/res
+io.flutter.plugins.flutter_plugin_android_lifecycle-jetified-window-1.0.0-beta04-1 /home/varun/.gradle/caches/transforms-3/334798d3a2fab815100795af6ab4828f/transformed/jetified-window-1.0.0-beta04/res
+io.flutter.plugins.flutter_plugin_android_lifecycle-core-1.6.0-2 /home/varun/.gradle/caches/transforms-3/34e5ec6834f5dfbf547001777273e5ab/transformed/core-1.6.0/res
+io.flutter.plugins.flutter_plugin_android_lifecycle-jetified-window-java-1.0.0-beta04-3 /home/varun/.gradle/caches/transforms-3/777203783d4195e8a4259115cf7654af/transformed/jetified-window-java-1.0.0-beta04/res
+io.flutter.plugins.flutter_plugin_android_lifecycle-main-4 /home/varun/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.22/android/src/main/res
+io.flutter.plugins.flutter_plugin_android_lifecycle-release-5 /home/varun/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.22/android/src/release/res
+io.flutter.plugins.flutter_plugin_android_lifecycle-pngs-6 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/generated/res/pngs/release
+io.flutter.plugins.flutter_plugin_android_lifecycle-resValues-7 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/generated/res/resValues/release
+io.flutter.plugins.flutter_plugin_android_lifecycle-rs-8 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/generated/res/rs/release
+io.flutter.plugins.flutter_plugin_android_lifecycle-mergeReleaseResources-9 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/intermediates/incremental/release/mergeReleaseResources/merged.dir
+io.flutter.plugins.flutter_plugin_android_lifecycle-mergeReleaseResources-10 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+io.flutter.plugins.flutter_plugin_android_lifecycle-merged_res-11 /home/varun/Documents/VarunWorkSpace/revxpharma/build/flutter_plugin_android_lifecycle/intermediates/merged_res/release
