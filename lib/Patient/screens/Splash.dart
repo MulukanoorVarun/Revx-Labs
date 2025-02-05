@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../Utils/NoInternet.dart';
+import '../logic/bloc/internet_status/internet_status_bloc.dart';
 import 'OnBoarding.dart';
 
 class Splash extends StatefulWidget {
@@ -27,14 +30,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     );
 
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-
     _controller.forward();
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 2), () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>OnBoard()));
-      });
-    });
   }
 
   @override
@@ -48,24 +44,38 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     var screenwidth = MediaQuery.of(context).size.width;
     var screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body:
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            color: Colors.white,
-            height: screenheight,
-            child: Center(
-              child: Image.asset(
-                "assets/logo.png",
-                width: 260,
-                height: 150,
-                fit:BoxFit.contain,
+      backgroundColor: Colors.white,
+      body: BlocListener<InternetStatusBloc, InternetStatusState>(
+        listener: (context, state) {
+          if (state is InternetStatusBackState) {
+            Future.delayed(Duration(seconds: 2), () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>OnBoard()));
+            });
+          } else if (state is InternetStatusLostState) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NoInternetWidget()),
+            );
+          }
+        },
+        child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              color: Colors.white,
+              height: screenheight,
+              child: Center(
+                child: Image.asset(
+                  "assets/logo.png",
+                  width: 260,
+                  height: 150,
+                  fit:BoxFit.contain,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
