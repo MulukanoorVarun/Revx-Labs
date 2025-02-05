@@ -151,7 +151,6 @@ class _alltestsState extends State<alltests> {
               ),
               child: Row(
                 children: [
-                  // "Lab Tests" Container
                   GestureDetector(
                     onTap: () {
                       setState(() {
