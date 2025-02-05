@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:revxpharma/screens/AccountSettings.dart';
-import 'package:revxpharma/screens/AllTests.dart';
-import 'package:revxpharma/screens/Dashboard.dart';
-import 'package:revxpharma/screens/Location.dart';
-import 'package:revxpharma/screens/Messages.dart';
-import 'package:revxpharma/screens/Notification.dart';
-import 'package:revxpharma/screens/OnBoarding.dart';
-import 'package:revxpharma/screens/Profile.dart';
-import 'package:revxpharma/screens/ProfileSettings.dart';
-import 'package:revxpharma/screens/Splash.dart';
+
+import 'Patient/screens/Splash.dart';
 
 void main() {
   runApp(const MyApp());
