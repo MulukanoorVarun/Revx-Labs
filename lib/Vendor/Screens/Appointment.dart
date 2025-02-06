@@ -1,4 +1,6 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+
 
 class Appointments extends StatefulWidget {
   const Appointments({super.key});
@@ -11,8 +13,8 @@ class _AppointmentsState extends State<Appointments>
     with TickerProviderStateMixin {
   late TabController _tabController;
   bool isTodaySelected = true;
-  bool isTomarrowSelected = true;
-  bool isThisWeekSelected = true;
+  bool isTomarrowSelected = false;
+  bool isThisWeekSelected = false;
 
   @override
   void initState() {
@@ -214,9 +216,7 @@ class _AppointmentsState extends State<Appointments>
                   ],
                 ),
               ),
-              SizedBox(
-                height: 12,
-              ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Row(
@@ -236,16 +236,17 @@ class _AppointmentsState extends State<Appointments>
                       height: 14,
                       width: 14,
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Calender',
-                      style: TextStyle(
-                          color: Color(0xff27BDBE),
-                          fontFamily: 'Poppins',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+                    TextButton(
+                      onPressed: () {
+                      },
+                      child: Text(
+                        'Calender',
+                        style: TextStyle(
+                            color: Color(0xff27BDBE),
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ],
                 ),
@@ -253,7 +254,7 @@ class _AppointmentsState extends State<Appointments>
               SizedBox(
                 height: 20,
               ),
-              SingleChildScrollView(
+              Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: 3,
@@ -285,15 +286,137 @@ class _AppointmentsState extends State<Appointments>
                                     fontSize: 14,
                                     fontFamily: 'Poppins'),
                               ),
-                              IconButton.filled(
+                              // IconButton.filled(
+                              //   style: ButtonStyle(
+                              //       backgroundColor: MaterialStateProperty.all(
+                              //           Colors.white)),
+                              //   onPressed: () {},
+                              //   icon:
+                              DropdownButtonHideUnderline(
+                                child: DropdownButton2(
+                                  customButton: const Icon(
+                                    Icons.more_vert_rounded,
+                                    size: 18,
+                                    color: Colors.black,
+                                  ),
+                                  items: [
+                                    ...MenuItems.firstItems.map(
+                                      (item) => DropdownMenuItem<MenuItem>(
+                                        value: item,
+                                        child: MenuItems.buildItem(item),
+                                      ),
+                                    ),
+                                    DropdownMenuItem<Divider>(
+                                      enabled: false,
+                                      child: Divider(color: Colors.white),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      MenuItems.onChanged(context,
+                                          value as MenuItem, "address_id_here");
+                                    }
+                                  },
+                                  dropdownStyleData: DropdownStyleData(
+                                    width: 200,
+                                    padding: EdgeInsets.symmetric(vertical: 6),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  menuItemStyleData: MenuItemStyleData(
+                                    customHeights: [
+                                      ...List<double>.filled(
+                                          MenuItems.firstItems.length, 48),
+                                      8,
+                                    ],
+                                    padding: const EdgeInsets.only(
+                                        left: 16, right: 16),
+                                  ),
+                                ),
+                              ),
+
+                              // )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 7,
+                          ),
+                          Text(
+                            '1 Hour slot',
+                            style: TextStyle(
+                                color: Color(0xff151515),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'Poppins'),
+                          ),
+                          SizedBox(
+                            height: 7,
+                          ),
+                          Text(
+                            'Mon 22 April  -  10:30 A.M',
+                            style: TextStyle(
+                                color: Color(0xff151515),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                fontFamily: 'Poppins'),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Complete blood picture',
+                                style: TextStyle(
+                                    color: Color(0xff27BDBE),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins'),
+                              ),
+                              OutlinedButton(
+                                  style: ButtonStyle(
+                                      visualDensity: VisualDensity.comfortable,
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 24, vertical: 0)),
+                                      side: MaterialStateProperty.all(
+                                          BorderSide(
+                                              color: Color(0xff27BDBE),
+                                              width: 0.5)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.transparent)),
                                   onPressed: () {},
-                                  icon: Image.asset(
-                                    'assets/more_vertical.png',
-                                    fit: BoxFit.contain,
-                                    width: 24,
-                                    height: 24,
+                                  child: Text(
+                                    'Pending',
+                                    style: TextStyle(
+                                        color: Color(0xff151515),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        fontFamily: 'Poppins'),
                                   ))
                             ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Divider(
+                            height: 1,
+                            color: Color(0xffCACACA),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Notes : Test is incomplete',
+                            style: TextStyle(
+                                color: Color(0xff151515),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                fontFamily: 'Poppins'),
                           )
                         ],
                       ),
@@ -305,4 +428,94 @@ class _AppointmentsState extends State<Appointments>
           ),
         ));
   }
+}
+
+class MenuItem {
+  final List<Widget> textButtons;
+
+  MenuItem({
+    required this.textButtons,
+  });
+}
+
+abstract class MenuItems {
+  static List<MenuItem> get firstItems {
+    return [
+      MenuItem(
+        textButtons: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              "Update Status",
+              style: TextStyle(
+                color: Color(0xff151515),
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      MenuItem(
+        textButtons: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              "Edit Appointment",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+                color: Color(0xff151515),
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      MenuItem(
+        textButtons: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              "Reschedule Appointment",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+                color: Color(0xff151515),
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      MenuItem(
+        textButtons: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              "Cancel Appointment",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+                color: Color(0xff151515),
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  static Widget buildItem(MenuItem item) {
+    return Column(
+      children: item.textButtons,
+    );
+  }
+
+  static void onChanged(
+      BuildContext context, MenuItem item, String addressId) {}
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Patient/screens/Profile.dart';
+import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
 
 import 'ChangePassword.dart';
 
@@ -11,7 +13,9 @@ class Accountsettings extends StatefulWidget {
 }
 
 class _AccountsettingsState extends State<Accountsettings> {
-  bool isSelected = false;
+  bool isSms = false;
+  bool isPush = false;
+  bool isPromotional = false;
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -56,7 +60,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                          builder: (context) => Profile()));
                 },
                 child: Container(
                   width: w,
@@ -409,10 +413,10 @@ class _AccountsettingsState extends State<Accountsettings> {
                     Switch(
                       activeColor: Color(0xffEEA734),
                       inactiveThumbColor: Color(0xff868686),
-                      value: isSelected,
+                      value: isPush,
                       onChanged: (value) {
                         setState(() {
-                          isSelected = value;
+                          isPush = value;
                         });
                       },
                     ),
@@ -464,10 +468,10 @@ class _AccountsettingsState extends State<Accountsettings> {
                     Switch(
                       activeColor: Color(0xffEEA734),
                       inactiveThumbColor: Color(0xff868686),
-                      value: isSelected,
+                      value: isSms,
                       onChanged: (value) {
                         setState(() {
-                          isSelected = value;
+                          isSms = value;
                         });
                       },
                     ),
@@ -520,14 +524,14 @@ class _AccountsettingsState extends State<Accountsettings> {
                         ],
                       ),
                     ),
-
+                    Spacer(),
                     Switch(
-                      activeColor: Color(0xffEEA734),
+                      activeColor: Color(0xff27BDBE),
                       inactiveThumbColor: Color(0xff868686),
-                      value: isSelected,
+                      value: isPromotional,
                       onChanged: (value) {
                         setState(() {
-                          isSelected = value;
+                          isPromotional = value;
                         });
                       },
                     ),
@@ -560,8 +564,9 @@ class _AccountsettingsState extends State<Accountsettings> {
                   children: [
                     Image.asset(
                       "assets/rating.png",
-                      height: 15,
-                      width: 15,
+                      height: 16,
+                      width: 16,
+                      fit: BoxFit.contain,
                     ),
                     SizedBox(
                       width: 24,

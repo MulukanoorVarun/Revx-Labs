@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Patient/screens/AccountSettings.dart';
 import 'package:revxpharma/Vendor/Screens/Appointment.dart';
+import 'package:revxpharma/Vendor/Screens/PatientsList/Patients.dart';
 import 'package:revxpharma/state_injector.dart';
 
 import 'Patient/screens/Splash.dart';
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
       title: 'Revx Labs',
       debugShowCheckedModeBanner: false,
 
-      home: Appointments()
+      home:Patients()
       ),
     );
   }
