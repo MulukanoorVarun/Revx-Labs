@@ -25,7 +25,6 @@ class ApiClient {
             return handler.reject(DioException(requestOptions: options, message: "Token refresh failed"));
           }
         }
-
         final accessToken = await AuthService.getAccessToken();
         if (accessToken != null) {
           options.headers["Authorization"] = "Bearer $accessToken";
@@ -117,7 +116,6 @@ class ApiClient {
       return _handleError(e);
     }
   }
-
 
 
   static Future<Response> put(String path, {dynamic data}) async {
