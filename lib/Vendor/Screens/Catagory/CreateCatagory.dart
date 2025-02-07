@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../Components/CustomAppButton.dart';
-import '../../Components/CutomAppBar.dart';
-import '../../Components/ShakeWidget.dart';
-import 'ApprovalPending.dart';
+import '../../../Components/CustomAppButton.dart';
+import '../../../Components/CutomAppBar.dart';
+import '../../../Components/ShakeWidget.dart';
+import '../ApprovalPending.dart';
 
 class CreateNewCategory extends StatefulWidget {
   const CreateNewCategory({super.key});

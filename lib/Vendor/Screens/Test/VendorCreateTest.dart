@@ -6,7 +6,7 @@ import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Vendor/Screens/ApprovalPending.dart';
 
-import '../../Components/ShakeWidget.dart';
+import '../../../Components/ShakeWidget.dart';
 
 class CreateNewTest extends StatefulWidget {
   const CreateNewTest({super.key});

@@ -1,7 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
-
 class Appointments extends StatefulWidget {
   const Appointments({super.key});
 
@@ -20,6 +19,9 @@ class _AppointmentsState extends State<Appointments>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -33,6 +35,7 @@ class _AppointmentsState extends State<Appointments>
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           leadingWidth: 0,
           toolbarHeight: 95,
           title: Column(
@@ -107,116 +110,119 @@ class _AppointmentsState extends State<Appointments>
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Color(0xffF5F7FB),
-                    borderRadius: BorderRadius.circular(100)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkResponse(
-                      onTap: () {
-                        setState(() {
-                          isTodaySelected = true;
-                          isTomarrowSelected = false;
-                          isThisWeekSelected = false;
-                        });
-                      },
-                      child: Container(
-                        width: w * 0.3,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 13),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: isTodaySelected
-                              ? const Color(0xff27BDBE)
-                              : Colors.transparent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Today",
-                            style: TextStyle(
-                              color: isTodaySelected
-                                  ? Colors.white
-                                  : const Color(0xff27BDBE),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins",
+              if (_tabController.index == 0) ...[
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffF5F7FB),
+                      borderRadius: BorderRadius.circular(100)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkResponse(
+                        onTap: () {
+                          setState(() {
+                            isTodaySelected = true;
+                            isTomarrowSelected = false;
+                            isThisWeekSelected = false;
+                          });
+                        },
+                        child: Container(
+                          width: w * 0.3,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 13),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: isTodaySelected
+                                ? const Color(0xff27BDBE)
+                                : Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Today",
+                              style: TextStyle(
+                                color: isTodaySelected
+                                    ? Colors.white
+                                    : const Color(0xff27BDBE),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    InkResponse(
-                      onTap: () {
-                        setState(() {
-                          isTodaySelected = false;
-                          isTomarrowSelected = true;
-                          isThisWeekSelected = false;
-                        });
-                      },
-                      child: Container(
-                        width: w * 0.3,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 13),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: isTomarrowSelected
-                              ? const Color(0xff27BDBE)
-                              : Colors.transparent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Tomarrow",
-                            style: TextStyle(
-                              color: isTomarrowSelected
-                                  ? Colors.white
-                                  : const Color(0xff27BDBE),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins",
+                      InkResponse(
+                        onTap: () {
+                          setState(() {
+                            isTodaySelected = false;
+                            isTomarrowSelected = true;
+                            isThisWeekSelected = false;
+                          });
+                        },
+                        child: Container(
+                          width: w * 0.3,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 13),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: isTomarrowSelected
+                                ? const Color(0xff27BDBE)
+                                : Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Tomarrow",
+                              style: TextStyle(
+                                color: isTomarrowSelected
+                                    ? Colors.white
+                                    : const Color(0xff27BDBE),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    InkResponse(
-                      onTap: () {
-                        setState(() {
-                          isTodaySelected = false;
-                          isTomarrowSelected = false;
-                          isThisWeekSelected = true;
-                        });
-                      },
-                      child: Container(
-                        width: w * 0.3,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 13),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: isThisWeekSelected
-                              ? const Color(0xff27BDBE)
-                              : Colors.transparent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "This Week",
-                            style: TextStyle(
-                              color: isThisWeekSelected
-                                  ? Colors.white
-                                  : const Color(0xff27BDBE),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins",
+                      InkResponse(
+                        onTap: () {
+                          setState(() {
+                            isTodaySelected = false;
+                            isTomarrowSelected = false;
+                            isThisWeekSelected = true;
+                          });
+                        },
+                        child: Container(
+                          width: w * 0.3,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 13),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: isThisWeekSelected
+                                ? const Color(0xff27BDBE)
+                                : Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "This Week",
+                              style: TextStyle(
+                                color: isThisWeekSelected
+                                    ? Colors.white
+                                    : const Color(0xff27BDBE),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-
+              ] else ...[
+                Container()
+              ],
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Row(
@@ -237,8 +243,7 @@ class _AppointmentsState extends State<Appointments>
                       width: 14,
                     ),
                     TextButton(
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                       child: Text(
                         'Calender',
                         style: TextStyle(

@@ -3,6 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Vendor/Screens/Appointment.dart';
+import 'package:revxpharma/Vendor/Screens/Catagory/CatagoryList.dart';
+import 'package:revxpharma/Vendor/Screens/Catagory/VendorCatagory.dart';
+import 'package:revxpharma/Vendor/Screens/PatientsList/Patients.dart';
+import 'package:revxpharma/Vendor/Screens/Test/VendorTest.dart';
 
 class VendorDashboard extends StatefulWidget {
   const VendorDashboard({super.key});
@@ -87,7 +91,14 @@ class _VendorDashboardState extends State<VendorDashboard> {
                         fontWeight: FontWeight.w500,
                         fontSize: 15),
                   ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.arrow_forward))
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Appointments()));
+                      },
+                      icon: Icon(Icons.arrow_forward))
                 ],
               ),
               SizedBox(
@@ -405,7 +416,14 @@ class _VendorDashboardState extends State<VendorDashboard> {
                         fontWeight: FontWeight.w500,
                         fontSize: 15),
                   ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.arrow_forward))
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Appointments()));
+                      },
+                      icon: Icon(Icons.arrow_forward))
                 ],
               ),
               Card(
@@ -684,133 +702,149 @@ class _VendorDashboardState extends State<VendorDashboard> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
                           Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                gradient: RadialGradient(
-                                  colors: [
-                                    Color(0xFF88E7FD),
-                                    Color(0xFF086478),
-                                  ],
-                                  focal: Alignment.topRight,
-                                  radius: 1.0,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Image.asset(
-                                        'assets/polygon.png',
-                                        fit: BoxFit.contain,
-                                        width: 38,
-                                        height: 38,
-                                      ),
-                                      Positioned(
-                                        right: 5,
-                                        top: 5,
-                                        child: Icon(
-                                          Icons.arrow_forward,
-                                          color: Color(0xff000000),
-                                        ),
-                                      ),
+                            child: InkResponse(onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>CatagoryList()));
+                            },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  gradient: RadialGradient(
+                                    colors: [
+                                      Color(0xFF88E7FD),
+                                      Color(0xFF086478),
                                     ],
+                                    focal: Alignment.topRight,
+                                    radius: 1.0,
                                   ),
-                                  SizedBox(height: 2),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Stack(
                                       children: [
-                                        Text(
-                                          'Categories',
-                                          style: TextStyle(
-                                            color: Color(0xffffffff),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20,
+                                        Image.asset(
+                                          'assets/polygon.png',
+                                          fit: BoxFit.contain,
+                                          width: 38,
+                                          height: 38,
+                                        ),
+                                        Positioned(
+                                          right: 5,
+                                          top: 5,
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            color: Color(0xff000000),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 2),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Categories',
+                                            style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-
-                         SizedBox(width: 16,),
+                          SizedBox(
+                            width: 16,
+                          ),
                           Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                gradient: RadialGradient(
-                                  colors: [
-                                    Color(0xFFFDA388),
-                                    Color(0xFF782308),
-                                  ],
-                                  focal: Alignment.topRight,
-                                  radius: 1.0,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Image.asset(
-                                        'assets/polygon.png',
-                                        fit: BoxFit.contain,
-                                        width: 38,
-                                        height: 38,
-                                      ),
-                                      Positioned(
-                                        right: 5,
-                                        top: 5,
-                                        child: Icon(
-                                          Icons.arrow_forward,
-                                          color: Color(0xff000000),
-                                        ),
-                                      ),
+                            child: InkResponse(onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>VendorTest()));
+                            },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  gradient: RadialGradient(
+                                    colors: [
+                                      Color(0xFFFDA388),
+                                      Color(0xFF782308),
                                     ],
+                                    focal: Alignment.topRight,
+                                    radius: 1.0,
                                   ),
-                                  SizedBox(height: 2),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Stack(
                                       children: [
-                                        Text(
-                                          'Tests',
-                                          style: TextStyle(
-                                            color: Color(0xffffffff),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20,
+                                        Image.asset(
+                                          'assets/polygon.png',
+                                          fit: BoxFit.contain,
+                                          width: 38,
+                                          height: 38,
+                                        ),
+                                        Positioned(
+                                          right: 5,
+                                          top: 5,
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            color: Color(0xff000000),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 2),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Tests',
+                                            style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                                 gradient: RadialGradient(
@@ -845,9 +879,11 @@ class _VendorDashboardState extends State<VendorDashboard> {
                                   ),
                                   SizedBox(height: 2),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Support',
@@ -865,16 +901,17 @@ class _VendorDashboardState extends State<VendorDashboard> {
                               ),
                             ),
                           ),
-
-                         SizedBox(width: 16,),
+                          SizedBox(
+                            width: 16,
+                          ),
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                                 gradient: RadialGradient(
                                   colors: [
-
                                     Color(0xFFFD88B3),
                                     Color(0xFF780831),
                                   ],
@@ -907,7 +944,8 @@ class _VendorDashboardState extends State<VendorDashboard> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Export data',
@@ -927,14 +965,16 @@ class _VendorDashboardState extends State<VendorDashboard> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                                 gradient: RadialGradient(
@@ -969,9 +1009,11 @@ class _VendorDashboardState extends State<VendorDashboard> {
                                   ),
                                   SizedBox(height: 2),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Payments',
@@ -989,75 +1031,84 @@ class _VendorDashboardState extends State<VendorDashboard> {
                               ),
                             ),
                           ),
-
-                          SizedBox(width: 16,),
+                          SizedBox(
+                            width: 16,
+                          ),
                           Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                gradient: RadialGradient(
-                                  colors: [
-
-                                    Color(0xFFDEFD88),
-                                    Color(0xFF08774C),
-                                  ],
-                                  focal: Alignment.topRight,
-                                  radius: 1.0,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Image.asset(
-                                        'assets/polygon.png',
-                                        fit: BoxFit.contain,
-                                        width: 38,
-                                        height: 38,
-                                      ),
-                                      Positioned(
-                                        right: 5,
-                                        top: 5,
-                                        child: Icon(
-                                          Icons.arrow_forward,
-                                          color: Color(0xff000000),
-                                        ),
-                                      ),
+                            child: InkResponse(onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Patients()));
+                            },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  gradient: RadialGradient(
+                                    colors: [
+                                      Color(0xFFDEFD88),
+                                      Color(0xFF08774C),
                                     ],
+                                    focal: Alignment.topRight,
+                                    radius: 1.0,
                                   ),
-                                  SizedBox(height: 2),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Stack(
                                       children: [
-                                        Text(
-                                          'Export data',
-                                          style: TextStyle(
-                                            color: Color(0xffffffff),
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20,
+                                        Image.asset(
+                                          'assets/polygon.png',
+                                          fit: BoxFit.contain,
+                                          width: 38,
+                                          height: 38,
+                                        ),
+                                        Positioned(
+                                          right: 5,
+                                          top: 5,
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            color: Color(0xff000000),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 2),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Patient',
+                                            style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 16,),
-
+                      SizedBox(
+                        height: 16,
+                      ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),

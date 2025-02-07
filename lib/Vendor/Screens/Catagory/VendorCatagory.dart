@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:revxpharma/Vendor/Screens/CreateCatagory.dart';
+import 'package:revxpharma/Vendor/Screens/Catagory/CreateCatagory.dart';
 import 'package:speech_to_text/speech_to_text.dart%20' as stt;
 
-import '../../Components/CustomAppButton.dart';
-import '../../Components/CutomAppBar.dart';
+import '../../../Components/CustomAppButton.dart';
+import '../../../Components/CutomAppBar.dart';
 
 class VendorCatagory extends StatefulWidget {
   const VendorCatagory({super.key});
@@ -96,24 +96,27 @@ class _VendorCatagoryState extends State<VendorCatagory> {
         appBar: CustomAppBar(
           title: 'Category',
           actions: [
-            IconButton.filledTonal(
-                visualDensity: VisualDensity.compact,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CreateNewCategory()));
-                },
-                style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    shape: MaterialStateProperty.all(CircleBorder()),
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xffE5FCFC))),
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                  size: 18,
-                )),
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: IconButton.filledTonal(
+                  visualDensity: VisualDensity.compact,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CreateNewCategory()));
+                  },
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      shape: MaterialStateProperty.all(CircleBorder()),
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xffE5FCFC))),
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.black,
+                    size: 18,
+                  )),
+            ),
           ],
         ),
         body: Container(
@@ -149,7 +152,7 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                           decoration: InputDecoration(
                             isCollapsed: true,
                             border: InputBorder.none,
-                            hintText: 'Search Tests',
+                            hintText: 'Search Categories',
                             icon: Icon(
                               Icons.search,
                               color: Color(0xff808080),
@@ -224,48 +227,121 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                             ),
                           ),
                           SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '₹ 6700.00/- ',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: Color(0xff1A1A1A),
+                                ),
+                              ),
+                              Text(
+                                ' No of tests : 05',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: Color(0xff000000),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
                             height: 16,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CustomAppButton(
-                                  width: w * 0.53,
-                                  height: h * 0.045,
-                                  text: 'Price : ₹ 1700.00/- ',
-                                  onPlusTap: () {}),
-                              IconButton.filledTonal(
-                                  visualDensity: VisualDensity.compact,
-                                  onPressed: () {},
+                              ElevatedButton(
                                   style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.zero),
-                                      shape: MaterialStateProperty.all(
-                                          CircleBorder()),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Color(0xffE5FCFC))),
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.black,
-                                    size: 18,
-                                  )),
-                              IconButton.filledTonal(
-                                  visualDensity: VisualDensity.compact,
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            side: BorderSide(
+                                                color: Color(0xff27BDBE),
+                                                width: 1))),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Color(0xffFFFFFF)),
+                                  ),
                                   onPressed: () {},
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.zero),
-                                      shape: MaterialStateProperty.all(
-                                          CircleBorder()),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              (Colors.red).withOpacity(0.2))),
-                                  icon: Icon(
-                                    Icons.delete_outline_rounded,
-                                    color: Colors.black,
-                                    size: 18,
+                                  child: Text(
+                                    'View Detail',
+                                    style: TextStyle(
+                                      color: Color(0xff27BDBE),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Poppins',
+                                    ),
                                   )),
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            side: BorderSide(
+                                                color: Color(0xff27BDBE),
+                                                width: 1))),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Color(0xff27BDBE)),
+                                  ),
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Add Test',
+                                        style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Poppins',
+                                        ),
+                                      ),
+                                      SizedBox(width: 5,),
+                                      Icon(Icons.add_circle_outline_sharp,color: Color(0xffFFFFFF),size: 20,)
+                                    ],
+                                  ),),
+
+
+                              // IconButton.filledTonal(
+                              //     visualDensity: VisualDensity.compact,
+                              //     onPressed: () {},
+                              //     style: ButtonStyle(
+                              //         padding: MaterialStateProperty.all(
+                              //             EdgeInsets.zero),
+                              //         shape: MaterialStateProperty.all(
+                              //             CircleBorder()),
+                              //         backgroundColor:
+                              //             MaterialStateProperty.all(
+                              //                 Color(0xffE5FCFC))),
+                              //     icon: Icon(
+                              //       Icons.edit,
+                              //       color: Colors.black,
+                              //       size: 18,
+                              //     )),
+                              // IconButton.filledTonal(
+                              //     visualDensity: VisualDensity.compact,
+                              //     onPressed: () {},
+                              //     style: ButtonStyle(
+                              //         padding: MaterialStateProperty.all(
+                              //             EdgeInsets.zero),
+                              //         shape: MaterialStateProperty.all(
+                              //             CircleBorder()),
+                              //         backgroundColor:
+                              //             MaterialStateProperty.all(
+                              //                 (Colors.red).withOpacity(0.2))),
+                              //     icon: Icon(
+                              //       Icons.delete_outline_rounded,
+                              //       color: Colors.black,
+                              //       size: 18,
+                              //     )),
                             ],
                           )
                         ],
