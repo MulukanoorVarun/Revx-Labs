@@ -1,17 +1,16 @@
 part of 'internet_status_bloc.dart';
 
 abstract class InternetStatusEvent extends Equatable {
-  const InternetStatusEvent();
-
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
-// Event for detecting internet is back
+// Internet restored event
 class InternetStatusBackEvent extends InternetStatusEvent {}
 
-// Event for detecting internet is lost
+// Internet lost event
 class InternetStatusLostEvent extends InternetStatusEvent {}
 
-// ✅ New Event: Trigger manual internet check
+// Manually check internet event
 class CheckInternetEvent extends InternetStatusEvent {}
+

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Patient/screens/Dashboard.dart';
 
 import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
@@ -48,14 +49,19 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       body: BlocListener<InternetStatusBloc, InternetStatusState>(
         listener: (context, state) {
           if (state is InternetStatusBackState) {
-            Future.delayed(Duration(seconds: 2), () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>OnBoard()));
+            Future.microtask(() {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => Dashboard()),
+              );
             });
           } else if (state is InternetStatusLostState) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NoInternetWidget()),
-            );
+            Future.microtask(() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => NoInternetWidget()),
+              );
+            });
           }
         },
         child:  Column(

@@ -11,8 +11,6 @@ class NoInternetWidget extends StatelessWidget {
           if (state is InternetStatusBackState) {
             // If internet is back, automatically go back to the previous screen
             Navigator.pop(context);
-          }else{
-
           }
         },
         child: Center(

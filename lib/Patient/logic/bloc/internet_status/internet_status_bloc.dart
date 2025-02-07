@@ -9,38 +9,42 @@ part 'internet_status_state.dart';
 
 class InternetStatusBloc extends Bloc<InternetStatusEvent, InternetStatusState> {
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription? _subscription;
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   InternetStatusBloc() : super(InternetStatusInitial()) {
-    on<InternetStatusBackEvent>((event, emit) =>
-        emit(const InternetStatusBackState('Your internet was restored')));
-    on<InternetStatusLostEvent>((event, emit) =>
-        emit(const InternetStatusLostState('No internet connection')));
+    // ✅ Subscribe to connectivity changes (handling List<ConnectivityResult>)
+    _subscription = _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> results) {
+      _handleConnectivityChange(results);
+    });
 
-    // ✅ Handle Manual Internet Check
+    // ✅ Handle Bloc Events
+    on<InternetStatusBackEvent>(
+            (event, emit) => emit(InternetStatusBackState('Internet is back!')));
+
+    on<InternetStatusLostEvent>(
+            (event, emit) => emit(InternetStatusLostState('No internet connection')));
+
     on<CheckInternetEvent>((event, emit) async {
+      // ✅ Manually check internet connection
       List<ConnectivityResult> results = await _connectivity.checkConnectivity();
-      if (results.contains(ConnectivityResult.mobile) || results.contains(ConnectivityResult.wifi)) {
-        add(InternetStatusBackEvent());
-      } else {
-        add(InternetStatusLostEvent());
-      }
+      _handleConnectivityChange(results);
     });
+  }
 
-    _subscription = _connectivity.onConnectivityChanged.listen((result) {
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-        add(InternetStatusBackEvent());
-      } else {
-        add(InternetStatusLostEvent());
-      }
-    });
-
+  // ✅ Handle multiple connectivity results
+  void _handleConnectivityChange(List<ConnectivityResult> results) {
+    if (results.contains(ConnectivityResult.mobile) || results.contains(ConnectivityResult.wifi)) {
+      add(InternetStatusBackEvent());
+    } else {
+      add(InternetStatusLostEvent());
+    }
   }
 
   @override
   Future<void> close() {
-    _subscription!.cancel();
+    _subscription?.cancel(); // ✅ Prevent memory leaks
     return super.close();
   }
 }
+
+

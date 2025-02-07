@@ -2,7 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import '../../Utils/NoInternet.dart';
+import '../logic/bloc/internet_status/internet_status_bloc.dart';
 import 'ChatSupport.dart';
 import 'HomeScreen.dart';
 import 'Notification.dart';
@@ -38,7 +41,18 @@ class _DashboardState extends State<Dashboard> {
         return false;
       },
       child: Scaffold(
-        body: PageView(
+        body:BlocListener<InternetStatusBloc, InternetStatusState>(
+          listener: (context, state) {
+          if (state is InternetStatusLostState) {
+              Future.microtask(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => NoInternetWidget()),
+                );
+              });
+            }
+          },
+        child:PageView(
           onPageChanged: (value) {
             HapticFeedback.lightImpact();
           },
@@ -52,6 +66,7 @@ class _DashboardState extends State<Dashboard> {
           ],
           physics: const NeverScrollableScrollPhysics(),
         ),
+    ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white,
