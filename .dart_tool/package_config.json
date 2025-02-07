@@ -176,6 +176,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "fl_chart",
+      "rootUri": "file:///C:/Users/muluk/AppData/Local/Pub/Cache/hosted/pub.dev/fl_chart-0.69.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///C:/flutter%20set%20up/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -740,7 +746,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2025-02-07T09:41:51.232326Z",
+  "generated": "2025-02-07T09:57:31.534583Z",
   "generator": "pub",
   "generatorVersion": "3.5.0",
   "flutterRoot": "file:///C:/flutter%20set%20up/flutter",
