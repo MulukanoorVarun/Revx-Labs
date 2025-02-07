@@ -802,12 +802,263 @@ class _VendorDashboardState extends State<VendorDashboard> {
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: RadialGradient(
+                                  colors: [
+                                    Color(0xFF88A9FD),
+                                    Color(0xFF082777),
+                                  ],
+                                  focal: Alignment.topRight,
+                                  radius: 1.0,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Image.asset(
+                                        'assets/polygon.png',
+                                        fit: BoxFit.contain,
+                                        width: 38,
+                                        height: 38,
+                                      ),
+                                      Positioned(
+                                        right: 5,
+                                        top: 5,
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          color: Color(0xff000000),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Support',
+                                          style: TextStyle(
+                                            color: Color(0xffffffff),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                         SizedBox(width: 16,),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: RadialGradient(
+                                  colors: [
+
+                                    Color(0xFFFD88B3),
+                                    Color(0xFF780831),
+                                  ],
+                                  focal: Alignment.topRight,
+                                  radius: 1.0,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Image.asset(
+                                        'assets/polygon.png',
+                                        fit: BoxFit.contain,
+                                        width: 38,
+                                        height: 38,
+                                      ),
+                                      Positioned(
+                                        right: 5,
+                                        top: 5,
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          color: Color(0xff000000),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Export data',
+                                          style: TextStyle(
+                                            color: Color(0xffffffff),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: RadialGradient(
+                                  colors: [
+                                    Color(0xFFA788FD),
+                                    Color(0xFF250878),
+                                  ],
+                                  focal: Alignment.topRight,
+                                  radius: 1.0,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Image.asset(
+                                        'assets/polygon.png',
+                                        fit: BoxFit.contain,
+                                        width: 38,
+                                        height: 38,
+                                      ),
+                                      Positioned(
+                                        right: 5,
+                                        top: 5,
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          color: Color(0xff000000),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Payments',
+                                          style: TextStyle(
+                                            color: Color(0xffffffff),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(width: 16,),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: RadialGradient(
+                                  colors: [
+
+                                    Color(0xFFDEFD88),
+                                    Color(0xFF08774C),
+                                  ],
+                                  focal: Alignment.topRight,
+                                  radius: 1.0,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Image.asset(
+                                        'assets/polygon.png',
+                                        fit: BoxFit.contain,
+                                        width: 38,
+                                        height: 38,
+                                      ),
+                                      Positioned(
+                                        right: 5,
+                                        top: 5,
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          color: Color(0xff000000),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Export data',
+                                          style: TextStyle(
+                                            color: Color(0xffffffff),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16,),
 
                     ],
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 30,),
             ],
           ),
         ),
