@@ -746,10 +746,10 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2025-02-07T10:20:24.875924Z",
+  "generated": "2025-02-07T10:57:27.555269Z",
   "generator": "pub",
-  "generatorVersion": "3.6.1",
+  "generatorVersion": "3.6.2",
   "flutterRoot": "file:///C:/flutter_setup/flutter",
-  "flutterVersion": "3.27.2",
+  "flutterVersion": "3.27.4",
   "pubCache": "file:///C:/Users/Chara/AppData/Local/Pub/Cache"
 }
