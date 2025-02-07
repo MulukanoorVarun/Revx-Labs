@@ -1044,7 +1044,6 @@ class _VendorDashboardState extends State<VendorDashboard> {
                                         ),
                                       ],
                                     ),
-
                                   ),
                                 ],
                               ),
