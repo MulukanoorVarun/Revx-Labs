@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Authentication/LogInWithEmail.dart';
+import 'package:revxpharma/Authentication/LogInWithMobile.dart';
 import 'package:revxpharma/Patient/screens/Dashboard.dart';
+import 'package:revxpharma/Utils/Preferances.dart';
 
 import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
@@ -19,17 +22,17 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  String token="";
-  String status="";
+  String token = "";
+  String status = "";
 
   @override
   void initState() {
     super.initState();
+    fetchDetails();
     _controller = AnimationController(
       duration: Duration(seconds: 2),
       vsync: this,
     );
-
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
     _controller.forward();
   }
@@ -38,6 +41,18 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  String  Status='';
+  String  Token='';
+  void fetchDetails() async {
+    var status = await PreferenceService().getString('on_boarding');
+    var token = await PreferenceService().getString('access_token');
+    setState(() {
+      Status=status??'';
+      Token=token??'';
+    });
+
   }
 
   @override
@@ -52,7 +67,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             Future.microtask(() {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => Dashboard()),
+                MaterialPageRoute(builder: (_) =>Status==''? OnBoard():Token==''?LogInWithEmail():Dashboard()),
               );
             });
           } else if (state is InternetStatusLostState) {
@@ -64,7 +79,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             });
           }
         },
-        child:  Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -76,7 +91,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                   "assets/logo.png",
                   width: 260,
                   height: 150,
-                  fit:BoxFit.contain,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),

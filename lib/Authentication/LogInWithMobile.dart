@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'OtpVerify.dart';
-import 'UserSelectionScreen.dart';
+import '../Patient/screens/UserSelectionScreen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

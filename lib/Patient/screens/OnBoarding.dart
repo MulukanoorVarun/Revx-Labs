@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/Preferances.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Onboard1.dart';
 
@@ -10,6 +12,12 @@ class OnBoard extends StatefulWidget {
 }
 
 class _OnBoardState extends State<OnBoard> {
+
+  @override
+  void initState() {
+  PreferenceService().saveString('on_boarding', '1');
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;

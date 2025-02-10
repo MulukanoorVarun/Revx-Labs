@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 
-import 'LogInScreen.dart';
+import '../../Authentication/LogInWithMobile.dart';
 
 class OnBoardOne extends StatefulWidget {
   const OnBoardOne({Key? key}) : super(key: key);
@@ -117,7 +118,7 @@ class _OnBoardOneState extends State<OnBoardOne> {
                     ),
                     child: Center(
                       child: InkWell(onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LogInWithEmail()));
                       },
                         child: Text(
                           "Get Started",

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import '../../Components/ShakeWidget.dart';
-import '../../Patient/screens/LogInScreen.dart';
+import '../../Authentication/LogInWithMobile.dart';
 
 class VendorRegisterScreen extends StatefulWidget {
   const VendorRegisterScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
   final TextEditingController labAddressController = TextEditingController();
   final TextEditingController contactNumberController = TextEditingController();
   final TextEditingController emailAddressController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController testsController = TextEditingController();
   final TextEditingController licenseNumberController = TextEditingController();
@@ -32,13 +34,13 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     labAddressController.dispose();
     contactNumberController.dispose();
     emailAddressController.dispose();
+    passwordController.dispose();
     categoryController.dispose();
     testsController.dispose();
     licenseNumberController.dispose();
     super.dispose();
   }
 
-  // Validation functions
   String? _validateField(String value, String fieldName) {
     if (value.trim().isEmpty) {
       return "$fieldName is required";
@@ -50,9 +52,22 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     if (value.trim().isEmpty) {
       return "Email is required";
     }
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(value)) {
       return "Enter a valid email address";
+    }
+    return null;
+  }
+
+  String? _validatePassword(String value) {
+    if (value.trim().isEmpty) {
+      return "Password is required";
+    }
+    final emailRegex = RegExp(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Password must be at least 8 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one special character';
     }
     return null;
   }
@@ -68,7 +83,8 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     return null;
   }
 
-  void _validateAndSetError(String fieldKey, String value, String? Function(String) validator) {
+  void _validateAndSetError(
+      String fieldKey, String value, String? Function(String) validator) {
     setState(() {
       final errorMessage = validator(value);
       if (errorMessage != null) {
@@ -79,16 +95,24 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     });
   }
 
-
   void _submitForm() {
     setState(() {
-      _validateAndSetError("labName", labNameController.text, (value) => _validateField(value, "Lab Name"));
-      _validateAndSetError("labAddress", labAddressController.text, (value) => _validateField(value, "Address"));
-      _validateAndSetError("contactNumber", contactNumberController.text, _validatePhone);
-      _validateAndSetError("email", emailAddressController.text, _validateEmail);
-      _validateAndSetError("category", categoryController.text, (value) => _validateField(value, "Categories"));
-      _validateAndSetError("tests", testsController.text, (value) => _validateField(value, "Services"));
-      _validateAndSetError("licenseNumber", licenseNumberController.text, (value) => _validateField(value, "License Number"));
+      _validateAndSetError("labName", labNameController.text,
+          (value) => _validateField(value, "Lab Name"));
+      _validateAndSetError("labAddress", labAddressController.text,
+          (value) => _validateField(value, "Address"));
+      _validateAndSetError(
+          "contactNumber", contactNumberController.text, _validatePhone);
+      _validateAndSetError(
+          "email", emailAddressController.text, _validateEmail);
+      _validateAndSetError(
+          "password", passwordController.text, _validatePassword);
+      _validateAndSetError("category", categoryController.text,
+          (value) => _validateField(value, "Categories"));
+      _validateAndSetError("tests", testsController.text,
+          (value) => _validateField(value, "Services"));
+      _validateAndSetError("licenseNumber", licenseNumberController.text,
+          (value) => _validateField(value, "License Number"));
     });
 
     if (validationErrors.isEmpty) {
@@ -165,6 +189,14 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                 keyboardType: TextInputType.emailAddress,
                 validator: _validateEmail,
               ),
+              buildFormLabel("Enter The Password"),
+              _buildTextField(
+                fieldKey: "Password",
+                controller: passwordController,
+                hintText: 'Password',
+                keyboardType: TextInputType.text,
+                validator: _validatePassword,
+              ),
               buildFormLabel("Select the categories"),
               _buildTextField(
                 fieldKey: "category",
@@ -197,7 +229,8 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30), // Rounded corners
                   ),
-                  minimumSize: const Size(double.infinity, 48), // Width & height
+                  minimumSize:
+                      const Size(double.infinity, 48), // Width & height
                 ),
                 child: const Text(
                   'Register',
@@ -213,17 +246,20 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Already have an account?',style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontFamily: "Poppins",
-                  ),),
+                  Text(
+                    'Already have an account?',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => LogInWithEmail()));
                     },
                     child: Text(
                       'Login',
@@ -245,7 +281,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
 
   Widget buildFormLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5,top: 8),
+      padding: const EdgeInsets.only(bottom: 5, top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -263,7 +299,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     );
   }
 
-
   Widget _buildTextField({
     required String fieldKey,
     required TextEditingController controller,
@@ -279,10 +314,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
           cursorColor: Colors.black,
           keyboardType: keyboardType,
           style: TextStyle(
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w500,
-            fontSize: 15
-          ),
+              fontFamily: "Poppins", fontWeight: FontWeight.w500, fontSize: 15),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: const TextStyle(
@@ -300,10 +332,12 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
               borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
             ),
           ),
-          onChanged: (value) => _validateAndSetError(fieldKey, value, validator),
+          onChanged: (value) =>
+              _validateAndSetError(fieldKey, value, validator),
         ),
         Visibility(
-          visible: validationErrors.containsKey(fieldKey), // Only show if an error exists
+          visible: validationErrors
+              .containsKey(fieldKey), // Only show if an error exists
           child: Container(
             alignment: Alignment.topLeft,
             child: ShakeWidget(

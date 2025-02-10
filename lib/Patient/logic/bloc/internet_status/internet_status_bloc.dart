@@ -17,7 +17,6 @@ class InternetStatusBloc extends Bloc<InternetStatusEvent, InternetStatusState> 
       _handleConnectivityChange(results);
     });
 
-    // ✅ Handle Bloc Events
     on<InternetStatusBackEvent>(
             (event, emit) => emit(InternetStatusBackState('Internet is back!')));
 

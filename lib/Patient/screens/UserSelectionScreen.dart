@@ -23,7 +23,7 @@ class UserSelectionScreen extends StatelessWidget {
                 _buildUserCard(
                   context,
                   "Vendor",
-                  "assets/lab.webp",  // Replace with actual image path
+                  "assets/lab.webp",
                       () {
                         Navigator.push(
                             context,

@@ -5,7 +5,7 @@ import 'ApiClient.dart';
 class AuthService {
   static const String _accessTokenKey = "access_token";
   static const String _refreshTokenKey = "refresh_token";
-  static const String _tokenExpiryKey = "token_expiry";
+  static const String _tokenExpiryKey = "c";
 
   /// Get stored access token
   static Future<String?> getAccessToken() async {

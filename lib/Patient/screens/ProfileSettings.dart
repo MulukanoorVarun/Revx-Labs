@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'ChangePassword.dart';
+import '../../Authentication/ChangePassword.dart';
 
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});

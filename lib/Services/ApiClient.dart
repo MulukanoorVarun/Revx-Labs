@@ -5,7 +5,7 @@ import 'AuthService.dart';
 class ApiClient {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: "https://api.example.com",
+      baseUrl: "http://192.168.0.20:8080",
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
@@ -17,7 +17,6 @@ class ApiClient {
   static void setupInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // Check token expiration before every request
         bool isTokenExpired = await AuthService.isTokenExpired();
         if (isTokenExpired) {
           bool refreshed = await _refreshToken();

@@ -15,7 +15,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       debugShowMaterialGrid: false,
       theme: ThemeData(
-        // primarySwatch: Colors.grey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -75,7 +74,7 @@ class MyApp extends StatelessWidget {
       title: 'Revx Labs',
       debugShowCheckedModeBanner: false,
 
-      home:VendorDashboard()
+      home:Splash()
       ),
     );
   }

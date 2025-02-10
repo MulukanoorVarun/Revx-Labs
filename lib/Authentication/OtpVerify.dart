@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../Components/ShakeWidget.dart';
-import 'Dashboard.dart';
-import 'Register.dart';
+import '../Components/ShakeWidget.dart';
+import '../Patient/screens/Dashboard.dart';
+import '../Patient/screens/Register.dart';
 
 class OtpVerify extends StatefulWidget {
   @override
