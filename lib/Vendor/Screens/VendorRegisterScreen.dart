@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import '../../Components/ShakeWidget.dart';
-import '../../Authentication/LogInWithMobile.dart';
 
 class VendorRegisterScreen extends StatefulWidget {
   const VendorRegisterScreen({Key? key}) : super(key: key);
@@ -17,6 +17,8 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
   final TextEditingController contactNumberController = TextEditingController();
   final TextEditingController emailAddressController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController startTimeController = TextEditingController();
+  final TextEditingController endController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController testsController = TextEditingController();
   final TextEditingController licenseNumberController = TextEditingController();
@@ -83,6 +85,34 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     return null;
   }
 
+  String? _validatestartTime(String value) {
+    if (value.trim().isEmpty) {
+      return "Start Time is required";
+    }
+
+    // Regex to check the time format (HH:mm)
+    final timeRegex = RegExp(r'^(?:[01]\d|2[0-3]):(?:[0-5]\d)$');
+    if (!timeRegex.hasMatch(value)) {
+      return "Enter a valid time in HH:mm format";
+    }
+
+    return null;
+  }
+
+  String? _validateEndTime(String value) {
+    if (value.trim().isEmpty) {
+      return "End Time is required";
+    }
+
+    // Regex to check the time format (HH:mm)
+    final timeRegex = RegExp(r'^(?:[01]\d|2[0-3]):(?:[0-5]\d)$');
+    if (!timeRegex.hasMatch(value)) {
+      return "Enter a valid time in HH:mm format";
+    }
+
+    return null;
+  }
+
   void _validateAndSetError(
       String fieldKey, String value, String? Function(String) validator) {
     setState(() {
@@ -123,8 +153,22 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     }
   }
 
+  MultiSelectController<WeekDays> _dayscontroller =
+      MultiSelectController<WeekDays>();
+  String _validateWeekdays = '';
+  List<String> selectedDays = [];
   @override
   Widget build(BuildContext context) {
+    var items = [
+      DropdownItem(label: 'Monday', value: WeekDays(name: 'Monday')),
+      DropdownItem(label: 'Tuesday', value: WeekDays(name: 'Tuesday')),
+      DropdownItem(label: 'Wednesday', value: WeekDays(name: 'Wednesday')),
+      DropdownItem(label: 'Thursday', value: WeekDays(name: 'Thursday')),
+      DropdownItem(label: 'Friday', value: WeekDays(name: 'Friday')),
+      DropdownItem(label: 'Saturday', value: WeekDays(name: 'Saturday')),
+      DropdownItem(label: 'Sunday', value: WeekDays(name: 'Sunday')),
+    ];
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -197,6 +241,141 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                 keyboardType: TextInputType.text,
                 validator: _validatePassword,
               ),
+              buildFormLabel("Days Opened"),
+              MultiDropdown<WeekDays>(
+                items: items,
+                controller: _dayscontroller,
+                enabled: true,
+                searchEnabled: true,
+                chipDecoration: const ChipDecoration(
+                    backgroundColor: Color(0xffE8E4EF),
+                    wrap: true,
+                    runSpacing: 2,
+                    spacing: 10,
+                    borderRadius: BorderRadius.all(Radius.circular(7))),
+                fieldDecoration: FieldDecoration(
+                  hintText: 'Working Days',
+                  hintStyle: TextStyle(
+                    fontSize: 15,
+                    letterSpacing: 0,
+                    height: 1.2,
+                    color: Color(0xffAFAFAF),
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                  ),
+                  showClearIcon: false,
+                  backgroundColor: Color(0xffffffff),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(7),
+                    borderSide:
+                        const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide:
+                        const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+                  ),
+                ),
+                dropdownDecoration: const DropdownDecoration(
+                  marginTop: 2, // Adjust this value as needed
+                  maxHeight: 400,
+                  header: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      'Select Working days from the List',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Inter"),
+                    ),
+                  ),
+                ),
+                dropdownItemDecoration: DropdownItemDecoration(
+                  selectedIcon:
+                      const Icon(Icons.check_box, color: Color(0xff8856F4)),
+                  disabledIcon: Icon(Icons.lock, color: Colors.grey.shade300),
+                ),
+                onSelectionChange: (selectedItems) {
+                  setState(() {
+                    selectedDays =
+                        selectedItems.map((weekDay) => weekDay.name).toList();
+                    _validateWeekdays = "";
+                  });
+                  debugPrint("Selected Days: $selectedDays");
+                },
+              ),
+              if (_validateWeekdays.isNotEmpty) ...[
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(bottom: 5),
+                  child: ShakeWidget(
+                    key: Key("value"),
+                    duration: Duration(milliseconds: 700),
+                    child: Text(
+                      _validateWeekdays,
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ] else ...[
+                const SizedBox(
+                  height: 15,
+                ),
+              ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      buildFormLabel("Start Time"),
+                      // _buildTextField(
+                      //   fieldKey: "StartTime",
+                      //   controller: startTimeController,
+                      //   hintText: 'StartTime',
+                      //   keyboardType: TextInputType.text,
+                      //   validator: _validatestartTime,
+                      // ),
+                    ],
+                  ),
+                  buildFormLabel("End Time"),
+                ],
+              ),
+
+              // Row(
+              //   children: [
+              //     Column(
+              //       children: [
+              //         buildFormLabel("Start Time"),
+              //         _buildTextField(
+              //           fieldKey: "StartTime",
+              //           controller: startTimeController,
+              //           hintText: 'StartTime',
+              //           keyboardType: TextInputType.text,
+              //           validator: _validatestartTime,
+              //         ),
+              //       ],
+              //     ),
+              //     Column(
+              //       children: [
+              //
+              //         _buildTextField(
+              //           fieldKey: "EndTime",
+              //           controller: endController,
+              //           hintText: 'EndTime',
+              //           keyboardType: TextInputType.text,
+              //           validator: _validateEndTime,
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
+
               buildFormLabel("Select the categories"),
               _buildTextField(
                 fieldKey: "category",
@@ -358,4 +537,10 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
       ],
     );
   }
+}
+
+class WeekDays {
+  final String name;
+
+  WeekDays({required this.name});
 }
