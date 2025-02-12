@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
-import 'package:revxpharma/Authentication/LogInWithMobile.dart';
 import 'package:revxpharma/Patient/screens/Dashboard.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
 

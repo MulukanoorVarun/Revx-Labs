@@ -4,7 +4,6 @@ import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Vendor/Screens/Appointment.dart';
 import 'package:revxpharma/Vendor/Screens/Catagory/CatagoryList.dart';
-import 'package:revxpharma/Vendor/Screens/Catagory/VendorCatagory.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/Patients.dart';
 import 'package:revxpharma/Vendor/Screens/Test/VendorTest.dart';
 

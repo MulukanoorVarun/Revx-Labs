@@ -114,18 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _validatepwd = _password.text.isEmpty
           ? 'Please enter a password'
           : _password.text.length < 8
-              ? 'Password must be at least 8 characters long'
-              : !RegExp(r'^(?=.*[a-z])').hasMatch(_password.text)
-                  ? 'Password must contain at least one lowercase letter'
-                  : !RegExp(r'^(?=.*[A-Z])').hasMatch(_password.text)
-                      ? 'Password must contain at least one uppercase letter'
-                      : !RegExp(r'^(?=.*[0-9])').hasMatch(_password.text)
-                          ? 'Password must contain at least one number'
-                          : !RegExp(r'^(?=.*[!@#$%^&*(),.?":{}|<>])')
-                                  .hasMatch(_password.text)
-                              ? 'Password must contain at least one special character'
-                              : '';
-
+              ? 'Password must be at least 8 characters long':"";
       _validategender = _gender.text.isEmpty ? 'Please enter a gender' : '';
       _validatedob = _dob.text.isEmpty ? 'Please select a dob' : '';
       _validateage = _age.text.isEmpty ? 'Please enter a age' : '';
@@ -273,9 +262,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
                   decoration: BoxDecoration(
-                    color: Color(0xFF00C4D3),
+                    color: Color(0xFF27BDBE),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   alignment: Alignment.center,
@@ -305,7 +294,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: Colors.teal,
+                        color:Color(0xFF27BDBE),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
