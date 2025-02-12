@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
+import 'package:revxpharma/Services/UserapiServices.dart';
 
 import 'ScheduleAppointment.dart';
 
@@ -8,6 +10,16 @@ class DiagnosticInformation extends StatefulWidget {
 }
 
 class _DiagnosticInformationState extends State<DiagnosticInformation> {
+  @override
+  void initState() {
+    getDignosticDetails();
+    super.initState();
+  }
+
+  Future<void> getDignosticDetails() async {
+    var res = UserApi.diognosticCenterDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -75,22 +87,22 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                       Text(
                         "Kondapur, Hyderabad",
                         style: TextStyle(
-                            color: Color(0xff949494,),
+                            color: Color(
+                              0xff949494,
+                            ),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            fontFamily: "Poppins"
-                        ),
+                            fontFamily: "Poppins"),
                       ),
                       Row(
                         children: [
                           Text(
                             "Open now",
                             style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff00BE13),
-                                fontFamily: "Poppins"
-                            ),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff00BE13),
+                                fontFamily: "Poppins"),
                           ),
                           SizedBox(
                             width: 5,
@@ -98,11 +110,10 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           Text(
                             "Opens Mon - Sat",
                             style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                                fontFamily: "Poppins"
-                            ),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                                fontFamily: "Poppins"),
                           ),
                         ],
                       ),
@@ -115,11 +126,10 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
               Text(
                 "Description ",
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff24AEB1),
-                    fontFamily: "Poppins"
-                ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff24AEB1),
+                    fontFamily: "Poppins"),
               ),
               // Heading Text
 
@@ -128,11 +138,11 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
               // Description Text
               Text(
                 "The Comprehensive Full Body Checkup with Vitamin D & B12 is ideal for people who want to monitor their overall health. It provides a range of tests to check the health of the Heart, Thyroid, Kidney, and Liver. It also includes tests for Blood Sugar, Complete Blood Count, Lipid Profile and Complete Urine Analysis. In addition, it includes tests for Vitamin D, Vitamin B12, and Iron levels",
-                style: TextStyle(fontSize: 12,
+                style: TextStyle(
+                    fontSize: 12,
                     fontFamily: "Poppins",
-                  fontWeight: FontWeight.w400,
-                  height: 1.7
-                ),
+                    fontWeight: FontWeight.w400,
+                    height: 1.7),
               ),
               SizedBox(height: 16),
 
@@ -190,7 +200,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           fontFamily: "Poppins",
                         ),
                       ),
-
                       Row(
                         children: [
                           Icon(Icons.call),
@@ -214,7 +223,9 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
               // Address Heading and Address
               Text(
                 "Address",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                   fontFamily: "Poppins",
                 ),
               ),
@@ -252,7 +263,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
                         decoration: TextDecoration.underline),
-
                   ),
                 ],
               ),
@@ -299,7 +309,10 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ScheduleAnAppointment()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ScheduleAnAppointment()));
                     },
                     // icon: Icon(Icons.add, color: Colors.white),
                     // iconAlignment: IconAlignment.end, // "+" icon
@@ -315,7 +328,9 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                   ),
                 ],
               ),
-              SizedBox(height: 50,)
+              SizedBox(
+                height: 50,
+              )
             ],
           ),
         ),

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
+import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
+import 'package:revxpharma/Models/DiognisticCenterModel.dart';
 import 'ApiClient.dart';
 
 class UserApi {
@@ -57,11 +60,58 @@ class UserApi {
     try {
       print('categoryapi calling');
       Response response = await ApiClient.get('api/categories');
-      print("response:${response}");
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.data);
+        final jsonResponse = response.data;
         print('categoryapi :${jsonResponse}');
         return CategoryModel.fromJson(jsonResponse);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
+      return null;
+    }
+  }
+
+  static Future<BannersModel?> banners() async {
+    try {
+      Response response = await ApiClient.get('api/banners');
+      if (response.statusCode == 200) {
+        final jsonResponse = response.data;
+        print('banners :${jsonResponse}');
+        return BannersModel.fromJson(jsonResponse);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
+      return null;
+    }
+  }
+
+  static Future<DiognisticCenterModel?> diognosticCenter() async {
+    try {
+      Response response = await ApiClient.get('api/diagnostic-centres');
+      if (response.statusCode == 200) {
+        final jsonResponse = response.data;
+        print('diognosticCenter :${jsonResponse}');
+        return DiognisticCenterModel.fromJson(jsonResponse);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
+      return null;
+    }
+  }
+
+  static Future<DiognisticCenterDetailModel?> diognosticCenterDetails() async {
+    try {
+      Response response = await ApiClient.get('api/diagnostic-centre-detail');
+      if (response.statusCode == 200) {
+        final jsonResponse = response.data;
+        print('diognosticCenterDetails :${jsonResponse}');
+        return DiognisticCenterDetailModel.fromJson(jsonResponse);
       } else {
         return null;
       }

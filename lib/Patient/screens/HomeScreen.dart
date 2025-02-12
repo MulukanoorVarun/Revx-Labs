@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
+import 'package:revxpharma/Models/BannersModel.dart';
+import 'package:revxpharma/Models/DiognisticCenterModel.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 import 'DiagnosticInformation.dart';
@@ -20,15 +22,24 @@ class Homescreen extends StatefulWidget {
 class _HomescreenState extends State<Homescreen> {
   int currentIndex = 0;
 
-  final List<String> imgList = [
-    'assets/image.png',
-    'assets/image.png',
-    'assets/image.png',
-  ];
   @override
   void initState() {
     getCategories();
+    getBanners();
+    getDiognosticCenter();
     super.initState();
+  }
+
+  List<Banners> imgList = [];
+
+  Future<void> getBanners() async {
+    print('hii');
+    var res = await UserApi.banners();
+    if (res?.settings?.success == 1) {
+      setState(() {
+        imgList = res?.data ?? [];
+      });
+    } else {}
   }
 
   List<CategoriesList> categorys = [];
@@ -36,14 +47,26 @@ class _HomescreenState extends State<Homescreen> {
   Future<void> getCategories() async {
     var res = await UserApi.categoryapi();
     if (res?.category != null) {
-      print('hiis');
       setState(() {
         if (res?.settings?.success == 1) {
           print('hii');
-          categorys = res?.category??[];
+          categorys = res?.category ?? [];
         }
       });
     }
+  }
+
+  List<Diognostic> diognosticCenter = [];
+
+  Future<void> getDiognosticCenter() async {
+    var res = await UserApi.diognosticCenter();
+    if (res?.data != null) {
+      setState(() {
+        if (res?.settings?.success == 1) {
+          diognosticCenter = res?.data ?? [];
+        } else {}
+      });
+    } else {}
   }
 
   @override
@@ -133,7 +156,7 @@ class _HomescreenState extends State<Homescreen> {
             CarouselSlider(
               options: CarouselOptions(
                 aspectRatio: 1.0,
-                height: screenHeight * 0.25, // Adjusted height for carousel
+                height: screenHeight * 0.25,
                 enlargeCenterPage: true,
                 scrollDirection: Axis.horizontal,
                 autoPlay: true,
@@ -153,10 +176,9 @@ class _HomescreenState extends State<Homescreen> {
                       return Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                        child: Image.asset(
-                          item,
-                          fit: BoxFit
-                              .contain, // Adjust fit for better image display
+                        child: Image.network(
+                          item.image ?? "",
+                          fit: BoxFit.contain,
                         ),
                       );
                     },
@@ -170,8 +192,7 @@ class _HomescreenState extends State<Homescreen> {
               children: imgList.asMap().entries.map((entry) {
                 bool isActive = currentIndex == entry.key;
                 return Container(
-                  width:
-                      isActive ? 17.0 : 7.0, // Width changes based on activity
+                  width: isActive ? 17.0 : 7.0,
                   height: 7.0,
                   margin: EdgeInsets.symmetric(horizontal: 3.0),
                   decoration: BoxDecoration(
@@ -239,7 +260,51 @@ class _HomescreenState extends State<Homescreen> {
               ),
             ),
             SizedBox(height: 8),
-            _buildDiognosticCenter(),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: GridView.builder(physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1,
+                    crossAxisSpacing: 5,
+                  ),
+                  itemCount: diognosticCenter.length,
+                  itemBuilder: (context, index) {
+                    final dignosticCenter = diognosticCenter[index];
+                    var w = MediaQuery.of(context).size.width;
+                    return Column(
+                      children: [
+                        InkResponse(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DiagnosticInformation(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: w * 0.435,
+                            height: w * 0.4,
+                            padding: EdgeInsets.only(left: 15, right: 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: Color(0xff27BDBE), width: 1),
+                              // Adjusted size to fit the circle
+                            ),
+                            child: Image.network(
+                              dignosticCenter.image ?? '',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                      ],
+                    );
+                  },
+                )),
             SizedBox(height: 8),
 
             InkWell(
@@ -326,25 +391,20 @@ class _HomescreenState extends State<Homescreen> {
       ),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 8, // Number of category items
+      itemCount: categorys.length,
+      // Number of category items
       itemBuilder: (context, index) {
-        final categories = [
-          {"image": "assets/pregnency.png", "label": "Pregnancy"},
-          {"image": "assets/lungs.png", "label": "Lungs"},
-          {"image": "assets/mriscan.png", "label": "MRI Scan"},
-          {"image": "assets/health.png", "label": "Health"},
-          {"image": "assets/heart.png", "label": "Heart"},
-          {"image": "assets/kidney.png", "label": "Kidney"},
-          {"image": "assets/bloodtext.png", "label": "Blood Test"},
-          {"image": "assets/more.png", "label": "More"},
-        ];
+        final category = categorys[index];
 
-        final category = categories[index];
+        print(
+            'Category ID: ${category.id}, Category Name: ${category.categoryName}');
+
         return InkWell(
           onTap: () {
-            _handleCategoryTap(context, category['label']!);
+            _handleCategoryTap(context, category.categoryName ?? '');
           },
-          child: _buildCategoryItem(category["image"]!, category["label"]!),
+          child: _buildCategoryItem(category.image ?? '',
+              category.categoryName ?? ''), // No need for null check
         );
       },
     );
@@ -416,7 +476,7 @@ class _HomescreenState extends State<Homescreen> {
             border: Border.all(color: Color(0xffE9E9E9), width: 1),
           ),
           child: Center(
-            child: Image.asset(image, width: 45, height: 45),
+            child: Image.network(image, width: 45, height: 45),
           ),
         ),
         SizedBox(height: 8),
@@ -430,58 +490,6 @@ class _HomescreenState extends State<Homescreen> {
           overflow: TextOverflow.ellipsis,
           maxLines: 1, // Ensure text stays in one line
         ),
-      ],
-    );
-  }
-
-  Widget _buildDiognosticCenter() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 1,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 5,
-        children: [
-          _buildDiognosticcenter("assets/konark.png"),
-          _buildDiognosticcenter("assets/likitha.png"),
-          _buildDiognosticcenter("assets/digital.png"),
-          _buildDiognosticcenter("assets/img.png"),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDiognosticcenter(
-    String image,
-  ) {
-    var w = MediaQuery.of(context).size.width;
-    var h = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        InkResponse(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DiagnosticInformation(),
-              ),
-            );
-          },
-          child: Container(
-            width: w * 0.435,
-            height: w * 0.4,
-            padding: EdgeInsets.only(left: 15, right: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Color(0xff27BDBE), width: 1),
-              // Adjusted size to fit the circle
-            ),
-            child: Image.asset(image),
-          ),
-        ),
-        SizedBox(height: 8),
       ],
     );
   }

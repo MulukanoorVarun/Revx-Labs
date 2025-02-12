@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Models/CategoryModel.dart';
+import 'package:revxpharma/Services/UserapiServices.dart';
 
 import 'Pregnancy.dart';
 
@@ -10,24 +12,25 @@ class ServiceCategory extends StatefulWidget {
 }
 
 class _ServiceCategoryState extends State<ServiceCategory> {
-  final List<Map<String, String>> _imageList = [
-    {'imagePath': 'assets/pregnency.png', 'name': 'Pregnancy'},
-    {'imagePath': 'assets/mriscan.png', 'name': 'MRI Scan'},
-    {'imagePath': 'assets/bloodtext.png', 'name': 'CBC'},
-    {'imagePath': 'assets/ellergy.png', 'name': 'Allergy'},
-    {'imagePath': 'assets/bone.png', 'name': 'Bone'},
-    {'imagePath': 'assets/health.png', 'name': 'Health'},
-    {'imagePath': 'assets/COVID.png', 'name': 'Covid'},
-    {'imagePath': 'assets/immunity.png', 'name': 'Immunity'},
-    {'imagePath': 'assets/infertility.png', 'name': 'Infertility'},
-    {'imagePath': 'assets/womanhealth.png', 'name': 'Women Health'},
-    {'imagePath': 'assets/fullbodyCheckup.png', 'name': 'Full Body check up'},
-    {'imagePath': 'assets/thyroid.png', 'name': 'Thyroid'},
-    {'imagePath': 'assets/lungs.png', 'name': 'Lungs'},
-    {'imagePath': 'assets/heart.png', 'name': 'Heart'},
-    {'imagePath': 'assets/kidney.png', 'name': 'Kidney'},
-  ];
+  @override
+  void initState() {
+    getCategories();
+    super.initState();
+  }
 
+  List<CategoriesList> categorys = [];
+
+  Future<void> getCategories() async {
+    var res = await UserApi.categoryapi();
+    if (res?.category != null) {
+      setState(() {
+        if (res?.settings?.success == 1) {
+          print('hii');
+          categorys = res?.category ?? [];
+        }
+      });
+    }
+  }
   void _navigateToDetailScreen(BuildContext context, String name) {
     Widget detailScreen;
 
@@ -121,14 +124,14 @@ class _ServiceCategoryState extends State<ServiceCategory> {
             crossAxisCount: 3,  // Number of columns
             childAspectRatio: 0.8,  // Aspect ratio for items
           ),
-          itemCount: _imageList.length,  // Total number of items
+          itemCount:categorys.length,  // Total number of items
           itemBuilder: (context, index) {
-            final item = _imageList[index];  // Get the map for the current index
+            final item = categorys[index];  // Get the map for the current index
             return Column(
               children: [
                 InkResponse(
                   onTap:(){
-                    _navigateToDetailScreen(context, item['name']!);
+                    _navigateToDetailScreen(context, item.categoryName??"");
                   },
                   child: Container(
                     width: 100,
@@ -140,8 +143,8 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),  // Padding inside the container
-                      child: Image.asset(
-                        item['imagePath']!,  // Load the image using imagePath
+                      child: Image.network(
+                        item.image??'',  // Load the image using imagePath
                         fit: BoxFit.contain,  // Ensures the image does not stretch
                         height: 45,  // Height of the image
                         width: 50,  // Width of the image
@@ -151,7 +154,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                 ),
                 const SizedBox(height: 5),  // Space between image and text
                 Text(
-                  item['name']!,
+                  item.categoryName??'',
                   maxLines: 1,
                   textAlign: TextAlign.center,// Display the name from the map
                   style: const TextStyle(

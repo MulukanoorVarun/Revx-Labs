@@ -1,52 +1,54 @@
-class CategoryModel {
-  List<CategoriesList>? category;
+class BannersModel {
+  List<Banners>? data;
   Settings? settings;
 
-  CategoryModel({this.category, this.settings});
+  BannersModel({this.data, this.settings});
 
-  // Change from Map<String, dynamic> to handle List<dynamic> for the 'data' field
-  CategoryModel.fromJson(Map<String, dynamic> json) {
+  BannersModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      category = <CategoriesList>[];  // Initialize the list of categories
+      data = <Banners>[];
       json['data'].forEach((v) {
-        category!.add(CategoriesList.fromJson(v)); // Add each category to the list
+        data!.add(new Banners.fromJson(v));
       });
     }
     settings = json['settings'] != null
-        ? Settings.fromJson(json['settings'])
+        ? new Settings.fromJson(json['settings'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (category != null) {
-      data['data'] = category!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    if (settings != null) {
-      data['settings'] = settings!.toJson();
+    if (this.settings != null) {
+      data['settings'] = this.settings!.toJson();
     }
     return data;
   }
 }
 
-class CategoriesList {
+class Banners {
   String? id;
-  String? categoryName;
+  String? bannerName;
   String? image;
+  String? url;
 
-  CategoriesList({this.id, this.categoryName, this.image});
+  Banners({this.id, this.bannerName, this.image, this.url});
 
-  CategoriesList.fromJson(Map<String, dynamic> json) {
+  Banners.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    categoryName = json['category_name'];
+    bannerName = json['banner_name'];
     image = json['image'];
+    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['category_name'] = this.categoryName;
+    data['banner_name'] = this.bannerName;
     data['image'] = this.image;
+    data['url'] = this.url;
     return data;
   }
 }
