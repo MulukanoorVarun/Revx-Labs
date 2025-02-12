@@ -334,48 +334,27 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   Column(
                     children: [
                       buildFormLabel("Start Time"),
-                      // _buildTextField(
-                      //   fieldKey: "StartTime",
-                      //   controller: startTimeController,
-                      //   hintText: 'StartTime',
-                      //   keyboardType: TextInputType.text,
-                      //   validator: _validatestartTime,
-                      // ),
+                      _buildTextField1(
+                          fieldKey: 'StartTime',
+                          controller: startTimeController,
+                          hintText: 'StartTime',
+                          keyboardType: TextInputType.text,
+                          validator: _validatestartTime),
                     ],
                   ),
-                  buildFormLabel("End Time"),
+                  Column(
+                    children: [
+                      buildFormLabel("End Time"),
+                      _buildTextField1(
+                          fieldKey: 'EndTime',
+                          controller: endController,
+                          hintText: 'EndTime',
+                          keyboardType: TextInputType.text,
+                          validator: _validateEndTime),
+                    ],
+                  ),
                 ],
               ),
-
-              // Row(
-              //   children: [
-              //     Column(
-              //       children: [
-              //         buildFormLabel("Start Time"),
-              //         _buildTextField(
-              //           fieldKey: "StartTime",
-              //           controller: startTimeController,
-              //           hintText: 'StartTime',
-              //           keyboardType: TextInputType.text,
-              //           validator: _validatestartTime,
-              //         ),
-              //       ],
-              //     ),
-              //     Column(
-              //       children: [
-              //
-              //         _buildTextField(
-              //           fieldKey: "EndTime",
-              //           controller: endController,
-              //           hintText: 'EndTime',
-              //           keyboardType: TextInputType.text,
-              //           validator: _validateEndTime,
-              //         ),
-              //       ],
-              //     ),
-              //   ],
-              // ),
-
               buildFormLabel("Select the categories"),
               _buildTextField(
                 fieldKey: "category",
@@ -513,6 +492,73 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
           ),
           onChanged: (value) =>
               _validateAndSetError(fieldKey, value, validator),
+        ),
+        Visibility(
+          visible: validationErrors
+              .containsKey(fieldKey), // Only show if an error exists
+          child: Container(
+            alignment: Alignment.topLeft,
+            child: ShakeWidget(
+              key: Key(fieldKey),
+              duration: const Duration(milliseconds: 700),
+              child: Text(
+                validationErrors[fieldKey] ?? "",
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 12,
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTextField1({
+    required String fieldKey,
+    required TextEditingController controller,
+    required String hintText,
+    required TextInputType keyboardType,
+    required String? Function(String) validator, // ✅ Allow nullable return type
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 50,
+          child: TextFormField(
+            controller: controller,
+            cursorColor: Colors.black,
+            keyboardType: keyboardType,
+            style: TextStyle(
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w500,
+                fontSize: 15),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(
+                fontSize: 14,
+                color: Color(0xffAFAFAF),
+              ),
+              filled: true,
+              fillColor: const Color(0xffffffff),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide:
+                    const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide:
+                    const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+              ),
+            ),
+            onChanged: (value) =>
+                _validateAndSetError(fieldKey, value, validator),
+          ),
         ),
         Visibility(
           visible: validationErrors
