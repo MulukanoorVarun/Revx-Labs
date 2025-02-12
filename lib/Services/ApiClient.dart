@@ -5,7 +5,7 @@ import 'AuthService.dart';
 class ApiClient {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: "http://192.168.0.20:8080",
+      baseUrl: "http://192.168.0.20:8080/",
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
@@ -102,6 +102,7 @@ class ApiClient {
 
   static Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {
+      print("called get method");
       return await _dio.get(path, queryParameters: queryParameters);
     } catch (e) {
       return _handleError(e);

@@ -1,14 +1,14 @@
 class CategoryModel {
-  List<Data>? data;
+  List<CategoriesList>? category;
   Settings? settings;
 
-  CategoryModel({this.data, this.settings});
+  CategoryModel({this.category, this.settings});
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      category = <CategoriesList>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        category!.add(new CategoriesList.fromJson(v));
       });
     }
     settings = json['settings'] != null
@@ -18,8 +18,8 @@ class CategoryModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    if (this.category != null) {
+      data['data'] = this.category!.map((v) => v.toJson()).toList();
     }
     if (this.settings != null) {
       data['settings'] = this.settings!.toJson();
@@ -28,14 +28,14 @@ class CategoryModel {
   }
 }
 
-class Data {
+class CategoriesList {
   String? id;
   String? categoryName;
   String? image;
 
-  Data({this.id, this.categoryName, this.image});
+  CategoriesList({this.id, this.categoryName, this.image});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CategoriesList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     categoryName = json['category_name'];
     image = json['image'];

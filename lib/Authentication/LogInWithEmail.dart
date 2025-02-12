@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Components/ShakeWidget.dart';
 import 'package:revxpharma/Patient/screens/Dashboard.dart';
+import 'package:revxpharma/Services/AuthService.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
 
@@ -83,6 +84,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
             PreferenceService().saveString('refresh_token', refreshToken);
             PreferenceService().saveInt('expiry_time', expiryTime);
 
+            AuthService.saveTokens(accessToken, refreshToken, expiryTime);
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Dashboard()));
           } else {

@@ -29,7 +29,7 @@ class UserApi {
       });
 
       Response response = await ApiClient.post(
-        '/auth/patient-register',
+        'auth/patient-register',
         data: formData,
       );
 
@@ -44,7 +44,7 @@ class UserApi {
     try {
       Map<String, String> data = {"email": email, "password": pw};
 
-      Response response = await ApiClient.post('/auth/login', data: data);
+      Response response = await ApiClient.post('auth/login', data: data);
 
       return response;
     } catch (e) {
@@ -55,10 +55,12 @@ class UserApi {
 
   static Future<CategoryModel?> categoryapi() async {
     try {
+      print('categoryapi calling');
       Response response = await ApiClient.get('api/categories');
+      print("response:${response}");
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.data);
-        print('categoryapi:${jsonResponse}');
+        print('categoryapi :${jsonResponse}');
         return CategoryModel.fromJson(jsonResponse);
       } else {
         return null;

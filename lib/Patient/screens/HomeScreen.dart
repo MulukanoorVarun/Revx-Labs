@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import 'package:revxpharma/Services/UserapiServices.dart';
 import 'DiagnosticInformation.dart';
 import 'Diagnosticcenter.dart';
 import 'Pregnancy.dart';
@@ -22,6 +25,27 @@ class _HomescreenState extends State<Homescreen> {
     'assets/image.png',
     'assets/image.png',
   ];
+  @override
+  void initState() {
+    getCategories();
+    super.initState();
+  }
+
+  List<CategoriesList> categorys = [];
+
+  Future<void> getCategories() async {
+    var res = await UserApi.categoryapi();
+    if (res?.category != null) {
+      print('hiis');
+      setState(() {
+        if (res?.settings?.success == 1) {
+          print('hii');
+          categorys = res?.category??[];
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -193,9 +217,8 @@ class _HomescreenState extends State<Homescreen> {
                         color: Color(0xff27BDBE),
                         fontFamily: "Poppins"),
                   ),
-
                   InkResponse(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -220,11 +243,12 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(height: 8),
 
             InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => alltests(), // Adjust the index as needed
+                    builder: (context) =>
+                        alltests(), // Adjust the index as needed
                   ),
                 );
               },
@@ -251,7 +275,8 @@ class _HomescreenState extends State<Homescreen> {
                       height: 20,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Color(0xff27BDBE)),
@@ -330,25 +355,39 @@ class _HomescreenState extends State<Homescreen> {
 
     switch (label) {
       case 'Pregnancy':
-        detailScreen = Pregnancy(title: "Pregnancy",);
+        detailScreen = Pregnancy(
+          title: "Pregnancy",
+        );
         break;
       case 'Lungs':
-        detailScreen = Pregnancy(title: "Lungs",);
+        detailScreen = Pregnancy(
+          title: "Lungs",
+        );
         break;
       case 'MRI Scan':
-        detailScreen =  Pregnancy(title: "MRI Scan",);
+        detailScreen = Pregnancy(
+          title: "MRI Scan",
+        );
         break;
       case 'Health':
-        detailScreen =  Pregnancy(title: "Health",);
+        detailScreen = Pregnancy(
+          title: "Health",
+        );
         break;
       case 'Heart':
-        detailScreen =  Pregnancy(title: "Heart",);
+        detailScreen = Pregnancy(
+          title: "Heart",
+        );
         break;
       case 'Kidney':
-        detailScreen =  Pregnancy(title: "Kidney",);
+        detailScreen = Pregnancy(
+          title: "Kidney",
+        );
         break;
       case 'Blood Test':
-        detailScreen =  Pregnancy(title: "Blood Test",);
+        detailScreen = Pregnancy(
+          title: "Blood Test",
+        );
         break;
       case 'More':
         detailScreen = ServiceCategory(); // Define this screen
@@ -365,8 +404,6 @@ class _HomescreenState extends State<Homescreen> {
       MaterialPageRoute(builder: (context) => detailScreen),
     );
   }
-
-
 
   Widget _buildCategoryItem(String image, String label) {
     return Column(
@@ -424,7 +461,7 @@ class _HomescreenState extends State<Homescreen> {
     return Column(
       children: [
         InkResponse(
-          onTap: (){
+          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
