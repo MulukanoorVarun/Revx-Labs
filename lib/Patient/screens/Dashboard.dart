@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,9 +40,9 @@ class _DashboardState extends State<Dashboard> {
         return false;
       },
       child: Scaffold(
-        body:BlocListener<InternetStatusBloc, InternetStatusState>(
+        body: BlocListener<InternetStatusBloc, InternetStatusState>(
           listener: (context, state) {
-          if (state is InternetStatusLostState) {
+            if (state is InternetStatusLostState) {
               Future.microtask(() {
                 Navigator.push(
                   context,
@@ -52,21 +51,21 @@ class _DashboardState extends State<Dashboard> {
               });
             }
           },
-        child:PageView(
-          onPageChanged: (value) {
-            HapticFeedback.lightImpact();
-          },
-          controller: pageController,
-          children: [
-            Homescreen(),
-            ServiceCategory(),
-            ChatSupport(),
-            Notifications(),
-            Profile()
-          ],
-          physics: const NeverScrollableScrollPhysics(),
+          child: PageView(
+            onPageChanged: (value) {
+              HapticFeedback.lightImpact();
+            },
+            controller: pageController,
+            children: [
+              Homescreen(),
+              ServiceCategory(),
+              ChatSupport(),
+              Notifications(),
+              Profile()
+            ],
+            physics: const NeverScrollableScrollPhysics(),
+          ),
         ),
-    ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -99,8 +98,16 @@ class _DashboardState extends State<Dashboard> {
                   icon: Column(
                     children: [
                       _selectedIndex == 0
-                          ? Image.asset("assets/activehome.png",width: 25,height: 25,)
-                          : Image.asset("assets/home.png",width: 25,height: 25,)
+                          ? Image.asset(
+                              "assets/activehome.png",
+                              width: 25,
+                              height: 25,
+                            )
+                          : Image.asset(
+                              "assets/home.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -108,8 +115,16 @@ class _DashboardState extends State<Dashboard> {
                   icon: Column(
                     children: [
                       _selectedIndex == 1
-                          ? Image.asset("assets/activeservicecatogry.png",width: 25,height: 25,)
-                          : Image.asset("assets/servicecatagory.png",width: 25,height: 25,)
+                          ? Image.asset(
+                              "assets/activeservicecatogry.png",
+                              width: 25,
+                              height: 25,
+                            )
+                          : Image.asset(
+                              "assets/servicecatagory.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -117,8 +132,16 @@ class _DashboardState extends State<Dashboard> {
                   icon: Column(
                     children: [
                       _selectedIndex == 2
-                          ? Image.asset("assets/activechat.png",width: 25,height: 25,)
-                          : Image.asset("assets/chat.png",width: 25,height: 25,)
+                          ? Image.asset(
+                              "assets/activechat.png",
+                              width: 25,
+                              height: 25,
+                            )
+                          : Image.asset(
+                              "assets/chat.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -126,8 +149,16 @@ class _DashboardState extends State<Dashboard> {
                   icon: Column(
                     children: [
                       _selectedIndex == 3
-                          ? Image.asset("assets/activenotification.png",width: 25,height: 25,)
-                          : Image.asset("assets/notification.png",width: 25,height: 25,)
+                          ? Image.asset(
+                              "assets/activenotification.png",
+                              width: 25,
+                              height: 25,
+                            )
+                          : Image.asset(
+                              "assets/notification.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -135,8 +166,16 @@ class _DashboardState extends State<Dashboard> {
                   icon: Column(
                     children: [
                       _selectedIndex == 4
-                          ? Image.asset("assets/activeprofile.png",width: 25,height: 25,)
-                          : Image.asset("assets/profile.png",width: 25,height: 25,)
+                          ? Image.asset(
+                              "assets/activeprofile.png",
+                              width: 25,
+                              height: 25,
+                            )
+                          : Image.asset(
+                              "assets/profile.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
             ],

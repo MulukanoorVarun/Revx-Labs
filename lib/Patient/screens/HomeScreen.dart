@@ -2,11 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterModel.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
+import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
 import 'Diagnosticcenter.dart';
 import 'Pregnancy.dart';
@@ -24,49 +26,8 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-    getCategories();
-    getBanners();
-    getDiognosticCenter();
+    context.read<HomeCubit>().fetchHomeData(); // ✅ Fetch data when screen starts
     super.initState();
-  }
-
-  List<Banners> imgList = [];
-
-  Future<void> getBanners() async {
-    print('hii');
-    var res = await UserApi.banners();
-    if (res?.settings?.success == 1) {
-      setState(() {
-        imgList = res?.data ?? [];
-      });
-    } else {}
-  }
-
-  List<CategoriesList> categorys = [];
-
-  Future<void> getCategories() async {
-    var res = await UserApi.categoryapi();
-    if (res?.category != null) {
-      setState(() {
-        if (res?.settings?.success == 1) {
-          print('hii');
-          categorys = res?.category ?? [];
-        }
-      });
-    }
-  }
-
-  List<Diognostic> diognosticCenter = [];
-
-  Future<void> getDiognosticCenter() async {
-    var res = await UserApi.diognosticCenter();
-    if (res?.data != null) {
-      setState(() {
-        if (res?.settings?.success == 1) {
-          diognosticCenter = res?.data ?? [];
-        } else {}
-      });
-    } else {}
   }
 
   @override
@@ -129,126 +90,92 @@ class _HomescreenState extends State<Homescreen> {
           SizedBox(width: 16),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(height: 16),
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search Diagnostics',
-                  hintStyle: TextStyle(
-                      fontWeight: FontWeight.w500, fontFamily: "Poppins"),
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
+      body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+        if (state is HomeLoading) {
+          return Center(child: CircularProgressIndicator()); // 🔄 Show loading
+        } else if (state is HomeLoaded) {
+          return SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                // Search Bar
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search Diagnostics',
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w500, fontFamily: "Poppins"),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 16),
-            CarouselSlider(
-              options: CarouselOptions(
-                aspectRatio: 1.0,
-                height: screenHeight * 0.25,
-                enlargeCenterPage: true,
-                scrollDirection: Axis.horizontal,
-                autoPlay: true,
-                viewportFraction: 0.9,
-                pauseAutoPlayOnTouch: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-              ),
-              items: imgList.map((item) {
-                return InkWell(
-                  onTap: () async {},
-                  child: Builder(
-                    builder: (BuildContext context) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                        child: Image.network(
-                          item.image ?? "",
-                          fit: BoxFit.contain,
-                        ),
-                      );
+                SizedBox(height: 16),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.0,
+                    height: screenHeight * 0.25,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    autoPlay: true,
+                    viewportFraction: 0.9,
+                    pauseAutoPlayOnTouch: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        currentIndex = index;
+                      });
                     },
                   ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.asMap().entries.map((entry) {
-                bool isActive = currentIndex == entry.key;
-                return Container(
-                  width: isActive ? 17.0 : 7.0,
-                  height: 7.0,
-                  margin: EdgeInsets.symmetric(horizontal: 3.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isActive ? Color(0xFF00A3FF) : Color(0xFFC9EAF2),
-                  ),
-                );
-              }).toList(),
-            ),
-
-            SizedBox(height: 8),
-            // Categories
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Categories',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff27BDBE),
-                      fontFamily: "Poppins"),
+                  items: state.banners.data?.map((item) {
+                    return InkWell(
+                      onTap: () async {},
+                      child: Builder(
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: screenHeight * 0.02),
+                            child: Image.network(
+                              item.image ?? "",
+                              fit: BoxFit.contain,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ),
-            ),
-            SizedBox(height: 8),
-            // Ensure the grid fits within the scrollable area
-            _buildCategoryGrid(),
+                SizedBox(height: screenHeight * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:state.banners.data!.asMap().entries.map((entry) {
+                    bool isActive = currentIndex == entry.key;
+                    return Container(
+                      width: isActive ? 17.0 : 7.0,
+                      height: 7.0,
+                      margin: EdgeInsets.symmetric(horizontal: 3.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isActive ? Color(0xFF00A3FF) : Color(0xFFC9EAF2),
+                      ),
+                    );
+                  }).toList(),
+                ),
 
-            SizedBox(height: 20),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Diagnostic Centres',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff27BDBE),
-                        fontFamily: "Poppins"),
-                  ),
-                  InkResponse(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Diagnosticcenter(),
-                        ),
-                      );
-                    },
+                SizedBox(height: 8),
+                // Categories
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
                     child: Text(
-                      'See All',
+                      'Categories',
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -256,159 +183,203 @@ class _HomescreenState extends State<Homescreen> {
                           fontFamily: "Poppins"),
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 8),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GridView.builder(physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                ),
+                SizedBox(height: 8),
+                // Ensure the grid fits within the scrollable area
+                GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 5,
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.7,
+                    mainAxisSpacing: 10,
                   ),
-                  itemCount: diognosticCenter.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: state.categories.category?.length,
+                  // Number of category items
                   itemBuilder: (context, index) {
-                    final dignosticCenter = diognosticCenter[index];
-                    var w = MediaQuery.of(context).size.width;
-                    return Column(
-                      children: [
-                        InkResponse(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DiagnosticInformation(diognosticId: dignosticCenter.id??'',),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: w * 0.435,
-                            height: w * 0.4,
-                            padding: EdgeInsets.only(left: 15, right: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  color: Color(0xff27BDBE), width: 1),
-                              // Adjusted size to fit the circle
-                            ),
-                            child: Image.network(
-                              dignosticCenter.image ?? '',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                      ],
+                    final category = state.categories.category?[index];
+
+                    print(
+                        'Category ID: ${category?.id}, Category Name: ${category?.categoryName}');
+
+                    return InkWell(
+                      onTap: () {
+                        _handleCategoryTap(
+                            context, category?.categoryName ?? '');
+                      },
+                      child: _buildCategoryItem(
+                          category?.image ?? '',
+                          category?.categoryName ??
+                              ''), // No need for null check
                     );
                   },
-                )),
-            SizedBox(height: 8),
-
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        alltests(), // Adjust the index as needed
-                  ),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 22),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Color(0xff27BDBE), width: 1),
-                  // Adjusted size to fit the circle
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      "want to compare all labs?",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Diagnostic Centres',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff27BDBE),
+                            fontFamily: "Poppins"),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xff27BDBE)),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Explore Lab Tests",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
+                      InkResponse(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Diagnosticcenter(),
                             ),
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Image.asset(
-                            "assets/explore.png",
-                            width: 22,
-                            height: 22,
-                          )
-                        ],
+                          );
+                        },
+                        child: Text(
+                          'See All',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff27BDBE),
+                              fontFamily: "Poppins"),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 100,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
-        ),
-      ),
+                SizedBox(height: 8),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 5,
+                      ),
+                      itemCount: state.diagnosticCenters.data?.length,
+                      itemBuilder: (context, index) {
+                        final dignosticCenter =  state.diagnosticCenters.data?[index];
+                        var w = MediaQuery.of(context).size.width;
+                        return Column(
+                          children: [
+                            InkResponse(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DiagnosticInformation(
+                                      diognosticId: dignosticCenter?.id ?? '',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: w * 0.435,
+                                height: w * 0.4,
+                                padding: EdgeInsets.only(left: 15, right: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Color(0xff27BDBE), width: 1),
+                                  // Adjusted size to fit the circle
+                                ),
+                                child: Image.network(
+                                  dignosticCenter?.image ?? '',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                          ],
+                        );
+                      },
+                    )),
+                SizedBox(height: 8),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            alltests(), // Adjust the index as needed
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 22),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Color(0xff27BDBE), width: 1),
+                      // Adjusted size to fit the circle
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "want to compare all labs?",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xff27BDBE)),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Explore Lab Tests",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Image.asset(
+                                "assets/explore.png",
+                                width: 22,
+                                height: 22,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 100,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        } else if (state is HomeError) {
+          return Center(child: Text(state.message));
+        }
+        return Center(child: Text("No Data"));
+      }),
     );
   }
 
-  Widget _buildCategoryGrid() {
-    return GridView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 10,
-        childAspectRatio: 0.7,
-        mainAxisSpacing: 10,
-      ),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: categorys.length,
-      // Number of category items
-      itemBuilder: (context, index) {
-        final category = categorys[index];
-
-        print(
-            'Category ID: ${category.id}, Category Name: ${category.categoryName}');
-
-        return InkWell(
-          onTap: () {
-            _handleCategoryTap(context, category.categoryName ?? '');
-          },
-          child: _buildCategoryItem(category.image ?? '',
-              category.categoryName ?? ''), // No need for null check
-        );
-      },
-    );
-  }
 
   void _handleCategoryTap(BuildContext context, String label) {
     Widget detailScreen;
