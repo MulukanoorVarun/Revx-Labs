@@ -1,14 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
-import 'package:revxpharma/Models/CategoryModel.dart';
-import 'package:revxpharma/Models/BannersModel.dart';
-import 'package:revxpharma/Models/DiognisticCenterModel.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
-import 'package:revxpharma/Services/UserapiServices.dart';
 import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
 import 'Diagnosticcenter.dart';
