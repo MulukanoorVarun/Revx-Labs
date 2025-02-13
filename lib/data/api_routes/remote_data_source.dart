@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
+import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
 import 'package:revxpharma/data/api_routes/patient_remote_url.dart';
 
@@ -10,6 +11,7 @@ abstract class RemoteDataSource {
   Future<CategoryModel?> fetchCategories();
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters();
+  Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -54,4 +56,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     }
   }
+
+  @override
+  Future<DiognisticDetailModel?> fetchDiagnosticDetails(id) async {
+    try {
+      Response response = await ApiClient.get("${PatientRemoteUrls.diagnosticDetail}/$id");
+      if (response.statusCode == 200) {
+        return DiognisticDetailModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error fetching diagnostic details: $e");
+      return null;
+    }
+  }
+
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
@@ -18,97 +19,6 @@ class _ServiceCategoryState extends State<ServiceCategory> {
   void initState() {
     context.read<CategoryCubit>().fetchCategories();
     super.initState();
-  }
-
-  void _navigateToDetailScreen(BuildContext context, String name) {
-    Widget detailScreen;
-
-    switch (name) {
-      case 'Pregnancy':
-        detailScreen = Pregnancy(title: "Pregnancy");
-        break;
-      case 'MRI Scan':
-        detailScreen = Pregnancy(
-          title: "MRI Scan",
-        );
-        break;
-      case 'CBC':
-        detailScreen = Pregnancy(
-          title: "CBC",
-        );
-        break;
-      case 'Allergy':
-        detailScreen = Pregnancy(
-          title: "Allergy",
-        );
-        break;
-      case 'Bone':
-        detailScreen = Pregnancy(
-          title: "Bone",
-        );
-        break;
-      case 'Health':
-        detailScreen = Pregnancy(
-          title: "Health",
-        );
-        break;
-      case 'Covid':
-        detailScreen = Pregnancy(
-          title: "Covid",
-        );
-        break;
-      case 'Immunity':
-        detailScreen = Pregnancy(
-          title: "Immunity",
-        );
-        break;
-      case 'Infertility':
-        detailScreen = Pregnancy(
-          title: "Infertility",
-        );
-        break;
-      case 'Women Health':
-        detailScreen = Pregnancy(
-          title: "Women Health",
-        );
-        break;
-      case 'Full Body check up':
-        detailScreen = Pregnancy(
-          title: "Full Body check up",
-        );
-        break;
-      case 'Thyroid':
-        detailScreen = Pregnancy(
-          title: "Thyroid",
-        );
-        break;
-      case 'Lungs':
-        detailScreen = Pregnancy(
-          title: "Lungs",
-        );
-        break;
-      case 'Heart':
-        detailScreen = Pregnancy(
-          title: "Heart",
-        );
-        break;
-      case 'Kidney':
-        detailScreen = Pregnancy(
-          title: "Kidney",
-        );
-        break;
-
-      default:
-        detailScreen = Scaffold(
-          appBar: AppBar(title: Text('Details')),
-          body: Center(child: Text('No details available')),
-        );
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => detailScreen),
-    );
   }
 
   @override
@@ -133,9 +43,10 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff24AEB1)),
       ),
-      body: BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
+      body:
+          BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {
-          return Center(child: CircularProgressIndicator()); // 🔄 Show
+          return _shimmer(context); // 🔄 Show
         } else if (state is CategoryLoaded) {
           return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -144,15 +55,20 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                   crossAxisCount: 3, // Number of columns
                   childAspectRatio: 0.8, // Aspect ratio for items
                 ),
-                itemCount: state.categories.category?.length, // Total number of items
+                itemCount:
+                    state.categories.category?.length, // Total number of items
                 itemBuilder: (context, index) {
-                  final item = state.categories.category?[index]; // Get the map for the current index
+                  final item = state.categories
+                      .category?[index]; // Get the map for the current index
                   return Column(
                     children: [
                       InkResponse(
                         onTap: () {
-                          _navigateToDetailScreen(
-                              context, item?.categoryName ?? "");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Pregnancy(
+                                      title: item?.categoryName ?? '')));
                         },
                         child: Container(
                           width: 100,
@@ -195,11 +111,58 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                   );
                 },
               ));
-        }else if (state is CategoryError) {
+        } else if (state is CategoryError) {
           return Center(child: Text(state.message));
         }
         return Center(child: Text("No Data"));
       }),
     );
   }
+}
+
+Widget _shimmer(BuildContext context) {
+  double w = MediaQuery.of(context).size.width;
+  double h = MediaQuery.of(context).size.height;
+  return Column(
+    children: [
+      Expanded(
+        child: ListView.builder(
+          itemCount: 1,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 0.75,
+                      mainAxisSpacing: 5,
+                    ),
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 8,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          shimmerContainer(72, 72, context),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          shimmerText(60, 12, context)
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+  );
 }

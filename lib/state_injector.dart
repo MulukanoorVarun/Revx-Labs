@@ -2,10 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/home/home_cubit.dart';
+import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
 import 'package:revxpharma/Patient/logic/repository/banners_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
-import 'package:revxpharma/Patient/screens/HomeScreen.dart';
 import 'Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'Patient/logic/repository/category_repository.dart';
 import 'data/api_routes/remote_data_source.dart';
@@ -28,6 +29,10 @@ class StateInjector {
 
     RepositoryProvider<DiagnosticCenterRepository>(
       create: (context) => DiagnosticCenterRepositoryImpl(remoteDataSource: context.read(),),
+    ),
+
+    RepositoryProvider<DiagnosticDetailsRepository>(
+      create: (context) => DiagnosticDetailsRepositoryImpl(remoteDataSource: context.read(),),
     ),
   ];
 
@@ -53,6 +58,12 @@ class StateInjector {
       ),
     ),
 
+    BlocProvider<DiagnostocDetailCubit>(
+      create: (context) => DiagnostocDetailCubit(
+        context.read<DiagnosticDetailsRepository>(),
+      ),
+    ),
+
     BlocProvider<HomeCubit>(
       create: (context) => HomeCubit(
         categoryRepository: context.read<CategoryRepository>(),
@@ -60,5 +71,7 @@ class StateInjector {
         diagnosticCentersRepository: context.read<DiagnosticCenterRepository>(),
       ),
     ),
+
+
   ];
 }

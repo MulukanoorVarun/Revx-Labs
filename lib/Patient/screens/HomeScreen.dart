@@ -195,13 +195,13 @@ class _HomescreenState extends State<Homescreen> {
                   // Number of category items
                   itemBuilder: (context, index) {
                     final category = state.categories.category?[index];
-                    print(
-                        'Category ID: ${category?.id}, Category Name: ${category?.categoryName}');
-
                     return InkWell(
                       onTap: () {
-                        _handleCategoryTap(
-                            context, category?.categoryName ?? '');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Pregnancy(
+                                    title: category?.categoryName ?? '')));
                       },
                       child: _buildCategoryItem(
                           category?.image ?? '',
@@ -375,61 +375,6 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  void _handleCategoryTap(BuildContext context, String label) {
-    Widget detailScreen;
-
-    switch (label) {
-      case 'Pregnancy':
-        detailScreen = Pregnancy(
-          title: "Pregnancy",
-        );
-        break;
-      case 'Lungs':
-        detailScreen = Pregnancy(
-          title: "Lungs",
-        );
-        break;
-      case 'MRI Scan':
-        detailScreen = Pregnancy(
-          title: "MRI Scan",
-        );
-        break;
-      case 'Health':
-        detailScreen = Pregnancy(
-          title: "Health",
-        );
-        break;
-      case 'Heart':
-        detailScreen = Pregnancy(
-          title: "Heart",
-        );
-        break;
-      case 'Kidney':
-        detailScreen = Pregnancy(
-          title: "Kidney",
-        );
-        break;
-      case 'Blood Test':
-        detailScreen = Pregnancy(
-          title: "Blood Test",
-        );
-        break;
-      case 'More':
-        detailScreen = ServiceCategory(); // Define this screen
-        break;
-      default:
-        detailScreen = Scaffold(
-          appBar: AppBar(title: Text('Unknown')),
-          body: Center(child: Text('No details available')),
-        );
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => detailScreen),
-    );
-  }
-
   Widget _buildCategoryItem(String image, String label) {
     return Column(
       children: [
@@ -459,6 +404,7 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 }
+
 Widget _shimmer(BuildContext context) {
   double w = MediaQuery.of(context).size.width;
   double h = MediaQuery.of(context).size.height;
@@ -544,7 +490,6 @@ Widget _shimmer(BuildContext context) {
                           ),
                           shimmerText(60, 12, context)
                         ],
-
                       );
                     },
                   ),
@@ -586,4 +531,3 @@ Widget _shimmer(BuildContext context) {
     ],
   );
 }
-
