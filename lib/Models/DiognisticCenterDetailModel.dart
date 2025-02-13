@@ -1,11 +1,11 @@
-class DiognisticCenterDetailModel {
-  DiognisticCenterDetail? details;
+class DiognisticDetailModel {
+  Diognostic_details? diognostic_details;
   Settings? settings;
 
-  DiognisticCenterDetailModel({this.details, this.settings});
+  DiognisticDetailModel({this.diognostic_details, this.settings});
 
-  DiognisticCenterDetailModel.fromJson(Map<String, dynamic> json) {
-    details = json['data'] != null ? new DiognisticCenterDetail.fromJson(json['data']) : null;
+  DiognisticDetailModel.fromJson(Map<String, dynamic> json) {
+    diognostic_details = json['data'] != null ? new Diognostic_details.fromJson(json['data']) : null;
     settings = json['settings'] != null
         ? new Settings.fromJson(json['settings'])
         : null;
@@ -13,8 +13,8 @@ class DiognisticCenterDetailModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.details != null) {
-      data['data'] = this.details!.toJson();
+    if (this.diognostic_details != null) {
+      data['data'] = this.diognostic_details!.toJson();
     }
     if (this.settings != null) {
       data['settings'] = this.settings!.toJson();
@@ -23,7 +23,7 @@ class DiognisticCenterDetailModel {
   }
 }
 
-class DiognisticCenterDetail {
+class Diognostic_details {
   String? id;
   String? image;
   String? name;
@@ -36,7 +36,7 @@ class DiognisticCenterDetail {
   String? contactMobile;
   String? registrationNumber;
 
-  DiognisticCenterDetail(
+  Diognostic_details(
       {this.id,
         this.image,
         this.name,
@@ -49,7 +49,7 @@ class DiognisticCenterDetail {
         this.contactMobile,
         this.registrationNumber});
 
-  DiognisticCenterDetail.fromJson(Map<String, dynamic> json) {
+  Diognostic_details.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     name = json['name'];

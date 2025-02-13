@@ -5,6 +5,8 @@ import 'package:revxpharma/Services/UserapiServices.dart';
 import 'ScheduleAppointment.dart';
 
 class DiagnosticInformation extends StatefulWidget {
+  String diognosticId;
+  DiagnosticInformation({required this.diognosticId});
   @override
   State<DiagnosticInformation> createState() => _DiagnosticInformationState();
 }
@@ -15,9 +17,10 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
     getDignosticDetails();
     super.initState();
   }
+  Diognostic_details diognostic_details=Diognostic_details();
 
   Future<void> getDignosticDetails() async {
-    var res = UserApi.diognosticCenterDetails();
+    var res = UserApi.diognosticCenterDetails(widget.diognosticId);
   }
 
   @override

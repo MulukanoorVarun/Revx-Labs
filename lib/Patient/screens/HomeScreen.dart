@@ -280,7 +280,7 @@ class _HomescreenState extends State<Homescreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DiagnosticInformation(),
+                                builder: (context) => DiagnosticInformation(diognosticId: dignosticCenter.id??'',),
                               ),
                             );
                           },

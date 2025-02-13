@@ -105,12 +105,12 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                   // Each card in the grid
                   return InkWell(
                     onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DiagnosticInformation(), // Adjust the index as needed
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                        // MaterialPageRoute(
+                          // builder: (context) => DiagnosticInformation(diognosticId: ,), // Adjust the index as needed
+                        // ),
+                      // );
                     },
                     child: Container(
                       decoration: BoxDecoration(

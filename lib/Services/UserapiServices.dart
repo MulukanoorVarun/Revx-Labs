@@ -105,13 +105,14 @@ class UserApi {
     }
   }
 
-  static Future<DiognisticCenterDetailModel?> diognosticCenterDetails() async {
+  static Future<DiognisticDetailModel?> diognosticCenterDetails(String diagnosticId) async {
     try {
-      Response response = await ApiClient.get('api/diagnostic-centre-detail');
+      Response response = await ApiClient.get('api/diagnostic-centre-detail/${diagnosticId}');
+      print('response:${response}');
       if (response.statusCode == 200) {
         final jsonResponse = response.data;
         print('diognosticCenterDetails :${jsonResponse}');
-        return DiognisticCenterDetailModel.fromJson(jsonResponse);
+        return DiognisticDetailModel.fromJson(jsonResponse);
       } else {
         return null;
       }
