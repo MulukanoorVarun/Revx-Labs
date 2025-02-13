@@ -10,7 +10,7 @@ abstract class HomeState extends Equatable {
 
 class HomeInitial extends HomeState {}
 
-class HomeLoading extends HomeState {} // 🔄 Shows a loading state until all data is fetched
+class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final CategoryModel categories;

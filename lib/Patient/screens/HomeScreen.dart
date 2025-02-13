@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterModel.dart';
@@ -465,3 +466,130 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 }
+Widget _shimmer(BuildContext context) {
+  double w = MediaQuery.of(context).size.width;
+  double h = MediaQuery.of(context).size.height;
+  return Column(
+    children: [
+      Expanded(
+        child: ListView.builder(
+          itemCount: 1,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      shimmerText(120, 12, context),
+                      shimmerCircle(35, context),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      shimmerCircle(25, context),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      shimmerText(120, 12, context),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  shimmerContainer(w, 30, context),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  shimmerContainer(w, 180, context),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      shimmerCircle(12, context),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      shimmerCircle(12, context),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      shimmerCircle(12, context),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  shimmerText(160, 16, context),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 0.9,
+                      mainAxisSpacing: 10,
+                    ),
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 8,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          shimmerContainer(72, 72, context),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          shimmerText(70, 12, context)
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  shimmerText(160, 16, context),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 1.1,
+                      mainAxisSpacing: 10,
+                    ),
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          shimmerContainer(150, 140, context),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          shimmerText(70, 12, context)
+                        ],
+                      );
+                    },
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+  );
+}
+

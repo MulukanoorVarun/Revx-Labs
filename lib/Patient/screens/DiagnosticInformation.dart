@@ -69,38 +69,38 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        toolbarHeight: 120,
-        leading: Container(),
-        leadingWidth: 0,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.arrow_back_ios_sharp)),
-            Image.network(
-                diognosticdetails?.image??'',
-           fit: BoxFit.contain,
-              width: double.infinity,
-              height: 80,
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: Color(0xff24AEB1),
             ),
-          ],
-        ),
-      ),
-      backgroundColor: Color(0xffffffff),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Color(0xff24AEB1),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+              toolbarHeight: 120,
+              leading: Container(),
+              leadingWidth: 0,
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back_ios_sharp)),
+                  Image.network(
+                    diognosticdetails?.image ?? '',
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: 80,
+                  ),
+                ],
               ),
-            )
-          : SingleChildScrollView(
+            ),
+            backgroundColor: Color(0xffffffff),
+            body: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 20),
                 child: Column(
@@ -108,6 +108,8 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                   children: [
                     // First row: Image + Text
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.network(
                           diognosticdetails?.image ?? '',
@@ -115,12 +117,16 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           width: 24,
                         ),
                         SizedBox(width: 10),
-                        Text(
-                          diognosticdetails?.name ?? '',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins"),
+                        Expanded(
+                          child: Text(
+                            maxLines: 2,
+                            textAlign: TextAlign.start,
+                            diognosticdetails?.name ?? '',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins"),
+                          ),
                         )
                       ],
                     ),
@@ -233,7 +239,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                               children: [
                                 Icon(Icons.person),
                                 Text(
-                                  diognosticdetails?.contactPerson??'',
+                                  diognosticdetails?.contactPerson ?? '',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -261,7 +267,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                               children: [
                                 Icon(Icons.call),
                                 Text(
-                                  diognosticdetails?.contactMobile??'',
+                                  diognosticdetails?.contactMobile ?? '',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -395,6 +401,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                 ),
               ),
             ),
-    );
+          );
   }
 }
