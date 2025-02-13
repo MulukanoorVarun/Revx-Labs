@@ -103,18 +103,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _loading = true;
       _validateuserName =
-          _userName.text.isEmpty ? 'Please enter a fullName' : '';
+      _userName.text.isEmpty ? 'Please enter a fullName' : '';
       _validatephoneNumber =
-          _phoneNumber.text.isEmpty ? 'Please enter a phone number' : '';
+      _phoneNumber.text.isEmpty ? 'Please enter a phone number' : '';
       _validateEmail =
-          !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-                  .hasMatch(_email.text)
-              ? 'Please enter a valid email'
-              : '';
+      !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+          .hasMatch(_email.text)
+          ? 'Please enter a valid email'
+          : '';
       _validatepwd = _password.text.isEmpty
           ? 'Please enter a password'
           : _password.text.length < 8
-              ? 'Password must be at least 8 characters long':"";
+          ? 'Password must be at least 8 characters long':"";
       _validategender = _gender.text.isEmpty ? 'Please enter a gender' : '';
       _validatedob = _dob.text.isEmpty ? 'Please select a dob' : '';
       _validateage = _age.text.isEmpty ? 'Please enter a age' : '';
@@ -150,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               context, MaterialPageRoute(builder: (context) => LogInWithEmail()));
         } else {
           _loading = false;
-        CustomSnackBar.show(context, (response.data['settings']['message']));
+          CustomSnackBar.show(context, (response.data['settings']['message']));
         }
       });
     } catch (e) {
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CircleAvatar(
                 radius: 40,
                 backgroundImage:
-                    AssetImage('assets/blueLogo.png'), // Add your image here
+                AssetImage('assets/blueLogo.png'), // Add your image here
               ),
               SizedBox(height: 20),
               Text(
@@ -271,12 +271,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: _loading
                       ? CircularProgressIndicator()
                       : Text(
-                          'Register',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
+                    'Register',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 20),

@@ -6,8 +6,6 @@ import 'package:revxpharma/Patient/screens/Dashboard.dart';
 import 'package:revxpharma/Services/AuthService.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
-
-import 'OtpVerify.dart';
 import '../Patient/screens/UserSelectionScreen.dart';
 
 class LogInWithEmail extends StatefulWidget {

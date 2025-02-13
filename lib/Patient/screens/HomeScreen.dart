@@ -31,7 +31,7 @@ class _HomescreenState extends State<Homescreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     return BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
       if (state is HomeLoading) {
-        return _shimmer(context); // 🔄 Show loading
+        return _shimmer(context);
       } else if (state is HomeLoaded) {
         return Scaffold(
           appBar: AppBar(
@@ -197,11 +197,8 @@ class _HomescreenState extends State<Homescreen> {
                     final category = state.categories.category?[index];
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Pregnancy(
-                                    title: category?.categoryName ?? '')));
+                        _handleCategoryTap(
+                            context, category?.categoryName ?? '');
                       },
                       child: _buildCategoryItem(
                           category?.image ?? '',
@@ -373,6 +370,61 @@ class _HomescreenState extends State<Homescreen> {
       }
       return Center(child: Text("No Data"));
     });
+  }
+
+  void _handleCategoryTap(BuildContext context, String label) {
+    Widget detailScreen;
+
+    switch (label) {
+      case 'Pregnancy':
+        detailScreen = Pregnancy(
+          title: "Pregnancy",
+        );
+        break;
+      case 'Lungs':
+        detailScreen = Pregnancy(
+          title: "Lungs",
+        );
+        break;
+      case 'MRI Scan':
+        detailScreen = Pregnancy(
+          title: "MRI Scan",
+        );
+        break;
+      case 'Health':
+        detailScreen = Pregnancy(
+          title: "Health",
+        );
+        break;
+      case 'Heart':
+        detailScreen = Pregnancy(
+          title: "Heart",
+        );
+        break;
+      case 'Kidney':
+        detailScreen = Pregnancy(
+          title: "Kidney",
+        );
+        break;
+      case 'Blood Test':
+        detailScreen = Pregnancy(
+          title: "Blood Test",
+        );
+        break;
+      case 'More':
+        detailScreen = ServiceCategory(); // Define this screen
+        break;
+      default:
+        detailScreen = Scaffold(
+          appBar: AppBar(title: Text('Unknown')),
+          body: Center(child: Text('No details available')),
+        );
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => detailScreen),
+    );
   }
 
   Widget _buildCategoryItem(String image, String label) {
