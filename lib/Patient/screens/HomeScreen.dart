@@ -17,7 +17,6 @@ import 'alltests.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
-
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
@@ -27,7 +26,7 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-    context.read<HomeCubit>().fetchHomeData(); // ✅ Fetch data when screen starts
+    context.read<HomeCubit>().fetchHomeData();
     super.initState();
   }
 
@@ -35,67 +34,67 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: Container(),
-        leadingWidth: 0,
-        toolbarHeight: 80,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 6.0),
-              child: Text(
-                "Hi, Sandeep",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w400),
-              ),
-            ),
-            SizedBox(
-              height: 6,
-            ),
-            Row(
+    return BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+      if (state is HomeLoading) {
+        return _shimmer(context); // 🔄 Show loading
+      } else if (state is HomeLoaded) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: Container(),
+            leadingWidth: 0,
+            toolbarHeight: 80,
+            title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.location_on,
-                  color: Colors.red,
-                  size: 25,
-                ),
-                SizedBox(width: 4), // Space between icon and text
-                Text(
-                  'Kondapur,Hyderabad',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Poppins",
-                    fontSize: 16,
+                Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Text(
+                    "Hi, Sandeep",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                      size: 25,
+                    ),
+                    SizedBox(width: 4), // Space between icon and text
+                    Text(
+                      'Kondapur,Hyderabad',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Poppins",
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ), // Space between text and icon
               ],
-            ), // Space between text and icon
-          ],
-        ),
-        actions: [
-          CircleAvatar(
-            foregroundImage: AssetImage(
-              'assets/person.png',
-            ), // Replace with actual image path
+            ),
+            actions: [
+              CircleAvatar(
+                foregroundImage: AssetImage(
+                  'assets/person.png',
+                ), // Replace with actual image path
+              ),
+              SizedBox(width: 16),
+            ],
           ),
-          SizedBox(width: 16),
-        ],
-      ),
-      body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-        if (state is HomeLoading) {
-          return Center(child: CircularProgressIndicator()); // 🔄 Show loading
-        } else if (state is HomeLoaded) {
-          return SingleChildScrollView(
+          body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
@@ -155,7 +154,7 @@ class _HomescreenState extends State<Homescreen> {
                 SizedBox(height: screenHeight * 0.02),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:state.banners.data!.asMap().entries.map((entry) {
+                  children: state.banners.data!.asMap().entries.map((entry) {
                     bool isActive = currentIndex == entry.key;
                     return Container(
                       width: isActive ? 17.0 : 7.0,
@@ -201,7 +200,6 @@ class _HomescreenState extends State<Homescreen> {
                   // Number of category items
                   itemBuilder: (context, index) {
                     final category = state.categories.category?[index];
-
                     print(
                         'Category ID: ${category?.id}, Category Name: ${category?.categoryName}');
 
@@ -265,7 +263,8 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                       itemCount: state.diagnosticCenters.data?.length,
                       itemBuilder: (context, index) {
-                        final dignosticCenter =  state.diagnosticCenters.data?[index];
+                        final dignosticCenter =
+                            state.diagnosticCenters.data?[index];
                         var w = MediaQuery.of(context).size.width;
                         return Column(
                           children: [
@@ -372,15 +371,14 @@ class _HomescreenState extends State<Homescreen> {
                 )
               ],
             ),
-          );
-        } else if (state is HomeError) {
-          return Center(child: Text(state.message));
-        }
-        return Center(child: Text("No Data"));
-      }),
-    );
+          ),
+        );
+      } else if (state is HomeError) {
+        return Center(child: Text(state.message));
+      }
+      return Center(child: Text("No Data"));
+    });
   }
-
 
   void _handleCategoryTap(BuildContext context, String label) {
     Widget detailScreen;
@@ -536,8 +534,8 @@ Widget _shimmer(BuildContext context) {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                       crossAxisSpacing: 10,
-                      childAspectRatio: 0.9,
-                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.75,
+                      mainAxisSpacing: 5,
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -547,10 +545,11 @@ Widget _shimmer(BuildContext context) {
                         children: [
                           shimmerContainer(72, 72, context),
                           SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
-                          shimmerText(70, 12, context)
+                          shimmerText(60, 12, context)
                         ],
+
                       );
                     },
                   ),
@@ -565,7 +564,7 @@ Widget _shimmer(BuildContext context) {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
-                      childAspectRatio: 1.1,
+                      childAspectRatio: 0.9,
                       mainAxisSpacing: 10,
                     ),
                     shrinkWrap: true,

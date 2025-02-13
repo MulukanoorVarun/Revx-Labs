@@ -147,15 +147,19 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              diognosticdetails?.location ?? "",
-                              style: TextStyle(
-                                  color: Color(
-                                    0xff949494,
-                                  ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8, // 90% of screen width
+                              child: Text(
+                                diognosticdetails?.location ?? "",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Color(0xff949494),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  fontFamily: "Poppins"),
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
                             ),
                             Row(
                               children: [
