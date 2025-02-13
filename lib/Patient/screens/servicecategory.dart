@@ -133,8 +133,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff24AEB1)),
       ),
-      body:
-          BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
+      body: BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {
           return Center(child: CircularProgressIndicator()); // 🔄 Show
         } else if (state is CategoryLoaded) {
