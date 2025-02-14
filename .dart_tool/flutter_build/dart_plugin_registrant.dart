@@ -19,6 +19,7 @@ import 'package:google_maps_flutter_ios/google_maps_flutter_ios.dart';
 import 'package:image_picker_ios/image_picker_ios.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector_linux/file_selector_linux.dart';
 import 'package:image_picker_linux/image_picker_linux.dart';
@@ -29,6 +30,7 @@ import 'package:file_selector_macos/file_selector_macos.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:image_picker_macos/image_picker_macos.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector_windows/file_selector_windows.dart';
 import 'package:image_picker_windows/image_picker_windows.dart';
@@ -161,6 +163,15 @@ class _PluginRegistrant {
       }
 
       try {
+        DeviceInfoPlusLinuxPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`device_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
         FilePickerLinux.registerWith();
       } catch (err) {
         print(
@@ -252,6 +263,15 @@ class _PluginRegistrant {
       }
 
     } else if (Platform.isWindows) {
+      try {
+        DeviceInfoPlusWindowsPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`device_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
       try {
         FilePickerWindows.registerWith();
       } catch (err) {

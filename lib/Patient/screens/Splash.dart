@@ -1,8 +1,12 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Patient/screens/Dashboard.dart';
+import 'package:revxpharma/Patient/screens/Onboard1.dart';
+import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
 
 import '../../Utils/NoInternet.dart';
@@ -26,6 +30,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _checkPermissions();
     fetchDetails();
     _controller = AnimationController(
       duration: Duration(seconds: 2),
@@ -41,16 +46,47 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  String  Status='';
-  String  Token='';
+  String Status = '';
+  String Status1 = '';
+  String Token = '';
+  bool permissions_granted = false;
+
   void fetchDetails() async {
     var status = await PreferenceService().getString('on_boarding');
+    var status1 = await PreferenceService().getString('on_boarding1');
     var token = await PreferenceService().getString('access_token');
-    setState(() {
-      Status=status??'';
-      Token=token??'';
-    });
 
+    setState(() {
+      Status = status ?? '';
+      Status1 = status1 ?? '';
+      Token = token ?? '';
+    });
+  }
+
+  Future<void> _checkPermissions() async {
+    DeviceInfoPlugin plugin = DeviceInfoPlugin();
+    AndroidDeviceInfo android = await plugin.androidInfo;
+    Map<Permission, PermissionStatus> statuses = {
+      Permission.location: await Permission.location.status,
+      Permission.camera: await Permission.camera.status,
+      Permission.notification: await Permission.notification.status,
+    };
+
+    if (android.version.sdkInt < 33) {
+      statuses[Permission.storage] =
+          await Permission.storage.status; // For Android 12 and below
+    } else {
+      statuses[Permission.photos] =
+          await Permission.photos.status; // For Android 13+
+    }
+
+    bool allPermissionsGranted =
+        statuses.values.every((status) => status.isGranted);
+
+    setState(() {
+      permissions_granted = allPermissionsGranted;
+      print("permissions_granted:${permissions_granted}");
+    });
   }
 
   @override
@@ -65,7 +101,16 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             Future.microtask(() {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) =>Status==''? OnBoard():Token==''?LogInWithEmail():Dashboard()),
+                MaterialPageRoute(
+                    builder: (_) => Status == ''
+                        ? OnBoard()
+                        : Status1 == ''
+                            ? OnBoardOne()
+                            : PermissionStatus == false
+                                ? MyPermission()
+                                : Token == ''
+                                    ? LogInWithEmail()
+                                    : Dashboard()),
               );
             });
           } else if (state is InternetStatusLostState) {

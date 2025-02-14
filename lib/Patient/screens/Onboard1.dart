@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
+import 'package:revxpharma/Patient/screens/Permission.dart';
+import 'package:revxpharma/Utils/Preferances.dart';
 
 import '../../Authentication/LogInWithMobile.dart';
 
@@ -11,6 +13,20 @@ class OnBoardOne extends StatefulWidget {
 }
 
 class _OnBoardOneState extends State<OnBoardOne> {
+  @override
+  void initState() {
+    PreferenceService().saveString('on_boarding1', '2');
+    super.initState();
+  }
+
+  void nextPage(){
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MyPermission()),
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
@@ -118,7 +134,7 @@ class _OnBoardOneState extends State<OnBoardOne> {
                     ),
                     child: Center(
                       child: InkWell(onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LogInWithEmail()));
+                    nextPage();
                       },
                         child: Text(
                           "Get Started",
