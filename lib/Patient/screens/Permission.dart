@@ -12,7 +12,6 @@ class MyPermission extends StatefulWidget {
   @override
   State<MyPermission> createState() => _MyPermissionState();
 }
-
 class _MyPermissionState extends State<MyPermission> {
   @override
   void initState() {

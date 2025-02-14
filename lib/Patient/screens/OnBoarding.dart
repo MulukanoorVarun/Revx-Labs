@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'Onboard1.dart';
 
 class OnBoard extends StatefulWidget {
