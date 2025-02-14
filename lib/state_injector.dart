@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
@@ -40,6 +41,11 @@ class StateInjector {
     BlocProvider<InternetStatusBloc>(
       create: (context) => InternetStatusBloc(),
     ),
+
+    BlocProvider<LocationCubit>(
+      create: (context) => LocationCubit(),
+    ),
+
     BlocProvider<CategoryCubit>(
       create: (context) => CategoryCubit(
         context.read<CategoryRepository>(),

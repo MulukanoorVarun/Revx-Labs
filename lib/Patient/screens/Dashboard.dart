@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
+import '../logic/cubit/Location/location_cubit.dart';
+import '../logic/cubit/Location/location_state.dart';
 import 'ChatSupport.dart';
 import 'HomeScreen.dart';
 import 'Notification.dart';
@@ -22,6 +24,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
+    context.read<LocationCubit>().checkLocationPermission();
     super.initState();
   }
 
@@ -51,19 +54,27 @@ class _DashboardState extends State<Dashboard> {
               });
             }
           },
-          child: PageView(
-            onPageChanged: (value) {
-              HapticFeedback.lightImpact();
+          child: BlocListener<LocationCubit, LocationState>(
+            listener: (context, state) {
+              if (state is LocationPermissionDenied) {
+                showLocationBottomSheet(
+                    context); // Show Bottom Sheet when permission is denied
+              }
             },
-            controller: pageController,
-            children: [
-              Homescreen(),
-              ServiceCategory(),
-              ChatSupport(),
-              Notifications(),
-              Profile()
-            ],
-            physics: const NeverScrollableScrollPhysics(),
+            child: PageView(
+              onPageChanged: (value) {
+                HapticFeedback.lightImpact();
+              },
+              controller: pageController,
+              children: [
+                Homescreen(),
+                ServiceCategory(),
+                ChatSupport(),
+                Notifications(),
+                Profile()
+              ],
+              physics: const NeverScrollableScrollPhysics(),
+            ),
           ),
         ),
         bottomNavigationBar: Container(
@@ -184,6 +195,62 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
+    );
+  }
+
+  void showLocationBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (BuildContext context) {
+        return BlocBuilder<LocationCubit, LocationState>(
+          builder: (context, state) {
+            bool isLoading = state is LocationLoading;
+            return WillPopScope(
+              onWillPop: () async => !isLoading,
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.gps_fixed_sharp, size: 18),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Location Permission is Off',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Spacer(),
+                        ElevatedButton(
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  context
+                                      .read<LocationCubit>()
+                                      .requestLocationPermission();
+                                },
+                          child: isLoading
+                              ? CircularProgressIndicator(strokeWidth: 2)
+                              : const Text('GRANT'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Granting location permission will ensure accurate address and hassle-free service.',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

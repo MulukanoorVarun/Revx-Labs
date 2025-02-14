@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
+import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
@@ -66,16 +68,25 @@ class _HomescreenState extends State<Homescreen> {
                       color: Colors.red,
                       size: 25,
                     ),
-                    SizedBox(width: 4), // Space between icon and text
-                    Text(
-                      'Kondapur,Hyderabad',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: "Poppins",
-                        fontSize: 16,
-                      ),
-                    ),
+                    SizedBox(width: 4),
+                    BlocBuilder<LocationCubit, LocationState>(
+                        builder: (context, state) {
+                      if (state is LocationLoading) {
+                        return _shimmer(context);
+                      } else if (state is LocationLoaded) {
+                        return Text("${state.locationName}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                          ),
+                        );
+                      }else if (state is LocationError) {
+                        return Center(child: Text(state.message));
+                      }
+                      return Center(child: Text("No Data"));
+                    }),
                   ],
                 ), // Space between text and icon
               ],
