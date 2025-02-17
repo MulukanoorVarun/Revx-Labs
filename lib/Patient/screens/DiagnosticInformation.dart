@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
@@ -17,6 +18,8 @@ class DiagnosticInformation extends StatefulWidget {
 }
 
 class _DiagnosticInformationState extends State<DiagnosticInformation> {
+
+
   @override
   void initState() {
     context.read<DiagnostocDetailCubit>().fetchDiagnosticDetails(widget.diognosticId??"");
@@ -52,15 +55,45 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
     return abbreviatedDays.join(", ");
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     return BlocBuilder<DiagnostocDetailCubit, DiagnosticDetailState>(
         builder: (context, state) {
+
           if (state is DiagnosticDetailLoading) {
             return _shimmer(context); // 🔄 Show loading
           } else if (state is DiagnosticDetailLoaded) {
+
+
+            String? startTimeStr = state.diagnostic_details.diognostic_details?.startTime;
+            String? endTimeStr = state.diagnostic_details.diognostic_details?.endTime;
+
+            DateTime? openingTime;
+            DateTime? closingTime;
+            bool isOpen = false;
+
+            if (startTimeStr != null && startTimeStr.isNotEmpty &&
+                endTimeStr != null && endTimeStr.isNotEmpty) {
+              try {
+                openingTime = DateFormat("HH:mm:ss").parse(startTimeStr);
+                closingTime = DateFormat("HH:mm:ss").parse(endTimeStr);
+
+
+                DateTime now = DateTime.now();
+                DateTime currentTime = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
+                DateTime openingToday = DateTime(now.year, now.month, now.day, openingTime.hour, openingTime.minute, openingTime.second);
+                DateTime closingToday = DateTime(now.year, now.month, now.day, closingTime.hour, closingTime.minute, closingTime.second);
+
+                isOpen = currentTime.isAfter(openingToday) && currentTime.isBefore(closingToday);
+              } catch (e) {
+                debugPrint("Error parsing time: $e");
+              }
+            }
+
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,
@@ -93,7 +126,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // First row: Image + Text
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,8 +184,10 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                                   ),
                                 ),
                               ),
+                              isOpen?
                               Row(
                                 children: [
+
                                   Text(
                                     "Open now",
                                     style: TextStyle(
@@ -174,7 +208,16 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                                       fontFamily: "Poppins",
                                     ),
                                   ),
+
+
                                 ],
+                              ): Text(
+                                "Close now",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff00BE13),
+                                    fontFamily: "Poppins"),
                               ),
                             ],
                           ),

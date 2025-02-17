@@ -10,7 +10,7 @@ class DiagnostocDetailCubit extends Cubit<DiagnosticDetailState> {
   Future<void> fetchDiagnosticDetails(String id) async {
     emit(DiagnosticDetailLoading());
     try {
-      final banners = await diagnosticDetailsRepository.getDiagnosticDetails(id); // ✅ Correct method call
+      final banners = await diagnosticDetailsRepository.getDiagnosticDetails(id);
       emit(DiagnosticDetailLoaded(banners!));
     } catch (e) {
       emit(DiagnosticDetailError("Failed to fetch diagnostic details"));

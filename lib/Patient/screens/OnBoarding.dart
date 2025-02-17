@@ -40,7 +40,7 @@ class _OnBoardState extends State<OnBoard> {
             ],
           ),
           Positioned(
-            bottom: 0, // Positioning the container at the bottom
+            bottom: 0,
             left: 0,
             right: 0,
             child: Container(

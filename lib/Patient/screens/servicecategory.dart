@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
+import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 
 import 'Pregnancy.dart';
@@ -67,8 +68,9 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Pregnancy(
-                                      title: item?.categoryName ?? '')));
+                                builder: (context) =>
+                                    alltests(lat_lang:'',catId: item?.id??'',),
+                              ));
                         },
                         child: Container(
                           width: 100,

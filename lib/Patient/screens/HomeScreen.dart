@@ -20,6 +20,7 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int currentIndex = 0;
+  String lat_lang='';
 
   @override
   void initState() {
@@ -74,6 +75,8 @@ class _HomescreenState extends State<Homescreen> {
                       if (state is LocationLoading) {
                         return _shimmer(context);
                       } else if (state is LocationLoaded) {
+                        lat_lang=state.latlng;
+                        print('lat_lang:${lat_lang}');
                         return Text("${state.locationName}",
                           style: TextStyle(
                             color: Colors.black,
@@ -208,8 +211,12 @@ class _HomescreenState extends State<Homescreen> {
                     final category = state.categories.category?[index];
                     return InkWell(
                       onTap: () {
-                        _handleCategoryTap(
-                            context, category?.categoryName ?? '');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                            builder: (context) =>
+                            alltests(lat_lang:'',catId: category?.id??'',),
+                        ));
                       },
                       child: _buildCategoryItem(
                           category?.image ?? '',
@@ -311,7 +318,7 @@ class _HomescreenState extends State<Homescreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            alltests(), // Adjust the index as needed
+                            alltests(lat_lang:lat_lang??'',catId: ''), // Adjust the index as needed
                       ),
                     );
                   },
@@ -383,60 +390,6 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  void _handleCategoryTap(BuildContext context, String label) {
-    Widget detailScreen;
-
-    switch (label) {
-      case 'Pregnancy':
-        detailScreen = Pregnancy(
-          title: "Pregnancy",
-        );
-        break;
-      case 'Lungs':
-        detailScreen = Pregnancy(
-          title: "Lungs",
-        );
-        break;
-      case 'MRI Scan':
-        detailScreen = Pregnancy(
-          title: "MRI Scan",
-        );
-        break;
-      case 'Health':
-        detailScreen = Pregnancy(
-          title: "Health",
-        );
-        break;
-      case 'Heart':
-        detailScreen = Pregnancy(
-          title: "Heart",
-        );
-        break;
-      case 'Kidney':
-        detailScreen = Pregnancy(
-          title: "Kidney",
-        );
-        break;
-      case 'Blood Test':
-        detailScreen = Pregnancy(
-          title: "Blood Test",
-        );
-        break;
-      case 'More':
-        detailScreen = ServiceCategory(); // Define this screen
-        break;
-      default:
-        detailScreen = Scaffold(
-          appBar: AppBar(title: Text('Unknown')),
-          body: Center(child: Text('No details available')),
-        );
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => detailScreen),
-    );
-  }
 
   Widget _buildCategoryItem(String image, String label) {
     return Column(

@@ -88,7 +88,7 @@ class LocationCubit extends Cubit<LocationState> {
           ? "${placemarks[0].street}, ${placemarks[0].subLocality}"
           : "Address not found";
 
-      String latlngs= "${position.latitude}, ${position.longitude}";
+      String latlngs= "${position.latitude},${position.longitude}";
 
        PreferenceService().saveString('LocName', locationName);
        PreferenceService().saveString('latlngs', latlngs);
