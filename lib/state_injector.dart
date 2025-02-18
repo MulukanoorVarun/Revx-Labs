@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/home/home_cubit.dart';
@@ -40,14 +42,17 @@ class StateInjector {
         remoteDataSource: context.read(),
       ),
     ),
-
-    RepositoryProvider<TestRepository>( // Then create TestRepository using RemoteDataSource
+    RepositoryProvider<TestRepository>(
+      // Then create TestRepository using RemoteDataSource
       create: (context) => TestRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
-
-
+    RepositoryProvider<ConditionRepository>(
+      create: (context) => ConditionImpl(
+        remoteDataSource: context.read(),
+      ),
+    ),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -86,6 +91,9 @@ class StateInjector {
     ),
     BlocProvider<TestCubit>(
       create: (context) => TestCubit(context.read<TestRepository>()),
+    ),
+    BlocProvider<ConditionCubit>(
+      create: (context) => ConditionCubit(context.read<ConditionRepository>()),
     ),
   ];
 }

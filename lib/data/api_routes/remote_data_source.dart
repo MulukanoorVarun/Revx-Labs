@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
+import 'package:revxpharma/Models/ConditionBasedModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Models/TestModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
@@ -13,7 +14,8 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang,catId);
+  Future<TestModel?> fetchTest(latlang, catId);
+  Future<ConditionBasedModel?>fetchConditionBased();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -48,7 +50,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng) async {
     try {
-      Response response = await ApiClient.get('${PatientRemoteUrls.diagnosticCenterslist}?lat_long=${latlng}');
+      Response response = await ApiClient.get(
+          '${PatientRemoteUrls.diagnosticCenterslist}?lat_long=${latlng}');
       if (response.statusCode == 200) {
         return DiognisticCenterModel.fromJson(response.data);
       }
@@ -62,7 +65,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id) async {
     try {
-      Response response = await ApiClient.get("${PatientRemoteUrls.diagnosticDetail}/$id");
+      Response response =
+          await ApiClient.get("${PatientRemoteUrls.diagnosticDetail}/$id");
       if (response.statusCode == 200) {
         return DiognisticDetailModel.fromJson(response.data);
       }
@@ -74,18 +78,35 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<TestModel?> fetchTest(latlang,catId)async{
-    try{
-      Response response= await ApiClient.get("${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}");
-      if(response.statusCode==200){
+  Future<TestModel?> fetchTest(latlang, catId) async {
+    print('latlang::${latlang}');
+    print('catId::${catId}');
+    try {
+      Response response = await ApiClient.get(
+          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}");
+      if (response.statusCode == 200) {
         print('fetchTest:${response.data}');
         return TestModel.fromJson(response.data);
       }
       return null;
-    }catch(e){
+    } catch (e) {
       print("Error fetching test data: $e");
       return null;
     }
   }
 
+  Future<ConditionBasedModel?> fetchConditionBased() async {
+    try {
+      Response response =
+          await ApiClient.get('${PatientRemoteUrls.conditionBased}');
+      if (response.statusCode == 200) {
+        print('fetchConditionBased:${response.data}');
+        return ConditionBasedModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error fetching ConditionBased data: $e");
+      return null;
+    }
+  }
 }

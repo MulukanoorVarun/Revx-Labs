@@ -20,14 +20,14 @@ class HomeCubit extends Cubit<HomeState> {
     required this.diagnosticCentersRepository,
   }) : super(HomeInitial());
 
-  Future<void> fetchHomeData() async {
+  Future<void> fetchHomeData(lat_lang) async {
     emit(HomeLoading()); // 🔄 Set loading state
 
     try {
       final results = await Future.wait([
         categoryRepository.getCategories(),
         bannersRepository.getBanners(),
-        diagnosticCentersRepository.getDiagnosticCenters(''),
+        diagnosticCentersRepository.getDiagnosticCenters(lat_lang),
       ]);
 
       final categories = results[0] as CategoryModel;

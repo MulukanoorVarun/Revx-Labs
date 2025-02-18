@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_state.dart';
 import 'DiagnosticInformation.dart';
 
 class Diagnosticcenter extends StatefulWidget {
   String lat_lng;
-  Diagnosticcenter({super.key,required this.lat_lng});
+  Diagnosticcenter({super.key, required this.lat_lng});
 
   @override
   State<Diagnosticcenter> createState() => _Diagnosticcenter();
@@ -15,7 +16,9 @@ class Diagnosticcenter extends StatefulWidget {
 class _Diagnosticcenter extends State<Diagnosticcenter> {
   @override
   void initState() {
-    context.read<DiagnosticCentersCubit>().fetchDiagnosticCenters(widget.lat_lng);
+    context
+        .read<DiagnosticCentersCubit>()
+        .fetchDiagnosticCenters(widget.lat_lng);
     super.initState();
   }
 
@@ -58,7 +61,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
       body: BlocBuilder<DiagnosticCentersCubit, DiagnosticCentersState>(
         builder: (context, state) {
           if (state is DiagnosticCentersLoading) {
-            // return _shimmerList();
+            return _shimmerList();
           } else if (state is DiagnosticCentersLoaded) {
             return Padding(
               padding: const EdgeInsets.all(15.0),
@@ -147,7 +150,8 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                         children: [
                                           SizedBox(
                                             width: 170,
-                                            child: Text(textAlign: TextAlign.start,
+                                            child: Text(
+                                              textAlign: TextAlign.start,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               item?.location ?? "",
@@ -159,7 +163,9 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 6,),
+                                          SizedBox(
+                                            width: 6,
+                                          ),
                                           Row(
                                             children: [
                                               Icon(
@@ -167,7 +173,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                                 color: Colors.red,
                                               ),
                                               Text(
-                                               item?.distance??'',
+                                                item?.distance ?? '',
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
@@ -246,6 +252,57 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
           }
           return Center(child: Text("No Data"));
         },
+      ),
+    );
+  }
+
+  Widget _shimmerList() {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Expanded(
+        child: GridView.builder(
+            itemCount: 10,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              childAspectRatio: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemBuilder: (context, index) {
+              return Container(
+                  width: w,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xff949494), width: 1),
+                    // Gray border
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      shimmerContainer(100, 100, context),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          shimmerText(160, 12, context),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          shimmerText(160, 16, context),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          shimmerText(160, 12, context),
+                        ],
+                      )
+                    ],
+                  ));
+            }),
       ),
     );
   }

@@ -24,7 +24,7 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-    context.read<HomeCubit>().fetchHomeData();
+    context.read<HomeCubit>().fetchHomeData(lat_lang);
     super.initState();
   }
 
@@ -178,7 +178,6 @@ class _HomescreenState extends State<Homescreen> {
                 ),
 
                 SizedBox(height: 8),
-                // Categories
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Align(
@@ -215,7 +214,7 @@ class _HomescreenState extends State<Homescreen> {
                             context,
                             MaterialPageRoute(
                             builder: (context) =>
-                            alltests(lat_lang:'',catId: category?.id??'',),
+                            alltests(lat_lang:lat_lang,catId: category?.id??'',),
                         ));
                       },
                       child: _buildCategoryItem(
