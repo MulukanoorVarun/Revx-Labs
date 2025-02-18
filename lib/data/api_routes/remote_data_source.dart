@@ -11,7 +11,7 @@ import '../../Models/DiognisticCenterModel.dart';
 abstract class RemoteDataSource {
   Future<CategoryModel?> fetchCategories();
   Future<BannersModel?> fetchBanners();
-  Future<DiognisticCenterModel?> fetchDiagnosticCenters();
+  Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
   Future<TestModel?> fetchTest(latlang,catId);
 }
@@ -46,9 +46,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<DiognisticCenterModel?> fetchDiagnosticCenters() async {
+  Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng) async {
     try {
-      Response response = await ApiClient.get(PatientRemoteUrls.diagnosticCenterslist);
+      Response response = await ApiClient.get('${PatientRemoteUrls.diagnosticCenterslist}?lat_long=${latlng}');
       if (response.statusCode == 200) {
         return DiognisticCenterModel.fromJson(response.data);
       }

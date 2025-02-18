@@ -1,14 +1,14 @@
 class DiognisticCenterModel {
-  List<Diognostic>? data;
+  List<Diognistic>? data;
   Settings? settings;
 
   DiognisticCenterModel({this.data, this.settings});
 
   DiognisticCenterModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Diognostic>[];
+      data = <Diognistic>[];
       json['data'].forEach((v) {
-        data!.add(new Diognostic.fromJson(v));
+        data!.add(new Diognistic.fromJson(v));
       });
     }
     settings = json['settings'] != null
@@ -28,19 +28,21 @@ class DiognisticCenterModel {
   }
 }
 
-class Diognostic {
+class Diognistic {
   String? id;
   String? name;
   String? location;
   String? image;
+  String? distance;
 
-  Diognostic({this.id, this.name, this.location, this.image});
+  Diognistic({this.id, this.name, this.location, this.image, this.distance});
 
-  Diognostic.fromJson(Map<String, dynamic> json) {
+  Diognistic.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     location = json['location'];
     image = json['image'];
+    distance = json['distance'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +51,7 @@ class Diognostic {
     data['name'] = this.name;
     data['location'] = this.location;
     data['image'] = this.image;
+    data['distance'] = this.distance;
     return data;
   }
 }

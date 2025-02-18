@@ -27,7 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
       final results = await Future.wait([
         categoryRepository.getCategories(),
         bannersRepository.getBanners(),
-        diagnosticCentersRepository.getDiagnosticCenters(),
+        diagnosticCentersRepository.getDiagnosticCenters(''),
       ]);
 
       final categories = results[0] as CategoryModel;

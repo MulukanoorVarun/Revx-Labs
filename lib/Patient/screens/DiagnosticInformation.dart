@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
-import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_state.dart';
-import 'package:revxpharma/Services/UserapiServices.dart';
-
 import 'ScheduleAppointment.dart';
 
 class DiagnosticInformation extends StatefulWidget {
@@ -216,7 +213,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff00BE13),
+                                    color: Color(0xffC00000),
                                     fontFamily: "Poppins"),
                               ),
                             ],

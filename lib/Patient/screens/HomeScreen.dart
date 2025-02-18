@@ -244,7 +244,7 @@ class _HomescreenState extends State<Homescreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Diagnosticcenter(),
+                              builder: (context) => Diagnosticcenter(lat_lng: lat_lang),
                             ),
                           );
                         },
