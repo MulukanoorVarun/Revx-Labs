@@ -22,6 +22,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController testsController = TextEditingController();
   final TextEditingController licenseNumberController = TextEditingController();
+  final TextEditingController geoLocationController = TextEditingController();
 
   @override
   void initState() {
@@ -103,7 +104,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     if (value.trim().isEmpty) {
       return "End Time is required";
     }
-
     // Regex to check the time format (HH:mm)
     final timeRegex = RegExp(r'^(?:[01]\d|2[0-3]):(?:[0-5]\d)$');
     if (!timeRegex.hasMatch(value)) {
@@ -153,8 +153,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     }
   }
 
-  MultiSelectController<WeekDays> _dayscontroller =
-      MultiSelectController<WeekDays>();
+  MultiSelectController<WeekDays> _dayscontroller = MultiSelectController<WeekDays>();
   String _validateWeekdays = '';
   List<String> selectedDays = [];
   @override
@@ -168,7 +167,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
       DropdownItem(label: 'Saturday', value: WeekDays(name: 'Saturday')),
       DropdownItem(label: 'Sunday', value: WeekDays(name: 'Sunday')),
     ];
-
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -179,8 +177,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
             children: [
               CircleAvatar(
                 radius: 40,
-                backgroundImage:
-                    AssetImage('assets/blueLogo.png'), // Add your image here
+                backgroundImage: AssetImage('assets/blueLogo.png'), // Add your image here
               ),
               SizedBox(height: 20),
               Text(
@@ -201,6 +198,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                 ),
               ),
               SizedBox(height: 30),
+
               buildFormLabel("Enter the diagnostics name"),
               _buildTextField(
                 fieldKey: "labName",
@@ -248,11 +246,12 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                 enabled: true,
                 searchEnabled: true,
                 chipDecoration: const ChipDecoration(
-                    backgroundColor: Color(0xffE8E4EF),
-                    wrap: true,
-                    runSpacing: 2,
-                    spacing: 10,
-                    borderRadius: BorderRadius.all(Radius.circular(7))),
+                  backgroundColor: Color(0xffE8E4EF),
+                  wrap: true,
+                  runSpacing: 2,
+                  spacing: 10,
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                ),
                 fieldDecoration: FieldDecoration(
                   hintText: 'Working Days',
                   hintStyle: TextStyle(
@@ -267,13 +266,11 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   backgroundColor: Color(0xffffffff),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7),
-                    borderSide:
-                        const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+                    borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide:
-                        const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+                    borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
                   ),
                 ),
                 dropdownDecoration: const DropdownDecoration(
@@ -292,14 +289,12 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   ),
                 ),
                 dropdownItemDecoration: DropdownItemDecoration(
-                  selectedIcon:
-                      const Icon(Icons.check_box, color: Color(0xff8856F4)),
+                  selectedIcon: const Icon(Icons.check_box, color: Color(0xff8856F4)),
                   disabledIcon: Icon(Icons.lock, color: Colors.grey.shade300),
                 ),
                 onSelectionChange: (selectedItems) {
                   setState(() {
-                    selectedDays =
-                        selectedItems.map((weekDay) => weekDay.name).toList();
+                    selectedDays = selectedItems.map((weekDay) => weekDay.name).toList();
                     _validateWeekdays = "";
                   });
                   debugPrint("Selected Days: $selectedDays");
@@ -324,52 +319,65 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   ),
                 ),
               ] else ...[
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
               ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      buildFormLabel("Start Time"),
-                      _buildTextField1(
+                  Expanded(
+                    child: Column(
+                      children: [
+                        buildFormLabel("Start Time"),
+                        _buildTextField1(
                           fieldKey: 'StartTime',
                           controller: startTimeController,
                           hintText: 'StartTime',
                           keyboardType: TextInputType.text,
-                          validator: _validatestartTime),
-                    ],
+                          validator: _validatestartTime,
+                        ),
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      buildFormLabel("End Time"),
-                      _buildTextField1(
+                  SizedBox(width: 10), // Add space between the columns
+                  Expanded(
+                    child: Column(
+                      children: [
+                        buildFormLabel("End Time"),
+                        _buildTextField1(
                           fieldKey: 'EndTime',
                           controller: endController,
                           hintText: 'EndTime',
                           keyboardType: TextInputType.text,
-                          validator: _validateEndTime),
-                    ],
+                          validator: _validateEndTime,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              buildFormLabel("Select the categories"),
+              // buildFormLabel("Select the categories"),
+              // _buildTextField(
+              //   fieldKey: "category",
+              //   controller: categoryController,
+              //   hintText: 'Categories',
+              //   keyboardType: TextInputType.text,
+              //   validator: (value) => _validateField(value, "Categories"),
+              // ),
+              // buildFormLabel("Select the Tests"),
+              // _buildTextField(
+              //   fieldKey: "tests",
+              //   controller: testsController,
+              //   hintText: 'Services',
+              //   keyboardType: TextInputType.text,
+              //   validator: (value) => _validateField(value, "Services"),
+              // ),
+              buildFormLabel("Geo Location"),
               _buildTextField(
-                fieldKey: "category",
-                controller: categoryController,
-                hintText: 'Categories',
+                fieldKey: "geolocation",
+                controller: geoLocationController,
+                hintText: 'Geo Location',
                 keyboardType: TextInputType.text,
-                validator: (value) => _validateField(value, "Categories"),
-              ),
-              buildFormLabel("Select the Tests"),
-              _buildTextField(
-                fieldKey: "tests",
-                controller: testsController,
-                hintText: 'Services',
-                keyboardType: TextInputType.text,
-                validator: (value) => _validateField(value, "Services"),
+                validator: (value) => _validateField(value, "geo location"),
               ),
               buildFormLabel("Enter license number of diagnostic lab"),
               _buildTextField(
@@ -387,8 +395,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30), // Rounded corners
                   ),
-                  minimumSize:
-                      const Size(double.infinity, 48), // Width & height
+                  minimumSize: const Size(double.infinity, 48), // Width & height
                 ),
                 child: const Text(
                   'Register',
@@ -435,6 +442,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
         ),
       ),
     );
+
   }
 
   Widget buildFormLabel(String text) {

@@ -73,7 +73,10 @@ class _HomescreenState extends State<Homescreen> {
                     BlocBuilder<LocationCubit, LocationState>(
                         builder: (context, state) {
                       if (state is LocationLoading) {
-                        return _shimmer(context);
+                        return SizedBox(
+                          width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 1,));
                       } else if (state is LocationLoaded) {
                         lat_lang=state.latlng;
                         print('lat_lang:${lat_lang}');
