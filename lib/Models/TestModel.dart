@@ -32,15 +32,19 @@ class Data {
   String? id;
   String? testName;
   String? diagnosticCentre;
-  int? price;
+  String? price;
   String? distance;
+  int? noOfTests;
+  List<String>? subTests;
 
   Data(
       {this.id,
         this.testName,
         this.diagnosticCentre,
         this.price,
-        this.distance});
+        this.distance,
+        this.noOfTests,
+        this.subTests});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,6 +52,8 @@ class Data {
     diagnosticCentre = json['diagnostic_centre'];
     price = json['price'];
     distance = json['distance'];
+    noOfTests = json['no_of_tests'];
+    subTests = json['sub_tests'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +63,8 @@ class Data {
     data['diagnostic_centre'] = this.diagnosticCentre;
     data['price'] = this.price;
     data['distance'] = this.distance;
+    data['no_of_tests'] = this.noOfTests;
+    data['sub_tests'] = this.subTests;
     return data;
   }
 }

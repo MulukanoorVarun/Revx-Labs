@@ -79,7 +79,6 @@ class _HomescreenState extends State<Homescreen> {
                             child: CircularProgressIndicator(strokeWidth: 1,));
                       } else if (state is LocationLoaded) {
                         lat_lang=state.latlng;
-                        print('lat_lang:${lat_lang}');
                         return Text("${state.locationName}",
                           style: TextStyle(
                             color: Colors.black,

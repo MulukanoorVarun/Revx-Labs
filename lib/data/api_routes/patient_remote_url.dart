@@ -6,4 +6,8 @@ class PatientRemoteUrls {
   static const String diagnosticDetail = 'api/diagnostic-centre-detail';
   static const String test ='api/tests';
   static const String conditionBased ='api/conditions';
+  static const String patientslist ='api/patients';
+  static const String addPatient ='api/patients';
+  static const String updatePatient ='api/patients';
+  static const String deletePatient ='api/patients';
 }

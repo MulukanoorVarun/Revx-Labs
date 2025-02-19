@@ -8,6 +8,8 @@ import 'package:revxpharma/data/api_routes/patient_remote_url.dart';
 
 import '../../Models/CategoryModel.dart';
 import '../../Models/DiognisticCenterModel.dart';
+import '../../Models/PatientsListModel.dart';
+import '../../Models/SuccessModel.dart';
 
 abstract class RemoteDataSource {
   Future<CategoryModel?> fetchCategories();
@@ -16,6 +18,10 @@ abstract class RemoteDataSource {
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
   Future<TestModel?> fetchTest(latlang, catId);
   Future<ConditionBasedModel?>fetchConditionBased();
+  Future<PatientsListModel?>fetchPatients();
+  Future<SuccessModel?>AddPatient();
+  Future<SuccessModel?>UpdatePatient();
+  Future<SuccessModel?>DeletePatient();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -106,6 +112,64 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       print("Error fetching ConditionBased data: $e");
+      return null;
+    }
+  }
+
+  Future<PatientsListModel?>fetchPatients() async {
+    try {
+      Response response =
+      await ApiClient.get('${PatientRemoteUrls.patientslist}');
+      if (response.statusCode == 200) {
+        print('fetchPatients:${response.data}');
+        return PatientsListModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error fetching fetchPatients data: $e");
+      return null;
+    }
+  }
+
+  Future<SuccessModel?>AddPatient() async {
+    try {
+      Response response = await ApiClient.post('${PatientRemoteUrls.addPatient}');
+      if (response.statusCode == 200) {
+        print('AddPatient:${response.data}');
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error AddPatient data: $e");
+      return null;
+    }
+  }
+
+
+  Future<SuccessModel?>UpdatePatient() async {
+    try {
+      Response response = await ApiClient.put('${PatientRemoteUrls.updatePatient}');
+      if (response.statusCode == 200) {
+        print('UpdatePatient:${response.data}');
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error UpdatePatient data: $e");
+      return null;
+    }
+  }
+
+  Future<SuccessModel?>DeletePatient() async {
+    try {
+      Response response = await ApiClient.delete('${PatientRemoteUrls.deletePatient}');
+      if (response.statusCode == 200) {
+        print('DeletePatient:${response.data}');
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error DeletePatient data: $e");
       return null;
     }
   }

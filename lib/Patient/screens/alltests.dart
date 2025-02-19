@@ -71,8 +71,7 @@ class _alltestsState extends State<alltests> {
                 decoration: BoxDecoration(
                     color: Colors.white, // Background color of the search box
                     borderRadius: BorderRadius.circular(30),
-                    border:
-                        Border.all(color: Color(0xffDADADA)) // Rounded corners
+                    border: Border.all(color: Color(0xffDADADA)) // Rounded corners
                     ),
                 child: TextField(
                   decoration: InputDecoration(
@@ -170,111 +169,83 @@ class _alltestsState extends State<alltests> {
                     return _shimmerList();
                   } else if (state is TestStateLoaded) {
                     return Expanded(
-                      child: GridView.builder(
-                        itemCount: state.testModel.data?.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          childAspectRatio: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemBuilder: (context, index) {
-                          final lab_tests = state.testModel.data?[index];
-                          print('lab_tests:${lab_tests}');
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xff949494), width: 1),
-                              // Gray border
-                              borderRadius:
-                                  BorderRadius.circular(10), // Rounded corners
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  lab_tests?.testName ?? '',
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "Poppins",
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '₹ ${lab_tests!.price.toString()}/-',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: "Poppins",
-                                        color: Colors.black,
-                                      ),
+                        child: ListView.builder(
+                          itemCount: state.testModel.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final lab_tests = state.testModel.data?[index];
+                            print('lab_tests: $lab_tests');
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xff949494), width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    lab_tests?.testName ?? '',
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Poppins",
+                                      color: Colors.black,
                                     ),
-                                    // Text(
-                                    //   'No of Tests: ',
-                                    //   style: TextStyle(
-                                    //     fontSize: 14,
-                                    //     fontWeight: FontWeight.w400,
-                                    //     fontFamily: "Poppins",
-                                    //     color: Colors.black,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                                SizedBox(height: 16),
-                                // Space between price and buttons
-
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // View Button
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 35, vertical: 7),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30)),
-                                            border: Border.all(
-                                                color: Color(0xff27BDBE))),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '₹ ${lab_tests!.price.toString()}/-',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins",
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(horizontal: 30),
+                                          backgroundColor: Colors.white,
+                                          side: BorderSide(color: Color(0xff27BDBE)),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                                          ),
+                                            visualDensity: VisualDensity.compact
+                                        ),
                                         child: Text(
                                           'View Detail',
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Poppins",
-                                              color: Color(0xff27BDBE)),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins",
+                                            color: Color(0xff27BDBE),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 7,
-                                            horizontal:
-                                                20), // Adjust padding as needed
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff24AEB1),
-                                          // Button color
-                                          borderRadius: BorderRadius.circular(
-                                              30), // Rounded corners
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric( horizontal: 25),
+                                          backgroundColor: Color(0xff24AEB1),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                          visualDensity: VisualDensity.compact
                                         ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
                                           children: [
                                             Text(
                                               'Add Test',
@@ -286,57 +257,48 @@ class _alltestsState extends State<alltests> {
                                               ),
                                             ),
                                             SizedBox(width: 8),
-                                            // Space between text and icon
                                             Icon(
                                               Icons.add_circle_outline,
+                                              size: 20,
                                               color: Colors.white,
                                             ),
                                           ],
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 8),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration:
-                                      BoxDecoration(color: Color(0xffD40000)),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 6),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Container(
-                                        margin: EdgeInsets.zero,
-                                        width: 280,
-                                        child: Text(
-                                          'Diagnostics : ${lab_tests.diagnosticCentre} - ${lab_tests.distance} away',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "Poppins",
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 10),
+                                    decoration: BoxDecoration(color: Color(0xffD40000)),
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_on,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            '${lab_tests.diagnosticCentre} - ${lab_tests.distance} away',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: "Poppins",
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        )
                     );
                   } else if (state is TestStateError) {
                     return Center(child: Text("Error loading data"));
@@ -350,18 +312,10 @@ class _alltestsState extends State<alltests> {
                       return _shimmerList1();
                     } else if (Conditionstate is ConditionBasedLoaded) {
                       return Expanded(
-                        child: GridView.builder(
-                          itemCount:
-                              Conditionstate.conditionBasedModel.data?.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  childAspectRatio: 4,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 5),
+                        child:ListView.builder(
+                          itemCount: Conditionstate.conditionBasedModel.data?.length,
                           itemBuilder: (context, index) {
-                            final items =
-                                Conditionstate.conditionBasedModel.data?[index];
+                            final items = Conditionstate.conditionBasedModel.data?[index];
                             return GestureDetector(
                               onTap: () {
                                 // Handle card click, navigate or perform an action
@@ -369,20 +323,17 @@ class _alltestsState extends State<alltests> {
                               child: Container(
                                 margin: EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.grey, width: 1),
+                                  border: Border.all(color: Colors.grey, width: 1),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       // Product name and price
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             items?.name ?? '',
@@ -398,25 +349,27 @@ class _alltestsState extends State<alltests> {
                                           Text(
                                             ('${items?.testsAvailable.toString() ?? ''} Tests Available'),
                                             style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                fontFamily: "Poppins",
-                                                color: Color(0xff808080)),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: "Poppins",
+                                              color: Color(0xff808080),
+                                            ),
                                           ),
                                         ],
                                       ),
                                       // Dummy image instead of noOfTests
                                       Icon(
                                         Icons.arrow_forward_ios_outlined,
-                                        size: 20,
-                                      )
+                                        size: 16,
+                                        weight: 1,
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                             );
                           },
-                        ),
+                        )
                       );
                     } else if (Conditionstate is ConditionBasedError) {
                       return Center(
@@ -435,70 +388,48 @@ class _alltestsState extends State<alltests> {
   Widget _shimmerList() {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        Expanded(
-          child: GridView.builder(
-              itemCount: 10,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
+    return Expanded(
+      child: ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Container(
+          width: w,
+          margin: EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(
+            border: Border.all(color: Color(0xff949494), width: 1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              shimmerText(120, 10, context),
+              SizedBox(height: 8),
+              shimmerText(120, 10, context),
+              SizedBox(height: 26),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  shimmerContainer(140, 40, context),
+                  shimmerContainer(140, 40, context),
+                ],
               ),
-              itemBuilder: (context, index) {
-                return Container(
-                    width: w,
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xff949494), width: 1),
-                      // Gray border
-                      borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        shimmerText(120, 10, context),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        shimmerText(120, 10, context),
-                        SizedBox(
-                          height: 26,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            shimmerContainer(140, 40, context),
-                            shimmerContainer(140, 40, context),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 26,
-                        ),
-                        shimmerContainer(w, 25, context),
-                      ],
-                    ));
-              }),
-        ),
-      ],
+              SizedBox(height: 26),
+              shimmerContainer(w, 25, context),
+            ],
+          ),
+        );
+      },
+    )
     );
   }
 
   Widget _shimmerList1() {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        Expanded(
-            child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 10,
-            childAspectRatio: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-          ),
+    return Expanded(
+        child: ListView.builder(
+          itemCount: 10,
           itemBuilder: (context, index) {
             return Container(
               margin: EdgeInsets.only(bottom: 10),
@@ -512,19 +443,16 @@ class _alltestsState extends State<alltests> {
                   Column(
                     children: [
                       shimmerText(120, 12, context),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       shimmerText(120, 12, context),
                     ],
                   ),
-                  shimmerContainer(10, 10, context)
+                  shimmerContainer(10, 10, context),
                 ],
               ),
             );
           },
-        ))
-      ],
+        )
     );
   }
 }
