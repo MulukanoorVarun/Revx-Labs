@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/ConditionBasedModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Models/TestModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
 import 'package:revxpharma/data/api_routes/patient_remote_url.dart';
+import 'package:revxpharma/data/api_routes/vendor_remote_urls.dart';
 
 import '../../Models/CategoryModel.dart';
 import '../../Models/DiognisticCenterModel.dart';
@@ -17,11 +19,23 @@ abstract class RemoteDataSource {
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
   Future<TestModel?> fetchTest(latlang, catId);
-  Future<ConditionBasedModel?>fetchConditionBased();
-  Future<PatientsListModel?>fetchPatients();
-  Future<SuccessModel?>AddPatient();
-  Future<SuccessModel?>UpdatePatient();
-  Future<SuccessModel?>DeletePatient();
+  Future<ConditionBasedModel?> fetchConditionBased();
+  Future<SuccessModel?> postDiognosticRegister(
+    String contactPersonName,
+    String diagnosticName,
+    String completeAddress,
+    String contactNumber,
+    String email,
+    String pwd,
+    List<String> daysOpened,
+    String startTime,
+    String endTime,
+    String registrationNumber,
+  );
+  Future<PatientsListModel?> fetchPatients();
+  Future<SuccessModel?> AddPatient();
+  Future<SuccessModel?> UpdatePatient();
+  Future<SuccessModel?> DeletePatient();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -116,10 +130,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-  Future<PatientsListModel?>fetchPatients() async {
+  Future<PatientsListModel?> fetchPatients() async {
     try {
       Response response =
-      await ApiClient.get('${PatientRemoteUrls.patientslist}');
+          await ApiClient.get('${PatientRemoteUrls.patientslist}');
       if (response.statusCode == 200) {
         print('fetchPatients:${response.data}');
         return PatientsListModel.fromJson(response.data);
@@ -131,9 +145,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-  Future<SuccessModel?>AddPatient() async {
+  Future<SuccessModel?> AddPatient() async {
     try {
-      Response response = await ApiClient.post('${PatientRemoteUrls.addPatient}');
+      Response response =
+          await ApiClient.post('${PatientRemoteUrls.addPatient}');
       if (response.statusCode == 200) {
         print('AddPatient:${response.data}');
         return SuccessModel.fromJson(response.data);
@@ -145,10 +160,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-
-  Future<SuccessModel?>UpdatePatient() async {
+  Future<SuccessModel?> UpdatePatient() async {
     try {
-      Response response = await ApiClient.put('${PatientRemoteUrls.updatePatient}');
+      Response response =
+          await ApiClient.put('${PatientRemoteUrls.updatePatient}');
       if (response.statusCode == 200) {
         print('UpdatePatient:${response.data}');
         return SuccessModel.fromJson(response.data);
@@ -160,9 +175,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-  Future<SuccessModel?>DeletePatient() async {
+  Future<SuccessModel?> DeletePatient() async {
     try {
-      Response response = await ApiClient.delete('${PatientRemoteUrls.deletePatient}');
+      Response response =
+          await ApiClient.delete('${PatientRemoteUrls.deletePatient}');
       if (response.statusCode == 200) {
         print('DeletePatient:${response.data}');
         return SuccessModel.fromJson(response.data);
@@ -170,6 +186,50 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       print("Error DeletePatient data: $e");
+      return null;
+    }
+  }
+
+  Future<SuccessModel?> postDiognosticRegister(
+    String contactPersonName,
+    String diagnosticName,
+    String completeAddress,
+    String contactNumber,
+    String email,
+    String pwd,
+    List<String> daysOpened,
+    String startTime,
+    String endTime,
+    String registrationNumber,
+  ) async {
+    try {
+      FormData formData = FormData.fromMap({
+        'contact_person': contactPersonName,
+        'contact_email': email,
+        'password': pwd,
+        'mobile': contactNumber,
+        'diagnostic_name': diagnosticName,
+        'registration_number': registrationNumber,
+        'location': completeAddress,
+        'days_opened': daysOpened,
+        'start_time': startTime,
+        'end_time': endTime,
+      });
+
+      final response = await ApiClient.post(
+        VendorRemoteUrls.vendorRegister,
+        data: formData,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('postDiognosticRegister:${response.data}');
+        return SuccessModel.fromJson(response.data);
+      } else {
+        print('Error: ${response.statusCode}, ${response.data}');
+        return null;
+      }
+    } catch (e) {
+      print('Error registering diagnostic: $e');
       return null;
     }
   }

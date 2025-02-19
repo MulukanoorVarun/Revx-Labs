@@ -12,6 +12,8 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
 import 'package:revxpharma/Patient/logic/repository/banners_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_register/register_cubit.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_register/register_repository.dart';
 import 'Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'Patient/logic/repository/category_repository.dart';
 import 'data/api_routes/remote_data_source.dart';
@@ -50,6 +52,11 @@ class StateInjector {
     ),
     RepositoryProvider<ConditionRepository>(
       create: (context) => ConditionImpl(
+        remoteDataSource: context.read(),
+      ),
+    ),
+    RepositoryProvider<VendorRegisterRepository>(
+      create: (context) => VendorRegisterImpl(
         remoteDataSource: context.read(),
       ),
     ),
@@ -94,6 +101,10 @@ class StateInjector {
     ),
     BlocProvider<ConditionCubit>(
       create: (context) => ConditionCubit(context.read<ConditionRepository>()),
+    ),
+    BlocProvider<VendorRegisterCubit>(
+      create: (context) =>
+          VendorRegisterCubit(context.read<VendorRegisterRepository>()),
     ),
   ];
 }

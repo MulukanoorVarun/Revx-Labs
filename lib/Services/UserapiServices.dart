@@ -5,6 +5,7 @@ import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterModel.dart';
+import 'package:revxpharma/data/api_routes/vendor_remote_urls.dart';
 import 'ApiClient.dart';
 
 class UserApi {
@@ -19,7 +20,6 @@ class UserApi {
     String bloodGroup,
   ) async {
     try {
-      // Create FormData object
       FormData formData = FormData.fromMap({
         'full_name': fullname,
         'email': email,
@@ -105,9 +105,11 @@ class UserApi {
     }
   }
 
-  static Future<DiognisticDetailModel?> diognosticCenterDetails(String diagnosticId) async {
+  static Future<DiognisticDetailModel?> diognosticCenterDetails(
+      String diagnosticId) async {
     try {
-      Response response = await ApiClient.get('api/diagnostic-centre-detail/${diagnosticId}');
+      Response response =
+          await ApiClient.get('api/diagnostic-centre-detail/${diagnosticId}');
       print('response:${response}');
       if (response.statusCode == 200) {
         final jsonResponse = response.data;
@@ -121,4 +123,5 @@ class UserApi {
       return null;
     }
   }
+
 }
