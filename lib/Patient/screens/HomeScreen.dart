@@ -216,7 +216,7 @@ class _HomescreenState extends State<Homescreen> {
                             context,
                             MaterialPageRoute(
                             builder: (context) =>
-                            alltests(lat_lang:lat_lang,catId: category?.id??'',),
+                            alltests(lat_lang:lat_lang,catId: category?.id??'',catName: category?.categoryName??'',),
                         ));
                       },
                       child: _buildCategoryItem(
@@ -319,7 +319,7 @@ class _HomescreenState extends State<Homescreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            alltests(lat_lang:lat_lang??'',catId: ''), // Adjust the index as needed
+                            alltests(lat_lang:lat_lang??'',catId: '',catName: '',), // Adjust the index as needed
                       ),
                     );
                   },

@@ -35,14 +35,16 @@ class VendorRegisterCubit extends Cubit<RegisterState> {
         registrationNumber,
       );
       if (vendor_registor != null) {
-        emit(RegisterSuccessState('${vendor_registor.settings?.status}'));
+        if (vendor_registor.settings?.success == 1) {
+          emit(RegisterSuccessState('${vendor_registor.settings?.success}'));
+        } else {
+          emit(RegisterSuccessState('${vendor_registor.settings?.message}'));
+        }
       } else {
-        emit(RegisterError('${vendor_registor?.settings?.message}'
-
-        ));
+        emit(RegisterError('${vendor_registor?.settings?.message}'));
       }
     } catch (e) {
-      emit(RegisterError( '${e}'));
+      emit(RegisterError('${e}'));
     }
   }
 }

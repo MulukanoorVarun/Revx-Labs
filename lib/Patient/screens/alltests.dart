@@ -9,7 +9,8 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 class alltests extends StatefulWidget {
   String lat_lang;
   String catId;
-  alltests({super.key,required this.lat_lang, required this.catId});
+  String catName;
+  alltests({super.key,required this.lat_lang, required this.catId,required this.catName});
 
   @override
   State<alltests> createState() => _alltestsState();
@@ -37,9 +38,8 @@ class _alltestsState extends State<alltests> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "All Tests",
-                style: TextStyle(
+              Text(widget.catName.isNotEmpty?widget.catName:'All Tests',
+          style: TextStyle(
                   color: Color(0xff24AEB1),
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -48,7 +48,7 @@ class _alltestsState extends State<alltests> {
               ),
             ],
           ),
-          actions: [
+          actions: [widget.catName.isNotEmpty?Container():
             Padding(
               padding: const EdgeInsets.only(right: 15.0),
               child: Image(
@@ -67,101 +67,103 @@ class _alltestsState extends State<alltests> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white, // Background color of the search box
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Color(0xffDADADA)) // Rounded corners
+              if(widget.catName.isEmpty)...[
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white, // Background color of the search box
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Color(0xffDADADA)) // Rounded corners
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Search for lab tests (CBP, X-Ray..)",
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Poppins",
+                          color: Color(0xffb6b6b6)),
+                      border: InputBorder.none,
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                      prefixIcon: Icon(Icons.search, color: Color(0xff949494)),
                     ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Search for lab tests (CBP, X-Ray..)",
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontFamily: "Poppins",
-                        color: Color(0xffb6b6b6)),
-                    border: InputBorder.none,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                    prefixIcon: Icon(Icons.search, color: Color(0xff949494)),
                   ),
                 ),
-              ),
-              SizedBox(height: 30),
-              // Space between the search field and product grid
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xff27BDBE), width: 1),
-                ),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isLabTestSelected = true;
-                        });
-                      },
-                      child: Container(
-                        width: w * 0.45,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: isLabTestSelected
-                              ? const Color(0xff27BDBE)
-                              : Colors.transparent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Labs Tests",
-                            style: TextStyle(
-                              color: isLabTestSelected
-                                  ? Colors.white
-                                  : const Color(0xff27BDBE),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Poppins",
+                SizedBox(height: 30),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: const Color(0xff27BDBE), width: 1),
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isLabTestSelected = true;
+                          });
+                        },
+                        child: Container(
+                          width: w * 0.45,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: isLabTestSelected
+                                ? const Color(0xff27BDBE)
+                                : Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Labs Tests",
+                              style: TextStyle(
+                                color: isLabTestSelected
+                                    ? Colors.white
+                                    : const Color(0xff27BDBE),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isLabTestSelected = false;
-                        });
-                        context.read<ConditionCubit>().fetchConditionBased();
-                      },
-                      child: Container(
-                        width: w * 0.465,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: !isLabTestSelected
-                              ? const Color(0xff27BDBE)
-                              : Colors.transparent,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Condition based",
-                            style: TextStyle(
-                              color: !isLabTestSelected
-                                  ? Colors.white
-                                  : const Color(0xff27BDBE),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Poppins",
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isLabTestSelected = false;
+                          });
+                          context.read<ConditionCubit>().fetchConditionBased();
+                        },
+                        child: Container(
+                          width: w * 0.465,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: !isLabTestSelected
+                                ? const Color(0xff27BDBE)
+                                : Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Condition based",
+                              style: TextStyle(
+                                color: !isLabTestSelected
+                                    ? Colors.white
+                                    : const Color(0xff27BDBE),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
+
               const SizedBox(height: 20),
               if (isLabTestSelected) ...[
                 BlocBuilder<TestCubit, TestState>(builder: (context, state) {

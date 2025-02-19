@@ -195,13 +195,14 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
       body: BlocConsumer<VendorRegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccessState) {
-            if (state.message =='1') {
+            if (state.message == '1') {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LogInWithEmail()));
+            } else {
+              CustomSnackBar.show(context, state.message ?? '');
             }
           } else if (state is RegisterError) {
-            CustomSnackBar.show(context, state.message??'');
-
+            CustomSnackBar.show(context, state.message ?? '');
           }
         },
         builder: (context, state) {

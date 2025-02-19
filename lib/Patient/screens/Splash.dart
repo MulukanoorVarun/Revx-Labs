@@ -8,6 +8,7 @@ import 'package:revxpharma/Patient/screens/Dashboard.dart';
 import 'package:revxpharma/Patient/screens/Onboard1.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
+import 'package:revxpharma/Vendor/Screens/VendorDashBoard.dart';
 
 import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
@@ -50,16 +51,19 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   String Status1 = '';
   String Token = '';
   bool permissions_granted = false;
+  bool Vendor=false;
 
   void fetchDetails() async {
     var status = await PreferenceService().getString('on_boarding');
     var status1 = await PreferenceService().getString('on_boarding1');
     var token = await PreferenceService().getString('access_token');
+    var vendor = await PreferenceService().getBoolean('diognostic');
 
     setState(() {
       Status = status ?? '';
       Status1 = status1 ?? '';
       Token = token ?? '';
+      Vendor = vendor ?? false ;
     });
   }
 
@@ -110,7 +114,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                                 ? MyPermission()
                                 : Token == ''
                                     ? LogInWithEmail()
-                                    : Dashboard()),
+                                    : Vendor==true?VendorDashboard():Dashboard()),
               );
             });
           } else if (state is InternetStatusLostState) {

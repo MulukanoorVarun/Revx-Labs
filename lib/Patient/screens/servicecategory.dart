@@ -69,7 +69,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    alltests(lat_lang:'',catId: item?.id??'',),
+                                    alltests(lat_lang:'',catId: item?.id??'',catName: item?.categoryName??'',),
                               ));
                         },
                         child: Container(

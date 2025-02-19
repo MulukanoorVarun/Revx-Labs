@@ -81,6 +81,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
             PreferenceService().saveString('access_token', accessToken);
             PreferenceService().saveString('refresh_token', refreshToken);
             PreferenceService().saveInt('expiry_time', expiryTime);
+            PreferenceService().saveBool('diognostic', true);
 
             AuthService.saveTokens(accessToken, refreshToken, expiryTime);
             Navigator.pushReplacement(
