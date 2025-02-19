@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:revxpharma/Models/SuccessModel.dart';
+import 'package:revxpharma/data/api_routes/VendorRemoteDataSource.dart';
 import 'package:revxpharma/data/api_routes/remote_data_source.dart';
 
 abstract class VendorRegisterRepository {
@@ -18,7 +19,7 @@ abstract class VendorRegisterRepository {
 }
 
 class VendorRegisterImpl extends VendorRegisterRepository {
-  RemoteDataSource remoteDataSource;
+  VendorRemoteDataSource remoteDataSource;
   VendorRegisterImpl({required this.remoteDataSource});
   @override
   Future<SuccessModel?> postDiognosticRegister(

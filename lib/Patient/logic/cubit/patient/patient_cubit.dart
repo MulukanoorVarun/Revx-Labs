@@ -26,10 +26,10 @@ class PatientCubit extends Cubit<PatientState> {
   }
 
   // Add a new patient
-  Future<void> addPatient() async {
+  Future<void> addPatient(Map<String, dynamic> patientData) async {
     emit(PatientLoadingState());
     try {
-      var response  = await patientRepository.addPatient();
+      var response  = await patientRepository.addPatient(patientData);
       if (response != null) {
         emit(PatientSuccessState(message: 'Patient added successfully.'));
       } else {
@@ -41,10 +41,10 @@ class PatientCubit extends Cubit<PatientState> {
   }
 
   // Edit an existing patient
-  Future<void> editPatient() async {
+  Future<void> editPatient(Map<String, dynamic> patientData,id) async {
     emit(PatientLoadingState());
     try {
-      var response = await patientRepository.editPatient();
+      var response = await patientRepository.editPatient(patientData,id);
       if (response != null) {
         emit(PatientSuccessState(message: 'Patient edited successfully.'));
       } else {
@@ -56,10 +56,10 @@ class PatientCubit extends Cubit<PatientState> {
   }
 
   // Delete a patient
-  Future<void> deletePatient() async {
+  Future<void> deletePatient(id) async {
     emit(PatientLoadingState());
     try {
-      var response  = await patientRepository.deletePatient();
+      var response  = await patientRepository.deletePatient(id);
       if (response != null) {
         emit(PatientSuccessState(message: 'Patient deleted successfully.'));
       } else {

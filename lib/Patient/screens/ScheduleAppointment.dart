@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:revxpharma/Patient/screens/AddPatientScreen.dart';
 import '../../Components/ShakeWidget.dart';
 import 'Appointment.dart';
 
@@ -89,7 +90,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     super.initState();
   }
 
-  void _validFields() {}
+
 
   @override
   Widget build(BuildContext context) {
@@ -132,14 +133,21 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                         fontSize: 16),
                   ),
                   Spacer(),
-                  Text(
-                    "Add more",
-                    style: TextStyle(
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPatientScreen(type: "add",)));
+                    },
+                    child: Text(
+                      "Add more",
+                      style: TextStyle(
                         color: Color(0xff1A1A1A),
                         fontWeight: FontWeight.w600,
                         fontFamily: "Poppins",
-                        fontSize: 14),
-                  ),
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+
                 ],
               ),
               SizedBox(
@@ -462,6 +470,50 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
           hintText: hintText,
           keyboardType: TextInputType.datetime,
         ),
+      ),
+    );
+  }
+}
+
+// Reusable CustomTextField Widget
+class CustomTextField extends StatelessWidget {
+  final TextEditingController? controller;
+  final String labelText;
+  final bool readOnly;
+  final Widget? suffixIcon;
+  final String? Function(String?)? validator;
+  final TextInputType keyboardType;
+  final String? initialValue;
+  final VoidCallback? onTap;
+
+  const CustomTextField({
+    Key? key,
+    this.controller,
+    required this.labelText,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.validator,
+    this.keyboardType = TextInputType.text,
+    this.initialValue,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: TextFormField(
+        controller: controller,
+        initialValue: initialValue,
+        readOnly: readOnly,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: const OutlineInputBorder(),
+          suffixIcon: suffixIcon,
+        ),
+        validator: validator,
+        onTap: onTap,
       ),
     );
   }

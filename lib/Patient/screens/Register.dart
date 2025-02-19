@@ -44,7 +44,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
     );
-
     if (pickedDate != null) {
       setState(() {
         _dob.text = DateFormat('yyyy-MM-dd').format(pickedDate);

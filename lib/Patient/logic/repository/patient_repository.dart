@@ -5,9 +5,9 @@ import '../../../data/api_routes/remote_data_source.dart';
 
 abstract class PatientRepository {
   Future<PatientsListModel?> getPatients();
-  Future<SuccessModel?> addPatient();
-  Future<SuccessModel?> editPatient();
-  Future<SuccessModel?> deletePatient();
+  Future<SuccessModel?> addPatient(Map<String, dynamic> patientData);
+  Future<SuccessModel?> editPatient(Map<String, dynamic> patientData,id);
+  Future<SuccessModel?> deletePatient(id);
 }
 
 class PatientRepositoryImpl implements PatientRepository {
@@ -21,19 +21,19 @@ class PatientRepositoryImpl implements PatientRepository {
   }
 
   @override
-  Future<SuccessModel?> addPatient() async {
-    return await remoteDataSource.AddPatient();
+  Future<SuccessModel?> addPatient(Map<String, dynamic> patientData) async {
+    return await remoteDataSource.AddPatient(patientData);
   }
 
 
   @override
-  Future<SuccessModel?> editPatient() async {
-    return await remoteDataSource.UpdatePatient();
+  Future<SuccessModel?> editPatient(Map<String, dynamic> patientData,id) async {
+    return await remoteDataSource.UpdatePatient(patientData,id);
   }
 
 
   @override
-  Future<SuccessModel?> deletePatient() async {
-    return await remoteDataSource.DeletePatient();
+  Future<SuccessModel?> deletePatient(id) async {
+    return await remoteDataSource.DeletePatient(id);
   }
 }
