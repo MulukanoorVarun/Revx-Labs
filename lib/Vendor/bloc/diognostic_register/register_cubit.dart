@@ -36,7 +36,6 @@ class VendorRegisterCubit extends Cubit<RegisterState> {
       );
       if (vendor_registor != null) {
         emit(RegisterSuccessState('${vendor_registor.settings?.status}'));
-
       } else {
         emit(RegisterError('${vendor_registor?.settings?.message}'
 

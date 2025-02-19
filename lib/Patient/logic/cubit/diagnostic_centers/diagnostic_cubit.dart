@@ -10,8 +10,12 @@ class DiagnosticCentersCubit extends Cubit<DiagnosticCentersState> {
   Future<void> fetchDiagnosticCenters(latlng) async {
     emit(DiagnosticCentersLoading());
     try {
-      final diagnosticCenters = await diagnosticCentersRepository.getDiagnosticCenters(latlng); // ✅ Correct repository method
-      emit(DiagnosticCentersLoaded(diagnosticCenters!));
+      final diagnosticCenters = await diagnosticCentersRepository.getDiagnosticCenters(latlng);
+      if(diagnosticCenters!=null){
+        emit(DiagnosticCentersLoaded(diagnosticCenters));
+      }else{
+        emit(DiagnosticCentersError("Failed to fetch diagnostic centers"));
+      }
     } catch (e) {
       emit(DiagnosticCentersError("Failed to fetch diagnostic centers"));
     }

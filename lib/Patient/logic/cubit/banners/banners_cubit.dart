@@ -10,8 +10,12 @@ class BannersCubit extends Cubit<BannerState> {
   Future<void> fetchBanners() async {
     emit(BannerLoading());
     try {
-      final banners = await bannersRepository.getBanners(); // ✅ Correct method call
-      emit(BannerLoaded(banners!));
+      final banners = await bannersRepository.getBanners();
+      if(banners!=null){
+        emit(BannerLoaded(banners));
+      }else{
+        emit(BannerError("Failed to fetch banners"));
+      }
     } catch (e) {
       emit(BannerError("Failed to fetch banners"));
     }

@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
 
 import '../../Components/ShakeWidget.dart';
@@ -17,7 +18,6 @@ class AddPatientScreen extends StatefulWidget {
 }
 
 class _AddPatientScreenState extends State<AddPatientScreen> {
-  final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
@@ -77,9 +77,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           (value) => _validateField(value, "Blood Group"));
       _validateAndSetError("gender", selectedGender ?? "",
           (value) => _validateField(value, "Gender"));
-
-      _validateAndSetError("gender", selectedGender ?? "",
-              (value) => _validateField(value, "Gender"));
+      _validateAndSetError("dob", _dobController.text ?? "",
+              (value) => _validateField(value, "DOB"));
     });
     if (validationErrors.isEmpty) {
       onAddPatient(widget.type);
@@ -146,13 +145,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           listener: (context, state) {
             if (state is PatientLoaded) {
               if(state.successModel.settings?.success==1){
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.successModel.settings?.message??"")),
-                );
+                CustomSnackBar.show(context, "Patient Added Successfully!");
+                Navigator.pop(context);
               }else{
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.successModel.settings?.message??"")),
-                );
+                CustomSnackBar.show(context,state.successModel.settings?.message??"");
               }
             } else if (state is PatientErrorState) {
               // Show error message
@@ -311,7 +307,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           elevation: 3, // Slight shadow effect
                         ),
                         child: (state is PatientLoadingState) ?
-                        Center(child: CircularProgressIndicator(),):
+                        Center(child: CircularProgressIndicator(strokeWidth: 1,color: Colors.white,),):
                         Text(
                           'Submit',
                           style: TextStyle(
@@ -362,40 +358,36 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
+        TextFormField(
+          controller: controller,
+          cursorColor: Colors.black,
+          keyboardType: keyboardType,
           onTap: isDatePicker
               ? () => _selectDate(context) // Open date picker if DOB
               : null,
-          child: AbsorbPointer( // Prevents typing in DOB field
-            child: TextFormField(
-              controller: controller,
-              cursorColor: Colors.black,
-              keyboardType: keyboardType,
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ),
-              decoration: InputDecoration(
-                hintText: hintText,
-                hintStyle: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xffAFAFAF),
-                ),
-                filled: true,
-                fillColor: const Color(0xffffffff),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
-                ),
-              ),
-              onChanged: (value) => _validateAndSetError(fieldKey, value, validator),
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w500,
+            fontSize: 15,
+          ),
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              color: Color(0xffAFAFAF),
+            ),
+            filled: true,
+            fillColor: const Color(0xffffffff),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: const BorderSide(width: 1, color: Color(0xffCDE2FB)),
             ),
           ),
+          onChanged: (value) => _validateAndSetError(fieldKey, value, validator),
         ),
         Visibility(
           visible: validationErrors.containsKey(fieldKey),

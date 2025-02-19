@@ -31,7 +31,7 @@ class PatientCubit extends Cubit<PatientState> {
     try {
       var response  = await patientRepository.addPatient(patientData);
       if (response != null) {
-        emit(PatientSuccessState(message: 'Patient added successfully.'));
+        emit(PatientLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to add patient.'));
       }

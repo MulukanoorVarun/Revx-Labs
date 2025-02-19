@@ -133,7 +133,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   Future<SuccessModel?>AddPatient(Map<String, dynamic> patientData) async {
     try {
-      Response response = await ApiClient.post('${PatientRemoteUrls.addPatient}');
+      Response response = await ApiClient.post(PatientRemoteUrls.addPatient, data: patientData);
       if (response.statusCode == 200) {
         print('AddPatient:${response.data}');
         return SuccessModel.fromJson(response.data);
