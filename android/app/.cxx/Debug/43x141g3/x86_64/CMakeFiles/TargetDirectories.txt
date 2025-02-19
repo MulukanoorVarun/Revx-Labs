@@ -1,0 +1,2 @@
+C:/Users/Chara/studioProjects/Revx-Labs/android/app/.cxx/Debug/43x141g3/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Chara/studioProjects/Revx-Labs/android/app/.cxx/Debug/43x141g3/x86_64/CMakeFiles/rebuild_cache.dir
