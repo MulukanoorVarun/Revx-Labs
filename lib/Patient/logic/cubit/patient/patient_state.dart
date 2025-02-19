@@ -1,6 +1,8 @@
 // patient_state.dart
 import 'package:revxpharma/Models/SuccessModel.dart';
 
+import '../../../../Models/PatientsListModel.dart';
+
 abstract class PatientState {}
 
 class PatientInitialState extends PatientState {}
@@ -8,7 +10,7 @@ class PatientInitialState extends PatientState {}
 class PatientLoadingState extends PatientState {}
 
 class PatientSuccessState extends PatientState {
-  final String message;  // A message to represent success
+  final String message;
 
   PatientSuccessState({required this.message});
 }
@@ -20,8 +22,15 @@ class PatientLoaded extends PatientState {
   List<Object?> get props => [successModel];
 }
 
+class PatientsListLoaded extends PatientState {
+  final PatientsListModel patientsListModel;
+  PatientsListLoaded(this.patientsListModel);
+  @override
+  List<Object?> get props => [patientsListModel];
+}
+
 class PatientErrorState extends PatientState {
-  final String errorMessage;  // Error message from the failed operation
+  final String errorMessage;
 
   PatientErrorState({required this.errorMessage});
 }

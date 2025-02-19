@@ -34,6 +34,7 @@ class Data {
   String? diagnosticCentre;
   String? price;
   String? distance;
+  bool? exist_in_cart;
   int? noOfTests;
   List<String>? subTests;
 
@@ -44,6 +45,7 @@ class Data {
         this.price,
         this.distance,
         this.noOfTests,
+        this.exist_in_cart,
         this.subTests});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class Data {
     price = json['price'];
     distance = json['distance'];
     noOfTests = json['no_of_tests'];
+    exist_in_cart = json['exist_in_cart'];
     subTests = json['sub_tests'].cast<String>();
   }
 
@@ -65,6 +68,7 @@ class Data {
     data['distance'] = this.distance;
     data['no_of_tests'] = this.noOfTests;
     data['sub_tests'] = this.subTests;
+    data['exist_in_cart'] = this.exist_in_cart;
     return data;
   }
 }

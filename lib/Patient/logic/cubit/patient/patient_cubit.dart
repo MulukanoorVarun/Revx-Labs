@@ -14,9 +14,9 @@ class PatientCubit extends Cubit<PatientState> {
   Future<void> getPatients() async {
     emit(PatientLoadingState());
     try {
-      PatientsListModel? patients = await patientRepository.getPatients();
+      final patients = await patientRepository.getPatients();
       if (patients != null) {
-        emit(PatientSuccessState(message: 'Patients fetched successfully.'));
+        emit(PatientsListLoaded(patients));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to fetch patients.'));
       }
@@ -46,7 +46,7 @@ class PatientCubit extends Cubit<PatientState> {
     try {
       var response = await patientRepository.editPatient(patientData,id);
       if (response != null) {
-        emit(PatientSuccessState(message: 'Patient edited successfully.'));
+        emit(PatientLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to edit patient.'));
       }
@@ -61,7 +61,7 @@ class PatientCubit extends Cubit<PatientState> {
     try {
       var response  = await patientRepository.deletePatient(id);
       if (response != null) {
-        emit(PatientSuccessState(message: 'Patient deleted successfully.'));
+        emit(PatientLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to delete patient.'));
       }

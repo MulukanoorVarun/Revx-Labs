@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
+import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 
+import '../../Components/CustomSnackBar.dart';
+
 class alltests extends StatefulWidget {
   String lat_lang;
   String catId;
   String catName;
-  alltests({super.key,required this.lat_lang, required this.catId,required this.catName});
+  alltests(
+      {super.key,
+      required this.lat_lang,
+      required this.catId,
+      required this.catName});
 
   @override
   State<alltests> createState() => _alltestsState();
@@ -19,7 +27,9 @@ class alltests extends StatefulWidget {
 class _alltestsState extends State<alltests> {
   @override
   void initState() {
-    context.read<TestCubit>().fetchTestList(widget.lat_lang ?? '', widget.catId ?? '');
+    context
+        .read<TestCubit>()
+        .fetchTestList(widget.lat_lang ?? '', widget.catId ?? '');
     super.initState();
   }
 
@@ -35,28 +45,26 @@ class _alltestsState extends State<alltests> {
               onPressed: () {
                 Navigator.pop(context);
               }),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(widget.catName.isNotEmpty?widget.catName:'All Tests',
-          style: TextStyle(
-                  color: Color(0xff24AEB1),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Poppins",
-                ),
-              ),
-            ],
+          title: Text(
+            widget.catName.isNotEmpty ? widget.catName : 'All Tests',
+            style: TextStyle(
+              color: Color(0xff24AEB1),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              fontFamily: "Poppins",
+            ),
           ),
-          actions: [widget.catName.isNotEmpty?Container():
-            Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: Image(
-                image: AssetImage("assets/filter.png"),
-                width: 16,
-                height: 18,
-              ),
-            )
+          actions: [
+            widget.catName.isNotEmpty
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Image(
+                      image: AssetImage("assets/filter.png"),
+                      width: 16,
+                      height: 18,
+                    ),
+                  )
           ],
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -67,13 +75,14 @@ class _alltestsState extends State<alltests> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              if(widget.catName.isEmpty)...[
+              if (widget.catName.isEmpty) ...[
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.white, // Background color of the search box
                       borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xffDADADA)) // Rounded corners
-                  ),
+                      border: Border.all(
+                          color: Color(0xffDADADA)) // Rounded corners
+                      ),
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: "Search for lab tests (CBP, X-Ray..)",
@@ -83,7 +92,7 @@ class _alltestsState extends State<alltests> {
                           color: Color(0xffb6b6b6)),
                       border: InputBorder.none,
                       contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                       prefixIcon: Icon(Icons.search, color: Color(0xff949494)),
                     ),
                   ),
@@ -92,7 +101,8 @@ class _alltestsState extends State<alltests> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xff27BDBE), width: 1),
+                    border:
+                        Border.all(color: const Color(0xff27BDBE), width: 1),
                   ),
                   child: Row(
                     children: [
@@ -163,7 +173,6 @@ class _alltestsState extends State<alltests> {
                   ),
                 ),
               ],
-
               const SizedBox(height: 20),
               if (isLabTestSelected) ...[
                 BlocBuilder<TestCubit, TestState>(builder: (context, state) {
@@ -172,136 +181,155 @@ class _alltestsState extends State<alltests> {
                   } else if (state is TestStateLoaded) {
                     return Expanded(
                         child: ListView.builder(
-                          itemCount: state.testModel.data?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            final lab_tests = state.testModel.data?[index];
-                            print('lab_tests: $lab_tests');
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xff949494), width: 1),
-                                borderRadius: BorderRadius.circular(10),
+                      itemCount: state.testModel.data?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        final lab_tests = state.testModel.data?[index];
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 16),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Color(0xff949494), width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                lab_tests?.testName ?? '',
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Poppins",
+                                  color: Colors.black,
+                                ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    lab_tests?.testName ?? '',
-                                    maxLines: 1,
+                                    '₹ ${lab_tests!.price.toString()}/-',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w500,
                                       fontFamily: "Poppins",
                                       color: Colors.black,
                                     ),
                                   ),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '₹ ${lab_tests!.price.toString()}/-',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "Poppins",
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(horizontal: 30),
-                                          backgroundColor: Colors.white,
-                                          side: BorderSide(color: Color(0xff27BDBE)),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                                          ),
-                                            visualDensity: VisualDensity.compact
-                                        ),
-                                        child: Text(
-                                          'View Detail',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Poppins",
-                                            color: Color(0xff27BDBE),
-                                          ),
-                                        ),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric( horizontal: 25),
-                                          backgroundColor: Color(0xff24AEB1),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(30),
-                                          ),
-                                          visualDensity: VisualDensity.compact
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'Add Test',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Poppins',
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            Icon(
-                                              Icons.add_circle_outline,
-                                              size: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(color: Color(0xffD40000)),
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Expanded(
-                                          child: Text(
-                                            '${lab_tests.diagnosticCentre} - ${lab_tests.distance} away',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins",
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                 ],
                               ),
-                            );
-                          },
-                        )
-                    );
+                              SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(horizontal: 30),
+                                        backgroundColor: Colors.white,
+                                        side: BorderSide(
+                                            color: Color(0xff27BDBE)),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30)),
+                                        ),
+                                        visualDensity: VisualDensity.compact),
+                                    child: Text(
+                                      'View Detail',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins",
+                                        color: Color(0xff27BDBE),
+                                      ),
+                                    ),
+                                  ),
+                                  BlocConsumer<CartCubit, CartState>(listener: (context, state) {
+                                    if (state is CartSuccessState) {
+                                    } else if (state is CartErrorState) {
+
+                                    }
+                                    },
+                                      builder: (context, state) {
+                                    return ElevatedButton(
+                                      onPressed: () {
+                                        if(lab_tests.exist_in_cart ??false){
+                                          context.read<CartCubit>().removeFromCart({"test": "${lab_tests.id}"});
+                                        }else{
+                                          context.read<CartCubit>().addToCart({"test": "${lab_tests.id}"});
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 25),
+                                          backgroundColor: Color(0xff24AEB1),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          visualDensity: VisualDensity.compact),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Add Test',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: 'Poppins',
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(width: 8),
+                                          Icon(
+                                            Icons.add_circle_outline,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                decoration:
+                                    BoxDecoration(color: Color(0xffD40000)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        '${lab_tests.diagnosticCentre} - ${lab_tests.distance} away',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins",
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ));
                   } else if (state is TestStateError) {
                     return Center(child: Text("Error loading data"));
                   }
@@ -314,65 +342,69 @@ class _alltestsState extends State<alltests> {
                       return _shimmerList1();
                     } else if (Conditionstate is ConditionBasedLoaded) {
                       return Expanded(
-                        child:ListView.builder(
-                          itemCount: Conditionstate.conditionBasedModel.data?.length,
-                          itemBuilder: (context, index) {
-                            final items = Conditionstate.conditionBasedModel.data?[index];
-                            return GestureDetector(
-                              onTap: () {
-                                // Handle card click, navigate or perform an action
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey, width: 1),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Product name and price
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            items?.name ?? '',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
+                          child: ListView.builder(
+                        itemCount:
+                            Conditionstate.conditionBasedModel.data?.length,
+                        itemBuilder: (context, index) {
+                          final items =
+                              Conditionstate.conditionBasedModel.data?[index];
+                          return GestureDetector(
+                            onTap: () {
+                              // Handle card click, navigate or perform an action
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // Product name and price
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          items?.name ?? '',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins",
+                                            color: Colors.black,
                                           ),
-                                          const SizedBox(height: 6),
-                                          // Space between product name and price
-                                          Text(
-                                            ('${items?.testsAvailable.toString() ?? ''} Tests Available'),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins",
-                                              color: Color(0xff808080),
-                                            ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        // Space between product name and price
+                                        Text(
+                                          ('${items?.testsAvailable.toString() ?? ''} Tests Available'),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Poppins",
+                                            color: Color(0xff808080),
                                           ),
-                                        ],
-                                      ),
-                                      // Dummy image instead of noOfTests
-                                      Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        size: 16,
-                                        weight: 1,
-                                      ),
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Dummy image instead of noOfTests
+                                    Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 16,
+                                      weight: 1,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        )
-                      );
+                            ),
+                          );
+                        },
+                      ));
                     } else if (Conditionstate is ConditionBasedError) {
                       return Center(
                           child: Text("Error loading ConditionBaseddata"));
@@ -391,7 +423,7 @@ class _alltestsState extends State<alltests> {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return Expanded(
-      child: ListView.builder(
+        child: ListView.builder(
       itemCount: 10,
       itemBuilder: (context, index) {
         return Container(
@@ -422,8 +454,7 @@ class _alltestsState extends State<alltests> {
           ),
         );
       },
-    )
-    );
+    ));
   }
 
   Widget _shimmerList1() {
@@ -431,30 +462,29 @@ class _alltestsState extends State<alltests> {
     double h = MediaQuery.of(context).size.height;
     return Expanded(
         child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      shimmerText(120, 12, context),
-                      SizedBox(height: 10),
-                      shimmerText(120, 12, context),
-                    ],
-                  ),
-                  shimmerContainer(10, 10, context),
+                  shimmerText(120, 12, context),
+                  SizedBox(height: 10),
+                  shimmerText(120, 12, context),
                 ],
               ),
-            );
-          },
-        )
-    );
+              shimmerContainer(10, 10, context),
+            ],
+          ),
+        );
+      },
+    ));
   }
 }
