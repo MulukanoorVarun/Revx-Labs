@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:revxpharma/Vendor/VendorModel/VendorGetTestsModel.dart';
 import 'package:revxpharma/data/api_routes/vendor_remote_urls.dart';
 import '../../Components/debugPrint.dart';
 import '../../Models/SuccessModel.dart';
@@ -17,6 +18,7 @@ abstract class VendorRemoteDataSource {
       String endTime,
       String registrationNumber,
       );
+  Future<VendorGetTestsModel?> DiagnosticgetTests();
 }
 
 class VendorRemoteDataSourceImpl implements VendorRemoteDataSource {
@@ -41,7 +43,21 @@ class VendorRemoteDataSourceImpl implements VendorRemoteDataSource {
       }
       return null;
     } catch (e) {
-      print("Error DeletePatient data: $e");
+      print("Error postDiognosticRegister data: $e");
+      return null;
+    }
+  }
+
+  Future<VendorGetTestsModel?> DiagnosticgetTests() async {
+    try{
+      Response response = await ApiClient.get('${VendorRemoteUrls.vendorGetTests}');
+      if(response.statusCode==200){
+        LogHelper.printLog('DiagnosticgetTests', response.data);
+        return VendorGetTestsModel.fromJson(response.data);
+      }
+      return null;
+    }catch(e){
+      print("Error DiagnosticgetTests data: $e");
       return null;
     }
   }

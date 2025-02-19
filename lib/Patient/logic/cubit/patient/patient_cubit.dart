@@ -8,7 +8,7 @@ import '../../repository/patient_repository.dart';
 class PatientCubit extends Cubit<PatientState> {
   final PatientRepository patientRepository;
 
-  PatientCubit({required this.patientRepository}) : super(PatientInitialState());
+  PatientCubit(this.patientRepository) : super(PatientInitialState());
 
   // Fetch patients
   Future<void> getPatients() async {

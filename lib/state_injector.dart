@@ -15,6 +15,9 @@ import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.
 import 'package:revxpharma/Patient/logic/repository/banners_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_repository.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_repository.dart';
+import 'package:revxpharma/data/api_routes/VendorRemoteDataSource.dart';
 import 'Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'Patient/logic/repository/category_repository.dart';
 import 'data/api_routes/remote_data_source.dart';
@@ -25,6 +28,12 @@ class StateInjector {
       create: (context) =>
           RemoteDataSourceImpl(), // Ensure this is correctly implemented
     ),
+
+    RepositoryProvider<VendorRemoteDataSource>(
+      create: (context) =>
+          VendorRemoteDataSourceImpl(), // Ensure this is correctly implemented
+    ),
+
     RepositoryProvider<CategoryRepository>(
       create: (context) => CategoryRepositoryImpl(
         remoteDataSource: context.read(),
@@ -56,12 +65,25 @@ class StateInjector {
         remoteDataSource: context.read(),
       ),
     ),
+    RepositoryProvider<PatientRepository>(
+      create: (context) => PatientRepositoryImpl(
+        remoteDataSource: context.read(),
+      ),
+    ),
 
     RepositoryProvider<PatientRepository>(
       create: (context) => PatientRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
+
+    RepositoryProvider<DiagnosticGetTestsRepositors>(
+      create: (context) => DiagnosticGetTestsImp(
+              vendorRemoteDataSource: context.read()
+          ),
+      ),
+
+
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -104,9 +126,12 @@ class StateInjector {
     BlocProvider<ConditionCubit>(
       create: (context) => ConditionCubit(context.read<ConditionRepository>()),
     ),
-
     BlocProvider<PatientCubit>(
-      create: (context) => PatientCubit(patientRepository: context.read<PatientRepository>()),
+      create: (context) => PatientCubit(context.read<PatientRepository>()),
+    ),
+    BlocProvider<DiagnosticGetTestsCubit>(
+      create: (context) =>
+          DiagnosticGetTestsCubit(context.read<DiagnosticGetTestsRepositors>()),
     ),
   ];
 }
