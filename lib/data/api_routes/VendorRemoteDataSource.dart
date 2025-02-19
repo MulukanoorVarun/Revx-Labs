@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:revxpharma/data/api_routes/vendor_remote_urls.dart';
-
+import '../../Components/debugPrint.dart';
 import '../../Models/SuccessModel.dart';
 import '../../Services/ApiClient.dart';
 
@@ -34,9 +34,9 @@ class VendorRemoteDataSourceImpl implements VendorRemoteDataSource {
       String registrationNumber,
       )async {
     try {
-      Response response = await ApiClient.delete('${VendorRemoteUrls.vendorRegister}');
+      Response response = await ApiClient.post('${VendorRemoteUrls.vendorRegister}');
       if (response.statusCode == 200) {
-        print('DeletePatient:${response.data}');
+        LogHelper.printLog('postDiognosticRegister', response.data);
         return SuccessModel.fromJson(response.data);
       }
       return null;
