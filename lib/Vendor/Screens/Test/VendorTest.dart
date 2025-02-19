@@ -20,11 +20,12 @@ class VendorTest extends StatefulWidget {
 class _VendorTestState extends State<VendorTest> {
   stt.SpeechToText _speechToText = stt.SpeechToText();
   bool _isListening = false;
-@override
+  @override
   void initState() {
-   context.read<DiagnosticGetTestsCubit>().getTests();
+    context.read<DiagnosticGetTestsCubit>().getTests();
     super.initState();
   }
+
   TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
   Future<void> _initializeSpeechToText() async {
@@ -204,15 +205,18 @@ class _VendorTestState extends State<VendorTest> {
                 ),
                 BlocBuilder<DiagnosticGetTestsCubit, DiagnosticGetTestsState>(
                   builder: (context, state) {
-                    if (state is DiagnosticGetTestsLoading) {
+                    if (state is DiagnosticTestsLoading) {
                       Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is DiagnosticGetTestsLoaded) {
+                    } else if (state is DiagnosticTestListLoaded) {
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: 3,
+                        itemCount: state.data.data?.length,
                         itemBuilder: (context, index) {
+                          final item = state.data.data?[index];
+                          print('item:${item}');
+
                           return Container(
                             margin: EdgeInsets.only(bottom: 10),
                             padding: EdgeInsets.symmetric(
@@ -235,7 +239,7 @@ class _VendorTestState extends State<VendorTest> {
                                       child: Text(
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        'Complete Blood Count (CBC)',
+                                        item?.testName ?? '',
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
                                           fontWeight: FontWeight.w600,
@@ -286,7 +290,7 @@ class _VendorTestState extends State<VendorTest> {
                                   width: w * 0.8,
                                   child: Text(
                                     overflow: TextOverflow.ellipsis,
-                                    'Category : Hematology',
+                                    'Category : ${item?.category ?? ''}',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w400,
@@ -301,14 +305,14 @@ class _VendorTestState extends State<VendorTest> {
                                 CustomAppButton(
                                     width: w * 0.65,
                                     height: h * 0.045,
-                                    text: 'Price : ₹ 1700.00/- ',
+                                    text: 'Price : ₹ ${item?.price ?? ''}0/- ',
                                     onPlusTap: () {})
                               ],
                             ),
                           );
                         },
                       );
-                    } else if (state is DiagnosticGetTestsError) {
+                    } else if (state is DiagnosticTestsError) {
                       return Center(child: Text(state.message));
                     }
                     return Center(child: Text("No Data"));

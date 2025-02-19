@@ -10,7 +10,7 @@ class PatientCubit extends Cubit<PatientState> {
 
   PatientCubit(this.patientRepository) : super(PatientInitialState());
 
-  // Fetch patients
+
   Future<void> getPatients() async {
     emit(PatientLoadingState());
     try {
@@ -25,7 +25,6 @@ class PatientCubit extends Cubit<PatientState> {
     }
   }
 
-  // Add a new patient
   Future<void> addPatient(Map<String, dynamic> patientData) async {
     emit(PatientLoadingState());
     try {
@@ -55,7 +54,6 @@ class PatientCubit extends Cubit<PatientState> {
     }
   }
 
-  // Delete a patient
   Future<void> deletePatient(id) async {
     emit(PatientLoadingState());
     try {

@@ -4,23 +4,32 @@ import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_
 
 class DiagnosticGetTestsCubit extends Cubit<DiagnosticGetTestsState> {
   DiagnosticGetTestsRepositors diagnosticGetTestsRepositors;
-  DiagnosticGetTestsCubit(this.diagnosticGetTestsRepositors)
-      : super(DiagnosticGetTestsIntially());
+  DiagnosticGetTestsCubit(this.diagnosticGetTestsRepositors) : super(DiagnosticTestsIntially());
 
   Future<void> getTests() async {
     final res = await diagnosticGetTestsRepositors.VendorgetTest();
-    emit(DiagnosticGetTestsLoading());
+    emit(DiagnosticTestsLoading());
     try {
       if (res != null) {
-        if (res.settings?.success == 1) {
-          emit(DiagnosticGetTestsLoaded(res));
-        } else {
-          emit(DiagnosticGetTestsError(res.settings?.message??''));
-        }
+        emit(DiagnosticTestListLoaded(res));
+      }else{
+        emit(DiagnosticTestsError(res?.settings?.message??''));
       }
-      emit(DiagnosticGetTestsError(res?.settings?.message??''));
     } catch (e) {
-      emit(DiagnosticGetTestsError(res?.settings?.message??''));
+      emit(DiagnosticTestsError(res?.settings?.message??''));
+    }
+  }
+  Future<void> delateTests(id)async{
+    final res= await diagnosticGetTestsRepositors.VendordelateTest(id);
+    emit(DiagnosticTestsLoading());
+    try{
+      if(res!=null){
+        emit(DiagnosticTestsLoaded(res));
+      }else{
+        emit(DiagnosticTestsError(res?.settings?.message??""));
+      }
+    }catch(e){
+      emit(DiagnosticTestsError(res?.settings?.message??''));
     }
   }
 }

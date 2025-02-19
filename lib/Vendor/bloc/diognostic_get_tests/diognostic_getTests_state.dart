@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:revxpharma/Models/SuccessModel.dart';
 import 'package:revxpharma/Vendor/VendorModel/VendorGetTestsModel.dart';
 
 abstract class DiagnosticGetTestsState extends Equatable {
@@ -6,19 +7,25 @@ abstract class DiagnosticGetTestsState extends Equatable {
   List<Object?> get props => [];
 }
 
-class DiagnosticGetTestsIntially extends DiagnosticGetTestsState {}
+class DiagnosticTestsIntially extends DiagnosticGetTestsState {}
 
-class DiagnosticGetTestsLoading extends DiagnosticGetTestsState {}
+class DiagnosticTestsLoading extends DiagnosticGetTestsState {}
 
-class DiagnosticGetTestsLoaded extends DiagnosticGetTestsState {
+class DiagnosticTestListLoaded extends DiagnosticGetTestsState {
+
   VendorGetTestsModel data;
-  DiagnosticGetTestsLoaded(this.data);
-
+  DiagnosticTestListLoaded(this.data);
   List<Object?> get props => [data];
 }
 
-class DiagnosticGetTestsError extends DiagnosticGetTestsState {
-  final String message;
-  DiagnosticGetTestsError(this.message);
 
+class DiagnosticTestsLoaded extends DiagnosticGetTestsState {
+  SuccessModel data;
+  DiagnosticTestsLoaded(this.data);
+  List<Object?> get props => [data];
+}
+
+class DiagnosticTestsError extends DiagnosticGetTestsState {
+  final String message;
+  DiagnosticTestsError(this.message);
 }
