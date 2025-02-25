@@ -4,12 +4,19 @@ abstract class CartState {}
 
 class CartInitialState extends CartState {}
 
-class CartLoadingState extends CartState {}
+class CartLoadingState extends CartState {
+  final String? testId;
+  CartLoadingState({this.testId});
+}
+
 
 class CartSuccessState extends CartState {
   final String message;
   final int cartCount;
-  CartSuccessState({required this.message, required this.cartCount});
+  final String? testId;
+  final bool? isAdded;
+
+  CartSuccessState({required this.message, required this.cartCount, this.testId, this.isAdded});
 }
 
 class CartLoaded extends CartState {

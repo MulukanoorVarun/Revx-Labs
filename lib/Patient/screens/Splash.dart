@@ -8,8 +8,6 @@ import 'package:revxpharma/Patient/screens/Dashboard.dart';
 import 'package:revxpharma/Patient/screens/Onboard1.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
-import 'package:revxpharma/Vendor/Screens/VendorDashBoard.dart';
-
 import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
 import 'OnBoarding.dart';
@@ -114,7 +112,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                                 ? MyPermission()
                                 : Token == ''
                                     ? LogInWithEmail()
-                                    : Vendor==true?VendorDashboard():Dashboard()),
+                                    : Dashboard()),
               );
             });
           } else if (state is InternetStatusLostState) {

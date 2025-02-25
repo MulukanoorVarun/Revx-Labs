@@ -141,9 +141,11 @@ class StateInjector {
       create: (context) =>
           DiagnosticGetTestsCubit(context.read<DiagnosticGetTestsRepositors>()),
     ),
-
     BlocProvider<CartCubit>(
-      create: (context) => CartCubit(cartRepository: context.read<CartRepository>()),
+      create: (context) => CartCubit(
+        cartRepository: context.read<CartRepository>(),
+        testCubit: context.read<TestCubit>(),  // Access existing TestCubit instance
+      ),
     ),
   ];
 }

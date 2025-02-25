@@ -34,7 +34,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<SuccessModel?> RemoveFromCart(id) async {
     try {
-      Response response = await ApiClient.delete(PatientRemoteUrls.removeCart);
+      Response response = await ApiClient.delete("${PatientRemoteUrls.removeCart}/${id}");
       if (response.statusCode == 200) {
         LogHelper.printLog('RemoveFromCart:',  response.data);
         return SuccessModel.fromJson(response.data);

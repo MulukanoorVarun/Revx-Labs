@@ -38,15 +38,16 @@ class Data {
   int? noOfTests;
   List<String>? subTests;
 
-  Data(
-      {this.id,
-        this.testName,
-        this.diagnosticCentre,
-        this.price,
-        this.distance,
-        this.noOfTests,
-        this.exist_in_cart,
-        this.subTests});
+  Data({
+    this.id,
+    this.testName,
+    this.diagnosticCentre,
+    this.price,
+    this.distance,
+    this.noOfTests,
+    this.exist_in_cart,
+    this.subTests,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -56,20 +57,43 @@ class Data {
     distance = json['distance'];
     noOfTests = json['no_of_tests'];
     exist_in_cart = json['exist_in_cart'];
-    subTests = json['sub_tests'].cast<String>();
+    subTests = json['sub_tests']?.cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['test_name'] = this.testName;
-    data['diagnostic_centre'] = this.diagnosticCentre;
-    data['price'] = this.price;
-    data['distance'] = this.distance;
-    data['no_of_tests'] = this.noOfTests;
-    data['sub_tests'] = this.subTests;
-    data['exist_in_cart'] = this.exist_in_cart;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['test_name'] = testName;
+    data['diagnostic_centre'] = diagnosticCentre;
+    data['price'] = price;
+    data['distance'] = distance;
+    data['no_of_tests'] = noOfTests;
+    data['sub_tests'] = subTests;
+    data['exist_in_cart'] = exist_in_cart;
     return data;
+  }
+
+  // ✅ CopyWith Method
+  Data copyWith({
+    String? id,
+    String? testName,
+    String? diagnosticCentre,
+    String? price,
+    String? distance,
+    bool? exist_in_cart,
+    int? noOfTests,
+    List<String>? subTests,
+  }) {
+    return Data(
+      id: id ?? this.id,
+      testName: testName ?? this.testName,
+      diagnosticCentre: diagnosticCentre ?? this.diagnosticCentre,
+      price: price ?? this.price,
+      distance: distance ?? this.distance,
+      exist_in_cart: exist_in_cart ?? this.exist_in_cart,
+      noOfTests: noOfTests ?? this.noOfTests,
+      subTests: subTests ?? this.subTests,
+    );
   }
 }
 

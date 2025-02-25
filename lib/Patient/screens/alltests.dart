@@ -175,166 +175,201 @@ class _alltestsState extends State<alltests> {
               ],
               const SizedBox(height: 20),
               if (isLabTestSelected) ...[
-                BlocBuilder<TestCubit, TestState>(builder: (context, state) {
-                  if (state is TestStateLoading) {
-                    return _shimmerList();
-                  } else if (state is TestStateLoaded) {
-                    return Expanded(
-                        child: ListView.builder(
-                      itemCount: state.testModel.data?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final lab_tests = state.testModel.data?[index];
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xff949494), width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                lab_tests?.testName ?? '',
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "Poppins",
-                                  color: Colors.black,
+                // Wrap the entire widget with a single BlocListener
+                BlocListener<CartCubit, CartState>(
+                  listener: (context, state) {
+                    if (state is CartSuccessState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message)),
+                      );
+                    } else if (state is CartErrorState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.errorMessage)),
+                      );
+                    }
+                  },
+                  child: BlocBuilder<TestCubit, TestState>(
+                    builder: (context, state) {
+                      if (state is TestStateLoading) {
+                        return _shimmerList();
+                      } else if (state is TestStateLoaded) {
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: state.testModel.data?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final labTests = state.testModel.data?[index];
+                              print("UI Cart Status: ${labTests?.exist_in_cart}");  // ✅ Should reflect correctly now
+                              return Container(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: const Color(0xff949494), width: 1),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '₹ ${lab_tests!.price.toString()}/-',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: "Poppins",
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                        padding: EdgeInsets.symmetric(horizontal: 30),
-                                        backgroundColor: Colors.white,
-                                        side: BorderSide(
-                                            color: Color(0xff27BDBE)),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                        ),
-                                        visualDensity: VisualDensity.compact),
-                                    child: Text(
-                                      'View Detail',
-                                      style: TextStyle(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Test Name
+                                    Text(
+                                      labTests?.testName ?? '',
+                                      maxLines: 1,
+                                      style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: "Poppins",
-                                        color: Color(0xff27BDBE),
+                                        color: Colors.black,
                                       ),
                                     ),
-                                  ),
-                                  BlocConsumer<CartCubit, CartState>(listener: (context, state) {
-                                    if (state is CartSuccessState) {
-                                    } else if (state is CartErrorState) {
+                                    const SizedBox(height: 8),
 
-                                    }
-                                    },
-                                      builder: (context, state) {
-                                    return ElevatedButton(
-                                      onPressed: () {
-                                        if(lab_tests.exist_in_cart ??false){
-                                          context.read<CartCubit>().removeFromCart({"test": "${lab_tests.id}"});
-                                        }else{
-                                          context.read<CartCubit>().addToCart({"test": "${lab_tests.id}"});
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 25),
-                                          backgroundColor: Color(0xff24AEB1),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
+                                    // Price
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '₹ ${labTests!.price}/-',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Poppins",
+                                            color: Colors.black,
                                           ),
-                                          visualDensity: VisualDensity.compact),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'Add Test',
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+
+                                    // Action Buttons
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            // View Details Button
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                                            backgroundColor: Colors.white,
+                                            side: const BorderSide(color: Color(0xff27BDBE)),
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                                            ),
+                                            visualDensity: VisualDensity.compact,
+                                          ),
+                                          child: const Text(
+                                            'View Detail',
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
-                                              fontFamily: 'Poppins',
-                                              color: Colors.white,
+                                              fontFamily: "Poppins",
+                                              color: Color(0xff27BDBE),
                                             ),
                                           ),
-                                          SizedBox(width: 8),
-                                          Icon(
-                                            Icons.add_circle_outline,
-                                            size: 20,
-                                            color: Colors.white,
+                                        ),
+
+                                        // Cart Button
+                                        BlocBuilder<CartCubit, CartState>(
+                                          builder: (context, cartState) {
+                                            bool isLoading = cartState is CartLoadingState &&
+                                                cartState.testId == labTests.id;
+                                            print("${labTests.exist_in_cart}");
+                                            return ElevatedButton(
+                                              onPressed: isLoading
+                                                  ? null
+                                                  : () {
+                                                if (labTests.exist_in_cart ?? false) {
+                                                  context.read<CartCubit>().removeFromCart(labTests.id ?? "",context);
+                                                } else {
+                                                  context.read<CartCubit>().addToCart({"test": "${labTests.id}"},context);
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                padding: const EdgeInsets.symmetric(horizontal: 25),
+                                                backgroundColor: labTests.exist_in_cart ?? false
+                                                    ? Colors.red
+                                                    : const Color(0xff24AEB1),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(30),
+                                                ),
+                                                visualDensity: VisualDensity.compact,
+                                              ),
+                                              child: isLoading
+                                                  ? const SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child: CircularProgressIndicator(
+                                                  color: Colors.white,
+                                                  strokeWidth: 2,
+                                                ),
+                                              )
+                                                  : Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    labTests.exist_in_cart ?? false
+                                                        ? 'Remove'
+                                                        : 'Add Test',
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w400,
+                                                      fontFamily: 'Poppins',
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Icon(
+                                                    labTests.exist_in_cart ?? false
+                                                        ? Icons.cancel
+                                                        : Icons.add_circle_outline,
+                                                    size: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+
+                                    // Location Info
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 10),
+                                      decoration: const BoxDecoration(color: Color(0xffD40000)),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.location_on, color: Colors.white, size: 15),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              '${labTests.diagnosticCentre} - ${labTests.distance} away',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "Poppins",
+                                                fontSize: 12,
+                                              ),
+                                            ),
                                           ),
                                         ],
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffD40000)),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      color: Colors.white,
-                                      size: 15,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        '${lab_tests.diagnosticCentre} - ${lab_tests.distance} away',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "Poppins",
-                                          fontSize: 12,
-                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
                         );
-                      },
-                    ));
-                  } else if (state is TestStateError) {
-                    return Center(child: Text("Error loading data"));
-                  }
-                  return Center(child: Text("No Data Available"));
-                }),
+                      } else if (state is TestStateError) {
+                        return const Center(child: Text("Error loading data"));
+                      }
+
+                      return const Center(child: Text("No Data Available"));
+                    },
+                  ),
+                ),
               ] else ...[
                 BlocBuilder<ConditionCubit, ConditionBasedState>(
                   builder: (context, Conditionstate) {
