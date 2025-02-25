@@ -26,7 +26,7 @@ class CartListModel {
 class Data {
   List<CartTests>? cartTests;
   DiagnosticCentre? diagnosticCentre;
-  int? totalAmount;
+  dynamic                                                                                                                                                totalAmount;
 
   Data({this.cartTests, this.diagnosticCentre, this.totalAmount});
 

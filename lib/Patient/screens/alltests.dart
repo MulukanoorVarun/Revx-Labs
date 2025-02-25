@@ -9,6 +9,7 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 
 import '../../Components/CustomSnackBar.dart';
+import 'Appointment.dart';
 
 class alltests extends StatefulWidget {
   String lat_lang;
@@ -27,9 +28,8 @@ class alltests extends StatefulWidget {
 class _alltestsState extends State<alltests> {
   @override
   void initState() {
-    context
-        .read<TestCubit>()
-        .fetchTestList(widget.lat_lang ?? '', widget.catId ?? '');
+    context.read<TestCubit>().fetchTestList(widget.lat_lang ?? '', widget.catId ?? '');
+    context.read<CartCubit>().getCartList();
     super.initState();
   }
 
@@ -443,14 +443,113 @@ class _alltestsState extends State<alltests> {
                       return Center(
                           child: Text("Error loading ConditionBaseddata"));
                     }
-
                     return Center(child: Text("No Data Available"));
                   },
                 ),
               ]
             ],
           ),
-        ));
+        ),
+      bottomNavigationBar: BlocBuilder<CartCubit, CartState>(
+        builder: (context, cartState) {
+          int cartCount = 0;
+          bool isLoading = false;
+
+          if (cartState is CartLoaded) {
+            cartCount = cartState.cartCount;
+          } else if (cartState is CartSuccessState) {
+            cartCount = cartState.cartCount;
+          } else if (cartState is CartLoadingState) {
+            isLoading = true;
+          }
+
+          // Hide the bottom bar when cartCount is 0
+          if (cartCount == 0 && !isLoading) {
+            return const SizedBox.shrink(); // Hides the widget completely
+          }
+
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0, -2),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Cart count with loader side by side
+                    Row(
+                      children: [
+                        const Text(
+                          "No of Tests: ",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                        ),
+                        if (isLoading)
+                          const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        else
+                          Text(
+                            "$cartCount",
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
+                      ],
+                    ),
+
+                    // Continue button
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Apointments()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff27BDBE),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(36),
+                        ),
+                        elevation: 6,
+                        shadowColor: Colors.black.withOpacity(0.3),
+                      ),
+                      child: const Text(
+                        'Continue',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   Widget _shimmerList() {

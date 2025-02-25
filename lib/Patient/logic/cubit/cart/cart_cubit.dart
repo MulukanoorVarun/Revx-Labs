@@ -33,51 +33,63 @@ class CartCubit extends Cubit<CartState> {
 
   Future<void> addToCart(Map<String, dynamic> cartData, BuildContext context) async {
     emit(CartLoadingState(testId: cartData['test']));
+
     try {
-      var response = await cartRepository.addToCart(cartData);
+      final response = await cartRepository.addToCart(cartData);
+
       if (response?.settings?.success == 1) {
-        // Pass context from UI to update TestCubit
+        // Update count only if API succeeds
+        cartCount++;
         context.read<TestCubit>().updateTestCartStatus(
           testId: cartData['test'],
           isAdded: true,
         );
         emit(CartSuccessState(
           message: 'Item added to cart successfully.',
-          cartCount: ++cartCount,
+          cartCount: cartCount,
           testId: cartData['test'],
           isAdded: true,
         ));
       } else {
-        emit(CartErrorState(errorMessage: '${response?.settings?.message}'));
+        // Emit failure but retain previous count
+        emit(CartErrorState(
+          errorMessage: response?.settings?.message ?? 'Failed to add item.',
+        ));
+        emit(CartLoaded(null, cartCount)); // Preserve current cart count
       }
     } catch (e) {
+      // Handle exceptions and preserve count
       emit(CartErrorState(errorMessage: e.toString()));
+      emit(CartLoaded(null, cartCount));
     }
   }
 
+
+  // Remove from cart with cart count update only on success
   Future<void> removeFromCart(String id, BuildContext context) async {
     emit(CartLoadingState(testId: id));
     try {
-      var response = await cartRepository.removeFromCart(id);
+      final response = await cartRepository.removeFromCart(id);
       if (response?.settings?.success == 1) {
+        // Update count only after success
+        cartCount--;
         context.read<TestCubit>().updateTestCartStatus(
           testId: id,
           isAdded: false,
         );
         emit(CartSuccessState(
           message: 'Item removed from cart successfully.',
-          cartCount: --cartCount,
+          cartCount: cartCount,
           testId: id,
           isAdded: false,
         ));
       } else {
-        emit(CartErrorState(errorMessage: 'Failed to remove item from cart.'));
+        emit(CartErrorState(errorMessage: 'Failed to remove item.'));
       }
     } catch (e) {
       emit(CartErrorState(errorMessage: e.toString()));
     }
   }
-
 }
 
 

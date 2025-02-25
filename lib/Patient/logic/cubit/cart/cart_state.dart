@@ -20,7 +20,7 @@ class CartSuccessState extends CartState {
 }
 
 class CartLoaded extends CartState {
-  final CartListModel cartList;
+  final CartListModel? cartList;
   final int cartCount;
   CartLoaded(this.cartList, this.cartCount);
   @override
