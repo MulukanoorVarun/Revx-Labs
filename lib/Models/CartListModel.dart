@@ -86,7 +86,7 @@ class DiagnosticCentre {
   String? name;
   String? location;
   String? image;
-  Null? distance;
+  String? distance;
 
   DiagnosticCentre(
       {this.id, this.name, this.location, this.image, this.distance});

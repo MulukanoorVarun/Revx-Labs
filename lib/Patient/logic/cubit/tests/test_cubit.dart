@@ -28,7 +28,6 @@ class TestCubit extends Cubit<TestState> {
 
   void updateTestCartStatus({required String testId, required bool isAdded}) {
     print("is in cart Status: $isAdded");
-
     if (testModel?.data != null) {
       final updatedTests = testModel!.data!.map((test) {
         if (test.id == testId) {
@@ -45,7 +44,6 @@ class TestCubit extends Cubit<TestState> {
       );
 
       print("Cart status after update: ${updatedTests.firstWhere((test) => test.id == testId).exist_in_cart}");
-
       // ✅ Emit new state with new instance
       emit(TestStateLoaded(updatedTestModel));
     }

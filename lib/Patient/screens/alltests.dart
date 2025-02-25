@@ -173,7 +173,6 @@ class _alltestsState extends State<alltests> {
                   ),
                 ),
               ],
-              const SizedBox(height: 20),
               if (isLabTestSelected) ...[
                 // Wrap the entire widget with a single BlocListener
                 BlocListener<CartCubit, CartState>(

@@ -75,6 +75,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     };
 
     if (android.version.sdkInt < 33) {
+
       statuses[Permission.storage] =
           await Permission.storage.status; // For Android 12 and below
     } else {
