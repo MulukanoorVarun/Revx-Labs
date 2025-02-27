@@ -28,19 +28,28 @@ class _ApointmentsState extends State<Apointments> {
     {"name": "Lipid Profile", "price": 800},
   ];
 
+  String vendorID="";
+  String startTime="";
+  String endTime="";
+  String totalamount="";
+
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: CustomAppBar(title: "Cart", actions: []),
+      appBar: CustomAppBar(title: "Appointment   ", actions: []),
       body: BlocBuilder<CartCubit, CartState>(builder: (context, cartState) {
         if (cartState is CartLoadingState) {
           return Center(
             child: CircularProgressIndicator(),
           );
         } else if (cartState is CartLoaded) {
+          vendorID= cartState.cartList?.data?.diagnosticCentre?.id??"";
+          startTime= cartState.cartList?.data?.diagnosticCentre?.starttime??"";
+          endTime= cartState.cartList?.data?.diagnosticCentre?.endtime??"";
+          totalamount= cartState.cartList?.data?.totalAmount??"";
           return SingleChildScrollView(
             child: Padding(
               padding:
@@ -476,7 +485,7 @@ class _ApointmentsState extends State<Apointments> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ScheduleAnAppointment(),
+                builder: (context) => ScheduleAnAppointment(vendorID: vendorID,starttime: startTime,endtime: endTime,totalamount: totalamount,),
               ),
             );
           },

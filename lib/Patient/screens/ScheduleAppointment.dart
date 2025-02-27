@@ -3,14 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_state.dart';
 import 'package:revxpharma/Patient/screens/AddPatientScreen.dart';
+import 'package:revxpharma/Patient/screens/widgets/DetailRow.dart';
 import '../../Components/ShakeWidget.dart';
 import 'Appointment.dart';
 
 class ScheduleAnAppointment extends StatefulWidget {
-  const ScheduleAnAppointment({super.key});
+  final String vendorID;
+  final String starttime;
+  final String endtime;
+  final String totalamount;
+
+  const ScheduleAnAppointment({
+    Key? key,
+    required this.vendorID,
+    required this.starttime,
+    required this.endtime,
+    required this.totalamount,
+  }) : super(key: key);
 
   @override
   State<ScheduleAnAppointment> createState() => _ScheduleAnAppointmentState();
@@ -18,24 +32,25 @@ class ScheduleAnAppointment extends StatefulWidget {
 
 class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   bool? groupValue;
-  final TextEditingController _userName = TextEditingController();
-  final TextEditingController _phoneNumber = TextEditingController();
-  final TextEditingController _gender = TextEditingController();
-  final TextEditingController _dob = TextEditingController();
-  final TextEditingController _age = TextEditingController();
-  final TextEditingController _bloodGroup = TextEditingController();
-
-  String _validateuserName = "";
-  String _validatephoneNumber = "";
-  String _validategender = "";
-  String _validatedob = "";
-  String _validateage = "";
-  String _validatebloodGroop = "";
-
+  int _selectedIndex = 0; // Track the selected index
   // List of dates for the current week
   final List<DateTime> _dates = List.generate(7, (index) {
     return DateTime.now().add(Duration(days: index));
   });
+
+  String selectedDate="";
+  String selectedTime="";
+  void _onDateSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    // Format and store selected date as 'yyyy-MM-dd'
+    String selectedDate = DateFormat('yyyy-MM-dd').format(_dates[index]);
+    selectedDate = DateFormat('yyyy-MM-dd').format(_dates[index]);
+    print("Selected Date: $selectedDate"); // You can store this in a variable or send it to an API
+  }
+
 
   List<String> generateHourlyTimeSlots() {
     List<String> timeSlots = [];
@@ -56,241 +71,236 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
 
     if (pickedDate != null) {
       setState(() {
-        _dob.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+       selectedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
       });
     }
   }
 
   @override
   void initState() {
-
-    _userName.addListener(() {
-      setState(() {
-        _validateuserName = "";
-      });
-    });
-
-    _gender.addListener(() {
-      setState(() {
-        _validategender = "";
-      });
-    });
-    _dob.addListener(() {
-      setState(() {
-        _validatedob = "";
-      });
-    });
-    _age.addListener(() {
-      setState(() {
-        _validateage = "";
-      });
-    });
-    _bloodGroup.addListener(() {
-      setState(() {
-        _validatebloodGroop = "";
-      });
-    });
-
+    context.read<PatientCubit>().getDefaultPatientDetails();
+    print("VendorId:${widget.vendorID},  starttime:${widget.starttime}, endtime:${widget.endtime}");
+    timeSlots = generateTimeSlots(widget.starttime, widget.endtime);
     super.initState();
   }
+
+  List<String> timeSlots = [];
+  int selectedIndex = -1; // Stores the selected index
+  final ScrollController _scrollController = ScrollController();
+
+  String? selectedPatientId;
+  String? totalamount;
+
+  List<String> generateTimeSlots(String startTime, String endTime) {
+    List<String> timeSlots = [];
+    DateFormat format = DateFormat("HH:mm:ss");
+
+    DateTime start = format.parse(startTime);
+    DateTime end = format.parse(endTime);
+
+    if (end.isBefore(start)) {
+      end = end.add(Duration(days: 1));
+    }
+
+    while (start.isBefore(end)) {
+      timeSlots.add(DateFormat("HH:mm").format(start));
+      start = start.add(Duration(minutes: 30));
+    }
+    return timeSlots;
+  }
+
+  void onSelectTime(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+
+    // Convert selected time to HH:mm:ss format
+    String selectedTime = "${timeSlots[index]}:00";
+    selectedTime = "${timeSlots[index]}:00";
+    print("Selected Time: $selectedTime");
+
+    // Scroll to the selected index smoothly
+    _scrollController.animateTo(
+      index * 70.0, // Adjust the scroll position
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.arrow_back_ios_new),
-        ),
-        title: Text(
-          "Schedule an appointment",
-          style: TextStyle(
-            color: Color(0xff27BDBE),
-            fontFamily: 'Poppins',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Schedule an appointment", actions: []),
       body: SingleChildScrollView(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "Patient details",
-                    style: TextStyle(
-                        color: Color(0xff808080),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Poppins",
-                        fontSize: 16),
-                  ),
-                  Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      context.read<PatientCubit>().getPatients();
-                      _showBottomSheet(context);
-                    },
-                    style: ButtonStyle(
-                        // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                        side: MaterialStateProperty.all(BorderSide(
-                      color: Color(
-                        0xff27BDBE,
-                      ),
-                    ))),
-                    child: Text(
-                      "Change",
-                      style: TextStyle(
-                        color: Color(0xff27BDBE),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins",
-                        fontSize: 14,
-                      ),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Patient details",
+                  style: TextStyle(
+                      color: Color(0xff1A1A1A),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Poppins",
+                      fontSize: 15),
+                ),
+                Spacer(),
+                TextButton(
+                  onPressed: () {
+                    context.read<PatientCubit>().getPatients();
+                    _showBottomSheet(context);
+                  },
+                  style: ButtonStyle(
+                    visualDensity: VisualDensity.compact,
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.hovered)) {
+                          return Colors.teal
+                              .withOpacity(0.1); // Light teal on hover
+                        }
+                        if (states.contains(MaterialState.pressed)) {
+                          return Colors.teal
+                              .withOpacity(0.2); // Darker effect on tap
+                        }
+                        return null;
+                      },
+                    ),
+                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        return Color(0xff27BDBE); // Default text color
+                      },
                     ),
                   ),
-                  IconButton(
-                      visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddPatientScreen(
-                                      type: "add",pateint_id: '',
-                                    )));
+                  child: Text(
+                    "Change",
+                    style: TextStyle(
+                      color: Color(0xff27BDBE),
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Poppins",
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                // IconButton(
+                //     visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+                //     onPressed: () {
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //               builder: (context) => AddPatientScreen(
+                //                     type: "add",pateint_id: '',
+                //                   )));
+                //     },
+                //     icon: Icon(
+                //       Icons.add_circle_outline,
+                //       size: 36,
+                //       color: Color(0xff27BDBE),
+                //     )
+                //     )
+              ],
+            ),
+            BlocBuilder<PatientCubit, PatientState>(
+                builder: (context, state) {
+              if (state is PatientDetailsLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xff27BDBE),
+                  ),
+                );
+              } else if (state is PatientsDetailsLoaded) {
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0), // Inner padding
+                    child: Column(
+                      spacing: 15,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DetailRow(label: "Patient Name", value: "${state.getPatientDetailsmodel.getPatientDetails?.patientName}"),
+                        DetailRow(label: "Mobile Number", value: "+91 ${state.getPatientDetailsmodel.getPatientDetails?.mobile}"),
+                        DetailRow(label: "Gender", value: "${state.getPatientDetailsmodel.getPatientDetails?.gender}"),
+                        DetailRow(label: "DOB", value: "${state.getPatientDetailsmodel.getPatientDetails?.dob}"),
+                        DetailRow(label: "Age", value: "${state.getPatientDetailsmodel.getPatientDetails?.age} years"),
+                        DetailRow(label: "Blood Group", value: "${state.getPatientDetailsmodel.getPatientDetails?.bloodGroup}"),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Center(child: Text("No Data"));
+            }),
+            Row(
+              children: [
+                Text(
+                  "Select the Date",
+                  style: TextStyle(
+                      color: Color(0xff1A1A1A),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Poppins",
+                      fontSize: 14),
+                ),
+                Spacer(),
+                TextButton(
+                  onPressed: () {
+                    _selectDate(context);
+                  },
+                  style: ButtonStyle(
+                    visualDensity: VisualDensity.compact,
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.hovered)) {
+                          return Colors.teal
+                              .withOpacity(0.1); // Light teal on hover
+                        }
+                        if (states.contains(MaterialState.pressed)) {
+                          return Colors.teal
+                              .withOpacity(0.2); // Darker effect on tap
+                        }
+                        return null;
                       },
-                      icon: Icon(
-                        Icons.add_circle_outline,
-                        size: 36,
-                        color: Color(0xff27BDBE),
-                      ))
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              
-              Container(padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text('User name',style:TextStyle(
-                    fontSize: 15,fontWeight: FontWeight.w400,fontFamily: 'Poppins',
-                    color: Color(0xff1A1A1A),
-                  ),),
-                    Text(':',style:TextStyle(
-                      fontSize: 15,fontWeight: FontWeight.w400,fontFamily: 'Poppins',
-                      color: Color(0xffAFAFAF),
-                    ),),
-                    Text('Charan',style:TextStyle(
-                      fontSize: 15,fontWeight: FontWeight.w400,fontFamily: 'Poppins',
-                      color: Color(0xffAFAFAF),
-                    ),)
-
-                ],),
-              ),
-              // _buildTextField(
-              //   icon: Icons.person,
-              //   controller: _userName,
-              //   validation: _validateuserName,
-              //   hintText: 'User name',
-              //   keyboardType: TextInputType.text,
-              // ),
-              // _buildTextField(
-              //   icon: Icons.phone_android_outlined,
-              //   controller: _phoneNumber,
-              //   validation: _validatephoneNumber,
-              //   hintText: 'Phone number',
-              //   keyboardType: TextInputType.phone,
-              //   pattern: r'[0-9]',
-              // ),
-              // _buildTextField(
-              //   icon: Icons.male,
-              //   controller: _gender,
-              //   validation: _validategender,
-              //   hintText: 'Gender',
-              //   keyboardType: TextInputType.text,
-              // ),
-              // _buildDateField('Date of birth', _dob, context),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: _buildTextField(
-              //         icon: Icons.cake,
-              //         controller: _age,
-              //         validation: _validateage,
-              //         hintText: 'Age',
-              //         keyboardType: TextInputType.number,
-              //         pattern: r'[0-9]',
-              //       ),
-              //     ),
-              //     SizedBox(width: 10),
-              //     Expanded(
-              //       child: _buildTextField(
-              //         icon: Icons.bloodtype_outlined,
-              //         controller: _bloodGroup,
-              //         validation: _validatebloodGroop,
-              //         hintText: 'Blood Group',
-              //         keyboardType: TextInputType.text,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(
-              //   height: 30,
-              // ),
-              // Row(
-              //   children: [
-              //     Text(
-              //       "Select the Date",
-              //       style: TextStyle(
-              //           color: Color(0xff1A1A1A),
-              //           fontWeight: FontWeight.w600,
-              //           fontFamily: "Poppins",
-              //           fontSize: 14),
-              //     ),
-              //     Spacer(),
-              //     InkWell(
-              //       onTap: () {
-              //         _selectDate(context);
-              //       },
-              //       child: Text(
-              //         "Calendar",
-              //         style: TextStyle(
-              //             color: Color(0xff27BDBE),
-              //             fontWeight: FontWeight.w600,
-              //             fontFamily: "Poppins",
-              //             fontSize: 14),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 70,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _dates.length,
-                  itemBuilder: (context, index) {
-                    final date = _dates[index];
-                    final isSelected =
-                        index == 0; // Example: second date selected
-                    return Container(
+                    ),
+                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        return Color(0xff27BDBE); // Default text color
+                      },
+                    ),
+                  ),
+                  child: Text(
+                    "Calendar",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Poppins",
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 70,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _dates.length,
+                itemBuilder: (context, index) {
+                  final date = _dates[index];
+                  final isSelected = index == _selectedIndex; // Track selection
+                  return GestureDetector(
+                    onTap: () => _onDateSelected(index), // Handle date selection
+                    child: Container(
                       margin: EdgeInsets.only(right: 10),
                       width: 60,
                       height: 50,
                       decoration: BoxDecoration(
-                        color:
-                            isSelected ? Color(0xff27BDBE) : Color(0xffD3D3D3),
+                        color: isSelected ? Color(0xff27BDBE) : Color(0xffD3D3D3),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -300,8 +310,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           Text(
                             DateFormat('dd').format(date),
                             style: TextStyle(
-                              color:
-                                  isSelected ? Colors.white : Color(0xff1A1A1A),
+                              color: isSelected ? Colors.white : Color(0xff1A1A1A),
                               fontWeight: FontWeight.w600,
                               fontFamily: "Poppins",
                               fontSize: 16,
@@ -311,8 +320,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           Text(
                             DateFormat('EEE').format(date),
                             style: TextStyle(
-                              color:
-                                  isSelected ? Colors.white : Color(0xff1A1A1A),
+                              color: isSelected ? Colors.white : Color(0xff1A1A1A),
                               fontWeight: FontWeight.w400,
                               fontFamily: "Poppins",
                               fontSize: 14,
@@ -320,102 +328,137 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  Text(
-                    "Select the Time",
-                    style: TextStyle(
-                        color: Color(0xff1A1A1A),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins",
-                        fontSize: 14),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      "Set Time",
-                      style: TextStyle(
-                          color: Color(0xff27BDBE),
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "Poppins",
-                          fontSize: 14),
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 40,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: generateHourlyTimeSlots().length,
-                  itemBuilder: (context, index) {
-                    final time = generateHourlyTimeSlots()[index];
-                    final isCurrentHour =
-                        time == DateFormat('HH:00').format(DateTime.now());
-                    return Container(
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Text(
+                  "Select the Time",
+                  style: TextStyle(
+                      color: Color(0xff1A1A1A),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Poppins",
+                      fontSize: 14),
+                ),
+                // Spacer(),
+                // TextButton(
+                //   onPressed: () {
+                //     _selectDate(context);
+                //   },
+                //   style: ButtonStyle(
+                //     visualDensity: VisualDensity.compact,
+                //     overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                //       (Set<MaterialState> states) {
+                //         if (states.contains(MaterialState.hovered)) {
+                //           return Colors.teal
+                //               .withOpacity(0.1); // Light teal on hover
+                //         }
+                //         if (states.contains(MaterialState.pressed)) {
+                //           return Colors.teal
+                //               .withOpacity(0.2); // Darker effect on tap
+                //         }
+                //         return null;
+                //       },
+                //     ),
+                //     foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                //       (Set<MaterialState> states) {
+                //         return Color(0xff27BDBE); // Default text color
+                //       },
+                //     ),
+                //   ),
+                //   child: Text(
+                //     "Set Time",
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.w500,
+                //       fontFamily: "Poppins",
+                //       fontSize: 14,
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: timeSlots.length,
+                itemBuilder: (context, index) {
+                  final time = timeSlots[index];
+                  final isSelected = selectedIndex == index;
+                  final isCurrentHour =
+                      time == DateFormat('HH:mm').format(DateTime.now());
+                  return GestureDetector(
+                    onTap: () => onSelectTime(index),
+                    child: Container(
                       margin: EdgeInsets.only(right: 10),
                       width: 60,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: isCurrentHour
-                            ? Color(0xff27BDBE)
-                            : Color(0xffD3D3D3),
+                        color: isSelected
+                            ? Color(0xff27BDBE) // Highlight selected time slot
+                            : (isCurrentHour ? Color(0xff27BDBE) : Color(0xffD3D3D3)),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
                         child: Text(
                           time,
                           style: TextStyle(
-                            color: isCurrentHour
+                            color: isSelected
                                 ? Colors.white
-                                : Color(0xff4B4B4B),
+                                : (isCurrentHour ? Colors.white : Color(0xff4B4B4B)),
                             fontWeight: FontWeight.w400,
                             fontFamily: "Poppins",
                             fontSize: 14,
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Apointments()));
+                    ),
+                  );
                 },
-                child: Container(
-                  margin: EdgeInsets.only(top: 40, bottom: 20),
-                  width: w,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF00C4D3),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Book Appointment',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Map<String, dynamic> Data = {
+                  'patient': selectedPatientId,
+                  'diagnostic_centre': widget.vendorID,
+                  'appointment_date': selectedDate,
+                  'start_time': selectedTime,
+                  'total_amount': widget.totalamount,
+                  'payment_mode': "cash_on_test",
+                };
+                context.read<AppointmentCubit>().bookAppointment(Data);
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 40, bottom: 20),
+                width: w,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Color(0xFF00C4D3),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Center(
+                  child: Text(
+                    'Book Appointment',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -427,246 +470,118 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           // You still need setState here to rebuild StatefulBuilder
-          return BlocBuilder<PatientCubit,PatientState>(builder: (context, state) {
-            if(state is PatientLoadingState){
-              return Center(child: CircularProgressIndicator(color: Color(0xff27BDBE),),);
-            }else if(state is PatientsListLoaded){
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        height: 5,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xff808080),
+          return BlocBuilder<PatientCubit, PatientState>(
+            builder: (context, state) {
+              if (state is PatientListLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xff27BDBE),
+                  ),
+                );
+              } else if (state is PatientsListLoaded) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          height: 5,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xff808080),
+                          ),
                         ),
                       ),
-                    ),
-                    ListView.builder(
-                      padding: EdgeInsets.only(top: 10),
-                      shrinkWrap: true,
-                      itemCount: state.patientsListModel.patientslist?.length,
-                      itemBuilder: (context, index) {
-                        final patint= state.patientsListModel.patientslist?[index];
-                        print('patint::${patint}');
-                        return ListTile(
-                          // leading: Radio<bool>(
-                          //   activeColor: Color(0xff27BDBE),
-                          //   value:
-                          //   false, // You can set this to something specific if needed
-                          //   groupValue: groupValue, // Pass groupValue to Radio
-                          //   onChanged: (bool? newValue) {
-                          //     setState(() {
-                          //       groupValue = newValue; // Update groupValue here
-                          //     });
-                          //   },
-                          // ),
-                          title: Text(
-                            patint?.patientName??'',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins',
-                            ),
-                          ),
-                          subtitle: Text(' ${patint?.dob??''} / ${patint?.gender??''} / ${patint?.bloodGroup??''}',
-
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins',
-                            ),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
+                      ListView.builder(
+                        padding: EdgeInsets.only(top: 10),
+                        shrinkWrap: true,
+                        itemCount: state.patientsListModel.patientslist?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final patient = state.patientsListModel.patientslist?[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white, // Default background
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: selectedPatientId == patient?.id ? Colors.teal : Colors.transparent, // Highlight border
+                                  width: 2,
+                                ),
+                              ),
+                              child: ListTile(
+                                onTap: () {
+                                  setState(() {
+                                    selectedPatientId = patient?.id;
+                                    context.read<PatientCubit>().getPatientDetails(selectedPatientId);
                                     Navigator.pop(context);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
+                                  });
+                                },
+                                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                title: Text(
+                                  patient?.patientName ?? 'Unknown',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Poppins',
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  '${patient?.dob ?? ''} / ${patient?.gender ?? ''} / ${patient?.bloodGroup ?? ''}',
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Poppins',
+                                  ),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
                                             builder: (context) => AddPatientScreen(
-                                              type: "edit",pateint_id: patint?.id??"",
-                                            )));
-                                  },
-                                  icon: Icon(
-                                    Icons.edit,
-                                    size: 20,
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    context.read<PatientCubit>().deletePatient(patint?.id??'');
-
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    size: 20,
-                                  )),
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              );
-            } else if(state is PatientErrorState){
-              return Center(child: Text(state.errorMessage));
-            }
-            return Center(child: Text("No Data"));
-
-          },
-
+                                              type: "edit",
+                                              pateint_id: patient?.id ?? "",
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit, size: 20, color: Colors.blue),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        context.read<PatientCubit>().deletePatient(patient?.id ?? '');
+                                      },
+                                      icon: Icon(Icons.delete, size: 20, color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                );
+              } else if (state is PatientErrorState) {
+                return Center(child: Text(state.errorMessage));
+              }
+              return Center(child: Text("No Data"));
+            },
           );
         });
       },
     );
   }
-
-  Widget _buildTextField({
-    required IconData icon,
-    required TextEditingController controller,
-    required validation,
-    required String hintText,
-    required TextInputType keyboardType,
-    String? pattern,
-  }) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const SizedBox(height: 4),
-      Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              spreadRadius: 1,
-              blurRadius: 2,
-              offset: Offset(0, 2), // Changes position of shadow
-            ),
-          ],
-        ),
-        child: Material(
-          elevation: 0,
-          borderRadius: BorderRadius.circular(30),
-          child: TextFormField(
-            controller: controller,
-            cursorColor: Colors.black,
-            keyboardType: keyboardType,
-            inputFormatters: pattern != null
-                ? [FilteringTextInputFormatter.allow(RegExp(pattern))]
-                : [],
-            decoration: InputDecoration(
-                prefixIcon: Icon(icon, color: Color(0xffAFAFAF)),
-                hintText: hintText,
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xffAFAFAF),
-                ),
-                // filled: true,
-                // fillColor: Color(0xffffffff),
-                border: InputBorder.none
-                // enabledBorder: OutlineInputBorder(
-                //   borderRadius: BorderRadius.circular(50),
-                //   borderSide: BorderSide(width: 1, color: Color(0xffCDE2FB)),
-                // ),
-                // focusedBorder: OutlineInputBorder(
-                //   borderRadius: BorderRadius.circular(15.0),
-                //   borderSide: BorderSide(width: 1, color: Color(0xffCDE2FB)),
-                // ),
-                ),
-          ),
-        ),
-      ),
-      if (validation.isNotEmpty) ...[
-        Container(
-          alignment: Alignment.topLeft,
-          margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-          width: MediaQuery.of(context).size.width * 0.6,
-          child: ShakeWidget(
-            key: Key("value"),
-            duration: Duration(milliseconds: 700),
-            child: Text(
-              validation,
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontSize: 12,
-                color: Colors.red,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-      ] else ...[
-        SizedBox(height: 20),
-      ]
-    ]);
-  }
-
-  Widget _buildDateField(
-      String hintText, TextEditingController controller, BuildContext context) {
-    return GestureDetector(
-      onTap: () => _selectDate(context),
-      child: AbsorbPointer(
-        child: _buildTextField(
-          icon: Icons.calendar_today,
-          controller: controller,
-          validation: _validatedob,
-          hintText: hintText,
-          keyboardType: TextInputType.datetime,
-        ),
-      ),
-    );
-  }
 }
 
-// Reusable CustomTextField Widget
-class CustomTextField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String labelText;
-  final bool readOnly;
-  final Widget? suffixIcon;
-  final String? Function(String?)? validator;
-  final TextInputType keyboardType;
-  final String? initialValue;
-  final VoidCallback? onTap;
-
-  const CustomTextField({
-    Key? key,
-    this.controller,
-    required this.labelText,
-    this.readOnly = false,
-    this.suffixIcon,
-    this.validator,
-    this.keyboardType = TextInputType.text,
-    this.initialValue,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: TextFormField(
-        controller: controller,
-        initialValue: initialValue,
-        readOnly: readOnly,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: const OutlineInputBorder(),
-          suffixIcon: suffixIcon,
-        ),
-        validator: validator,
-        onTap: onTap,
-      ),
-    );
-  }
-}

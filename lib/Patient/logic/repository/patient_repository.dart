@@ -11,6 +11,7 @@ abstract class PatientRepository {
   Future<SuccessModel?> editPatient(Map<String, dynamic> patientData,id);
   Future<SuccessModel?> deletePatient(id);
   Future<getPatientDetailModel?> patient_details(id);
+  Future<getPatientDetailModel?> defaultPatientDetails();
 }
 
 class PatientRepositoryImpl implements PatientRepository {
@@ -43,5 +44,10 @@ class PatientRepositoryImpl implements PatientRepository {
   @override
   Future<getPatientDetailModel?> patient_details(id) async {
     return await remoteDataSource.GetPatientDetails(id);
+  }
+
+  @override
+  Future<getPatientDetailModel?> defaultPatientDetails() async {
+    return await remoteDataSource.GetDefaultPatientDetails();
   }
 }

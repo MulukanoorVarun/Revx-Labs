@@ -11,7 +11,7 @@ class PatientCubit extends Cubit<PatientState> {
 
 
   Future<void> getPatients() async {
-    emit(PatientLoadingState());
+    emit(PatientListLoadingState());
     try {
       final patients = await patientRepository.getPatients();
       if (patients != null) {
@@ -25,7 +25,7 @@ class PatientCubit extends Cubit<PatientState> {
   }
 
   Future<void> addPatient(Map<String, dynamic> patientData) async {
-    emit(PatientLoadingState());
+    emit(PatientSavingLoadingState());
     try {
       var response  = await patientRepository.addPatient(patientData);
       if (response != null) {
@@ -41,7 +41,7 @@ class PatientCubit extends Cubit<PatientState> {
 
   // Edit an existing patient
   Future<void> editPatient(Map<String, dynamic> patientData,id) async {
-    emit(PatientLoadingState());
+    emit(PatientSavingLoadingState());
     try {
       var response = await patientRepository.editPatient(patientData,id);
       print('id::${patientData}//${id}');
@@ -57,7 +57,6 @@ class PatientCubit extends Cubit<PatientState> {
   }
 
   Future<void> deletePatient(id) async {
-    emit(PatientLoadingState());
     try {
       var response  = await patientRepository.deletePatient(id);
       if (response != null) {
@@ -70,14 +69,29 @@ class PatientCubit extends Cubit<PatientState> {
       emit(PatientErrorState(errorMessage: e.toString()));
     }
   }
+
   Future<void> getPatientDetails(id) async {
-    emit(PatientLoadingState());
+    emit(PatientDetailsLoadingState());
     try {
       var response  = await patientRepository.patient_details(id);
       if (response != null) {
         emit(PatientsDetailsLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to fetch patientDetails.'));
+      }
+    } catch (e) {
+      emit(PatientErrorState(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getDefaultPatientDetails() async {
+    emit(PatientDetailsLoadingState());
+    try {
+      var response  = await patientRepository.defaultPatientDetails();
+      if (response != null) {
+        emit(PatientsDetailsLoaded(response));
+      } else {
+        emit(PatientErrorState(errorMessage: 'Failed to fetch default patient Details.'));
       }
     } catch (e) {
       emit(PatientErrorState(errorMessage: e.toString()));

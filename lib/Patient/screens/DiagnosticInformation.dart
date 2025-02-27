@@ -147,7 +147,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                         ],
                       ),
                       SizedBox(height: 16),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +219,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 16),
                       Text(
                         "Description ",
@@ -412,7 +410,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ScheduleAnAppointment()));
+                                          ScheduleAnAppointment(endtime: "",starttime: "",vendorID: "",totalamount: "",)));
                             },
                             // icon: Icon(Icons.add, color: Colors.white),
                             // iconAlignment: IconAlignment.end, // "+" icon

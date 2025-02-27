@@ -3,7 +3,6 @@ import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Models/ConditionBasedModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
-import 'package:revxpharma/Models/ProfileDetailModel.dart';
 import 'package:revxpharma/Models/TestModel.dart';
 import 'package:revxpharma/Models/getPatientDetailModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
@@ -27,13 +26,31 @@ abstract class RemoteDataSource {
   Future<SuccessModel?> UpdatePatient(Map<String, dynamic> patientData, id);
   Future<SuccessModel?> DeletePatient(id);
   Future<getPatientDetailModel?> GetPatientDetails(id);
+  Future<getPatientDetailModel?> GetDefaultPatientDetails();
   Future<CartListModel?> fetchCartList();
   Future<SuccessModel?> AddToCart(Map<String, dynamic> Data);
   Future<SuccessModel?> RemoveFromCart(id);
+  Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data);
   Future<ProfileDetailModel?> getProfileDetails();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
+
+  @override
+  Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data) async {
+    try {
+      Response response = await ApiClient.post(PatientRemoteUrls.book_appopintment,data: Data);
+      if (response.statusCode == 200) {
+        LogHelper.printLog('bookAppointment:',  response.data);
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error bookAppointment::',e);
+      return null;
+    }
+  }
+
   @override
   Future<SuccessModel?> RemoveFromCart(id) async {
     try {
@@ -271,6 +288,21 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       LogHelper.printLog('Error getProifileDetails data:', e);
+      return null;
+    }
+  }
+
+  @override
+  Future<getPatientDetailModel?>GetDefaultPatientDetails() async {
+    try {
+      Response response = await ApiClient.get('${PatientRemoteUrls.default_pateint_details}');
+      if (response.statusCode == 200) {
+        LogHelper.printLog('GetPatientDetails:', response.data);
+        return getPatientDetailModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error GetDefaultPatientDetails data:',e);
       return null;
     }
   }

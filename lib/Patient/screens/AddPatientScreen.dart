@@ -110,7 +110,6 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
       context.read<PatientCubit>().addPatient(patientData);
     }else{
      context.read<PatientCubit>().editPatient(patientData,widget.pateint_id);
-
     }
   }
 
@@ -339,7 +338,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           ),
                           elevation: 3, // Slight shadow effect
                         ),
-                        child: (state is PatientLoadingState) ?
+                        child: (state is PatientSavingLoadingState) ?
                         Center(child: CircularProgressIndicator(strokeWidth: 1,color: Colors.white,),):
                         Text(
                           'Submit',

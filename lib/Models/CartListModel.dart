@@ -87,9 +87,11 @@ class DiagnosticCentre {
   String? location;
   String? image;
   String? distance;
+  String? starttime;
+  String? endtime;
 
   DiagnosticCentre(
-      {this.id, this.name, this.location, this.image, this.distance});
+      {this.id, this.name, this.location, this.image, this.distance,this.endtime,this.starttime});
 
   DiagnosticCentre.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -97,6 +99,8 @@ class DiagnosticCentre {
     location = json['location'];
     image = json['image'];
     distance = json['distance'];
+    starttime = json['start_time'];
+    endtime = json['end_time'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +110,8 @@ class DiagnosticCentre {
     data['location'] = this.location;
     data['image'] = this.image;
     data['distance'] = this.distance;
+    data['start_time'] = this.starttime;
+    data['end_time'] = this.endtime;
     return data;
   }
 }

@@ -9,7 +9,11 @@ abstract class PatientState {}
 
 class PatientInitialState extends PatientState {}
 
-class PatientLoadingState extends PatientState {}
+class PatientListLoadingState extends PatientState {}
+
+class PatientDetailsLoadingState extends PatientState {}
+
+class PatientSavingLoadingState extends PatientState {}
 
 class PatientSuccessState extends PatientState {
   final String message;

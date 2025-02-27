@@ -14,5 +14,7 @@ class PatientRemoteUrls {
   static const String addToCart ='api/cart-tests';
   static const String removeCart ='api/remove-cart-test';
   static const String pateint_details ='api/patient-detail';
+  static const String default_pateint_details ='api/default-patient';
+  static const String book_appopintment ='api/book-appointment';
   static const String profile_details ='auth/user-detail';
 }
