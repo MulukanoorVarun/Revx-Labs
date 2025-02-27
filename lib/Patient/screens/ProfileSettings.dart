@@ -37,7 +37,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   final ImagePicker _picker = ImagePicker();
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery, // Use ImageSource.camera for camera
+      source: ImageSource.gallery,
       imageQuality: 100,
     );
 
