@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Vendor/Screens/Test/VendorCreateTest.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_state.dart';
@@ -207,7 +208,7 @@ class _VendorTestState extends State<VendorTest> {
                   builder: (context, state) {
                     if (state is DiagnosticTestsLoading) {
                       Center(
-                        child: CircularProgressIndicator(),
+                        child: _shimmerList(),
                       );
                     } else if (state is DiagnosticTestListLoaded) {
                       return ListView.builder(
@@ -322,5 +323,51 @@ class _VendorTestState extends State<VendorTest> {
             ),
           ),
         ));
+  }
+
+  Widget _shimmerList() {
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(color: Colors.white),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
+                border: Border.all(color: Color(0xffD6D6D6), width: 0.5)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    shimmerText(120, 12, context),
+                    shimmerCircle(18, context),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                shimmerText(120, 12, context),
+                SizedBox(
+                  height: 14,
+                ),
+                shimmerContainer(w * 0.5, 20, context),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

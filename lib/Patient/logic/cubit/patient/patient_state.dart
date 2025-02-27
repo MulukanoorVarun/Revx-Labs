@@ -1,5 +1,7 @@
 // patient_state.dart
 import 'package:revxpharma/Models/SuccessModel.dart';
+import 'package:revxpharma/Models/getPatientDetailModel.dart';
+import 'package:revxpharma/Vendor/Screens/PatientsList/PatientDetails.dart';
 
 import '../../../../Models/PatientsListModel.dart';
 
@@ -27,6 +29,10 @@ class PatientsListLoaded extends PatientState {
   PatientsListLoaded(this.patientsListModel);
   @override
   List<Object?> get props => [patientsListModel];
+}
+class PatientsDetailsLoaded extends PatientState {
+  final   getPatientDetailModel getPatientDetailsmodel;
+  PatientsDetailsLoaded(this.getPatientDetailsmodel);
 }
 
 class PatientErrorState extends PatientState {

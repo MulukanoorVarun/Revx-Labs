@@ -1,4 +1,3 @@
-// patient_cubit.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_state.dart';
 import '../../../../Models/PatientsListModel.dart';
@@ -30,6 +29,7 @@ class PatientCubit extends Cubit<PatientState> {
     try {
       var response  = await patientRepository.addPatient(patientData);
       if (response != null) {
+        getPatients();
         emit(PatientLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to add patient.'));
@@ -44,7 +44,9 @@ class PatientCubit extends Cubit<PatientState> {
     emit(PatientLoadingState());
     try {
       var response = await patientRepository.editPatient(patientData,id);
+      print('id::${patientData}//${id}');
       if (response != null) {
+        getPatients();
         emit(PatientLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to edit patient.'));
@@ -59,9 +61,23 @@ class PatientCubit extends Cubit<PatientState> {
     try {
       var response  = await patientRepository.deletePatient(id);
       if (response != null) {
+        getPatients();
         emit(PatientLoaded(response));
       } else {
         emit(PatientErrorState(errorMessage: 'Failed to delete patient.'));
+      }
+    } catch (e) {
+      emit(PatientErrorState(errorMessage: e.toString()));
+    }
+  }
+  Future<void> getPatientDetails(id) async {
+    emit(PatientLoadingState());
+    try {
+      var response  = await patientRepository.patient_details(id);
+      if (response != null) {
+        emit(PatientsDetailsLoaded(response));
+      } else {
+        emit(PatientErrorState(errorMessage: 'Failed to fetch patientDetails.'));
       }
     } catch (e) {
       emit(PatientErrorState(errorMessage: e.toString()));

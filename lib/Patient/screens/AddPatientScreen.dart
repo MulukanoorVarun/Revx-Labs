@@ -10,8 +10,9 @@ import '../logic/cubit/patient/patient_state.dart';
 
 class AddPatientScreen extends StatefulWidget {
   final String type;
+  final String pateint_id;
 
-  const AddPatientScreen({Key? key, required this.type}) : super(key: key);
+  const AddPatientScreen({Key? key, required this.type,required this.pateint_id}) : super(key: key);
 
   @override
   _AddPatientScreenState createState() => _AddPatientScreenState();
@@ -27,13 +28,24 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
 
   Map<String, String> validationErrors = {};
   String? selectedGender;
-  final List<String> genderOptions = ["Male", "Female", "Others"];
+   List<String> genderOptions = ["Male", "Female", "Others"];
 
-  final Map<String, String> gendersortOptionToValue = {
+   Map<String, String> gendersortOptionToValue = {
     "Male": "male",
     "Female": "female",
     "Others": "others",
   };
+
+  @override
+  void initState() {
+    fetchPatient_details();
+    super.initState();
+  }
+
+
+ fetchPatient_details() {
+  context.read<PatientCubit>().getPatientDetails(widget.pateint_id);
+  }
 
   void _validateAndSetError(
       String fieldKey, String value, String? Function(String) validator) {
@@ -94,7 +106,12 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
       'age': _ageController.text,
       'blood_group': _bloodgroupController.text,
     };
-    type=="add"? context.read<PatientCubit>().addPatient(patientData):  context.read<PatientCubit>().editPatient(patientData,"");
+    if(type=="add"){
+      context.read<PatientCubit>().addPatient(patientData);
+    }else{
+     context.read<PatientCubit>().editPatient(patientData,widget.pateint_id);
+
+    }
   }
 
 
@@ -129,7 +146,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               color: Color(0xff27BDBE),
             ),
             Text(
-              'Add Patient',
+              '${widget.type[0].toUpperCase()}${widget.type.substring(1)} Patient',
               style: TextStyle(
                 color: Color(0xff27BDBE),
                 fontFamily: 'Poppins',
@@ -147,10 +164,26 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               if(state.successModel.settings?.success==1){
                 CustomSnackBar.show(context, "Patient Added Successfully!");
                 Navigator.pop(context);
-              }else{
+              }
+              else{
                 CustomSnackBar.show(context,state.successModel.settings?.message??"");
               }
-            } else if (state is PatientErrorState) {
+            }else if(state is PatientsDetailsLoaded){
+              _nameController.text= state.getPatientDetailsmodel.getPatientDetails?.patientName??'';
+              _mobileController.text= state.getPatientDetailsmodel.getPatientDetails?.mobile??'';
+              _dobController.text= state.getPatientDetailsmodel.getPatientDetails?.dob??'';
+              _bloodgroupController.text= state.getPatientDetailsmodel.getPatientDetails?.bloodGroup??'';
+              String gender = state.getPatientDetailsmodel.getPatientDetails?.gender ?? 'male';
+              gendersortOptionToValue = {
+                "Male": "male",
+                "Female": "female",
+                "Others": "others",
+                gender: gendersortOptionToValue[gender] ?? 'others',
+              };
+
+              _ageController.text = state.getPatientDetailsmodel.getPatientDetails?.age.toString()??"";
+            }
+            else if (state is PatientErrorState) {
               // Show error message
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.errorMessage)),

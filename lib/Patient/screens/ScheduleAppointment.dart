@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/patient/patient_state.dart';
 import 'package:revxpharma/Patient/screens/AddPatientScreen.dart';
 import '../../Components/ShakeWidget.dart';
 import 'Appointment.dart';
@@ -14,6 +17,7 @@ class ScheduleAnAppointment extends StatefulWidget {
 }
 
 class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
+  bool? groupValue;
   final TextEditingController _userName = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _gender = TextEditingController();
@@ -42,7 +46,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     return timeSlots;
   }
 
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -60,6 +63,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
 
   @override
   void initState() {
+
     _userName.addListener(() {
       setState(() {
         _validateuserName = "";
@@ -90,8 +94,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -117,7 +119,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-          const EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 20),
+              const EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,19 +137,41 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   Spacer(),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPatientScreen(type: "add",)));
+                      context.read<PatientCubit>().getPatients();
+                      _showBottomSheet(context);
                     },
+                    style: ButtonStyle(
+                        // shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+                        side: MaterialStateProperty.all(BorderSide(
+                      color: Color(
+                        0xff27BDBE,
+                      ),
+                    ))),
                     child: Text(
-                      "Add more",
+                      "Change",
                       style: TextStyle(
-                        color: Color(0xff1A1A1A),
+                        color: Color(0xff27BDBE),
                         fontWeight: FontWeight.w600,
                         fontFamily: "Poppins",
                         fontSize: 14,
                       ),
                     ),
-                  )
-
+                  ),
+                  IconButton(
+                      visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddPatientScreen(
+                                      type: "add",pateint_id: '',
+                                    )));
+                      },
+                      icon: Icon(
+                        Icons.add_circle_outline,
+                        size: 36,
+                        color: Color(0xff27BDBE),
+                      ))
                 ],
               ),
               SizedBox(
@@ -205,7 +229,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
               ),
               Row(
                 children: [
-
                   Text(
                     "Select the Date",
                     style: TextStyle(
@@ -214,14 +237,12 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                         fontFamily: "Poppins",
                         fontSize: 14),
                   ),
-
                   Spacer(),
                   InkWell(
                     onTap: () {
                       _selectDate(context);
                     },
-                    child:
-                    Text(
+                    child: Text(
                       "Calendar",
                       style: TextStyle(
                           color: Color(0xff27BDBE),
@@ -242,13 +263,15 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   itemCount: _dates.length,
                   itemBuilder: (context, index) {
                     final date = _dates[index];
-                    final isSelected = index == 0; // Example: second date selected
+                    final isSelected =
+                        index == 0; // Example: second date selected
                     return Container(
                       margin: EdgeInsets.only(right: 10),
                       width: 60,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: isSelected ? Color(0xff27BDBE) : Color(0xffD3D3D3),
+                        color:
+                            isSelected ? Color(0xff27BDBE) : Color(0xffD3D3D3),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -258,7 +281,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           Text(
                             DateFormat('dd').format(date),
                             style: TextStyle(
-                              color: isSelected ? Colors.white : Color(0xff1A1A1A),
+                              color:
+                                  isSelected ? Colors.white : Color(0xff1A1A1A),
                               fontWeight: FontWeight.w600,
                               fontFamily: "Poppins",
                               fontSize: 16,
@@ -268,7 +292,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           Text(
                             DateFormat('EEE').format(date),
                             style: TextStyle(
-                              color: isSelected ? Colors.white : Color(0xff1A1A1A),
+                              color:
+                                  isSelected ? Colors.white : Color(0xff1A1A1A),
                               fontWeight: FontWeight.w400,
                               fontFamily: "Poppins",
                               fontSize: 14,
@@ -285,7 +310,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
               ),
               Row(
                 children: [
-
                   Text(
                     "Select the Time",
                     style: TextStyle(
@@ -294,13 +318,10 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                         fontFamily: "Poppins",
                         fontSize: 14),
                   ),
-
                   Spacer(),
                   InkWell(
-                    onTap: () {
-                    },
-                    child:
-                    Text(
+                    onTap: () {},
+                    child: Text(
                       "Set Time",
                       style: TextStyle(
                           color: Color(0xff27BDBE),
@@ -316,26 +337,30 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
               ),
               SizedBox(
                 height: 40,
-
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: generateHourlyTimeSlots().length,
                   itemBuilder: (context, index) {
                     final time = generateHourlyTimeSlots()[index];
-                    final isCurrentHour = time == DateFormat('HH:00').format(DateTime.now());
+                    final isCurrentHour =
+                        time == DateFormat('HH:00').format(DateTime.now());
                     return Container(
                       margin: EdgeInsets.only(right: 10),
                       width: 60,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: isCurrentHour ? Color(0xff27BDBE) : Color(0xffD3D3D3),
+                        color: isCurrentHour
+                            ? Color(0xff27BDBE)
+                            : Color(0xffD3D3D3),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
                         child: Text(
                           time,
                           style: TextStyle(
-                            color: isCurrentHour ? Colors.white : Color(0xff4B4B4B),
+                            color: isCurrentHour
+                                ? Colors.white
+                                : Color(0xff4B4B4B),
                             fontWeight: FontWeight.w400,
                             fontFamily: "Poppins",
                             fontSize: 14,
@@ -346,12 +371,13 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   },
                 ),
               ),
-
-              InkWell(onTap: (){
-                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Apointments()));
-              },
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Apointments()));
+                },
                 child: Container(
-                  margin: EdgeInsets.only(top: 40,bottom: 20),
+                  margin: EdgeInsets.only(top: 40, bottom: 20),
                   width: w,
                   height: 50,
                   decoration: BoxDecoration(
@@ -369,11 +395,120 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Future _showBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          // You still need setState here to rebuild StatefulBuilder
+          return BlocBuilder<PatientCubit,PatientState>(builder: (context, state) {
+            if(state is PatientLoadingState){
+              return Center(child: CircularProgressIndicator(color: Color(0xff27BDBE),),);
+            }else if(state is PatientsListLoaded){
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        height: 5,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xff808080),
+                        ),
+                      ),
+                    ),
+                    ListView.builder(
+                      padding: EdgeInsets.only(top: 10),
+                      shrinkWrap: true,
+                      itemCount: state.patientsListModel.patientslist?.length,
+                      itemBuilder: (context, index) {
+                        final patint= state.patientsListModel.patientslist?[index];
+                        print('patint::${patint}');
+                        return ListTile(
+                          // leading: Radio<bool>(
+                          //   activeColor: Color(0xff27BDBE),
+                          //   value:
+                          //   false, // You can set this to something specific if needed
+                          //   groupValue: groupValue, // Pass groupValue to Radio
+                          //   onChanged: (bool? newValue) {
+                          //     setState(() {
+                          //       groupValue = newValue; // Update groupValue here
+                          //     });
+                          //   },
+                          // ),
+                          title: Text(
+                            patint?.patientName??'',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                          subtitle: Text(' ${patint?.dob??''} / ${patint?.gender??''} / ${patint?.bloodGroup??''}',
+
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddPatientScreen(
+                                              type: "edit",pateint_id: patint?.id??"",
+                                            )));
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 20,
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    context.read<PatientCubit>().deletePatient(patint?.id??'');
+
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    size: 20,
+                                  )),
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              );
+            } else if(state is PatientErrorState){
+              return Center(child: Text(state.errorMessage));
+            }
+            return Center(child: Text("No Data"));
+
+          },
+
+          );
+        });
+      },
     );
   }
 
@@ -399,10 +534,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
             ),
           ],
         ),
-
         child: Material(
           elevation: 0,
-
           borderRadius: BorderRadius.circular(30),
           child: TextFormField(
             controller: controller,
@@ -421,15 +554,15 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                 // filled: true,
                 // fillColor: Color(0xffffffff),
                 border: InputBorder.none
-              // enabledBorder: OutlineInputBorder(
-              //   borderRadius: BorderRadius.circular(50),
-              //   borderSide: BorderSide(width: 1, color: Color(0xffCDE2FB)),
-              // ),
-              // focusedBorder: OutlineInputBorder(
-              //   borderRadius: BorderRadius.circular(15.0),
-              //   borderSide: BorderSide(width: 1, color: Color(0xffCDE2FB)),
-              // ),
-            ),
+                // enabledBorder: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(50),
+                //   borderSide: BorderSide(width: 1, color: Color(0xffCDE2FB)),
+                // ),
+                // focusedBorder: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(15.0),
+                //   borderSide: BorderSide(width: 1, color: Color(0xffCDE2FB)),
+                // ),
+                ),
           ),
         ),
       ),

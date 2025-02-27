@@ -4,6 +4,7 @@ import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Models/ConditionBasedModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Models/TestModel.dart';
+import 'package:revxpharma/Models/getPatientDetailModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
 import 'package:revxpharma/data/api_routes/patient_remote_url.dart';
 
@@ -24,6 +25,7 @@ abstract class RemoteDataSource {
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
   Future<SuccessModel?> UpdatePatient(Map<String, dynamic> patientData,id);
   Future<SuccessModel?> DeletePatient(id);
+  Future<getPatientDetailModel?> GetPatientDetails(id);
   Future<CartListModel?> fetchCartList();
   Future<SuccessModel?> AddToCart(Map<String, dynamic> Data);
   Future<SuccessModel?> RemoveFromCart(id);
@@ -227,6 +229,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       LogHelper.printLog('Error DeletePatient data:',e);
+      return null;
+    }
+  }
+  @override
+  Future<getPatientDetailModel?>GetPatientDetails(id) async {
+    try {
+      Response response = await ApiClient.get('${PatientRemoteUrls.pateint_details}/${id}');
+      if (response.statusCode == 200) {
+        LogHelper.printLog('GetPatientDetails:', response.data);
+        return getPatientDetailModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error GetPatientDetails data:',e);
       return null;
     }
   }

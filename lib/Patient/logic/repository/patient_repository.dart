@@ -1,4 +1,6 @@
 
+import 'package:revxpharma/Models/getPatientDetailModel.dart';
+
 import '../../../Models/PatientsListModel.dart';
 import '../../../Models/SuccessModel.dart';
 import '../../../data/api_routes/remote_data_source.dart';
@@ -8,6 +10,7 @@ abstract class PatientRepository {
   Future<SuccessModel?> addPatient(Map<String, dynamic> patientData);
   Future<SuccessModel?> editPatient(Map<String, dynamic> patientData,id);
   Future<SuccessModel?> deletePatient(id);
+  Future<getPatientDetailModel?> patient_details(id);
 }
 
 class PatientRepositoryImpl implements PatientRepository {
@@ -35,5 +38,10 @@ class PatientRepositoryImpl implements PatientRepository {
   @override
   Future<SuccessModel?> deletePatient(id) async {
     return await remoteDataSource.DeletePatient(id);
+  }
+
+  @override
+  Future<getPatientDetailModel?> patient_details(id) async {
+    return await remoteDataSource.GetPatientDetails(id);
   }
 }

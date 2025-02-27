@@ -77,14 +77,14 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     if (android.version.sdkInt < 33) {
 
       statuses[Permission.storage] =
-          await Permission.storage.status; // For Android 12 and below
+      await Permission.storage.status; // For Android 12 and below
     } else {
       statuses[Permission.photos] =
-          await Permission.photos.status; // For Android 13+
+      await Permission.photos.status; // For Android 13+
     }
 
     bool allPermissionsGranted =
-        statuses.values.every((status) => status.isGranted);
+    statuses.values.every((status) => status.isGranted);
 
     setState(() {
       permissions_granted = allPermissionsGranted;
@@ -108,12 +108,12 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                     builder: (_) => Status == ''
                         ? OnBoard()
                         : Status1 == ''
-                            ? OnBoardOne()
-                            : PermissionStatus == false
-                                ? MyPermission()
-                                : Token == ''
-                                    ? LogInWithEmail()
-                                    : Dashboard()),
+                        ? OnBoardOne()
+                        : PermissionStatus == false
+                        ? MyPermission()
+                        : Token == ''
+                        ? LogInWithEmail()
+                        : Dashboard()),
               );
             });
           } else if (state is InternetStatusLostState) {
