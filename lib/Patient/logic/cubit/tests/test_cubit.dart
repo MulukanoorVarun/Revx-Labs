@@ -6,18 +6,23 @@ import '../../../../Models/TestModel.dart';
 
 class TestCubit extends Cubit<TestState> {
   final TestRepository testRepository;
-  TestModel? testModel;  // Store the fetched test list for easy manipulation
+  TestModel? testModel;
+
+  int _currentPage = 1;
+  bool _hasNextPage = true;
+  bool _isLoadingMore = false;
 
   TestCubit(this.testRepository) : super(TestStateInitially());
 
-  // Fetch Test List
   Future<void> fetchTestList(String latlang, String catId) async {
     emit(TestStateLoading());
+    _currentPage = 1;
     try {
-      final tests = await testRepository.getTest(latlang, catId);
+      final tests = await testRepository.getTest(latlang, catId, _currentPage);
       if (tests != null) {
-        testModel = tests;  // Store the test list
-        emit(TestStateLoaded(tests));
+        testModel = tests;
+        _hasNextPage = tests.settings?.nextPage ?? false;
+        emit(TestStateLoaded(testModel!, _hasNextPage));
       } else {
         emit(TestStateError("No test data found"));
       }
@@ -26,28 +31,53 @@ class TestCubit extends Cubit<TestState> {
     }
   }
 
+// Fetch More Tests (Pagination)
+  Future<void> fetchMoreTestList(latlang,catId) async {
+    if (_isLoadingMore || !_hasNextPage) return;
+    _isLoadingMore = true;
+    _currentPage++;
+    emit(TestStateLoadingMore(testModel!, _hasNextPage));
+
+    try {
+      final newTests = await testRepository.getTest(latlang, catId, _currentPage);
+      if (newTests != null && newTests.data!.isNotEmpty) {
+        final updatedTests = List<Data>.from(testModel!.data!)..addAll(newTests.data!);
+        testModel = TestModel(data: updatedTests, settings: newTests.settings);
+        _hasNextPage = newTests.settings?.nextPage ?? false;
+        emit(TestStateLoaded(testModel!, _hasNextPage));
+      }
+    } catch (e) {
+      print("Pagination error: $e");
+    } finally {
+      _isLoadingMore = false;
+    }
+  }
+
+
   void updateTestCartStatus({required String testId, required bool isAdded}) {
-    print("is in cart Status: $isAdded");
+    print("Updating cart status for Test ID: $testId to $isAdded");
+
     if (testModel?.data != null) {
-      final updatedTests = testModel!.data!.map((test) {
+      // Creating a new list to avoid reference modification issues
+      final updatedTests = List<Data>.from(testModel!.data!.map((test) {
         if (test.id == testId) {
           print("Updating cart status for: ${test.id}");
           return test.copyWith(exist_in_cart: isAdded);
         }
         return test;
-      }).toList();
+      }));
 
-      // ✅ Create a new TestModel instance to trigger UI rebuild
-      final updatedTestModel = TestModel(
+      // Creating a new TestModel instance to ensure state update
+      testModel = TestModel(
         data: updatedTests,
         settings: testModel!.settings,
       );
 
-      print("Cart status after update: ${updatedTests.firstWhere((test) => test.id == testId).exist_in_cart}");
-      // ✅ Emit new state with new instance
-      emit(TestStateLoaded(updatedTestModel));
+      // Emit new state
+      emit(TestStateLoaded(testModel!,_hasNextPage));
     }
   }
+
 
 
 }

@@ -40,7 +40,7 @@ class CartCubit extends Cubit<CartState> {
       if (response?.settings?.success == 1) {
         // Update count only if API succeeds
         cartCount++;
-        context.read<TestCubit>().updateTestCartStatus(
+        testCubit.updateTestCartStatus(
           testId: cartData['test'],
           isAdded: true,
         );
@@ -72,11 +72,14 @@ class CartCubit extends Cubit<CartState> {
       final response = await cartRepository.removeFromCart(id);
       if (response?.settings?.success == 1) {
         // Update count only after success
+        getCartList();
         cartCount--;
-        context.read<TestCubit>().updateTestCartStatus(
+        // ✅ Directly use `testCubit` instead of `context.read<TestCubit>()`
+        testCubit.updateTestCartStatus(
           testId: id,
           isAdded: false,
         );
+
         emit(CartSuccessState(
           message: 'Item removed from cart successfully.',
           cartCount: cartCount,

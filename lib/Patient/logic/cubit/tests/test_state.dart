@@ -14,8 +14,18 @@ class TestStateLoading extends TestState {}
 
 class TestStateLoaded extends TestState {
   final TestModel testModel;
+  final bool hasNextPage; // Tracks if more data is available
 
-  const TestStateLoaded(this.testModel);
+  const TestStateLoaded(this.testModel, this.hasNextPage);
+
+  @override
+  List<Object?> get props => [testModel, hasNextPage];
+}
+
+class TestStateLoadingMore extends TestState {
+  final TestModel testModel;
+  final bool hasNextPage; // Tracks if more data is available
+  const TestStateLoadingMore(this.testModel,this.hasNextPage);
 
   @override
   List<Object?> get props => [testModel];
@@ -29,3 +39,4 @@ class TestStateError extends TestState {
   @override
   List<Object?> get props => [message];
 }
+

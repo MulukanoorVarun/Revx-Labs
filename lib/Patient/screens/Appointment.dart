@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 
 import '../logic/cubit/cart/cart_cubit.dart';
 import '../logic/cubit/cart/cart_state.dart';
@@ -32,23 +34,7 @@ class _ApointmentsState extends State<Apointments> {
     var h = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.arrow_back_ios_new),
-        ),
-        title: Text(
-          "Appointment",
-          style: TextStyle(
-            color: Color(0xff27BDBE),
-            fontFamily: 'Poppins',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Cart", actions: []),
       body: BlocBuilder<CartCubit, CartState>(builder: (context, cartState) {
         if (cartState is CartLoadingState) {
           return Center(
@@ -246,7 +232,9 @@ class _ApointmentsState extends State<Apointments> {
                                       ),
                                       IconButton(
                                         visualDensity: VisualDensity.compact,
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            context.read<CartCubit>().removeFromCart(test?.testId ?? "",context);
+                                          },
                                           icon: const Icon(
                                             Icons.delete_outline,
                                             color: Color(0xff000000),
@@ -488,13 +476,13 @@ class _ApointmentsState extends State<Apointments> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => appointmentscreens(),
+                builder: (context) => ScheduleAnAppointment(),
               ),
             );
           },
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            backgroundColor: const Color(0xFF00C4D3),
+            backgroundColor: const Color(0xFF27BDBE),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
             ),

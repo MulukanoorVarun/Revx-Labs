@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
@@ -39,192 +40,147 @@ class _alltestsState extends State<alltests> {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Color(0xff24AEB1)),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          title: Text(
-            widget.catName.isNotEmpty ? widget.catName : 'All Tests',
-            style: TextStyle(
-              color: Color(0xff24AEB1),
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              fontFamily: "Poppins",
-            ),
-          ),
-          actions: [
-            widget.catName.isNotEmpty
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: Image(
-                      image: AssetImage("assets/filter.png"),
-                      width: 16,
-                      height: 18,
-                    ),
-                  )
-          ],
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          iconTheme: IconThemeData(color: Color(0xff24AEB1)),
-        ),
+        appBar: CustomAppBar(title: "${widget.catName.isNotEmpty ? widget.catName : 'All Tests'}", actions: []),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              if (widget.catName.isEmpty) ...[
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the search box
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                          color: Color(0xffDADADA)) // Rounded corners
-                      ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Search for lab tests (CBP, X-Ray..)",
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Poppins",
-                          color: Color(0xffb6b6b6)),
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                      prefixIcon: Icon(Icons.search, color: Color(0xff949494)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border:
-                        Border.all(color: const Color(0xff27BDBE), width: 1),
-                  ),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isLabTestSelected = true;
-                          });
-                        },
-                        child: Container(
-                          width: w * 0.45,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: isLabTestSelected
-                                ? const Color(0xff27BDBE)
-                                : Colors.transparent,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Labs Tests",
-                              style: TextStyle(
-                                color: isLabTestSelected
-                                    ? Colors.white
-                                    : const Color(0xff27BDBE),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isLabTestSelected = false;
-                          });
-                          context.read<ConditionCubit>().fetchConditionBased();
-                        },
-                        child: Container(
-                          width: w * 0.465,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: !isLabTestSelected
-                                ? const Color(0xff27BDBE)
-                                : Colors.transparent,
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Condition based",
-                              style: TextStyle(
-                                color: !isLabTestSelected
-                                    ? Colors.white
-                                    : const Color(0xff27BDBE),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              if (isLabTestSelected) ...[
+              // if (widget.catName.isEmpty) ...[
+              //   Container(
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(20),
+              //       border:
+              //           Border.all(color: const Color(0xff27BDBE), width: 1),
+              //     ),
+              //     child: Row(
+              //       children: [
+              //         GestureDetector(
+              //           onTap: () {
+              //             setState(() {
+              //               isLabTestSelected = true;
+              //             });
+              //           },
+              //           child: Container(
+              //             width: w * 0.45,
+              //             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(20),
+              //               color: isLabTestSelected
+              //                   ? const Color(0xff27BDBE)
+              //                   : Colors.transparent,
+              //             ),
+              //             child: Center(
+              //               child: Text(
+              //                 "Labs Tests",
+              //                 style: TextStyle(
+              //                   color: isLabTestSelected
+              //                       ? Colors.white
+              //                       : const Color(0xff27BDBE),
+              //                   fontSize: 12,
+              //                   fontWeight: FontWeight.w400,
+              //                   fontFamily: "Poppins",
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         GestureDetector(
+              //           onTap: () {
+              //             setState(() {
+              //               isLabTestSelected = false;
+              //             });
+              //             context.read<ConditionCubit>().fetchConditionBased();
+              //           },
+              //           child: Container(
+              //             width: w * 0.465,
+              //             padding: const EdgeInsets.symmetric(
+              //                 horizontal: 10, vertical: 10),
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(20),
+              //               color: !isLabTestSelected
+              //                   ? const Color(0xff27BDBE)
+              //                   : Colors.transparent,
+              //             ),
+              //             child: Center(
+              //               child: Text(
+              //                 "Condition based",
+              //                 style: TextStyle(
+              //                   color: !isLabTestSelected
+              //                       ? Colors.white
+              //                       : const Color(0xff27BDBE),
+              //                   fontSize: 12,
+              //                   fontWeight: FontWeight.w400,
+              //                   fontFamily: "Poppins",
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ],
+              // if (isLabTestSelected) ...[
                 // Wrap the entire widget with a single BlocListener
-                BlocListener<CartCubit, CartState>(
-                  listener: (context, state) {
-                    if (state is CartSuccessState) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.message)),
-                      );
-                    } else if (state is CartErrorState) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.errorMessage)),
-                      );
-                    }
-                  },
+              BlocListener<CartCubit, CartState>(
+                listener: (context, state) {
+                  if (state is CartSuccessState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.message)),
+                    );
+                  } else if (state is CartErrorState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.errorMessage)),
+                    );
+                  }
+                },
+                child: Expanded(
                   child: BlocBuilder<TestCubit, TestState>(
                     builder: (context, state) {
                       if (state is TestStateLoading) {
                         return _shimmerList();
-                      } else if (state is TestStateLoaded) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: state.testModel.data?.length ?? 0,
-                            itemBuilder: (context, index) {
-                              final labTests = state.testModel.data?[index];
-                              print("UI Cart Status: ${labTests?.exist_in_cart}");  // ✅ Should reflect correctly now
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: const Color(0xff949494), width: 1),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Test Name
-                                    Text(
-                                      labTests?.testName ?? '',
-                                      maxLines: 1,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Poppins",
-                                        color: Colors.black,
-                                      ),
+                      }
+                      else if (state is TestStateLoaded || state is TestStateLoadingMore) {
+                        final testModel = (state is TestStateLoaded)
+                            ? (state as TestStateLoaded).testModel
+                            : (state as TestStateLoadingMore).testModel;
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+                            if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent * 0.9) {
+                              if (state is TestStateLoaded && state.hasNextPage) {
+                                context.read<TestCubit>().fetchMoreTestList(widget.lat_lang ?? '', widget.catId ?? '');
+                              }
+                              return false;
+                            }
+                            return false;
+                          },
+                         child: CustomScrollView(
+                          slivers: [
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                  final labTests = testModel.data?[index];
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xff949494), width: 0.5),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    const SizedBox(height: 8),
-
-                                    // Price
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
+                                        Text(
+                                          labTests?.testName ?? '',
+                                          maxLines: 1,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
                                         Text(
                                           '₹ ${labTests!.price}/-',
                                           style: const TextStyle(
@@ -234,219 +190,192 @@ class _alltestsState extends State<alltests> {
                                             color: Colors.black,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 16),
-
-                                    // Action Buttons
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // View Details Button
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                                            backgroundColor: Colors.white,
-                                            side: const BorderSide(color: Color(0xff27BDBE)),
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(30)),
-                                            ),
-                                            visualDensity: VisualDensity.compact,
-                                          ),
-                                          child: const Text(
-                                            'View Detail',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Poppins",
-                                              color: Color(0xff27BDBE),
-                                            ),
-                                          ),
-                                        ),
-
-                                        // Cart Button
-                                        BlocBuilder<CartCubit, CartState>(
-                                          builder: (context, cartState) {
-                                            bool isLoading = cartState is CartLoadingState &&
-                                                cartState.testId == labTests.id;
-                                            print("${labTests.exist_in_cart}");
-                                            return ElevatedButton(
-                                              onPressed: isLoading
-                                                  ? null
-                                                  : () {
-                                                if (labTests.exist_in_cart ?? false) {
-                                                  context.read<CartCubit>().removeFromCart(labTests.id ?? "",context);
-                                                } else {
-                                                  context.read<CartCubit>().addToCart({"test": "${labTests.id}"},context);
-                                                }
-                                              },
+                                        const SizedBox(height: 5),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {},
                                               style: ElevatedButton.styleFrom(
-                                                padding: const EdgeInsets.symmetric(horizontal: 25),
-                                                backgroundColor: labTests.exist_in_cart ?? false
-                                                    ? Colors.red
-                                                    : const Color(0xff24AEB1),
+                                                backgroundColor: Colors.white,
+                                                side: const BorderSide(color: Color(0xff27BDBE)),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(30),
                                                 ),
+                                                elevation: 0,
                                                 visualDensity: VisualDensity.compact,
                                               ),
-                                              child: isLoading
-                                                  ? const SizedBox(
-                                                width: 20,
-                                                height: 20,
-                                                child: CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                  strokeWidth: 2,
-                                                ),
-                                              )
-                                                  : Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    labTests.exist_in_cart ?? false
-                                                        ? 'Remove'
-                                                        : 'Add Test',
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontFamily: 'Poppins',
+                                              child: Text(
+                                                'View Detail',
+                                                style: TextStyle(color: Color(0xff27BDBE),fontFamily: "Poppins"),
+                                              ),
+                                            ),
+                                            BlocBuilder<CartCubit, CartState>(
+                                              builder: (context, cartState) {
+                                                bool isLoading = cartState is CartLoadingState &&
+                                                    cartState.testId == labTests.id;
+                                                return ElevatedButton(
+                                                  onPressed: isLoading
+                                                      ? null
+                                                      : () {
+                                                    if (labTests.exist_in_cart ?? false) {
+                                                      context.read<CartCubit>().removeFromCart(labTests.id ?? "", context);
+                                                    } else {
+                                                      context.read<CartCubit>().addToCart({"test": "${labTests.id}"}, context);
+                                                    }
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    visualDensity: VisualDensity.compact,
+                                                    backgroundColor: labTests.exist_in_cart ?? false
+                                                        ? Colors.red
+                                                        : const Color(0xff24AEB1),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(30),
+                                                    ),
+                                                    elevation: 0
+                                                  ),
+                                                  child: isLoading
+                                                      ? const SizedBox(
+                                                    width: 20,
+                                                    height: 20,
+                                                    child: CircularProgressIndicator(
                                                       color: Colors.white,
+                                                      strokeWidth: 2,
+                                                    ),
+                                                  )
+                                                      : Text(
+                                                    labTests.exist_in_cart ?? false ? 'Remove' : 'Add Test',
+                                                    style: TextStyle(color: Colors.white,
+                                                      fontFamily: "Poppins"
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 8),
-                                                  Icon(
-                                                    labTests.exist_in_cart ?? false
-                                                        ? Icons.cancel
-                                                        : Icons.add_circle_outline,
-                                                    size: 20,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 10),
+                                          padding: const EdgeInsets.all(6),
+                                          decoration: const BoxDecoration(color: Color(0xffD40000)),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.location_on, color: Colors.white, size: 15),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(
+                                                  '${labTests.diagnosticCentre} - ${labTests.distance} away',
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                                                ),
                                               ),
-                                            );
-                                          },
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-
-                                    // Location Info
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10),
-                                      decoration: const BoxDecoration(color: Color(0xffD40000)),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.location_on, color: Colors.white, size: 15),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              '${labTests.diagnosticCentre} - ${labTests.distance} away',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontFamily: "Poppins",
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  );
+                                },
+                                childCount: testModel.data?.length ?? 0,
+                              ),
+                            ),
+                            if (state is TestStateLoadingMore)
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Center(
+                                    child: CircularProgressIndicator(strokeWidth: 0.8),
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                        );
+                              ),
+                          ],
+                        ),);
                       } else if (state is TestStateError) {
                         return const Center(child: Text("Error loading data"));
                       }
-
                       return const Center(child: Text("No Data Available"));
                     },
                   ),
                 ),
-              ] else ...[
-                BlocBuilder<ConditionCubit, ConditionBasedState>(
-                  builder: (context, Conditionstate) {
-                    if (Conditionstate is ConditionBasedLoading) {
-                      return _shimmerList1();
-                    } else if (Conditionstate is ConditionBasedLoaded) {
-                      return Expanded(
-                          child: ListView.builder(
-                        itemCount:
-                            Conditionstate.conditionBasedModel.data?.length,
-                        itemBuilder: (context, index) {
-                          final items =
-                              Conditionstate.conditionBasedModel.data?[index];
-                          return GestureDetector(
-                            onTap: () {
-                              // Handle card click, navigate or perform an action
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 1),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // Product name and price
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          items?.name ?? '',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Poppins",
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 6),
-                                        // Space between product name and price
-                                        Text(
-                                          ('${items?.testsAvailable.toString() ?? ''} Tests Available'),
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "Poppins",
-                                            color: Color(0xff808080),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    // Dummy image instead of noOfTests
-                                    Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                      size: 16,
-                                      weight: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ));
-                    } else if (Conditionstate is ConditionBasedError) {
-                      return Center(
-                          child: Text("Error loading ConditionBaseddata"));
-                    }
-                    return Center(child: Text("No Data Available"));
-                  },
-                ),
-              ]
+              )
+              // ] else ...[
+              //   BlocBuilder<ConditionCubit, ConditionBasedState>(
+              //     builder: (context, Conditionstate) {
+              //       if (Conditionstate is ConditionBasedLoading) {
+              //         return _shimmerList1();
+              //       } else if (Conditionstate is ConditionBasedLoaded) {
+              //         return Expanded(
+              //             child: ListView.builder(
+              //           itemCount:
+              //               Conditionstate.conditionBasedModel.data?.length,
+              //           itemBuilder: (context, index) {
+              //             final items =
+              //                 Conditionstate.conditionBasedModel.data?[index];
+              //             return GestureDetector(
+              //               onTap: () {
+              //                 // Handle card click, navigate or perform an action
+              //               },
+              //               child: Container(
+              //                 margin: EdgeInsets.only(bottom: 10),
+              //                 decoration: BoxDecoration(
+              //                   border:
+              //                       Border.all(color: Colors.grey, width: 1),
+              //                   borderRadius: BorderRadius.circular(6),
+              //                 ),
+              //                 child: Padding(
+              //                   padding: const EdgeInsets.all(16.0),
+              //                   child: Row(
+              //                     mainAxisAlignment:
+              //                         MainAxisAlignment.spaceBetween,
+              //                     children: [
+              //                       // Product name and price
+              //                       Column(
+              //                         crossAxisAlignment:
+              //                             CrossAxisAlignment.start,
+              //                         children: [
+              //                           Text(
+              //                             items?.name ?? '',
+              //                             style: const TextStyle(
+              //                               fontSize: 14,
+              //                               fontWeight: FontWeight.w400,
+              //                               fontFamily: "Poppins",
+              //                               color: Colors.black,
+              //                             ),
+              //                           ),
+              //                           const SizedBox(height: 6),
+              //                           // Space between product name and price
+              //                           Text(
+              //                             ('${items?.testsAvailable.toString() ?? ''} Tests Available'),
+              //                             style: const TextStyle(
+              //                               fontSize: 14,
+              //                               fontWeight: FontWeight.w500,
+              //                               fontFamily: "Poppins",
+              //                               color: Color(0xff808080),
+              //                             ),
+              //                           ),
+              //                         ],
+              //                       ),
+              //                       // Dummy image instead of noOfTests
+              //                       Icon(
+              //                         Icons.arrow_forward_ios_outlined,
+              //                         size: 16,
+              //                         weight: 1,
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 ),
+              //               ),
+              //             );
+              //           },
+              //         ));
+              //       } else if (Conditionstate is ConditionBasedError) {
+              //         return Center(
+              //             child: Text("Error loading ConditionBaseddata"));
+              //       }
+              //       return Center(child: Text("No Data Available"));
+              //     },
+              //   ),
+              // ]
             ],
           ),
         ),
