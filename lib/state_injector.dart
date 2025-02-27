@@ -8,6 +8,8 @@ import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cub
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/home/home_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
@@ -29,12 +31,10 @@ class StateInjector {
       create: (context) =>
           RemoteDataSourceImpl(), // Ensure this is correctly implemented
     ),
-
     RepositoryProvider<VendorRemoteDataSource>(
       create: (context) =>
           VendorRemoteDataSourceImpl(), // Ensure this is correctly implemented
     ),
-
     RepositoryProvider<CategoryRepository>(
       create: (context) => CategoryRepositoryImpl(
         remoteDataSource: context.read(),
@@ -66,32 +66,27 @@ class StateInjector {
         remoteDataSource: context.read(),
       ),
     ),
-
     RepositoryProvider<PatientRepository>(
       create: (context) => PatientRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
-
     RepositoryProvider<CartRepository>(
       create: (context) => CartRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
-
     RepositoryProvider<PatientRepository>(
       create: (context) => PatientRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
-
+    RepositoryProvider<ProfileRepository>(
+        create: (context) => ProfileImpl(remoteDataSource: context.read())),
     RepositoryProvider<DiagnosticGetTestsRepositors>(
-      create: (context) => DiagnosticGetTestsImp(
-              vendorRemoteDataSource: context.read()
-          ),
-      ),
-
-
+      create: (context) =>
+          DiagnosticGetTestsImp(vendorRemoteDataSource: context.read()),
+    ),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -144,8 +139,10 @@ class StateInjector {
     BlocProvider<CartCubit>(
       create: (context) => CartCubit(
         cartRepository: context.read<CartRepository>(),
-        testCubit: context.read<TestCubit>(),  // Access existing TestCubit instance
+        testCubit:
+            context.read<TestCubit>(), // Access existing TestCubit instance
       ),
     ),
+    BlocProvider<ProfileCubit>(create: (context)=>ProfileCubit(profileRepository:context.read<ProfileRepository>()))
   ];
 }

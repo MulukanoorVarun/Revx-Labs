@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
+import 'package:revxpharma/Patient/screens/Profile.dart';
+import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
@@ -20,7 +22,7 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int currentIndex = 0;
-  String lat_lang='';
+  String lat_lang = '';
 
   @override
   void initState() {
@@ -42,92 +44,109 @@ class _HomescreenState extends State<Homescreen> {
             elevation: 0,
             leading: Container(),
             leadingWidth: 0,
-            toolbarHeight: 80,
+            toolbarHeight: 110,
             title: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 6.0),
-                  child: Text(
-                    "Hi, Sandeep",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400),
+                  padding: const EdgeInsets.only(left: 6.0,right: 10),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hi, Sandeep",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                                size: 25,
+                              ),
+                              SizedBox(width: 4),
+                              BlocBuilder<LocationCubit, LocationState>(
+                                  builder: (context, state) {
+                                if (state is LocationLoading) {
+                                  return SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1,
+                                      ));
+                                } else if (state is LocationLoaded) {
+                                  lat_lang = state.latlng;
+                                  return Text(
+                                    "${state.locationName}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Poppins",
+                                      fontSize: 16,
+                                    ),
+                                  );
+                                } else if (state is LocationError) {
+                                  return Center(child: Text(state.message));
+                                }
+                                return Center(child: Text("No Data"));
+                              }),
+                            ],
+                          ),
+                        ],
+                      ),
+                      InkResponse(onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
+                      },
+                        child: CircleAvatar(
+                          child: Image.asset('assets/person.png'),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(
                   height: 6,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      color: Colors.red,
-                      size: 25,
-                    ),
-                    SizedBox(width: 4),
-                    BlocBuilder<LocationCubit, LocationState>(
-                        builder: (context, state) {
-                      if (state is LocationLoading) {
-                        return SizedBox(
-                          width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 1,));
-                      } else if (state is LocationLoaded) {
-                        lat_lang=state.latlng;
-                        return Text("${state.locationName}",
+                InkResponse(onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Searchscreen()));
+                },
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    margin: EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                        color: Color(0xffF9F9F9),
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(color: Color(0xffE9E9E9), width: 1)),
+                    child: Row(
+                      children: [
+                        Icon(Icons.search, color: Colors.grey),
+                        Text(
+                          'Search Diagnostics',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                          ),
-                        );
-                      }else if (state is LocationError) {
-                        return Center(child: Text(state.message));
-                      }
-                      return Center(child: Text("No Data"));
-                    }),
-                  ],
-                ), // Space between text and icon
+                              color: Color(0xff949494),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Poppins"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
-            actions: [
-              CircleAvatar(
-                foregroundImage: AssetImage(
-                  'assets/person.png',
-                ), // Replace with actual image path
-              ),
-              SizedBox(width: 16),
-            ],
           ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                SizedBox(height: 16),
-                // Search Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search Diagnostics',
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.w500, fontFamily: "Poppins"),
-                      prefixIcon: Icon(Icons.search, color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                ),
                 SizedBox(height: 16),
                 CarouselSlider(
                   options: CarouselOptions(
@@ -215,9 +234,12 @@ class _HomescreenState extends State<Homescreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                            builder: (context) =>
-                            alltests(lat_lang:lat_lang,catId: category?.id??'',catName: category?.categoryName??'',),
-                        ));
+                              builder: (context) => alltests(
+                                lat_lang: lat_lang,
+                                catId: category?.id ?? '',
+                                catName: category?.categoryName ?? '',
+                              ),
+                            ));
                       },
                       child: _buildCategoryItem(
                           category?.image ?? '',
@@ -245,7 +267,8 @@ class _HomescreenState extends State<Homescreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Diagnosticcenter(lat_lng: lat_lang),
+                              builder: (context) =>
+                                  Diagnosticcenter(lat_lng: lat_lang),
                             ),
                           );
                         },
@@ -318,8 +341,11 @@ class _HomescreenState extends State<Homescreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            alltests(lat_lang:lat_lang??'',catId: '',catName: '',), // Adjust the index as needed
+                        builder: (context) => alltests(
+                          lat_lang: lat_lang ?? '',
+                          catId: '',
+                          catName: '',
+                        ), // Adjust the index as needed
                       ),
                     );
                   },
@@ -390,7 +416,6 @@ class _HomescreenState extends State<Homescreen> {
       return Center(child: Text("No Data"));
     });
   }
-
 
   Widget _buildCategoryItem(String image, String label) {
     return Column(

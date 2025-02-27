@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dart';
 
 import '../../Authentication/ChangePassword.dart';
 
@@ -23,17 +29,47 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   FocusNode focuspassword = FocusNode();
 
   final Color cursorColor = Colors.blue;
-  final Color backgroundCursorColor = Colors.grey[200]!;
+  final Color backgroundCursorColor =     Color(0xff27BDBE);
+
+  File? _image;
+  XFile? _pickedFile;
+
+  final ImagePicker _picker = ImagePicker();
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery, // Use ImageSource.camera for camera
+      imageQuality: 100,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // Set the selected image file
+        print("Image: ${_image?.path}"); // Print the image path for debugging
+      });
+    } else {
+      print("No image selected.");
+    }
+  }
+
+  @override
+  void initState() {
+    context.read<ProfileCubit>().getProfileDetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
+
     return Scaffold(
+      resizeToAvoidBottomInset:
+      true, // Ensure body content is scrollable when keyboard appears
       appBar: AppBar(
-        leading: InkWell(onTap: (){
-          Navigator.pop(context);
-        },
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: Icon(Icons.arrow_back_ios_new)),
         title: Center(
           child: Text(
@@ -52,86 +88,114 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           )
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 20, left: 16, right: 16, bottom: 20),
-              child: ListView(
-                children: [
-                  _buildTextField(
-                      label: "Full Name",
-                      controller: fullname,
-                      focusNode: focusfullname,
-                      cursorColor: cursorColor,
-                      backgroundCursorColor: backgroundCursorColor,
-                      regex: r'^[a-zA-Z\s]+$',
-                      hint: "enter full name"),
-                  _buildTextField(
-                      label: "Email",
-                      controller: email,
-                      focusNode: focusemail,
-                      cursorColor: cursorColor,
-                      backgroundCursorColor: backgroundCursorColor,
-                      regex:
-                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                      keyboardType: TextInputType.emailAddress,
-                      hint: "enter email "),
-                  _buildTextField(
-                      label: "Phone Number",
-                      controller: phone,
-                      focusNode: focusphone,
-                      cursorColor: cursorColor,
-                      backgroundCursorColor: backgroundCursorColor,
-                      regex: r'^\d{10}$',
-                      keyboardType: TextInputType.phone,
-                      hint: "enter mobile number"),
-                  _buildTextField(
-                    label: "Password",
-                    controller: password,
-                    focusNode: focuspassword,
-                    cursorColor: cursorColor,
-                    backgroundCursorColor: backgroundCursorColor,
-                    regex: r'.*',
-                    hint: "enter your password",
-                    obscureText: true,
-                    suffixIcon: TextButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ChangePassword()));
+      body: SingleChildScrollView(
+        // Wrap the entire body in SingleChildScrollView
+        child: Padding(
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileStateLoading) {
+                return Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xff27BDBE),
+                    ));
+              } else if (state is ProfileStateLoaded) {
+                String profile_image =
+                    state.profileDetailModel.data?.image ?? '';
+                String fullName = state.profileDetailModel.data?.fullName ?? '';
+                String emailValue = state.profileDetailModel.data?.email ?? '';
+                String phoneValue = state.profileDetailModel.data?.mobile ?? '';
 
-                      },
-                      child: Text(
-                        'Change',
-                        style: TextStyle(color: Colors.yellow),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.grey.withOpacity(0.5),
+                                backgroundImage: _image != null
+                                    ? FileImage(_image!)
+                                as ImageProvider<Object>
+                                    : (profile_image.isNotEmpty)
+                                    ? NetworkImage(profile_image)
+                                as ImageProvider<Object>
+                                    : AssetImage('assets/person.png')
+                                as ImageProvider<Object>,
+                                child: (_image == null &&
+                                    profile_image.isEmpty)
+                                    ? Text(
+                                  fullName.isNotEmpty
+                                      ? fullName[0].toUpperCase()
+                                      : '',
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.white),
+                                )
+                                    : null,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: _pickImage,
+                                  child: CircleAvatar(
+                                    radius: 12,
+                                    backgroundColor: Colors.white,
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Color(0xff27BDBE),
+                                      size: 15, // Size of the camera icon
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                    _buildTextField(
+                        label: "Full Name",
+                        controller: fullname..text = fullName,
+                        focusNode: focusfullname,
+                        cursorColor: cursorColor,
+                        backgroundCursorColor: backgroundCursorColor,
+                        regex: r'^[a-zA-Z\s]+$',
+                        hint: "enter full name"),
+                    _buildTextField(
+                        label: "Email",
+                        controller: email..text = emailValue,
+                        focusNode: focusemail,
+                        cursorColor: cursorColor,
+                        backgroundCursorColor: backgroundCursorColor,
+                        regex:
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                        keyboardType: TextInputType.emailAddress,
+                        hint: "enter email "),
+                    _buildTextField(
+                        label: "Phone Number",
+                        controller: phone..text = phoneValue,
+                        focusNode: focusphone,
+                        cursorColor: cursorColor,
+                        backgroundCursorColor: backgroundCursorColor,
+                        regex: r'^\d{10}$',
+                        keyboardType: TextInputType.phone,
+                        hint: "enter mobile number"),
+                  ],
+                );
+              } else if (state is ProfileStateError) {
+                return Center(child: Text(state.message));
+              }
+              return Center(child: Text("No Data"));
+            },
           ),
-          Container(
-            margin: EdgeInsets.all(15),
-            width: w,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Color(0xFF00C4D3),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child: Text(
-                'CHANGE SETTINGS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
-
-        ],
+        ),
       ),
     );
   }
@@ -159,7 +223,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               color: Color(0xff868686)),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextField(readOnly: true,
           controller: controller,
           focusNode: focusNode,
           style: TextStyle(

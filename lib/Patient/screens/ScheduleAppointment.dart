@@ -177,82 +177,101 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
               SizedBox(
                 height: 20,
               ),
-              _buildTextField(
-                icon: Icons.person,
-                controller: _userName,
-                validation: _validateuserName,
-                hintText: 'User name',
-                keyboardType: TextInputType.text,
+              
+              Container(padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  Text('User name',style:TextStyle(
+                    fontSize: 15,fontWeight: FontWeight.w400,fontFamily: 'Poppins',
+                    color: Color(0xff1A1A1A),
+                  ),),
+                    Text(':',style:TextStyle(
+                      fontSize: 15,fontWeight: FontWeight.w400,fontFamily: 'Poppins',
+                      color: Color(0xffAFAFAF),
+                    ),),
+                    Text('Charan',style:TextStyle(
+                      fontSize: 15,fontWeight: FontWeight.w400,fontFamily: 'Poppins',
+                      color: Color(0xffAFAFAF),
+                    ),)
+
+                ],),
               ),
-              _buildTextField(
-                icon: Icons.phone_android_outlined,
-                controller: _phoneNumber,
-                validation: _validatephoneNumber,
-                hintText: 'Phone number',
-                keyboardType: TextInputType.phone,
-                pattern: r'[0-9]',
-              ),
-              _buildTextField(
-                icon: Icons.male,
-                controller: _gender,
-                validation: _validategender,
-                hintText: 'Gender',
-                keyboardType: TextInputType.text,
-              ),
-              _buildDateField('Date of birth', _dob, context),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      icon: Icons.cake,
-                      controller: _age,
-                      validation: _validateage,
-                      hintText: 'Age',
-                      keyboardType: TextInputType.number,
-                      pattern: r'[0-9]',
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: _buildTextField(
-                      icon: Icons.bloodtype_outlined,
-                      controller: _bloodGroup,
-                      validation: _validatebloodGroop,
-                      hintText: 'Blood Group',
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  Text(
-                    "Select the Date",
-                    style: TextStyle(
-                        color: Color(0xff1A1A1A),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins",
-                        fontSize: 14),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      _selectDate(context);
-                    },
-                    child: Text(
-                      "Calendar",
-                      style: TextStyle(
-                          color: Color(0xff27BDBE),
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "Poppins",
-                          fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
+              // _buildTextField(
+              //   icon: Icons.person,
+              //   controller: _userName,
+              //   validation: _validateuserName,
+              //   hintText: 'User name',
+              //   keyboardType: TextInputType.text,
+              // ),
+              // _buildTextField(
+              //   icon: Icons.phone_android_outlined,
+              //   controller: _phoneNumber,
+              //   validation: _validatephoneNumber,
+              //   hintText: 'Phone number',
+              //   keyboardType: TextInputType.phone,
+              //   pattern: r'[0-9]',
+              // ),
+              // _buildTextField(
+              //   icon: Icons.male,
+              //   controller: _gender,
+              //   validation: _validategender,
+              //   hintText: 'Gender',
+              //   keyboardType: TextInputType.text,
+              // ),
+              // _buildDateField('Date of birth', _dob, context),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: _buildTextField(
+              //         icon: Icons.cake,
+              //         controller: _age,
+              //         validation: _validateage,
+              //         hintText: 'Age',
+              //         keyboardType: TextInputType.number,
+              //         pattern: r'[0-9]',
+              //       ),
+              //     ),
+              //     SizedBox(width: 10),
+              //     Expanded(
+              //       child: _buildTextField(
+              //         icon: Icons.bloodtype_outlined,
+              //         controller: _bloodGroup,
+              //         validation: _validatebloodGroop,
+              //         hintText: 'Blood Group',
+              //         keyboardType: TextInputType.text,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(
+              //   height: 30,
+              // ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       "Select the Date",
+              //       style: TextStyle(
+              //           color: Color(0xff1A1A1A),
+              //           fontWeight: FontWeight.w600,
+              //           fontFamily: "Poppins",
+              //           fontSize: 14),
+              //     ),
+              //     Spacer(),
+              //     InkWell(
+              //       onTap: () {
+              //         _selectDate(context);
+              //       },
+              //       child: Text(
+              //         "Calendar",
+              //         style: TextStyle(
+              //             color: Color(0xff27BDBE),
+              //             fontWeight: FontWeight.w600,
+              //             fontFamily: "Poppins",
+              //             fontSize: 14),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 20,
               ),

@@ -3,6 +3,7 @@ import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Models/ConditionBasedModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
+import 'package:revxpharma/Models/ProfileDetailModel.dart';
 import 'package:revxpharma/Models/TestModel.dart';
 import 'package:revxpharma/Models/getPatientDetailModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
@@ -19,31 +20,32 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang, catId,page);
+  Future<TestModel?> fetchTest(latlang, catId);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
-  Future<SuccessModel?> UpdatePatient(Map<String, dynamic> patientData,id);
+  Future<SuccessModel?> UpdatePatient(Map<String, dynamic> patientData, id);
   Future<SuccessModel?> DeletePatient(id);
   Future<getPatientDetailModel?> GetPatientDetails(id);
   Future<CartListModel?> fetchCartList();
   Future<SuccessModel?> AddToCart(Map<String, dynamic> Data);
   Future<SuccessModel?> RemoveFromCart(id);
+  Future<ProfileDetailModel?> getProfileDetails();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-
   @override
   Future<SuccessModel?> RemoveFromCart(id) async {
     try {
-      Response response = await ApiClient.delete("${PatientRemoteUrls.removeCart}/${id}");
+      Response response =
+          await ApiClient.delete("${PatientRemoteUrls.removeCart}/${id}");
       if (response.statusCode == 200) {
-        LogHelper.printLog('RemoveFromCart:',  response.data);
+        LogHelper.printLog('RemoveFromCart:', response.data);
         return SuccessModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error RemoveFromCart::',e);
+      LogHelper.printLog('Error RemoveFromCart::', e);
       return null;
     }
   }
@@ -51,14 +53,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<SuccessModel?> AddToCart(Map<String, dynamic> Data) async {
     try {
-      Response response = await ApiClient.post(PatientRemoteUrls.addToCart,data: Data);
+      Response response =
+          await ApiClient.post(PatientRemoteUrls.addToCart, data: Data);
       if (response.statusCode == 200) {
-        LogHelper.printLog('AddToCart:',  response.data);
+        LogHelper.printLog('AddToCart:', response.data);
         return SuccessModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error Add to cart::',e);
+      LogHelper.printLog('Error Add to cart::', e);
       return null;
     }
   }
@@ -68,12 +71,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       Response response = await ApiClient.get(PatientRemoteUrls.cartlist);
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchCartList:',  response.data);
+        LogHelper.printLog('fetchCartList:', response.data);
         return CartListModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error fetching cartlist::',e);
+      LogHelper.printLog('Error fetching cartlist::', e);
       return null;
     }
   }
@@ -83,12 +86,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       Response response = await ApiClient.get(PatientRemoteUrls.bannerslist);
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchBanners:',  response.data);
+        LogHelper.printLog('fetchBanners:', response.data);
         return BannersModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error fetching banners:',e);
+      LogHelper.printLog('Error fetching banners:', e);
       return null;
     }
   }
@@ -98,12 +101,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       Response response = await ApiClient.get(PatientRemoteUrls.categorieslist);
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchCategories:',  response.data);
+        LogHelper.printLog('fetchCategories:', response.data);
         return CategoryModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error fetching categories:',e);
+      LogHelper.printLog('Error fetching categories:', e);
       return null;
     }
   }
@@ -111,9 +114,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng) async {
     try {
-      Response response = await ApiClient.get('${PatientRemoteUrls.diagnosticCenterslist}?lat_long=${latlng}');
+      Response response = await ApiClient.get(
+          '${PatientRemoteUrls.diagnosticCenterslist}?lat_long=${latlng}');
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchDiagnosticCenters:',  response.data);
+        LogHelper.printLog('fetchDiagnosticCenters:', response.data);
         return DiognisticCenterModel.fromJson(response.data);
       }
       return null;
@@ -126,31 +130,33 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id) async {
     try {
-      Response response = await ApiClient.get("${PatientRemoteUrls.diagnosticDetail}/$id");
+      Response response =
+          await ApiClient.get("${PatientRemoteUrls.diagnosticDetail}/$id");
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchDiagnosticDetails:',  response.data);
+        LogHelper.printLog('fetchDiagnosticDetails:', response.data);
         return DiognisticDetailModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error fetching diagnostic details:',e);
+      LogHelper.printLog('Error fetching diagnostic details:', e);
       return null;
     }
   }
 
   @override
-  Future<TestModel?> fetchTest(latlang, catId,page) async {
+  Future<TestModel?> fetchTest(latlang, catId) async {
     print('latlang::${latlang}');
     print('catId::${catId}');
     try {
-      Response response = await ApiClient.get("${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&page=${page}");
+      Response response = await ApiClient.get(
+          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}");
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchTest:',  response.data);
+        LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error fetching test data: ',e);
+      LogHelper.printLog('Error fetching test data: ', e);
       return null;
     }
   }
@@ -161,37 +167,38 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       Response response =
           await ApiClient.get('${PatientRemoteUrls.conditionBased}');
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchConditionBased:',  response.data);
+        LogHelper.printLog('fetchConditionBased:', response.data);
         return ConditionBasedModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
       print("Error fetching ConditionBased data: $e");
-      LogHelper.printLog('Error fetching ConditionBased data:',e);
+      LogHelper.printLog('Error fetching ConditionBased data:', e);
       return null;
     }
   }
 
   @override
-  Future<PatientsListModel?>fetchPatients() async {
+  Future<PatientsListModel?> fetchPatients() async {
     try {
       Response response =
-      await ApiClient.get('${PatientRemoteUrls.patientslist}');
+          await ApiClient.get('${PatientRemoteUrls.patientslist}');
       if (response.statusCode == 200) {
-        LogHelper.printLog('fetchPatients:',  response.data);
+        LogHelper.printLog('fetchPatients:', response.data);
         return PatientsListModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error fetching fetchPatients data:',e);
+      LogHelper.printLog('Error fetching fetchPatients data:', e);
       return null;
     }
   }
 
   @override
-  Future<SuccessModel?>AddPatient(Map<String, dynamic> patientData) async {
+  Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData) async {
     try {
-      Response response = await ApiClient.post(PatientRemoteUrls.addPatient, data: patientData);
+      Response response =
+          await ApiClient.post(PatientRemoteUrls.addPatient, data: patientData);
       if (response.statusCode == 200) {
         LogHelper.printLog('AddPatient:', response.data);
         return SuccessModel.fromJson(response.data);
@@ -204,9 +211,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<SuccessModel?>UpdatePatient(Map<String, dynamic> patientData,id) async {
+  Future<SuccessModel?> UpdatePatient(
+      Map<String, dynamic> patientData, id) async {
     try {
-      Response response = await ApiClient.put('${PatientRemoteUrls.updatePatient}');
+      Response response =
+          await ApiClient.put('${PatientRemoteUrls.updatePatient}');
       if (response.statusCode == 200) {
         LogHelper.printLog('UpdatePatient:', response.data);
         return SuccessModel.fromJson(response.data);
@@ -219,33 +228,51 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<SuccessModel?>DeletePatient(id) async {
+  Future<SuccessModel?> DeletePatient(id) async {
     try {
-      Response response = await ApiClient.delete('${PatientRemoteUrls.deletePatient}');
+      Response response =
+          await ApiClient.delete('${PatientRemoteUrls.deletePatient}');
       if (response.statusCode == 200) {
         LogHelper.printLog('DeletePatient:', response.data);
         return SuccessModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error DeletePatient data:',e);
+      LogHelper.printLog('Error DeletePatient data:', e);
       return null;
     }
   }
+
   @override
-  Future<getPatientDetailModel?>GetPatientDetails(id) async {
+  Future<getPatientDetailModel?> GetPatientDetails(id) async {
     try {
-      Response response = await ApiClient.get('${PatientRemoteUrls.pateint_details}/${id}');
+      Response response =
+          await ApiClient.get('${PatientRemoteUrls.pateint_details}/${id}');
       if (response.statusCode == 200) {
         LogHelper.printLog('GetPatientDetails:', response.data);
         return getPatientDetailModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error GetPatientDetails data:',e);
+      LogHelper.printLog('Error GetPatientDetails data:', e);
       return null;
     }
   }
 
+  @override
+  Future<ProfileDetailModel?> getProfileDetails() async {
+    try {
+      Response response =
+          await ApiClient.get('${PatientRemoteUrls.profile_details}');
+      if (response.statusCode == 200) {
+        LogHelper.printLog('getProifileDetails:', response.data);
+        return ProfileDetailModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error getProifileDetails data:', e);
+      return null;
+    }
+  }
 
 }
