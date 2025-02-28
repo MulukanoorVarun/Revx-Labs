@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
+import 'package:revxpharma/Patient/screens/ApointmentDetails.dart';
 
 class Myappointments extends StatefulWidget {
   const Myappointments({super.key});
@@ -45,77 +46,81 @@ class _MyappointmentsState extends State<Myappointments> {
                             delegate: SliverChildBuilderDelegate(
                                   (context, index) {
                                 final appointment = appointments[index];
-                                return Container(
-                                  padding: EdgeInsets.all(12),
-                                  margin: EdgeInsets.only(bottom: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
-                                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                                    color: Colors.white,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "OrderID : ${appointment.appointmentNumber}",
-                                            style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
+                                return InkResponse(onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ApointmentDetails(id: appointment.id??'')));
+                                },
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                      color: Colors.white,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "OrderID : ${appointment.appointmentNumber}",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            "${appointment.appointmentDate}",
-                                            style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
+                                            Text(
+                                              "${appointment.appointmentDate}",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(
-                                        height: 20,
-                                        thickness: 0.5,
-                                        color: Color(0xffA9A9A9),
-                                      ),
-                                      Text(
-                                        appointment.diagnosticCentreName ?? "Unknown Diagnostic Centre",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff27BDBE)
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Order Amount",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                        Divider(
+                                          height: 20,
+                                          thickness: 0.5,
+                                          color: Color(0xffA9A9A9),
+                                        ),
+                                        Text(
+                                          appointment.diagnosticCentreName ?? "Unknown Diagnostic Centre",
+                                          style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xff27BDBE)
                                           ),
-                                          Text(
-                                            "₹${appointment.totalAmount}",
-                                            style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Order Amount",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            Text(
+                                              "₹${appointment.totalAmount}",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
