@@ -14,11 +14,11 @@ class TestCubit extends Cubit<TestState> {
 
   TestCubit(this.testRepository) : super(TestStateInitially());
 
-  Future<void> fetchTestList(String latlang, String catId) async {
+  Future<void> fetchTestList(String latlang, String catId,search_Query) async {
     emit(TestStateLoading());
     _currentPage = 1;
     try {
-      final tests = await testRepository.getTest(latlang, catId, _currentPage);
+      final tests = await testRepository.getTest(latlang, catId,search_Query,_currentPage);
       if (tests != null) {
         testModel = tests;
         _hasNextPage = tests.settings?.nextPage ?? false;
@@ -32,14 +32,14 @@ class TestCubit extends Cubit<TestState> {
   }
 
 // Fetch More Tests (Pagination)
-  Future<void> fetchMoreTestList(latlang,catId) async {
+  Future<void> fetchMoreTestList(latlang,catId,search_Query) async {
     if (_isLoadingMore || !_hasNextPage) return;
     _isLoadingMore = true;
     _currentPage++;
     emit(TestStateLoadingMore(testModel!, _hasNextPage));
 
     try {
-      final newTests = await testRepository.getTest(latlang, catId, _currentPage);
+      final newTests = await testRepository.getTest(latlang, catId,search_Query, _currentPage);
       if (newTests != null && newTests.data!.isNotEmpty) {
         final updatedTests = List<Data>.from(testModel!.data!)..addAll(newTests.data!);
         testModel = TestModel(data: updatedTests, settings: newTests.settings);

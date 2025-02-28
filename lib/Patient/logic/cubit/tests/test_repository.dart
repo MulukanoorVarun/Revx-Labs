@@ -2,7 +2,7 @@ import 'package:revxpharma/Models/TestModel.dart';
 import 'package:revxpharma/data/api_routes/remote_data_source.dart';
 
 abstract class TestRepository {
- Future<TestModel?> getTest(latlang,catId,page);
+ Future<TestModel?> getTest(latlang,catId,search_Query,page);
 }
 
 class TestRepositoryImpl implements TestRepository {
@@ -11,7 +11,7 @@ class TestRepositoryImpl implements TestRepository {
  TestRepositoryImpl({required this.remoteDataSource});
 
  @override
- Future<TestModel?> getTest(latlang,catId,page) async {
-  return await remoteDataSource.fetchTest(latlang,catId,page);
+ Future<TestModel?> getTest(latlang,catId,search_Query,page) async {
+  return await remoteDataSource.fetchTest(latlang,catId,search_Query,page);
  }
 }

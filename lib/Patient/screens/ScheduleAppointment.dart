@@ -433,9 +433,10 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
               onTap: () {
                 if(selectedTime!=""){
 
-                }else if(){
-
                 }
+                // else if(){
+                //
+                // }
                 Map<String, dynamic> Data = {
                   'patient': selectedPatientId,
                   'diagnostic_centre': widget.vendorID,

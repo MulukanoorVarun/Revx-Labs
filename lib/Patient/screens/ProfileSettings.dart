@@ -82,10 +82,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           ),
         ),
         actions: [
-          Icon(
-            Icons.more_vert,
-            size: 24,
-          )
+
         ],
       ),
       body: SingleChildScrollView(
@@ -237,13 +234,13 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             hintText: hint,
             hintStyle: TextStyle(color: Color(0xff868686)),
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffF3F2F2), width: 1),
+              borderSide: BorderSide(color: Color(0xff27BDBE), width: 1),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: cursorColor, width: 1),
-            ),
+            // focusedBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: cursorColor, width: 1),
+            // ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffF3F2F2), width: 1),
+              borderSide: BorderSide(color: Color(0xff27BDBE), width: 1),
             ),
           ),
           keyboardType: keyboardType,

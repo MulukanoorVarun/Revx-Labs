@@ -106,7 +106,7 @@ class _HomescreenState extends State<Homescreen> {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
                       },
                         child: CircleAvatar(
-                          child: Image.asset('assets/person.png'),
+                          child: Image.network('')
                         ),
                       )
                     ],
@@ -116,7 +116,7 @@ class _HomescreenState extends State<Homescreen> {
                   height: 6,
                 ),
                 InkResponse(onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Searchscreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Searchscreen(lat_lang: lat_lang)));
                 },
                   child: Container(
                     padding: EdgeInsets.all(8),

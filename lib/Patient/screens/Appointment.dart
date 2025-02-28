@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Patient/screens/ApointmentDetails.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 
 import '../logic/cubit/cart/cart_cubit.dart';
@@ -95,21 +96,25 @@ class _ApointmentsState extends State<Apointments> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width *
-                                0.8, // 90% of screen width
-                            child: Text(
-                              "${cartState.cartList?.data?.diagnosticCentre?.location}",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Color(0xff949494),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
+                          InkResponse(onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ApointmentDetails()));
+                          },
+                            child: Container(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width *
+                                  0.8, // 90% of screen width
+                              child: Text(
+                                "${cartState.cartList?.data?.diagnosticCentre?.location}",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Color(0xff949494),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Poppins",
+                                ),
                               ),
                             ),
                           ),

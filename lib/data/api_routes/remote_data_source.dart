@@ -3,6 +3,7 @@ import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Models/ConditionBasedModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
+import 'package:revxpharma/Models/ProfileDetailModel.dart';
 import 'package:revxpharma/Models/TestModel.dart';
 import 'package:revxpharma/Models/getPatientDetailModel.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
@@ -20,7 +21,7 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang, catId,page);
+  Future<TestModel?> fetchTest(latlang, catId,search_Query,page);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -162,10 +163,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<TestModel?> fetchTest(latlang, catId,page) async {
+  Future<TestModel?> fetchTest(latlang, catId,search_Query,page) async {
     try {
       Response response = await ApiClient.get(
-          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&page=${page}");
+          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);
