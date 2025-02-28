@@ -10,6 +10,7 @@ import 'package:revxpharma/Patient/logic/cubit/patient/patient_state.dart';
 import 'package:revxpharma/Patient/screens/AddPatientScreen.dart';
 import 'package:revxpharma/Patient/screens/widgets/DetailRow.dart';
 import '../../Components/ShakeWidget.dart';
+import '../../Components/debugPrint.dart';
 import 'Appointment.dart';
 
 class ScheduleAnAppointment extends StatefulWidget {
@@ -214,6 +215,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   ),
                 );
               } else if (state is PatientsDetailsLoaded) {
+                selectedPatientId= state.getPatientDetailsmodel.getPatientDetails?.id;
                 return Card(
                   margin: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
                   shape: RoundedRectangleBorder(
@@ -429,6 +431,11 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
             ),
             InkWell(
               onTap: () {
+                if(selectedTime!=""){
+
+                }else if(){
+
+                }
                 Map<String, dynamic> Data = {
                   'patient': selectedPatientId,
                   'diagnostic_centre': widget.vendorID,
@@ -437,7 +444,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   'total_amount': widget.totalamount,
                   'payment_mode': "cash_on_test",
                 };
-                context.read<AppointmentCubit>().bookAppointment(Data);
+                // context.read<AppointmentCubit>().bookAppointment(Data);
+                LogHelper.printLog('Appointment data : ', Data);
               },
               child: Container(
                 margin: EdgeInsets.only(top: 40, bottom: 20),

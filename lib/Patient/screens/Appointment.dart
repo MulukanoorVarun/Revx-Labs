@@ -49,7 +49,7 @@ class _ApointmentsState extends State<Apointments> {
           vendorID= cartState.cartList?.data?.diagnosticCentre?.id??"";
           startTime= cartState.cartList?.data?.diagnosticCentre?.starttime??"";
           endTime= cartState.cartList?.data?.diagnosticCentre?.endtime??"";
-          totalamount= cartState.cartList?.data?.totalAmount??"";
+          totalamount= cartState.cartList?.data?.totalAmount.toString()??"";
           return SingleChildScrollView(
             child: Padding(
               padding:

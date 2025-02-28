@@ -16,7 +16,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       }else{
         emit(ProfileStateError(profile?.settings?.message??''));
       }
-
     } catch (e) {
       emit(ProfileStateError(''));
     }

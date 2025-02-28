@@ -12,6 +12,7 @@ import '../../Components/debugPrint.dart';
 import '../../Models/CategoryModel.dart';
 import '../../Models/DiognisticCenterModel.dart';
 import '../../Models/PatientsListModel.dart';
+import '../../Models/ProfileDetailModel.dart';
 import '../../Models/SuccessModel.dart';
 
 abstract class RemoteDataSource {
@@ -19,7 +20,7 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang, catId);
+  Future<TestModel?> fetchTest(latlang, catId,page);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -161,12 +162,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<TestModel?> fetchTest(latlang, catId) async {
-    print('latlang::${latlang}');
-    print('catId::${catId}');
+  Future<TestModel?> fetchTest(latlang, catId,page) async {
     try {
       Response response = await ApiClient.get(
-          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}");
+          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&page=${page}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);
