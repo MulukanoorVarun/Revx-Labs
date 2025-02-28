@@ -186,8 +186,14 @@ class _DashboardState extends State<Dashboard> {
       context: context,
       isDismissible: false,
       enableDrag: false,
-      builder: (BuildContext context) {
-        return BlocBuilder<LocationCubit, LocationState>(
+      builder: (BuildContext bottomSheetContext) {
+        return BlocConsumer<LocationCubit, LocationState>(
+          listener: (context, state) {
+            if (state is LocationLoaded) {
+              // Close the bottom sheet when location is successfully fetched
+              Navigator.pop(bottomSheetContext);
+            }
+          },
           builder: (context, state) {
             bool isLoading = state is LocationLoading;
             return WillPopScope(
@@ -203,19 +209,17 @@ class _DashboardState extends State<Dashboard> {
                         const SizedBox(width: 10),
                         Text(
                           'Location Permission is Off',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w400),
                         ),
                         Spacer(),
                         ElevatedButton(
                           onPressed: isLoading
                               ? null
                               : () async {
-                                  context
-                                      .read<LocationCubit>()
-                                      .requestLocationPermission();
-                                },
+                            context
+                                .read<LocationCubit>()
+                                .requestLocationPermission();
+                          },
                           child: isLoading
                               ? CircularProgressIndicator(strokeWidth: 2)
                               : const Text('GRANT'),
@@ -236,4 +240,5 @@ class _DashboardState extends State<Dashboard> {
       },
     );
   }
+
 }

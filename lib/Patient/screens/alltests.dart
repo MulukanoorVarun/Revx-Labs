@@ -207,7 +207,10 @@ class _alltestsState extends State<alltests> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                showSubTestsDialog(context,
+                                                    labTests.subTests ?? []);
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.white,
                                                 side: const BorderSide(
@@ -458,7 +461,7 @@ class _alltestsState extends State<alltests> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -607,5 +610,92 @@ class _alltestsState extends State<alltests> {
         );
       },
     ));
+  }
+
+  void showSubTestsDialog(BuildContext context, List<String> subTests) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 350,
+                    height: 350,
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Subtests",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Expanded(
+                          child: subTests.isNotEmpty
+                              ? ListView.builder(
+                            itemCount: subTests.length,
+                            itemBuilder: (context, index) {
+                              String subTest = subTests[index];
+                              return ListTile(
+                                visualDensity: VisualDensity.compact,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 5,vertical: 0),
+                                minTileHeight: 30,
+                                title: Text(
+                                  "${subTest}",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                              : Center(
+                            child: Text(
+                              "No subtests available",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: -60,
+                    left: 0,
+                    right: 0,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        size: 40,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

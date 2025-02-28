@@ -44,7 +44,7 @@ class _HomescreenState extends State<Homescreen> {
             elevation: 0,
             leading: Container(),
             leadingWidth: 0,
-            toolbarHeight: 110,
+            toolbarHeight: 130,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,19 +94,58 @@ class _HomescreenState extends State<Homescreen> {
                                     ),
                                   );
                                 } else if (state is LocationError) {
-                                  return Center(child: Text(state.message));
+                                  return Center(child: Text(state.message,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Poppins",
+                                      fontSize: 16,
+                                    ),
+                                  ));
                                 }
-                                return Center(child: Text("No Data"));
+                                return Center(child: Text("No Data",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "Poppins",
+                                    fontSize: 16,
+                                  ),
+                                ));
                               }),
                             ],
                           ),
                         ],
                       ),
-                      InkResponse(onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
-                      },
+                      InkResponse(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Profile()),
+                          );
+                        },
                         child: CircleAvatar(
-                          child: Image.network('')
+                          backgroundColor: Colors.blue, // Set background color for initials
+                          child: state.prfileDetails.data?.image != null &&
+                              state.prfileDetails.data!.image!.isNotEmpty
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(50), // Ensures it's circular
+                            child: Image.network(
+                              state.prfileDetails.data!.image!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            ),
+                          )
+                              : Text(
+                            state.prfileDetails.data?.fullName?.isNotEmpty == true
+                                ? state.prfileDetails.data!.fullName![0].toUpperCase()
+                                : "?",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       )
                     ],
@@ -120,7 +159,7 @@ class _HomescreenState extends State<Homescreen> {
                 },
                   child: Container(
                     padding: EdgeInsets.all(8),
-                    margin: EdgeInsets.only(top: 8),
+                    margin: EdgeInsets.only(top: 8,bottom: 20),
                     decoration: BoxDecoration(
                         color: Color(0xffF9F9F9),
                         borderRadius: BorderRadius.circular(100),

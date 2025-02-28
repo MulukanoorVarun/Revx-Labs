@@ -38,14 +38,15 @@ class LocationCubit extends Cubit<LocationState> {
       LocationPermission permission = await Geolocator.checkPermission();
 
       if (!isServiceEnabled) {
-        emit(LocationPermissionDenied());
+        // Do not return here, instead call GPS permission request
+        await requestGpsPermission();
         return;
       }
 
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          emit(LocationPermissionDenied()); // Emit denied state
+          emit(LocationPermissionDenied());
           return;
         }
       }
@@ -55,12 +56,13 @@ class LocationCubit extends Cubit<LocationState> {
         return;
       }
 
-      // If permission is granted, request GPS & fetch location
+      // If permission is granted, directly request GPS to be turned on
       await requestGpsPermission();
     } catch (e) {
       emit(LocationError("Failed to request location permission"));
     }
   }
+
 
   /// Request GPS to be turned on
   Future<void> requestGpsPermission() async {

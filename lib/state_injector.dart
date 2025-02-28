@@ -128,6 +128,7 @@ class StateInjector {
         categoryRepository: context.read<CategoryRepository>(),
         bannersRepository: context.read<BannersRepository>(),
         diagnosticCentersRepository: context.read<DiagnosticCenterRepository>(),
+        profileRepository: context.read<ProfileRepository>(),
       ),
     ),
     BlocProvider<TestCubit>(

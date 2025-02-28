@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dart';
 
-import '../../Authentication/ChangePassword.dart';
 
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});
@@ -63,30 +63,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     var h = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      resizeToAvoidBottomInset:
-      true, // Ensure body content is scrollable when keyboard appears
-      appBar: AppBar(
-        leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios_new)),
-        title: Center(
-          child: Text(
-            "Profile Settings",
-            style: TextStyle(
-                color: Color(0xff27BDBE),
-                fontFamily: 'Poppins',
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
-          ),
-        ),
-        actions: [
-
-        ],
-      ),
+      appBar: CustomAppBar(title: "Edit Profile", actions: []),
       body: SingleChildScrollView(
-        // Wrap the entire body in SingleChildScrollView
         child: Padding(
           padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
           child: BlocBuilder<ProfileCubit, ProfileState>(

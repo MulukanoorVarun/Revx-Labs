@@ -742,8 +742,9 @@ class _AccountsettingsState extends State<Accountsettings> {
                           "Logout",
                           style: TextStyle(
                             fontSize: 24.0,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                             color: Color(0xff27BDBE),
+                            fontFamily: "Poppins"
                           ),
                         ),
                         const SizedBox(height: 10.0),
@@ -753,6 +754,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black54,
+                              fontFamily: "Poppins"
                           ),
                         ),
                         const SizedBox(height: 20.0),
@@ -767,13 +769,20 @@ class _AccountsettingsState extends State<Accountsettings> {
                               child: ElevatedButton(
                                 onPressed: () => Navigator.pop(context),
                                 style: ElevatedButton.styleFrom(
+                                  elevation: 0,
                                   backgroundColor:
                                   Color(0xff27BDBE), // Filled button color
                                   foregroundColor: Colors.white, // Text color
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                 ),
-                                child: const Text("No"),
+                                child: const Text("No",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      fontFamily: "Poppins"
+                                  ),
+                                ),
                               ),
                             ),
 
@@ -801,7 +810,9 @@ class _AccountsettingsState extends State<Accountsettings> {
                                 ),
                                 child: const Text(
                                   "Yes",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle( fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      fontFamily: "Poppins"),
                                 ),
                               ),
                             ),
