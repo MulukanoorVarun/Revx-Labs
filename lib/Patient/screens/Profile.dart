@@ -6,6 +6,7 @@ import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dar
 import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
 
 import 'AccountSettings.dart';
+import 'MyAppointments.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -135,28 +136,33 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 25,
                 ),
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/apointments.png",
-                      height: 24,
-                      width: 24,
-                    ),
-                    SizedBox(
-                      width: 24,
-                    ),
-                    Text("My Appointments",
-                        style: TextStyle(
-                            color: Color(0xff151515),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: "Poppins")),
-                    Spacer(),
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 24,
-                    )
-                  ],
+                InkResponse(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Myappointments()));
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "assets/apointments.png",
+                        height: 24,
+                        width: 24,
+                      ),
+                      SizedBox(
+                        width: 24,
+                      ),
+                      Text("My Appointments",
+                          style: TextStyle(
+                              color: Color(0xff151515),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Poppins")),
+                      Spacer(),
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 24,
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 40,

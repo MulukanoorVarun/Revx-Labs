@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:revxpharma/Models/AppointmentDetailsModel.dart';
+import 'package:revxpharma/Models/AppointmentsModel.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Models/ConditionBasedModel.dart';
@@ -34,9 +36,41 @@ abstract class RemoteDataSource {
   Future<SuccessModel?> RemoveFromCart(id);
   Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data);
   Future<ProfileDetailModel?> getProfileDetails();
+  Future<AppointmentsModel?> fetchAppointments();
+  Future<AppointmentDetailsModel?> AppointmentDetails(id);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
+
+  @override
+  Future<AppointmentDetailsModel?> AppointmentDetails(id) async {
+    try {
+      Response response = await ApiClient.get("${PatientRemoteUrls.appopintment_details}/${id}");
+      if (response.statusCode == 200) {
+        LogHelper.printLog('AppointmentDetails:',  response.data);
+        return AppointmentDetailsModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error AppointmentDetails::',e);
+      return null;
+    }
+  }
+
+  @override
+  Future<AppointmentsModel?> fetchAppointments() async {
+    try {
+      Response response = await ApiClient.get(PatientRemoteUrls.appopintment_list);
+      if (response.statusCode == 200) {
+        LogHelper.printLog('fetchAppointments:',  response.data);
+        return AppointmentsModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error fetchAppointments::',e);
+      return null;
+    }
+  }
 
   @override
   Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data) async {

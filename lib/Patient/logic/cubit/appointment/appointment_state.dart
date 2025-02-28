@@ -19,6 +19,23 @@ class AppointmentLoaded extends AppointmentState {
   List<Object?> get props => [appointments];
 }
 
+class AppointmentListLoaded extends AppointmentState {
+  final AppointmentsModel appointmentsList;
+  const AppointmentListLoaded(this.appointmentsList);
+
+  @override
+  List<Object?> get props => [appointmentsList];
+}
+
+class AppointmentDetailsLoaded extends AppointmentState {
+  final AppointmentDetailsModel appointments_details;
+  const AppointmentDetailsLoaded(this.appointments_details);
+
+  @override
+  List<Object?> get props => [appointments_details];
+}
+
+
 class AppointmentError extends AppointmentState {
   final String message;
   const AppointmentError(this.message);

@@ -16,5 +16,7 @@ class PatientRemoteUrls {
   static const String pateint_details ='api/patient-detail';
   static const String default_pateint_details ='api/default-patient';
   static const String book_appopintment ='api/book-appointment';
+  static const String appopintment_list ='api/my-appointments';
+  static const String appopintment_details ='api/my-appointment-detail';
   static const String profile_details ='auth/user-detail';
 }

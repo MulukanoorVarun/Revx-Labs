@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_repositor
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
+import 'package:revxpharma/Patient/logic/repository/appointment_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/banners_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/cart_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
@@ -87,6 +89,11 @@ class StateInjector {
       create: (context) =>
           DiagnosticGetTestsImp(vendorRemoteDataSource: context.read()),
     ),
+
+    RepositoryProvider<AppointmentRepository>(
+      create: (context) =>
+          AppointmentRepositoryImpl(remoteDataSource: context.read()),
+    ),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -143,6 +150,14 @@ class StateInjector {
             context.read<TestCubit>(), // Access existing TestCubit instance
       ),
     ),
-    BlocProvider<ProfileCubit>(create: (context)=>ProfileCubit(profileRepository:context.read<ProfileRepository>()))
+    BlocProvider<ProfileCubit>(
+        create: (context) =>
+            ProfileCubit(profileRepository: context.read<ProfileRepository>())),
+
+    BlocProvider<AppointmentCubit>(
+      create: (context) => AppointmentCubit(
+          context.read<AppointmentRepository>()
+      ),
+    )
   ];
 }

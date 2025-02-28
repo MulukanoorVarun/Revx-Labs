@@ -330,7 +330,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _submitForm,
+                        onPressed: state is PatientSavingLoadingState
+                          ? null
+                          : () {
+                          _submitForm();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xff27BDBE),
                           shape: RoundedRectangleBorder(
