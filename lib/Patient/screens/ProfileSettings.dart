@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Components/ShakeWidget.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dart';
-
 
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});
@@ -21,15 +22,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   TextEditingController fullname = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
-  TextEditingController password = TextEditingController();
+
 
   FocusNode focusfullname = FocusNode();
   FocusNode focusemail = FocusNode();
   FocusNode focusphone = FocusNode();
-  FocusNode focuspassword = FocusNode();
 
   final Color cursorColor = Colors.blue;
-  final Color backgroundCursorColor =     Color(0xff27BDBE);
+  final Color backgroundCursorColor = Color(0xff27BDBE);
 
   File? _image;
   XFile? _pickedFile;
@@ -57,6 +57,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     super.initState();
   }
 
+  String _validateEmail = '';
+  String _validateFullname = '';
+  String _validatePhone = '';
+
+  void validateFeilds(){
+    _validateEmail =
+    !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        .hasMatch(email.text)
+        ? 'Please enter a valid email'
+        : '';
+    _validateFullname=fullname.text.isEmpty?'Please enter a full name':'' ;
+    _validatePhone=phone.text.isEmpty?'Please enter a mobile Number':'' ;
+  }
+
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -72,8 +86,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               if (state is ProfileStateLoading) {
                 return Center(
                     child: CircularProgressIndicator(
-                      color: Color(0xff27BDBE),
-                    ));
+                  color: Color(0xff27BDBE),
+                ));
               } else if (state is ProfileStateLoaded) {
                 String profile_image =
                     state.profileDetailModel.data?.image ?? '';
@@ -94,21 +108,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 backgroundColor: Colors.grey.withOpacity(0.5),
                                 backgroundImage: _image != null
                                     ? FileImage(_image!)
-                                as ImageProvider<Object>
+                                        as ImageProvider<Object>
                                     : (profile_image.isNotEmpty)
-                                    ? NetworkImage(profile_image)
-                                as ImageProvider<Object>
-                                    : AssetImage('assets/person.png')
-                                as ImageProvider<Object>,
-                                child: (_image == null &&
-                                    profile_image.isEmpty)
+                                        ? NetworkImage(profile_image)
+                                            as ImageProvider<Object>
+                                        : AssetImage('assets/person.png')
+                                            as ImageProvider<Object>,
+                                child: (_image == null && profile_image.isEmpty)
                                     ? Text(
-                                  fullName.isNotEmpty
-                                      ? fullName[0].toUpperCase()
-                                      : '',
-                                  style: TextStyle(
-                                      fontSize: 30, color: Colors.white),
-                                )
+                                        fullName.isNotEmpty
+                                            ? fullName[0].toUpperCase()
+                                            : '',
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.white),
+                                      )
                                     : null,
                               ),
                               Positioned(
@@ -135,33 +148,219 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         ],
                       ),
                     ),
-                    _buildTextField(
-                        label: "Full Name",
-                        controller: fullname..text = fullName,
-                        focusNode: focusfullname,
-                        cursorColor: cursorColor,
-                        backgroundCursorColor: backgroundCursorColor,
-                        regex: r'^[a-zA-Z\s]+$',
-                        hint: "enter full name"),
-                    _buildTextField(
-                        label: "Email",
-                        controller: email..text = emailValue,
-                        focusNode: focusemail,
-                        cursorColor: cursorColor,
-                        backgroundCursorColor: backgroundCursorColor,
-                        regex:
-                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                        keyboardType: TextInputType.emailAddress,
-                        hint: "enter email "),
-                    _buildTextField(
-                        label: "Phone Number",
-                        controller: phone..text = phoneValue,
-                        focusNode: focusphone,
-                        cursorColor: cursorColor,
-                        backgroundCursorColor: backgroundCursorColor,
-                        regex: r'^\d{10}$',
-                        keyboardType: TextInputType.phone,
-                        hint: "enter mobile number"),
+                    Text(
+                      "Full Name",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w300,
+                          color: Color(0xff868686)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            spreadRadius: 0.5,
+                            blurRadius: 1,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        elevation: 0, // Set elevation to 0 when using BoxShadow
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: TextField(
+                          onTap: () {
+                            setState(() {
+                              _validateFullname = '';
+                            });
+                          },
+                          controller: fullname..text,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            prefixIcon:
+                                Icon(Icons.person, color: Color(0xff808080)),
+                            hintText: 'enter full name',
+                            hintStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 12.0),
+                            border:
+                                InputBorder.none, // Removes the default border
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_validateFullname.isNotEmpty) ...[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
+                        width: MediaQuery.of(context).size.width,
+                        child: ShakeWidget(
+                          key: Key("value"),
+                          duration: Duration(milliseconds: 700),
+                          child: Text(
+                            _validateFullname,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 12,
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      SizedBox(height: 15),
+                    ],
+                    Text(
+                      "Email",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w300,
+                          color: Color(0xff868686)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            spreadRadius: 0.5,
+                            blurRadius: 1,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        elevation: 0, // Set elevation to 0 when using BoxShadow
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: TextField(
+                          onTap: () {
+                            setState(() {
+                              _validateEmail = '';
+                            });
+                          },
+                          controller: email,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.mail_outline,
+                                color: Color(0xff808080)),
+                            hintText: 'email',
+                            hintStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 12.0),
+                            border:
+                                InputBorder.none, // Removes the default border
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_validateEmail.isNotEmpty) ...[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
+                        width: MediaQuery.of(context).size.width,
+                        child: ShakeWidget(
+                          key: Key("value"),
+                          duration: Duration(milliseconds: 700),
+                          child: Text(
+                            _validateEmail,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 12,
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      SizedBox(height: 15),
+                    ],
+                    Text(
+                      "Phone Number",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w300,
+                          color: Color(0xff868686)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            spreadRadius: 0.5,
+                            blurRadius: 1,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        elevation: 0, // Set elevation to 0 when using BoxShadow
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: TextField(
+                          onTap: () {
+                            setState(() {
+                              _validatePhone = '';
+                            });
+                          },
+                          controller: phone..text,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            prefixIcon:
+                                Icon(Icons.phone, color: Color(0xff808080)),
+                            hintText: "enter mobile number",
+                            hintStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 12.0),
+                            border:
+                                InputBorder.none, // Removes the default border
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_validatePhone.isNotEmpty) ...[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
+                        width: MediaQuery.of(context).size.width,
+                        child: ShakeWidget(
+                          key: Key("value"),
+                          duration: Duration(milliseconds: 700),
+                          child: Text(
+                            _validatePhone,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 12,
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      SizedBox(height: 15),
+                    ],
                   ],
                 );
               } else if (state is ProfileStateError) {
@@ -172,62 +371,15 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           ),
         ),
       ),
-    );
-  }
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: CustomAppButton(text: 'Change settings', onPlusTap: () {
 
-  Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    required Color cursorColor,
-    required Color backgroundCursorColor,
-    required String regex,
-    required String hint,
-    TextInputType keyboardType = TextInputType.text,
-    bool obscureText = false,
-    Widget? suffixIcon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Color(0xff868686)),
-        ),
-        const SizedBox(height: 8),
-        TextField(readOnly: true,
-          controller: controller,
-          focusNode: focusNode,
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xff010F07),
-          ),
-          cursorColor: cursorColor,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            suffixIcon: suffixIcon,
-            hintText: hint,
-            hintStyle: TextStyle(color: Color(0xff868686)),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xff27BDBE), width: 1),
-            ),
-            // focusedBorder: OutlineInputBorder(
-            //   borderSide: BorderSide(color: cursorColor, width: 1),
-            // ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xff27BDBE), width: 1),
-            ),
-          ),
-          keyboardType: keyboardType,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(regex)),
-          ],
-        ),
-        const SizedBox(height: 20),
-      ],
+          validateFeilds();
+
+
+        }),
+      ),
     );
   }
 
@@ -236,11 +388,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     fullname.dispose();
     email.dispose();
     phone.dispose();
-    password.dispose();
     focusfullname.dispose();
     focusemail.dispose();
     focusphone.dispose();
-    focuspassword.dispose();
+
     super.dispose();
   }
 }
