@@ -300,25 +300,25 @@ class _HomescreenState extends State<Homescreen> {
                           color: Color(0xff27BDBE),
                           fontFamily: "Poppins"),
                     ),
-                    InkResponse(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                Diagnosticcenter(lat_lng: lat_lang),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'See All',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff27BDBE),
-                            fontFamily: "Poppins"),
-                      ),
-                    ),
+                    // InkResponse(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) =>
+                    //             Diagnosticcenter(lat_lng: lat_lang),
+                    //       ),
+                    //     );
+                    //   },
+                    //   child: Text(
+                    //     'See All',
+                    //     style: TextStyle(
+                    //         fontSize: 18,
+                    //         fontWeight: FontWeight.w500,
+                    //         color: Color(0xff27BDBE),
+                    //         fontFamily: "Poppins"),
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 8),

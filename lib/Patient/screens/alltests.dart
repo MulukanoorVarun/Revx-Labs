@@ -144,6 +144,42 @@ class _alltestsState extends State<alltests> {
                       final testModel = (state is TestStateLoaded)
                           ? (state as TestStateLoaded).testModel
                           : (state as TestStateLoadingMore).testModel;
+                      if ((testModel.data?.isEmpty ?? true)                                                        ) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          spacing: 8,
+                          children: [
+                            SizedBox(
+                              height:
+                              MediaQuery.of(context).size.width * 0.05,
+                            ),
+                            Text(
+                              'Oops !',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              textAlign: TextAlign.center,
+                              'The Diagnostic test seems to be playing hide and seek.',
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              'Try Searching with a diffrent name. ',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        );
+                      }
                       return NotificationListener<ScrollNotification>(
                         onNotification: (scrollInfo) {
                           if (scrollInfo.metrics.pixels >=
@@ -200,7 +236,7 @@ class _alltestsState extends State<alltests> {
                                         const SizedBox(height: 5),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {
@@ -213,11 +249,12 @@ class _alltestsState extends State<alltests> {
                                                     color: Color(0xff27BDBE)),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(30),
+                                                  BorderRadius.circular(
+                                                      30),
                                                 ),
                                                 elevation: 0,
                                                 visualDensity:
-                                                    VisualDensity.compact,
+                                                VisualDensity.compact,
                                               ),
                                               child: Text(
                                                 'View Detail',
@@ -229,73 +266,96 @@ class _alltestsState extends State<alltests> {
                                             BlocBuilder<CartCubit, CartState>(
                                               builder: (context, cartState) {
                                                 bool isLoading = cartState
-                                                        is CartLoadingState &&
+                                                is CartLoadingState &&
                                                     cartState.testId ==
                                                         labTests.id;
                                                 return ElevatedButton(
                                                   onPressed: isLoading
                                                       ? null
                                                       : () {
-                                                          if (labTests
-                                                                  .exist_in_cart ??
-                                                              false) {
-                                                            context
-                                                                .read<
-                                                                    CartCubit>()
-                                                                .removeFromCart(
-                                                                    labTests.id ??
-                                                                        "",
-                                                                    context);
-                                                          } else {
-                                                            context
-                                                                .read<
-                                                                    CartCubit>()
-                                                                .addToCart({
-                                                              "test":
-                                                                  "${labTests.id}"
-                                                            }, context);
-                                                          }
-                                                        },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          visualDensity:
-                                                              VisualDensity
-                                                                  .compact,
-                                                          backgroundColor:
-                                                              labTests.exist_in_cart ??
-                                                                      false
-                                                                  ? Colors.red
-                                                                  : const Color(
-                                                                      0xff24AEB1),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30),
-                                                          ),
-                                                          elevation: 0),
+                                                    if (labTests
+                                                        .exist_in_cart ??
+                                                        false) {
+                                                      context
+                                                          .read<
+                                                          CartCubit>()
+                                                          .removeFromCart(
+                                                          labTests.id ??
+                                                              "",
+                                                          context);
+                                                    } else {
+                                                      context
+                                                          .read<
+                                                          CartCubit>()
+                                                          .addToCart({
+                                                        "test":
+                                                        "${labTests.id}"
+                                                      }, context);
+                                                    }
+                                                  },
+                                                  style: ElevatedButton
+                                                      .styleFrom(
+                                                      visualDensity:
+                                                      VisualDensity
+                                                          .compact,
+                                                      backgroundColor: labTests
+                                                          .exist_in_cart ??
+                                                          false
+                                                          ? Color(
+                                                          0xff137B7C)
+                                                          : const Color(
+                                                          0xff24AEB1),
+                                                      shape:
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            30),
+                                                      ),
+                                                      elevation: 0),
                                                   child: isLoading
                                                       ? const SizedBox(
-                                                          width: 20,
-                                                          height: 20,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            color: Colors.white,
-                                                            strokeWidth: 2,
-                                                          ),
-                                                        )
-                                                      : Text(
-                                                          labTests.exist_in_cart ??
-                                                                  false
-                                                              ? 'Remove'
-                                                              : 'Add Test',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  "Poppins"),
-                                                        ),
+                                                    width: 20,
+                                                    height: 20,
+                                                    child:
+                                                    CircularProgressIndicator(
+                                                      color:
+                                                      Colors.white,
+                                                      strokeWidth: 2,
+                                                    ),
+                                                  )
+                                                      : Row(
+                                                    children: [
+                                                      Text(
+                                                        labTests.exist_in_cart ??
+                                                            false
+                                                            ? 'Remove'
+                                                            : 'Add Test',
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .white,
+                                                            fontFamily:
+                                                            "Poppins"),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      labTests.exist_in_cart ??
+                                                          false
+                                                          ? Icon(
+                                                        Icons
+                                                            .cancel_outlined,
+                                                        color: Colors
+                                                            .white,
+                                                      )
+                                                          : Icon(
+                                                        Icons
+                                                            .add_circle_outline,
+                                                        color: Colors
+                                                            .white,
+                                                      )
+                                                    ],
+                                                  ),
                                                 );
                                               },
                                             ),

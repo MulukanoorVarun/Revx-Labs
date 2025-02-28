@@ -94,7 +94,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,
-                automaticallyImplyLeading: true,
+                automaticallyImplyLeading: false,
                 toolbarHeight: 120,
                 leading: Container(),
                 leadingWidth: 0,
@@ -107,11 +107,15 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           Navigator.pop(context);
                         },
                         icon: Icon(Icons.arrow_back_ios_sharp)),
-                    Image.network(
-                      state.diagnostic_details.diognostic_details?.image ?? '',
-                      fit: BoxFit.contain,
+                    Container(
                       width: double.infinity,
-                      height: 80,
+                      height:100,
+                      child: Image.network(
+                        state.diagnostic_details.diognostic_details?.image ?? '',
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                        height: 80,
+                      ),
                     ),
                   ],
                 ),
@@ -374,58 +378,58 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
 
                       SizedBox(height: 36),
                       // Buttons with curved borders
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(30)),
-                                border: Border.all(color: Color(0xff27BDBE)),
-                              ),
-                              child: Text(
-                                'Send Message',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff27BDBE),
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff24AEB1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ScheduleAnAppointment(endtime: "",starttime: "",vendorID: "",totalamount: "",)));
-                            },
-                            // icon: Icon(Icons.add, color: Colors.white),
-                            // iconAlignment: IconAlignment.end, // "+" icon
-                            label: Text(
-                              'Book Appointment',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     InkWell(
+                      //       onTap: () {},
+                      //       child: Container(
+                      //         padding: EdgeInsets.symmetric(
+                      //             horizontal: 15, vertical: 10),
+                      //         decoration: BoxDecoration(
+                      //           borderRadius:
+                      //           BorderRadius.all(Radius.circular(30)),
+                      //           border: Border.all(color: Color(0xff27BDBE)),
+                      //         ),
+                      //         child: Text(
+                      //           'Send Message',
+                      //           style: TextStyle(
+                      //             fontSize: 14,
+                      //             fontWeight: FontWeight.w400,
+                      //             color: Color(0xff27BDBE),
+                      //             fontFamily: "Poppins",
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     ElevatedButton.icon(
+                      //       style: ElevatedButton.styleFrom(
+                      //         backgroundColor: Color(0xff24AEB1),
+                      //         shape: RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.circular(20),
+                      //         ),
+                      //       ),
+                      //       onPressed: () {
+                      //         Navigator.push(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //                 builder: (context) =>
+                      //                     ScheduleAnAppointment(endtime: "",starttime: "",vendorID: "",totalamount: "",)));
+                      //       },
+                      //       // icon: Icon(Icons.add, color: Colors.white),
+                      //       // iconAlignment: IconAlignment.end, // "+" icon
+                      //       label: Text(
+                      //         'Book Appointment',
+                      //         style: TextStyle(
+                      //           fontSize: 14,
+                      //           fontWeight: FontWeight.w400,
+                      //           color: Colors.white,
+                      //           fontFamily: "Poppins",
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(
                         height: 50,
                       )

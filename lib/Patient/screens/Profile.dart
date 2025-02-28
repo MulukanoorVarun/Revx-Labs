@@ -69,32 +69,32 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
-                          Positioned(
-                              bottom: 0,
-                              right: 5,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey.shade200,
-                                  ),
-                                  child: IconButton(
-                                    visualDensity: VisualDensity.compact,
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileSettings()));
-                                    },
-                                    style: ButtonStyle(
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.zero)),
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Color(0xff27BDBE),
-                                      size: 20,
-                                    ),
-                                  ))),
+                          // Positioned(
+                          //     bottom: 0,
+                          //     right: 5,
+                          //     child: Container(
+                          //         decoration: BoxDecoration(
+                          //           shape: BoxShape.circle,
+                          //           color: Colors.grey.shade200,
+                          //         ),
+                          //         child: IconButton(
+                          //           visualDensity: VisualDensity.compact,
+                          //           onPressed: () {
+                          //             Navigator.push(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                     builder: (context) =>
+                          //                         ProfileSettings()));
+                          //           },
+                          //           style: ButtonStyle(
+                          //               padding: MaterialStateProperty.all(
+                          //                   EdgeInsets.zero)),
+                          //           icon: Icon(
+                          //             Icons.edit,
+                          //             color: Color(0xff27BDBE),
+                          //             size: 20,
+                          //           ),
+                          //         ))),
                         ],
                       ),
                       SizedBox(
