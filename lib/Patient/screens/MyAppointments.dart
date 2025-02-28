@@ -35,11 +35,9 @@ class _MyappointmentsState extends State<Myappointments> {
                       );
                     } else if (state is AppointmentListLoaded) {
                       final appointments = state.appointmentsList.appointments;
-
                       if (appointments == null || appointments.isEmpty) {
                         return Center(child: Text("No Appointments Available"));
                       }
-
                       return CustomScrollView(
                         slivers: [
                           SliverList(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import '../../Utils/constants.dart';
 import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
 import 'Diagnosticcenter.dart';
@@ -124,19 +126,21 @@ class _HomescreenState extends State<Homescreen> {
                           );
                         },
                         child: CircleAvatar(
-                          backgroundColor: Colors.blue, // Set background color for initials
-                          child: state.prfileDetails.data?.image != null &&
-                              state.prfileDetails.data!.image!.isNotEmpty
-                              ? ClipRRect(
-                            borderRadius: BorderRadius.circular(50), // Ensures it's circular
-                            child: Image.network(
-                              state.prfileDetails.data!.image!,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                          )
-                              : Text(
+                          backgroundColor: Color(0xff27BDBE), // Set background color for initials
+                          child:
+                          // state.prfileDetails.data?.image != null &&
+                          //     state.prfileDetails.data!.image!.isNotEmpty
+                          //     ? ClipRRect(
+                          //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
+                          //   child: Image.network(
+                          //     state.prfileDetails.data!.image!,
+                          //     fit: BoxFit.cover,
+                          //     width: double.infinity,
+                          //     height: double.infinity,
+                          //   ),
+                          // )
+                          //     :
+                          Text(
                             state.prfileDetails.data?.fullName?.isNotEmpty == true
                                 ? state.prfileDetails.data!.fullName![0].toUpperCase()
                                 : "?",
@@ -183,79 +187,76 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ),
           body: SingleChildScrollView(
+            padding: EdgeInsets.all(16),
             physics: BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16),
                 CarouselSlider(
                   options: CarouselOptions(
-                    aspectRatio: 1.0,
-                    height: screenHeight * 0.25,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    autoPlay: true,
-                    viewportFraction: 0.9,
-                    pauseAutoPlayOnTouch: true,
+                    height: screenHeight * 0.2, // Fixed height for consistency
                     onPageChanged: (index, reason) {
                       setState(() {
                         currentIndex = index;
                       });
                     },
+                    enableInfiniteScroll: true,
+                    viewportFraction: 1,
+                    enlargeCenterPage: false,
+                    autoPlay: true,
+                    scrollDirection: Axis.horizontal,
+                    pauseAutoPlayOnTouch: true,
+                    aspectRatio: 1,
                   ),
                   items: state.banners.data?.map((item) {
-                    return InkWell(
+                    return InkResponse(
                       onTap: () async {},
-                      child: Builder(
-                        builder: (BuildContext context) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: screenHeight * 0.02),
-                            child: Image.network(
-                              item.image ?? "",
-                              fit: BoxFit.contain,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: item.image ?? '',
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            placeholder: (context, url) => Center(
+                              child: spinkits.getSpinningLinespinkit(),
                             ),
-                          );
-                        },
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                        ),
                       ),
                     );
                   }).toList(),
                 ),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: 8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: state.banners.data!.asMap().entries.map((entry) {
-                    bool isActive = currentIndex == entry.key;
-                    return Container(
-                      width: isActive ? 17.0 : 7.0,
-                      height: 7.0,
-                      margin: EdgeInsets.symmetric(horizontal: 3.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isActive ? Color(0xFF00A3FF) : Color(0xFFC9EAF2),
+                  children: [
+                    for (int i = 1; i <= (state.banners.data?.length ?? 0); i++)
+                      Container(
+                        margin: EdgeInsets.all(3),
+                        height: screenHeight * 0.008,
+                        width: currentIndex == i ? screenWidth * 0.025 : screenWidth * 0.014,
+                        decoration: BoxDecoration(
+                          color: currentIndex == i ? Color(0xff27BDBE) : Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
                       ),
-                    );
-                  }).toList(),
+                  ],
                 ),
-
                 SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Categories',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff27BDBE),
-                          fontFamily: "Poppins"),
-                    ),
-                  ),
+                Text(
+                  'Categories',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff27BDBE),
+                      fontFamily: "Poppins"),
                 ),
                 SizedBox(height: 8),
                 // Ensure the grid fits within the scrollable area
                 GridView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
                     crossAxisSpacing: 10,
@@ -288,91 +289,86 @@ class _HomescreenState extends State<Homescreen> {
                   },
                 ),
                 SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Diagnostic Centres',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Diagnostic Centres',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff27BDBE),
+                          fontFamily: "Poppins"),
+                    ),
+                    InkResponse(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Diagnosticcenter(lat_lng: lat_lang),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'See All',
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                             color: Color(0xff27BDBE),
                             fontFamily: "Poppins"),
                       ),
-                      InkResponse(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  Diagnosticcenter(lat_lng: lat_lang),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'See All',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff27BDBE),
-                              fontFamily: "Poppins"),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 8),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 1,
-                        crossAxisSpacing: 5,
-                      ),
-                      itemCount: state.diagnosticCenters.data?.length,
-                      itemBuilder: (context, index) {
-                        final dignosticCenter =
-                            state.diagnosticCenters.data?[index];
-                        var w = MediaQuery.of(context).size.width;
-                        return Column(
-                          children: [
-                            InkResponse(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DiagnosticInformation(
-                                      diognosticId: dignosticCenter?.id ?? '',
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: w * 0.435,
-                                height: w * 0.4,
-                                padding: EdgeInsets.only(left: 15, right: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Color(0xff27BDBE), width: 1),
-                                  // Adjusted size to fit the circle
-                                ),
-                                child: Image.network(
-                                  dignosticCenter?.image ?? '',
-                                  fit: BoxFit.contain,
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1,
+                    crossAxisSpacing: 5,
+                  ),
+                  itemCount: state.diagnosticCenters.data?.length,
+                  itemBuilder: (context, index) {
+                    final dignosticCenter =
+                        state.diagnosticCenters.data?[index];
+                    var w = MediaQuery.of(context).size.width;
+                    return Column(
+                      children: [
+                        InkResponse(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DiagnosticInformation(
+                                  diognosticId: dignosticCenter?.id ?? '',
                                 ),
                               ),
+                            );
+                          },
+                          child: Container(
+                            width: w * 0.435,
+                            height: w * 0.4,
+                            padding: EdgeInsets.only(left: 15, right: 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: Color(0xff27BDBE), width: 1),
+                              // Adjusted size to fit the circle
                             ),
-                            SizedBox(height: 8),
-                          ],
-                        );
-                      },
-                    )),
+                            child: Image.network(
+                              dignosticCenter?.image ?? '',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                      ],
+                    );
+                  },
+                ),
                 SizedBox(height: 8),
 
                 InkWell(
@@ -390,7 +386,6 @@ class _HomescreenState extends State<Homescreen> {
                   },
                   child: Container(
                     width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 22),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),

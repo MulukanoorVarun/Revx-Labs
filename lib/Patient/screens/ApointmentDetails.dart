@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
-import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/appointment_details/appointment_details_state.dart';
+
+import '../logic/cubit/appointment_details/appointment_details_cubit.dart';
 
 class ApointmentDetails extends StatefulWidget {
   String id;
@@ -13,8 +15,8 @@ class ApointmentDetails extends StatefulWidget {
 
 class _ApointmentDetailsState extends State<ApointmentDetails> {
   @override
-  void initState() {context.read<AppointmentCubit>().AppointmentDetails(widget.id);
-
+  void initState() {
+    context.read<AppointmentDetailsCubit>().fetchAppointmentDetails(widget.id);
     super.initState();
   }
   @override
@@ -22,8 +24,8 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: CustomAppBar(title: "Appointment Details", actions: []),
-      body: BlocBuilder<AppointmentCubit, AppointmentState>(builder: (context, state) {
-        if (state is AppointmentLoading) {
+      body: BlocBuilder<AppointmentDetailsCubit, AppointmentDetailsState>(builder: (context, state) {
+        if (state is AppointmentDetailsLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -39,7 +41,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "OrderID : ${state.appointments_details.appointment_data?.appointmentNumber??''}",
+                        "OrderID : ${state.appointmentDetails?.appointment_data?.appointmentNumber??''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 18,
@@ -47,7 +49,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         ),
                       ),
                       Text(
-                        "${state.appointments_details.appointment_data?.appointmentDate??''}",
+                        "${state.appointmentDetails?.appointment_data?.appointmentDate??''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 14,
@@ -65,7 +67,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         child: Text(
                           maxLines: 2,
                           textAlign: TextAlign.start,
-                          "${state.appointments_details.appointment_data?.diagnosticCentre?.name??''}",
+                          "${state.appointmentDetails?.appointment_data?.diagnosticCentre?.name??''}",
                           style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 17,
@@ -95,7 +97,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                           Container(
                             width: w * 0.8, // 90% of screen width
                             child: Text(
-                              "${state.appointments_details.appointment_data?.diagnosticCentre?.location??''}",
+                              "${state.appointmentDetails?.appointment_data?.diagnosticCentre?.location??''}",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -124,14 +126,14 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.appointments_details.appointment_data?.appointmentTests?.length??0,
+                          itemCount: state.appointmentDetails?.appointment_data?.appointmentTests?.length??0,
                           separatorBuilder: (context, index) => const Divider(
                             color: Colors.grey,
                             thickness: 0.5,
                             height: 16,
                           ),
                           itemBuilder: (context, index) {
-                            final test = state.appointments_details.appointment_data?.appointmentTests?[index];
+                            final test = state.appointmentDetails?.appointment_data?.appointmentTests?[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4.0),
                               child: Column(
@@ -208,7 +210,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                             Spacer(),
                             SizedBox(
                               child: Text(
-                               '₹ ${ state.appointments_details.appointment_data?.totalAmount??''}',
+                               '₹ ${ state.appointmentDetails?.appointment_data?.totalAmount??''}',
                                 style: TextStyle(
                                   color: Color(0xff000000),
                                   fontWeight: FontWeight.w500,

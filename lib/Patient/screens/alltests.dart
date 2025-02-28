@@ -129,13 +129,9 @@ class _alltestsState extends State<alltests> {
             BlocListener<CartCubit, CartState>(
               listener: (context, state) {
                 if (state is CartSuccessState) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
+                  CustomSnackBar.show(context, "Added to Cart Successfully!");
                 } else if (state is CartErrorState) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.errorMessage)),
-                  );
+                  CustomSnackBar.show(context, "${state.errorMessage}");
                 }
               },
               child: Expanded(

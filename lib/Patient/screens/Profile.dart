@@ -43,25 +43,27 @@ class _ProfileState extends State<Profile> {
                       Stack(
                         children: [
                           CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.blue, // Set background color for initials
-                            child: state.profileDetailModel.data?.image != null &&
-                                state.profileDetailModel.data!.image!.isNotEmpty
-                                ? ClipRRect(
-                              borderRadius: BorderRadius.circular(50), // Ensures it's circular
-                              child: Image.network(
-                                state.profileDetailModel.data!.image!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
-                            )
-                                : Text(
+                            radius:60,
+                            backgroundColor: Color(0xff27BDBE), // Set background color for initials
+                            child:
+                            // state.prfileDetails.data?.image != null &&
+                            //     state.prfileDetails.data!.image!.isNotEmpty
+                            //     ? ClipRRect(
+                            //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
+                            //   child: Image.network(
+                            //     state.prfileDetails.data!.image!,
+                            //     fit: BoxFit.cover,
+                            //     width: double.infinity,
+                            //     height: double.infinity,
+                            //   ),
+                            // )
+                            //     :
+                            Text(
                               state.profileDetailModel.data?.fullName?.isNotEmpty == true
                                   ? state.profileDetailModel.data!.fullName![0].toUpperCase()
                                   : "?",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 45,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),

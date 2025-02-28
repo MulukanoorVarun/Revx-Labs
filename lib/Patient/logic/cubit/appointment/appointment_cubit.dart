@@ -8,13 +8,12 @@ part 'appointment_state.dart';
 
 class AppointmentCubit extends Cubit<AppointmentState> {
   final AppointmentRepository appointmentRepository;
-
   AppointmentCubit(this.appointmentRepository) : super(AppointmentInitial());
 
-  Future<void> bookAppointment(Map<String, dynamic> Data) async {
+  Future<void> bookAppointment(Map<String, dynamic> data) async {
     emit(AppointmentLoading());
     try {
-      final appointments = await appointmentRepository.bookAppointment(Data);
+      final appointments = await appointmentRepository.bookAppointment(data);
       if (appointments != null) {
         emit(AppointmentLoaded(appointments));
       } else {
@@ -39,18 +38,5 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     }
   }
 
-
-  Future<void> AppointmentDetails(id) async {
-    emit(AppointmentLoading());
-    try {
-      final appointments = await appointmentRepository.AppointmentDetails(id);
-      if (appointments != null) {
-        emit(AppointmentDetailsLoaded(appointments));
-      } else {
-        emit(AppointmentError("No appointments found"));
-      }
-    } catch (e) {
-      emit(AppointmentError("Failed to fetch appointments"));
-    }
-  }
 }
+

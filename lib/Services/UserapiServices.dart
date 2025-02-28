@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:revxpharma/Models/BannersModel.dart';
 import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterDetailModel.dart';
 import 'package:revxpharma/Models/DiognisticCenterModel.dart';
-import 'package:revxpharma/data/api_routes/vendor_remote_urls.dart';
 import 'ApiClient.dart';
 
 class UserApi {
@@ -46,9 +43,7 @@ class UserApi {
   static Future<Response> loginapi(String email, String pw) async {
     try {
       Map<String, String> data = {"email": email, "password": pw};
-
       Response response = await ApiClient.post('auth/login', data: data);
-
       return response;
     } catch (e) {
       print('Error registering patient: $e');

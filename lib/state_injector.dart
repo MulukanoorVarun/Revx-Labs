@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/appointment_details/appointment_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
@@ -157,6 +158,12 @@ class StateInjector {
 
     BlocProvider<AppointmentCubit>(
       create: (context) => AppointmentCubit(
+          context.read<AppointmentRepository>()
+      ),
+    ),
+
+    BlocProvider<AppointmentDetailsCubit>(
+      create: (context) => AppointmentDetailsCubit(
           context.read<AppointmentRepository>()
       ),
     )

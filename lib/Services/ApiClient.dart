@@ -5,7 +5,7 @@ import 'AuthService.dart';
 class ApiClient {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: "http://192.168.0.20:8080/",
+      baseUrl: "https://revx.ozrit.in/",
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
