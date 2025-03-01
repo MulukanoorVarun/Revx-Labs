@@ -36,7 +36,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
             fontFamily: "Poppins",
           ),
         ),
-        centerTitle: false                       , // Centering the title
+        centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff24AEB1)),
