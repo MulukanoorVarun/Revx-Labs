@@ -6,38 +6,15 @@ import '../../Models/SuccessModel.dart';
 import '../../Services/ApiClient.dart';
 
 abstract class VendorRemoteDataSource {
-  Future<SuccessModel?> postDiognosticRegister(
-    String contactPersonName,
-    String diagnosticName,
-    String completeAddress,
-    String contactNumber,
-    String email,
-    String pwd,
-    List<String> daysOpened,
-    String startTime,
-    String endTime,
-    String registrationNumber,
-  );
+  Future<SuccessModel?> postDiognosticRegister(FormData registerData);
   Future<VendorGetTestsModel?> DiagnosticgetTests();
   Future<SuccessModel?> DiagnosticDelateTest(String id);
 }
 
 class VendorRemoteDataSourceImpl implements VendorRemoteDataSource {
-  Future<SuccessModel?> postDiognosticRegister(
-    String contactPersonName,
-    String diagnosticName,
-    String completeAddress,
-    String contactNumber,
-    String email,
-    String pwd,
-    List<String> daysOpened,
-    String startTime,
-    String endTime,
-    String registrationNumber,
-  ) async {
+  Future<SuccessModel?> postDiognosticRegister(FormData registerData) async {
     try {
-      Response response =
-          await ApiClient.post('${VendorRemoteUrls.vendorRegister}');
+      Response response = await ApiClient.post('${VendorRemoteUrls.vendorRegister}',data: registerData);
       if (response.statusCode == 200) {
         LogHelper.printLog('postDiognosticRegister', response.data);
         return SuccessModel.fromJson(response.data);

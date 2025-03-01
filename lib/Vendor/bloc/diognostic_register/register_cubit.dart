@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_register/register_repository.dart';
@@ -8,43 +9,24 @@ class VendorRegisterCubit extends Cubit<RegisterState> {
   VendorRegisterCubit(this.vendorRegisterRepository)
       : super(RegisterIntially());
 
-  Future<void> postRegister(
-      String contactPersonName,
-      String diagnosticName,
-      String completeAddress,
-      String contactNumber,
-      String email,
-      String pwd,
-      List<String> daysOpened,
-      String startTime,
-      String endTime,
-      String registrationNumber) async {
+  Future<void> postRegister(FormData registerData) async {
+    print("Register Data Fields: ${registerData.fields}");
+    print("Register Data Files: ${registerData.files}");
     emit(RegisterLoading());
     try {
-      final vendor_registor =
-          await vendorRegisterRepository.postDiognosticRegister(
-        contactPersonName,
-        diagnosticName,
-        completeAddress,
-        contactNumber,
-        email,
-        pwd,
-        daysOpened,
-        startTime,
-        endTime,
-        registrationNumber,
-      );
-      if (vendor_registor != null) {
-        if (vendor_registor.settings?.success == 1) {
-          emit(RegisterSuccessState('${vendor_registor.settings?.success}'));
+      final vendor_register =
+      await vendorRegisterRepository.postDiognosticRegister(registerData);
+      if (vendor_register != null) {
+        if (vendor_register.settings?.success == 1) {
+          emit(RegisterSuccessState(vendor_register,"${vendor_register.settings?.message}"));
         } else {
-          emit(RegisterSuccessState('${vendor_registor.settings?.message}'));
+          emit(RegisterError("${vendor_register.settings?.message}"));
         }
       } else {
-        emit(RegisterError('${vendor_registor?.settings?.message}'));
+        emit(RegisterError('${vendor_register?.settings?.message}'));
       }
     } catch (e) {
-      emit(RegisterError('${e}'));
+      emit(RegisterError('$e'));
     }
   }
 }

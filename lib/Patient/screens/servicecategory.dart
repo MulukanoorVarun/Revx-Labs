@@ -26,10 +26,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xff24AEB1)),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false,
         title: Text(
           "Service Category",
           style: TextStyle(
@@ -39,7 +36,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
             fontFamily: "Poppins",
           ),
         ),
-        centerTitle: true, // Centering the title
+        centerTitle: false                       , // Centering the title
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff24AEB1)),
@@ -69,7 +66,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    alltests(lat_lang:'',catId: item?.id??'',catName: item?.categoryName??'',),
+                                    alltests(lat_lang:'',catId: item?.id??'',catName: item?.categoryName??'',diagnosticID: "",),
                               ));
                         },
                         child: Container(

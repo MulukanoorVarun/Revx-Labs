@@ -181,12 +181,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               };
 
               _ageController.text = state.getPatientDetailsmodel.getPatientDetails?.age.toString()??"";
-            }
-            else if (state is PatientErrorState) {
-              // Show error message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.errorMessage)),
-              );
+            }  else if (state is PatientErrorState) {
+              CustomSnackBar.show(context, "${state.errorMessage}");
             }
           },
           builder: (context, state) {

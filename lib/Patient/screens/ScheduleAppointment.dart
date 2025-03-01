@@ -36,28 +36,62 @@ class ScheduleAnAppointment extends StatefulWidget {
 
 class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   bool? groupValue;
-  int _selectedIndex = 0; // Track the selected index
+  int _selectedDateIndex = 0; // Track the selected index
   // List of dates for the current week
-  final List<DateTime> _dates = List.generate(7, (index) {
-    return DateTime.now().add(Duration(days: index));
-  });
+  final List<DateTime> _dates = List.generate(
+    DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day, // Get the number of days in the current month
+        (index) => DateTime(DateTime.now().year, DateTime.now().month, index + 1),
+  );
+
+  DateTime? _selectedDate;
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _selectedDateIndex = _dates.indexWhere((date) =>
+        date.year == pickedDate.year &&
+            date.month == pickedDate.month &&
+            date.day == pickedDate.day);
+
+        if (_selectedDateIndex != -1) {
+          _scrollController1.animateTo(
+            _selectedDateIndex! * 70.0, // Adjusting scroll position
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+    }
+  }
+
 
   String selectedDate = "";
   String selectedTime = "";
+
   void _onDateSelected(int index) {
     setState(() {
-      _selectedIndex = index;
-    });
-
+      _selectedDateIndex = index;
+      _selectedDate = _dates[index];
     // Format and store selected date as 'yyyy-MM-dd' (String)
     selectedDate = DateFormat('yyyy-MM-dd').format(_dates[index]);
-
+    _scrollController1.animateTo(
+      index * 70.0, // Smooth scroll to the selected date
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
     // Pass DateTime (_dates[index]) instead of String (selectedDate)
     timeSlots = generateTimeSlots(widget.starttime, widget.endtime, _dates[index]);
 
     print("Selected Date: $selectedDate");
+    });
   }
-
 
   List<String> generateHourlyTimeSlots() {
     List<String> timeSlots = [];
@@ -66,22 +100,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
       timeSlots.add(formattedTime);
     }
     return timeSlots;
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        selectedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-        timeSlots = generateTimeSlots(widget.starttime, widget.endtime, pickedDate); // Pass DateTime
-      });
-    }
   }
 
   @override
@@ -98,6 +116,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   List<String> timeSlots = [];
   int selectedIndex = -1; // Stores the selected index
   final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController1 = ScrollController();
 
   String? selectedPatientId;
   String? totalamount;
@@ -152,15 +171,14 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
 
   String validateSelectedDate = "";
   String validateSelectedTime = "";
+
   void submitData() {
     setState(() {
-      validateSelectedDate =
-          selectedDate == "" ? "Please Select Appointment Date" : "";
-      validateSelectedTime =
-          selectedTime == "" ? "Please Select Appointment Time" : "";
+      validateSelectedDate = (selectedDate.trim().isEmpty) ? "Please Select Appointment Date" : "";
+      validateSelectedTime = (selectedTime.trim().isEmpty) ? "Please Select Appointment Time" : "";
     });
     if (validateSelectedDate.isEmpty && validateSelectedTime.isEmpty) {
-      Map<String, dynamic> Data = {
+      Map<String, dynamic> data = {
         'patient': selectedPatientId,
         'diagnostic_centre': widget.vendorID,
         'appointment_date': selectedDate,
@@ -168,8 +186,13 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
         'total_amount': widget.totalamount,
         'payment_mode': "cash_on_test",
       };
-      context.read<AppointmentCubit>().bookAppointment(Data);
-      LogHelper.printLog('Appointment data : ', Data);
+
+      try {
+        context.read<AppointmentCubit>().bookAppointment(data);
+        LogHelper.printLog('Appointment data:', data);
+      } catch (error) {
+        LogHelper.printLog('Error while booking:', error.toString());
+      }
     }
   }
 
@@ -195,7 +218,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
           }
         },
         builder: (context, state) {
-          return  SingleChildScrollView(
+          return SingleChildScrollView(
               padding: EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -369,26 +392,24 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   SizedBox(
                     height: 70,
                     child: ListView.builder(
+                      controller: _scrollController1,
                       scrollDirection: Axis.horizontal,
                       itemCount: _dates.length,
                       itemBuilder: (context, index) {
                         final date = _dates[index];
-                        final isSelected = index == _selectedIndex; // Track selection
+                        final isSelected = index == _selectedDateIndex;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
-                              validateSelectedDate = "";
+                              _onDateSelected(index);
                             });
-                            _onDateSelected(index); // Handle date selection
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: 10),
                             width: 60,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Color(0xff27BDBE)
-                                  : Color(0xffD3D3D3),
+                              color: isSelected ? Color(0xff27BDBE) : Color(0xffD3D3D3),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
@@ -398,9 +419,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                 Text(
                                   DateFormat('dd').format(date),
                                   style: TextStyle(
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Color(0xff1A1A1A),
+                                    color: isSelected ? Colors.white : Color(0xff1A1A1A),
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "Poppins",
                                     fontSize: 16,
@@ -410,9 +429,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                 Text(
                                   DateFormat('EEE').format(date),
                                   style: TextStyle(
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Color(0xff1A1A1A),
+                                    color: isSelected ? Colors.white : Color(0xff1A1A1A),
                                     fontWeight: FontWeight.w400,
                                     fontFamily: "Poppins",
                                     fontSize: 14,
@@ -548,14 +565,14 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                       },
                     ),
                   ),
-                  if (validateSelectedDate != "") ...[
+                  if (validateSelectedTime != "") ...[
                     Container(
                       alignment: Alignment.topLeft,
                       child: ShakeWidget(
-                        key: Key(validateSelectedDate),
+                        key: Key(validateSelectedTime),
                         duration: const Duration(milliseconds: 700),
                         child: Text(
-                          "${validateSelectedDate}",
+                          "${validateSelectedTime}",
                           style: const TextStyle(
                             fontFamily: "Poppins",
                             fontSize: 12,
@@ -624,7 +641,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                 );
               } else if (state is PatientsListLoaded) {
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.all(16                                ),
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -639,89 +656,126 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Patients List",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                              color: Color(0xff27BDBE),
+                            ),
+                          ),
+                          OutlinedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddPatientScreen(
+                                    type: "add",
+                                    pateint_id:                        "",
+                                  ),
+                                ),
+                              );
+                            },
+                            style: OutlinedButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              side: BorderSide(color: Color(0xff27BDBE), width: 1), // Border color
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8), // Border radius
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Add",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff27BDBE),
+                                    fontFamily: "Poppins",
+                                  ),
+                                ),
+                                SizedBox(width: 5),
+                                Icon(Icons.add_circle_outline, color: Color(0xff27BDBE)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       ListView.builder(
                         padding: EdgeInsets.only(top: 10),
                         shrinkWrap: true,
-                        itemCount:
-                            state.patientsListModel.patientslist?.length ?? 0,
+                        itemCount: state.patientsListModel.patientslist?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final patient =
-                              state.patientsListModel.patientslist?[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white, // Default background
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: selectedPatientId == patient?.id
-                                      ? Colors.teal
-                                      : Colors.transparent, // Highlight border
-                                  width: 2,
+                          final patient = state.patientsListModel.patientslist?[index];
+                          return Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: selectedPatientId == patient?.id ? Colors.teal : Colors.transparent,
+                                width: 1,
+                              ),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                setState(() {
+                                  selectedPatientId = patient?.id;
+                                  context.read<PatientCubit>().getPatientDetails(selectedPatientId);
+                                  Navigator.pop(context);
+                                });
+                              },
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              title: Text(
+                                patient?.patientName ?? 'Unknown',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Poppins',
                                 ),
                               ),
-                              child: ListTile(
-                                onTap: () {
-                                  setState(() {
-                                    selectedPatientId = patient?.id;
-                                    context
-                                        .read<PatientCubit>()
-                                        .getPatientDetails(selectedPatientId);
-                                    Navigator.pop(context);
-                                  });
-                                },
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                title: Text(
-                                  patient?.patientName ?? 'Unknown',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: 'Poppins',
-                                  ),
+                              subtitle: Text(
+                                '${patient?.dob ?? ''} / ${patient?.gender ?? ''} / ${patient?.bloodGroup ?? ''}',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Poppins',
                                 ),
-                                subtitle: Text(
-                                  '${patient?.dob ?? ''} / ${patient?.gender ?? ''} / ${patient?.bloodGroup ?? ''}',
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Poppins',
-                                  ),
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                AddPatientScreen(
-                                              type: "edit",
-                                              pateint_id: patient?.id ?? "",
-                                            ),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AddPatientScreen(
+                                            type: "edit",
+                                            pateint_id: patient?.id ?? "",
                                           ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.edit,
-                                          size: 20, color: Colors.blue),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        context
-                                            .read<PatientCubit>()
-                                            .deletePatient(patient?.id ?? '');
-                                      },
-                                      icon: Icon(Icons.delete,
-                                          size: 20, color: Colors.red),
-                                    ),
-                                  ],
-                                ),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(Icons.edit, size: 20, color: Colors.blue),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      context.read<PatientCubit>().deletePatient(patient?.id ?? '');
+                                    },
+                                    icon: Icon(Icons.delete, size: 20, color: Colors.red),
+                                  ),
+                                ],
                               ),
                             ),
                           );

@@ -16,10 +16,12 @@ class alltests extends StatefulWidget {
   String lat_lang;
   String catId;
   String catName;
+  String diagnosticID;
   alltests(
       {super.key,
       required this.lat_lang,
       required this.catId,
+      required this.diagnosticID,
       required this.catName});
 
   @override
@@ -29,9 +31,7 @@ class alltests extends StatefulWidget {
 class _alltestsState extends State<alltests> {
   @override
   void initState() {
-    context
-        .read<TestCubit>()
-        .fetchTestList(widget.lat_lang ?? '', widget.catId ?? '', '');
+    context.read<TestCubit>().fetchTestList(widget.lat_lang ?? '', widget.catId ?? '', '',widget.diagnosticID);
     context.read<CartCubit>().getCartList();
     super.initState();
   }
@@ -49,87 +49,10 @@ class _alltestsState extends State<alltests> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // if (widget.catName.isEmpty) ...[
-            //   Container(
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(20),
-            //       border:
-            //           Border.all(color: const Color(0xff27BDBE), width: 1),
-            //     ),
-            //     child: Row(
-            //       children: [
-            //         GestureDetector(
-            //           onTap: () {
-            //             setState(() {
-            //               isLabTestSelected = true;
-            //             });
-            //           },
-            //           child: Container(
-            //             width: w * 0.45,
-            //             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            //             decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(20),
-            //               color: isLabTestSelected
-            //                   ? const Color(0xff27BDBE)
-            //                   : Colors.transparent,
-            //             ),
-            //             child: Center(
-            //               child: Text(
-            //                 "Labs Tests",
-            //                 style: TextStyle(
-            //                   color: isLabTestSelected
-            //                       ? Colors.white
-            //                       : const Color(0xff27BDBE),
-            //                   fontSize: 12,
-            //                   fontWeight: FontWeight.w400,
-            //                   fontFamily: "Poppins",
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //         GestureDetector(
-            //           onTap: () {
-            //             setState(() {
-            //               isLabTestSelected = false;
-            //             });
-            //             context.read<ConditionCubit>().fetchConditionBased();
-            //           },
-            //           child: Container(
-            //             width: w * 0.465,
-            //             padding: const EdgeInsets.symmetric(
-            //                 horizontal: 10, vertical: 10),
-            //             decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(20),
-            //               color: !isLabTestSelected
-            //                   ? const Color(0xff27BDBE)
-            //                   : Colors.transparent,
-            //             ),
-            //             child: Center(
-            //               child: Text(
-            //                 "Condition based",
-            //                 style: TextStyle(
-            //                   color: !isLabTestSelected
-            //                       ? Colors.white
-            //                       : const Color(0xff27BDBE),
-            //                   fontSize: 12,
-            //                   fontWeight: FontWeight.w400,
-            //                   fontFamily: "Poppins",
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ],
-            // if (isLabTestSelected) ...[
-            // Wrap the entire widget with a single BlocListener
             BlocListener<CartCubit, CartState>(
               listener: (context, state) {
                 if (state is CartSuccessState) {
-                  CustomSnackBar.show(context, "Added to Cart Successfully!");
+                  CustomSnackBar.show(context, "${state.message}");
                 } else if (state is CartErrorState) {
                   CustomSnackBar.show(context, "${state.errorMessage}");
                 }
@@ -145,39 +68,41 @@ class _alltestsState extends State<alltests> {
                           ? (state as TestStateLoaded).testModel
                           : (state as TestStateLoadingMore).testModel;
                       if ((testModel.data?.isEmpty ?? true)                                                        ) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          spacing: 8,
-                          children: [
-                            SizedBox(
-                              height:
-                              MediaQuery.of(context).size.width * 0.05,
-                            ),
-                            Text(
-                              'Oops !',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              textAlign: TextAlign.center,
-                              'The Diagnostic test seems to be playing hide and seek.',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Text(
-                              'Try Searching with a diffrent name. ',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey),
-                            ),
-                          ],
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8,
+                            children: [
+                              SizedBox(
+                                height:
+                                MediaQuery.of(context).size.width * 0.05,
+                              ),
+                              Text(
+                                'Oops !',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                textAlign: TextAlign.center,
+                                'No Data Found!',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                'Try Searching with a diffrent name. ',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         );
                       }
                       return NotificationListener<ScrollNotification>(
@@ -188,7 +113,7 @@ class _alltestsState extends State<alltests> {
                               context.read<TestCubit>().fetchMoreTestList(
                                   widget.lat_lang ?? '',
                                   widget.catId ?? '',
-                                  '');
+                                  '',widget.diagnosticID);
                             }
                             return false;
                           }
@@ -361,31 +286,33 @@ class _alltestsState extends State<alltests> {
                                             ),
                                           ],
                                         ),
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(top: 10),
-                                          padding: const EdgeInsets.all(6),
-                                          decoration: const BoxDecoration(
-                                              color: Color(0xffD40000)),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.location_on,
-                                                  color: Colors.white,
-                                                  size: 15),
-                                              const SizedBox(width: 8),
-                                              Expanded(
-                                                child: Text(
-                                                  '${labTests.diagnosticCentre} - ${labTests.distance} away',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12),
+                                        if(labTests.distance!=null)...[
+                                          Container(
+                                            margin:
+                                            const EdgeInsets.only(top: 10),
+                                            padding: const EdgeInsets.all(6),
+                                            decoration: const BoxDecoration(
+                                                color: Color(0xffD40000)),
+                                            child: Row(
+                                              children: [
+                                                const Icon(Icons.location_on,
+                                                    color: Colors.white,
+                                                    size: 15),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    '${labTests.diagnosticCentre} - ${labTests.distance} away',
+                                                    overflow:
+                                                    TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ],
                                     ),
                                   );

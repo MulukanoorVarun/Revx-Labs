@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_state.dart';
+import '../../Utils/Preferances.dart';
 import 'ScheduleAppointment.dart';
+import 'alltests.dart';
 
 class DiagnosticInformation extends StatefulWidget {
   String diognosticId;
@@ -20,8 +23,19 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
   @override
   void initState() {
     context.read<DiagnostocDetailCubit>().fetchDiagnosticDetails(widget.diognosticId??"");
+    fetchDetails();
     super.initState();
   }
+  String lat_lang = "";
+
+  void fetchDetails() async {
+    String? latLngValue = await PreferenceService().getString('latlngs') ?? "";
+
+    setState(() {
+      lat_lang = latLngValue;
+    });
+  }
+
 
   String formatOpeningDays(List<String>? days) {
     if (days == null || days.isEmpty) {
@@ -60,12 +74,9 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
     var h = MediaQuery.of(context).size.height;
     return BlocBuilder<DiagnostocDetailCubit, DiagnosticDetailState>(
         builder: (context, state) {
-
           if (state is DiagnosticDetailLoading) {
-            return _shimmer(context); // 🔄 Show loading
+            return _shimmer(context);
           } else if (state is DiagnosticDetailLoaded) {
-
-
             String? startTimeStr = state.diagnostic_details.diognostic_details?.startTime;
             String? endTimeStr = state.diagnostic_details.diognostic_details?.endTime;
 
@@ -92,115 +103,88 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
             }
 
             return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                automaticallyImplyLeading: false,
-                toolbarHeight: 120,
-                leading: Container(),
-                leadingWidth: 0,
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_back_ios_sharp)),
-                    Container(
-                      width: double.infinity,
-                      height:100,
-                      child: Image.network(
-                        state.diagnostic_details.diognostic_details?.image ?? '',
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        height: 80,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              appBar:CustomAppBar(title: "Diagnostic Details", actions: []),
               backgroundColor: Color(0xffffffff),
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                  padding: EdgeInsets.only(left: 15, right: 15, top: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.network(
-                            state.diagnostic_details.diognostic_details?.image ?? '',
-                            height: 24,
-                            width: 24,
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color:  Color(0xff27BDBE), width: 1), // Added border color
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8), // Rounded corners
+                              child: Image.network(
+                                state.diagnostic_details.diognostic_details?.image ?? '',
+                                height: 90,
+                                width: 90,
+                                fit: BoxFit.cover, // Ensures the image fits well
+                              ),
+                            ),
                           ),
                           SizedBox(width: 10),
                           Expanded(
-                            child: Text(
-                              maxLines: 2,
-                              textAlign: TextAlign.start,
-                              state.diagnostic_details.diognostic_details?.name ?? '',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins"),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/location.png",
-                            height: 20,
-                            width: 20,
-                            color: Colors.red,
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width *
-                                    0.8, // 90% of screen width
-                                child: Text(
-                                  state.diagnostic_details.diognostic_details?.location ?? '',
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.diagnostic_details.diognostic_details?.name ?? '',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    color: Color(0xff949494),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                     fontFamily: "Poppins",
                                   ),
                                 ),
-                              ),
-                              isOpen?
-                              Row(
-                                children: [
-
-                                  Text(
-                                    "Open now",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xff00BE13),
-                                        fontFamily: "Poppins"),
+                                SizedBox(height: 5),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      "assets/location.png",
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.red,
+                                    ),
+                                    SizedBox(width: 5),
+                                    Expanded(
+                                      child: Text(
+                                        state.diagnostic_details.diognostic_details?.location ?? '',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Color(0xff949494),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Poppins",
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  isOpen ? "Open now" : "Closed now",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: isOpen ? Color(0xff00BE13) : Color(0xffC00000),
+                                    fontFamily: "Poppins",
                                   ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
+                                ),
+                                if (isOpen)
                                   Text(
-                                    formatOpeningDays(   state.diagnostic_details.diognostic_details?.daysOpened,),
+                                    formatOpeningDays(state.diagnostic_details.diognostic_details?.daysOpened),
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -208,18 +192,8 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                                       fontFamily: "Poppins",
                                     ),
                                   ),
-
-
-                                ],
-                              ): Text(
-                                "Close now",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xffC00000),
-                                    fontFamily: "Poppins"),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -273,7 +247,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                               ),
                               Row(
                                 children: [
-                                  Icon(Icons.person),
+                                  Icon(Icons.person,size: 20,),
                                   Text(
                                     state.diagnostic_details.diognostic_details?.contactPerson ?? '',
                                     style: TextStyle(
@@ -301,7 +275,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                               ),
                               Row(
                                 children: [
-                                  Icon(Icons.call),
+                                  Icon(Icons.call,size:20),
                                   Text(
                                     state.diagnostic_details.diognostic_details?.contactMobile ?? '',
                                     style: TextStyle(
@@ -318,8 +292,6 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                         ],
                       ),
                       SizedBox(height: 16),
-
-                      // Address Heading and Address
                       Text(
                         "Address",
                         style: TextStyle(
@@ -332,7 +304,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           height:
                           8), // Optional spacing between heading and address
                       Text(
-                        "D.no : 1270, Opposite Rathnadeep Market, Kondapur, Hyderabad - 500081",
+                        state.diagnostic_details.diognostic_details?.location ?? '',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -341,95 +313,64 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                         ),
                       ),
                       SizedBox(height: 26),
-
-                      // Services Available Heading
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Services Available",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff24AEB1),
-                              fontFamily: "Poppins",
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => alltests(
+                                lat_lang: '',
+                                catId: '',
+                                catName: '',
+                                diagnosticID: state.diagnostic_details.diognostic_details?.id ?? '',
+                              ),
                             ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Color(0xff27BDBE), width: 1),
                           ),
-                          Text(
-                            "See All",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                                decoration: TextDecoration.underline),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xff27BDBE)),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Explore Lab Tests",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Image.asset(
+                                      "assets/explore.png",
+                                      width: 22,
+                                      height: 22,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 100,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Text(
-                        "All types of tests in Pathology, Radiology ........",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff949494),
-                          fontFamily: "Poppins",
                         ),
                       ),
-
-                      SizedBox(height: 36),
-                      // Buttons with curved borders
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     InkWell(
-                      //       onTap: () {},
-                      //       child: Container(
-                      //         padding: EdgeInsets.symmetric(
-                      //             horizontal: 15, vertical: 10),
-                      //         decoration: BoxDecoration(
-                      //           borderRadius:
-                      //           BorderRadius.all(Radius.circular(30)),
-                      //           border: Border.all(color: Color(0xff27BDBE)),
-                      //         ),
-                      //         child: Text(
-                      //           'Send Message',
-                      //           style: TextStyle(
-                      //             fontSize: 14,
-                      //             fontWeight: FontWeight.w400,
-                      //             color: Color(0xff27BDBE),
-                      //             fontFamily: "Poppins",
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     ElevatedButton.icon(
-                      //       style: ElevatedButton.styleFrom(
-                      //         backgroundColor: Color(0xff24AEB1),
-                      //         shape: RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.circular(20),
-                      //         ),
-                      //       ),
-                      //       onPressed: () {
-                      //         Navigator.push(
-                      //             context,
-                      //             MaterialPageRoute(
-                      //                 builder: (context) =>
-                      //                     ScheduleAnAppointment(endtime: "",starttime: "",vendorID: "",totalamount: "",)));
-                      //       },
-                      //       // icon: Icon(Icons.add, color: Colors.white),
-                      //       // iconAlignment: IconAlignment.end, // "+" icon
-                      //       label: Text(
-                      //         'Book Appointment',
-                      //         style: TextStyle(
-                      //           fontSize: 14,
-                      //           fontWeight: FontWeight.w400,
-                      //           color: Colors.white,
-                      //           fontFamily: "Poppins",
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       SizedBox(
                         height: 50,
                       )

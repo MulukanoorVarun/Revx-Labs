@@ -9,16 +9,20 @@ import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_reposito
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/home/home_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/login/login_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
+import 'package:revxpharma/Patient/logic/repository/LoginRepository.dart';
 import 'package:revxpharma/Patient/logic/repository/appointment_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/banners_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/cart_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
+import 'package:revxpharma/Patient/logic/repository/patient_register_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_repository.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_repository.dart';
@@ -26,17 +30,15 @@ import 'package:revxpharma/data/api_routes/VendorRemoteDataSource.dart';
 import 'Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'Patient/logic/cubit/cart/cart_cubit.dart';
 import 'Patient/logic/repository/category_repository.dart';
+import 'Vendor/bloc/diognostic_register/register_cubit.dart';
+import 'Vendor/bloc/diognostic_register/register_repository.dart';
 import 'data/api_routes/remote_data_source.dart';
 
 class StateInjector {
   static final repositoryProviders = <RepositoryProvider>[
     RepositoryProvider<RemoteDataSource>(
       create: (context) =>
-          RemoteDataSourceImpl(), // Ensure this is correctly implemented
-    ),
-    RepositoryProvider<VendorRemoteDataSource>(
-      create: (context) =>
-          VendorRemoteDataSourceImpl(), // Ensure this is correctly implemented
+          RemoteDataSourceImpl(),
     ),
     RepositoryProvider<CategoryRepository>(
       create: (context) => CategoryRepositoryImpl(
@@ -90,11 +92,37 @@ class StateInjector {
       create: (context) =>
           DiagnosticGetTestsImp(vendorRemoteDataSource: context.read()),
     ),
-
     RepositoryProvider<AppointmentRepository>(
       create: (context) =>
           AppointmentRepositoryImpl(remoteDataSource: context.read()),
     ),
+
+    RepositoryProvider<LoginRepository>(
+      create: (context) =>
+          LoginImpl(remoteDataSource: context.read()),
+    ),
+
+    RepositoryProvider<PatientRegisterRepository>(
+      create: (context) =>
+          PatientRegisterImpl(remoteDataSource: context.read()),
+    ),
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///   Vendor Repositories /////////
+
+
+    RepositoryProvider<VendorRemoteDataSource>(
+      create: (context) =>
+          VendorRemoteDataSourceImpl(),
+    ),
+
+    RepositoryProvider<VendorRegisterRepository>(
+      create: (context) =>
+          VendorRegisterImpl(remoteDataSource: context.read()),
+    ),
+
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -149,23 +177,43 @@ class StateInjector {
       create: (context) => CartCubit(
         cartRepository: context.read<CartRepository>(),
         testCubit:
-            context.read<TestCubit>(), // Access existing TestCubit instance
+            context.read<TestCubit>(),
       ),
     ),
     BlocProvider<ProfileCubit>(
         create: (context) =>
             ProfileCubit(profileRepository: context.read<ProfileRepository>())),
-
     BlocProvider<AppointmentCubit>(
-      create: (context) => AppointmentCubit(
-          context.read<AppointmentRepository>()
-      ),
+      create: (context) =>
+          AppointmentCubit(context.read<AppointmentRepository>()),
+    ),
+    BlocProvider<AppointmentDetailsCubit>(
+      create: (context) =>
+          AppointmentDetailsCubit(context.read<AppointmentRepository>()),
     ),
 
-    BlocProvider<AppointmentDetailsCubit>(
-      create: (context) => AppointmentDetailsCubit(
-          context.read<AppointmentRepository>()
-      ),
-    )
+    BlocProvider<LoginCubit>(
+      create: (context) =>
+          LoginCubit(context.read<LoginRepository>()),
+    ),
+
+    BlocProvider<PatientRegisterCubit>(
+      create: (context) =>
+          PatientRegisterCubit(context.read<PatientRegisterRepository>()),
+    ),
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Vendor Bloc Providers //
+
+    BlocProvider<VendorRegisterCubit>(
+      create: (context) =>
+          VendorRegisterCubit(context.read<VendorRegisterRepository>()),
+    ),
+
+
+
+
   ];
 }

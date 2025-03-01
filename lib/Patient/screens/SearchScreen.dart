@@ -34,78 +34,8 @@ class _SearchscreenState extends State<Searchscreen> {
   @override
   void initState() {
     super.initState();
-    // _loadInitialData();
-    _initializeSpeechToText(); // Initialize speech recognition after data loading
   }
 
-  Future<void> _initializeSpeechToText() async {
-    bool available = await _speechToText.initialize();
-    if (available) {
-      print("Speech-to-Text initialized successfully.");
-      setState(() {
-        _isListening = false; // Can start listening now
-      });
-    } else {
-      print("Speech-to-Text initialization failed!");
-    }
-  }
-
-  Future<bool> _requestMicrophonePermission() async {
-    var status = await Permission.microphone.request();
-    if (status.isGranted) {
-      print("Microphone permission granted.");
-      return true; // Permission granted
-    } else {
-      print("Microphone permission not granted.");
-      return false; // Permission denied
-    }
-  }
-
-  // Start listening for speech
-  void _startListening() async {
-    // First, check if the microphone permission is granted
-    bool hasPermission = await _requestMicrophonePermission();
-    if (!hasPermission) {
-      print("Cannot start listening: Microphone permission denied.");
-      return; // Do not proceed if permission is not granted
-    }
-
-    if (!_isListening) {
-      print("Speech-to-Text is available.");
-
-      // Check if SpeechToText is initialized before calling listen
-      if (_speechToText.isAvailable) {
-        print("Starting to listen...");
-        _speechToText.listen(onResult: (result) {
-          setState(() {
-            // Update the TextField's text with recognized speech
-            _searchController.text = result.recognizedWords;
-            searchQuery = _searchController.text.toLowerCase();
-          });
-          // Print the recognized words from speech
-          print("Speech-to-Text >> ${result.recognizedWords}");
-        });
-
-        setState(() {
-          _isListening = true;
-        });
-      } else {
-        print("Speech-to-Text is not available, please check if initialized.");
-      }
-    } else {
-      print("Already listening.");
-    }
-  }
-
-  // Stop listening for speech
-  void _stopListening() {
-    if (_isListening) {
-      _speechToText.stop();
-      setState(() {
-        _isListening = false; // Listening stopped
-      });
-    }
-  }
 
   Timer? _debounce; // Declare debounce timer at class level
   @override
@@ -138,7 +68,7 @@ class _SearchscreenState extends State<Searchscreen> {
                   searchQuery = c.toLowerCase();
                   context
                       .read<TestCubit>()
-                      .fetchTestList(widget.lat_lang, '', searchQuery);
+                      .fetchTestList(widget.lat_lang, '', searchQuery,"");
                 } else {
                   searchQuery = "";
                 }
@@ -187,38 +117,38 @@ class _SearchscreenState extends State<Searchscreen> {
         child: Column(
           children: [
             if (_searchController.text == "") ...[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 8,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.width * 0.6,
-                  ),
-                  Text(
-                    'Oops !',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    textAlign: TextAlign.center,
-                    'The Diagnostic test seems to be playing hide and seek.',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    'Try Searching with a diffrent name. ',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey),
-                  ),
-                ],
+              Center(
+                child: Column(
+                  spacing: 8,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                    Text(
+                      'Oops !',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      textAlign: TextAlign.center,
+                      'No Data Found.',
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      'Try Searching with a diffrent name. ',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey),
+                    ),
+                  ],
+                ),
               )
             ] else ...[
               BlocListener<CartCubit, CartState>(
@@ -241,39 +171,37 @@ class _SearchscreenState extends State<Searchscreen> {
                             : (state as TestStateLoadingMore).testModel;
                         if ((testModel.data?.isEmpty ?? true) ||
                             searchQuery == "") {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.width * 0.005,
-                              ),
-                              Text(
-                                'Oops !',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                textAlign: TextAlign.center,
-                                'The Diagnostic test seems to be playing hide and seek.',
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                'Try Searching with a diffrent name. ',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey),
-                              ),
-                            ],
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              spacing: 8,
+                              children: [
+                                Text(
+                                  'Oops !',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  'No Data Found.',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  'Try Searching with a diffrent name. ',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey),
+                                ),
+                              ],
+                            ),
                           );
                         }
                         return NotificationListener<ScrollNotification>(
@@ -283,7 +211,7 @@ class _SearchscreenState extends State<Searchscreen> {
                               if (state is TestStateLoaded &&
                                   state.hasNextPage) {
                                 context.read<TestCubit>().fetchMoreTestList(
-                                    widget.lat_lang ?? '', '', searchQuery);
+                                    widget.lat_lang ?? '', '', searchQuery,"");
                               }
                               return false;
                             }

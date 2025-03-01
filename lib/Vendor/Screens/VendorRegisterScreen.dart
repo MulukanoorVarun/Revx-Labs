@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
@@ -10,6 +15,7 @@ import 'package:revxpharma/Vendor/bloc/diognostic_register/register_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_register/register_state.dart';
 import 'package:revxpharma/data/api_routes/remote_data_source.dart';
 import '../../Components/ShakeWidget.dart';
+import 'package:path/path.dart' as p;
 
 class VendorRegisterScreen extends StatefulWidget {
   const VendorRegisterScreen({Key? key}) : super(key: key);
@@ -107,7 +113,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
     });
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     setState(() {
       _validateAndSetError("labName", labNameController.text,
           (value) => _validateField(value, "Lab Name"));
@@ -121,10 +127,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
           "email", emailAddressController.text, _validateEmail);
       _validateAndSetError(
           "password", passwordController.text, _validatePassword);
-      // _validateAndSetError("category", categoryController.text,
-      //         (value) => _validateField(value, "Categories"));
-      // _validateAndSetError("tests", testsController.text,
-      //         (value) => _validateField(value, "Services"));
       _validateAndSetError("licenseNumber", licenseNumberController.text,
           (value) => _validateField(value, "License Number"));
 
@@ -137,25 +139,76 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
       if (endController.text.isEmpty) {
         _validatecloseTiming = 'Please select close time';
       }
+
+      if (filename.isEmpty) {
+        _validatefile  = 'Please Choose Diagnostic Image.';
+      }else{
+        _validatefile  = '';
+      }
     });
     print('validations:${validationErrors}');
     if (validationErrors.isEmpty &&
         _validateWeekdays.isEmpty &&
         _validatestartTiming.isEmpty &&
-        _validatecloseTiming.isEmpty) {
-      context.read<VendorRegisterCubit>().postRegister(
-          NameController.text,
-          labNameController.text,
-          labAddressController.text,
-          contactNumberController.text,
-          emailAddressController.text,
-          passwordController.text,
-          selectedDays,
-          startTimeController.text,
-          endController.text,
-          licenseNumberController.text);
+        _validatecloseTiming.isEmpty &&
+        _validatefile.isEmpty
+    ) {
+
+      if (filepath!.existsSync()) {
+        FormData formData = FormData.fromMap({
+          "contact_person": NameController.text,
+          "diagnostic_name": labNameController.text,
+          "location": labAddressController.text,
+          "mobile": contactNumberController.text,
+          "contact_email": emailAddressController.text,
+          "password": passwordController.text,
+          "days_opened": selectedDays,
+          "start_time": startTimeController.text,
+          "end_time": endController.text,
+          "registration_number": licenseNumberController.text,
+          "image": await MultipartFile.fromFile(filepath!.path, filename: "upload.jpg"),
+        });
+        context.read<VendorRegisterCubit>().postRegister(formData);
+      }
     } else {
       print("Form has errors");
+    }
+  }
+
+  XFile? _imageFile;
+  File? filepath;
+  String filename = "";
+  String _validatefile = "";
+  Future<void> _pickImage(ImageSource source) async {
+    // Check and request camera/gallery permissions
+    if (source == ImageSource.camera) {
+      var status = await Permission.camera.status;
+      if (!status.isGranted) {
+        await Permission.camera.request();
+      }
+    } else if (source == ImageSource.gallery) {
+      var status = await Permission.photos.status;
+      if (!status.isGranted) {
+        await Permission.photos.request();
+      }
+    }
+    // After permissions are handled, proceed to pick an image
+    final ImagePicker picker = ImagePicker();
+    XFile? selected = await picker.pickImage(source: source);
+
+    setState(() {
+      _imageFile = selected;
+    });
+
+    if (selected != null) {
+      setState(() {
+        filepath = File(selected.path);
+        filename = p.basename(selected.path);
+        _validatefile = "";
+      });
+      print("Selected Image: ${selected.path}");
+    } else {
+      print('User canceled the file picking');
     }
   }
 
@@ -173,8 +226,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
   }
 
   List<String> selectedDays = [];
-  MultiSelectController<WeekDays> _dayscontroller =
-      MultiSelectController<WeekDays>();
+  MultiSelectController<WeekDays> _dayscontroller = MultiSelectController<WeekDays>();
   String _validateWeekdays = '';
   String _validatestartTiming = '';
   String _validatecloseTiming = '';
@@ -190,12 +242,14 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
       DropdownItem(label: 'Saturday', value: WeekDays(name: 'Saturday')),
       DropdownItem(label: 'Sunday', value: WeekDays(name: 'Sunday')),
     ];
+    double w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
       body: BlocConsumer<VendorRegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccessState) {
-            if (state.message == '1') {
+            if (state.successModel.settings?.success==1) {
+              CustomSnackBar.show(context, state.message ?? '');
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LogInWithEmail()));
             } else {
@@ -296,6 +350,11 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                       wrap: true,
                       runSpacing: 2,
                       spacing: 10,
+                      labelStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
                       borderRadius: BorderRadius.all(Radius.circular(7)),
                     ),
                     fieldDecoration: FieldDecoration(
@@ -303,7 +362,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                       hintStyle: TextStyle(
                         fontSize: 15,
                         letterSpacing: 0,
-                        height: 1.2,
                         color: Color(0xffAFAFAF),
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
@@ -330,9 +388,9 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                           'Select Working days from the List',
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.w500,
-                              fontFamily: "Inter"),
+                              fontFamily: "Poppins"),
                         ),
                       ),
                     ),
@@ -373,7 +431,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                   ] else ...[
                     const SizedBox(height: 15),
                   ],
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -526,31 +583,6 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                       ),
                     ],
                   ),
-
-                  // buildFormLabel("Select the categories"),
-                  // _buildTextField(
-                  //   fieldKey: "category",
-                  //   controller: categoryController,
-                  //   hintText: 'Categories',
-                  //   keyboardType: TextInputType.text,
-                  //   validator: (value) => _validateField(value, "Categories"),
-                  // ),
-                  // buildFormLabel("Select the Tests"),
-                  // _buildTextField(
-                  //   fieldKey: "tests",
-                  //   controller: testsController,
-                  //   hintText: 'Services',
-                  //   keyboardType: TextInputType.text,
-                  //   validator: (value) => _validateField(value, "Services"),
-                  // ),
-                  // buildFormLabel("Geo Location"),
-                  // _buildTextField(
-                  //   fieldKey: "geolocation",
-                  //   controller: geoLocationController,
-                  //   hintText: 'Geo Location',
-                  //   keyboardType: TextInputType.text,
-                  //   validator: (value) => _validateField(value, "geo location"),
-                  // ),
                   buildFormLabel("Enter license number of diagnostic lab"),
                   _buildTextField(
                     fieldKey: "licenseNumber",
@@ -560,22 +592,142 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                     validator: (value) =>
                         _validateField(value, "License Number"),
                   ),
+                  SizedBox(height: 15,),
+                  DottedBorder(
+                    color: Color(0xffD0CBDB),
+                    strokeWidth: 1,
+                    dashPattern: [2, 2],
+                    borderType: BorderType.RRect,
+                    radius: Radius.circular(8),
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              backgroundColor:
+                              Colors.white,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SafeArea(
+                                  child: Wrap(
+                                    children: <Widget>[
+                                      ListTile(
+                                        leading: Icon(
+                                          Icons.camera_alt,
+                                        ),
+                                        title:
+                                        Text('Take a photo'),
+                                        onTap: () {
+                                          _pickImage(
+                                              ImageSource.camera);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(
+                                            Icons.photo_library),
+                                        title: Text(
+                                            'Choose from gallery'),
+                                        onTap: () {
+                                          _pickImage(ImageSource
+                                              .gallery);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            height: 35,
+                            width: w * 0.35,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color:Color(0xffCDE2FB),
+                                width: 1.0,
+                              ),
+                              borderRadius:
+                              BorderRadius.circular(8.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Choose File',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              (filename != "")
+                                  ? filename
+                                  : 'No File Chosen',
+                              maxLines: 1,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w400,
+                                  overflow:
+                                  TextOverflow.ellipsis),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (_validatefile.isNotEmpty) ...[
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: ShakeWidget(
+                        key: Key("value"),
+                        duration: Duration(milliseconds: 700),
+                        child: Text(
+                          _validatefile,
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 12,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    const SizedBox(
+                      height: 15,
+                    ),
+                  ],
                   SizedBox(height: 50),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed:state is RegisterLoading
+                        ? null
+                        : () {
                       _submitForm();
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0,
                       backgroundColor: const Color(0xff27BDBE), // Button color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(30), // Rounded corners
                       ),
-                      minimumSize:
-                          const Size(double.infinity, 48), // Width & height
+                      minimumSize: const Size(double.infinity, 48), // Width & height
                     ),
                     child: (state is RegisterLoading)
-                        ? CircularProgressIndicator()
+                        ? CircularProgressIndicator(color: Colors.white,strokeWidth: 1,)
                         : Text(
                             'Register',
                             style: TextStyle(

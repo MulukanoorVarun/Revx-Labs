@@ -287,7 +287,7 @@ class _MyPermissionState extends State<MyPermission> {
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w300,
                   fontSize: 13,
-                  color: Color(0xFF00C4D3)),
+                  color:Colors.grey.shade800),
             ),
           ),
         ],

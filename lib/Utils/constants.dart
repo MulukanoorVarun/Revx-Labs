@@ -15,3 +15,11 @@ class Spinkits1 {
     );
   }
 }
+
+class StringUtils {
+  /// Capitalizes the first letter of a string while keeping the rest unchanged.
+  static String capitalizeFirstLetter(String? text) {
+    if (text == null || text.isEmpty) return '';
+    return text[0].toUpperCase() + text.substring(1);
+  }
+}

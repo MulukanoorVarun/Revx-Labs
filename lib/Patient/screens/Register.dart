@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
+import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_state.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 
 import '../../Components/ShakeWidget.dart';
@@ -124,7 +127,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _validategender.isEmpty &&
           _validatedob.isEmpty &&
           _validateage.isEmpty) {
-        PatientRegisterApi();
+        Map<String,dynamic> data={
+          "full_name": _userName.text,
+          "email": _email.text,
+          "password": _password.text,
+          "mobile": _phoneNumber.text,
+          "gender": _gender.text,
+          "date_of_birth": _dob.text,
+          "age": _age.text,
+          "blood_group": _bloodGroup.text,
+        };
+        context.read<PatientRegisterCubit>().postRegister(data);
       } else {
         _loading = false;
       }
@@ -161,149 +174,164 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage:
-                AssetImage('assets/blueLogo.png'), // Add your image here
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Register with RevX',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+      body:  BlocConsumer<PatientRegisterCubit, PatientRegisterState>(listener: (context, state) {
+        if (state is PatientRegisterSuccessState) {
+          if (state.successModel.settings?.success == 1) {
+            CustomSnackBar.show(context, state.message ?? '');
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => LogInWithEmail()));
+          } else {
+            CustomSnackBar.show(context, state.message ?? '');
+          }
+        } else if (state is PatientRegisterError) {
+          CustomSnackBar.show(context, state.message ?? '');
+        }
+      },
+          builder: (context, state) {
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage:
+                  AssetImage('assets/blueLogo.png'), // Add your image here
                 ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Please fill the details to create an account',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+                SizedBox(height: 20),
+                Text(
+                  'Register with RevX',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 30),
-              _buildTextField(
-                icon: Icons.person,
-                controller: _userName,
-                validation: _validateuserName,
-                hintText: 'User name',
-                keyboardType: TextInputType.text,
-              ),
-              _buildTextField(
-                icon: Icons.phone,
-                controller: _phoneNumber,
-                validation: _validatephoneNumber,
-                hintText: 'Phone number',
-                keyboardType: TextInputType.phone,
-                pattern: r'[0-9]',
-              ),
-              _buildTextField(
-                icon: Icons.email_outlined,
-                controller: _email,
-                validation: _validateEmail,
-                hintText: 'Email',
-                keyboardType: TextInputType.text,
-              ),
-              _buildTextField(
-                icon: Icons.lock_outline,
-                controller: _password,
-                validation: _validatepwd,
-                hintText: 'Password',
-                keyboardType: TextInputType.text,
-              ),
-              _buildTextField(
-                icon: Icons.male,
-                controller: _gender,
-                validation: _validategender,
-                hintText: 'Gender',
-                keyboardType: TextInputType.text,
-              ),
-              _buildDateField('Date of birth', _dob, context),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      icon: Icons.cake,
-                      controller: _age,
-                      validation: _validateage,
-                      hintText: 'Age',
-                      keyboardType: TextInputType.number,
-                      pattern: r'[0-9]',
-                    ),
+                SizedBox(height: 10),
+                Text(
+                  'Please fill the details to create an account',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: _buildTextField(
-                      icon: Icons.bloodtype,
-                      controller: _bloodGroup,
-                      validation: _validatebloodGroop,
-                      hintText: 'Blood Group',
-                      keyboardType: TextInputType.text,
+                ),
+                SizedBox(height: 30),
+                _buildTextField(
+                  icon: Icons.person,
+                  controller: _userName,
+                  validation: _validateuserName,
+                  hintText: 'User name',
+                  keyboardType: TextInputType.text,
+                ),
+                _buildTextField(
+                  icon: Icons.phone,
+                  controller: _phoneNumber,
+                  validation: _validatephoneNumber,
+                  hintText: 'Phone number',
+                  keyboardType: TextInputType.phone,
+                  pattern: r'[0-9]',
+                ),
+                _buildTextField(
+                  icon: Icons.email_outlined,
+                  controller: _email,
+                  validation: _validateEmail,
+                  hintText: 'Email',
+                  keyboardType: TextInputType.text,
+                ),
+                _buildTextField(
+                  icon: Icons.lock_outline,
+                  controller: _password,
+                  validation: _validatepwd,
+                  hintText: 'Password',
+                  keyboardType: TextInputType.text,
+                ),
+                _buildTextField(
+                  icon: Icons.male,
+                  controller: _gender,
+                  validation: _validategender,
+                  hintText: 'Gender',
+                  keyboardType: TextInputType.text,
+                ),
+                _buildDateField('Date of birth', _dob, context),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildTextField(
+                        icon: Icons.cake,
+                        controller: _age,
+                        validation: _validateage,
+                        hintText: 'Age',
+                        keyboardType: TextInputType.number,
+                        pattern: r'[0-9]',
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              InkWell(
-                onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard()));
-                  if (_loading) {
-                  } else {
-                    _validateFields();
-                  }
-                },
-                child: Container(
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: _buildTextField(
+                        icon: Icons.bloodtype,
+                        controller: _bloodGroup,
+                        validation: _validatebloodGroop,
+                        hintText: 'Blood Group',
+                        keyboardType: TextInputType.text,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30),
+                SizedBox(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF27BDBE),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  alignment: Alignment.center,
-                  child: _loading
-                      ? CircularProgressIndicator()
-                      : Text(
-                    'Register',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: state is PatientRegisterLoading ? null : _validateFields,
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: const Color(0xff27BDBE),
+                      foregroundColor:const Color(0xff27BDBE),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30), // Rounded corners
+                      ), // Padding
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Already have an account?'),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LogInWithEmail()));
-                    },
-                    child: Text(
-                      'Login',
+                    child: state is PatientRegisterLoading
+                        ? CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 1,
+                    )
+                        : Text(
+                      'Register',
                       style: TextStyle(
-                        color:Color(0xFF27BDBE),
-                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Already have an account?'),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LogInWithEmail()));
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          color:Color(0xFF27BDBE),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

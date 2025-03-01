@@ -6,8 +6,8 @@ class ApiClient {
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: "https://revx.ozrit.in/",
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 60),
       headers: {
         "Content-Type": "application/json"
       },

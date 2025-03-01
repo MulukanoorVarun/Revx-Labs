@@ -14,16 +14,19 @@ import 'package:revxpharma/data/api_routes/patient_remote_url.dart';
 import '../../Components/debugPrint.dart';
 import '../../Models/CategoryModel.dart';
 import '../../Models/DiognisticCenterModel.dart';
+import '../../Models/LoginModel.dart';
 import '../../Models/PatientsListModel.dart';
 import '../../Models/ProfileDetailModel.dart';
 import '../../Models/SuccessModel.dart';
 
 abstract class RemoteDataSource {
+  Future<LoginModel?> loginApi( Map<String,dynamic> data);
+  Future<SuccessModel?> registerApi( Map<String,dynamic> data);
   Future<CategoryModel?> fetchCategories();
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang, catId,search_Query,page);
+  Future<TestModel?> fetchTest(latlang, catId,search_Query,page,diagnosticID);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -41,6 +44,36 @@ abstract class RemoteDataSource {
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
+
+  @override
+  Future<SuccessModel?> registerApi( Map<String,dynamic> data) async {
+    try {
+      Response response = await ApiClient.post("${PatientRemoteUrls.userRegister}",data: data);
+      if (response.statusCode == 200) {
+        LogHelper.printLog('registerApi:',  response.data);
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error registerApi::',e);
+      return null;
+    }
+  }
+
+  @override
+  Future<LoginModel?> loginApi( Map<String,dynamic> data) async {
+    try {
+      Response response = await ApiClient.post("${PatientRemoteUrls.userLogin}",data: data);
+      if (response.statusCode == 200) {
+        LogHelper.printLog('loginApi:',  response.data);
+        return LoginModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error loginApi::',e);
+      return null;
+    }
+  }
 
   @override
   Future<AppointmentDetailsModel?> AppointmentDetails(id) async {
@@ -197,10 +230,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<TestModel?> fetchTest(latlang, catId,search_Query,page) async {
+  Future<TestModel?> fetchTest(latlang, catId,search_Query,page,diagnosticID) async {
     try {
       Response response = await ApiClient.get(
-          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}");
+          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);
@@ -266,7 +299,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       Map<String, dynamic> patientData, id) async {
     try {
       Response response =
-          await ApiClient.put('${PatientRemoteUrls.updatePatient}');
+          await ApiClient.put('${PatientRemoteUrls.updatePatient}/${id}',data: patientData);
       if (response.statusCode == 200) {
         LogHelper.printLog('UpdatePatient:', response.data);
         return SuccessModel.fromJson(response.data);

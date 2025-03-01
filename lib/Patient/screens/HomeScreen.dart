@@ -46,7 +46,7 @@ class _HomescreenState extends State<Homescreen> {
             elevation: 0,
             leading: Container(),
             leadingWidth: 0,
-            toolbarHeight: 130,
+            toolbarHeight: screenWidth*0.37,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -57,12 +57,17 @@ class _HomescreenState extends State<Homescreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Hi, Sandeep",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w400),
+                          SizedBox(
+                            width: screenWidth*0.7,
+                            child: Text(
+                              "Hi, ${StringUtils.capitalizeFirstLetter(state.prfileDetails.data?.fullName)}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w400),
+                            ),
                           ),
                           SizedBox(height: 10,),
                           Row(
@@ -86,13 +91,16 @@ class _HomescreenState extends State<Homescreen> {
                                       ));
                                 } else if (state is LocationLoaded) {
                                   lat_lang = state.latlng;
-                                  return Text(
-                                    "${state.locationName}",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: "Poppins",
-                                      fontSize: 16,
+                                  return SizedBox(
+                                    width: screenWidth*0.6,
+                                    child: Text(
+                                      "${state.locationName}",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Poppins",
+                                        fontSize: 16,
+                                      ),
                                     ),
                                   );
                                 } else if (state is LocationError) {
@@ -163,7 +171,7 @@ class _HomescreenState extends State<Homescreen> {
                 },
                   child: Container(
                     padding: EdgeInsets.all(8),
-                    margin: EdgeInsets.only(top: 8,bottom: 20),
+                    margin: EdgeInsets.only(top: 8,bottom: 10),
                     decoration: BoxDecoration(
                         color: Color(0xffF9F9F9),
                         borderRadius: BorderRadius.circular(100),
@@ -171,6 +179,7 @@ class _HomescreenState extends State<Homescreen> {
                     child: Row(
                       children: [
                         Icon(Icons.search, color: Colors.grey),
+                        SizedBox(width: 10,),
                         Text(
                           'Search Diagnostics',
                           style: TextStyle(
@@ -194,7 +203,7 @@ class _HomescreenState extends State<Homescreen> {
               children: [
                 CarouselSlider(
                   options: CarouselOptions(
-                    height: screenHeight * 0.2, // Fixed height for consistency
+                    height: screenHeight * 0.2,
                     onPageChanged: (index, reason) {
                       setState(() {
                         currentIndex = index;
@@ -210,7 +219,45 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                   items: state.banners.data?.map((item) {
                     return InkResponse(
-                      onTap: () async {},
+                      onTap: () {
+                        Uri uri = Uri.parse(item.url ?? '');
+                        List<String> segments = uri.pathSegments;
+                        String? id;
+                        String? type;
+                        if (segments.contains("category")) {
+                          id = segments.last;
+                          type = "category";
+                        } else if (segments.contains("diagnostic")) {
+                          id = segments.last;
+                          type = "diagnostic";
+                        }
+
+                        if (id != null && type != null) {
+                          if (type == "category") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => alltests(
+                                    lat_lang: "",
+                                    catId:  id??"",
+                                    catName: '',
+                                    diagnosticID: id??"",
+                                  ),
+                                ));
+                          } else if (type == "diagnostic") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => alltests(
+                                    lat_lang:"",
+                                    catId: '',
+                                    catName: '',
+                                    diagnosticID: id??"",
+                                  ),
+                                ));
+                          }
+                        }
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: ClipRRect(
@@ -278,6 +325,7 @@ class _HomescreenState extends State<Homescreen> {
                                 lat_lang: lat_lang,
                                 catId: category?.id ?? '',
                                 catName: category?.categoryName ?? '',
+                                diagnosticID: "",
                               ),
                             ));
                       },
@@ -379,7 +427,7 @@ class _HomescreenState extends State<Homescreen> {
                         builder: (context) => alltests(
                           lat_lang: lat_lang ?? '',
                           catId: '',
-                          catName: '',
+                          catName: '',diagnosticID: "",
                         ), // Adjust the index as needed
                       ),
                     );

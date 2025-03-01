@@ -69,8 +69,8 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 Homescreen(),
                 ServiceCategory(),
-                ChatSupport(),
-                Notifications(),
+                // ChatSupport(),
+                // Notifications(),
 
               ],
               physics: const NeverScrollableScrollPhysics(),
@@ -138,40 +138,41 @@ class _DashboardState extends State<Dashboard> {
                             )
                     ],
                   )),
-              BottomNavigationBarItem(
-                  label: "ServiceCategory",
-                  icon: Column(
-                    children: [
-                      _selectedIndex == 2
-                          ? Image.asset(
-                              "assets/activechat.png",
-                              width: 25,
-                              height: 25,
-                            )
-                          : Image.asset(
-                              "assets/chat.png",
-                              width: 25,
-                              height: 25,
-                            )
-                    ],
-                  )),
-              BottomNavigationBarItem(
-                  label: "Notification",
-                  icon: Column(
-                    children: [
-                      _selectedIndex == 3
-                          ? Image.asset(
-                              "assets/activenotification.png",
-                              width: 25,
-                              height: 25,
-                            )
-                          : Image.asset(
-                              "assets/notification.png",
-                              width: 25,
-                              height: 25,
-                            )
-                    ],
-                  )),
+              // BottomNavigationBarItem(
+              //     label: "ServiceCategory",
+              //     icon: Column(
+              //       children: [
+              //         _selectedIndex == 2
+              //             ? Image.asset(
+              //                 "assets/activechat.png",
+              //                 width: 25,
+              //                 height: 25,
+              //               )
+              //             : Image.asset(
+              //                 "assets/chat.png",
+              //                 width: 25,
+              //                 height: 25,
+              //               )
+              //       ],
+              //     )),
+              // BottomNavigationBarItem(
+              //     label: "Notification",
+              //     icon: Column(
+              //       children: [
+              //         _selectedIndex == 3
+              //             ? Image.asset(
+              //                 "assets/activenotification.png",
+              //                 width: 25,
+              //                 height: 25,
+              //               )
+              //             : Image.asset(
+              //                 "assets/notification.png",
+              //                 width: 25,
+              //                 height: 25,
+              //               )
+              //       ],
+              //     )
+              // ),
             ],
             currentIndex: _selectedIndex,
             onTap: onItemTapped,
