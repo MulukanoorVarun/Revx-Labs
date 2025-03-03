@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,21 +39,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _validatedob = "";
   String _validateage = "";
   String _validatebloodGroop = "";
-  bool _loading = false;
+
+  String? selectedGender;
+  List<String> genderOptions = ["Male", "Female"];
+
+  String? selectedBloodGroup;
+  List<String> bloodGroupOptions = [
+    "A+ve",
+    "A-ve",
+    "B+ve",
+    "B-ve",
+    "O+ve",
+    "O-ve",
+    "AB+ve",
+    "AB-ve"
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+      lastDate: DateTime.now(),
     );
     if (pickedDate != null) {
       setState(() {
         _dob.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+        _age.text = _calculateAge(pickedDate).toString();
       });
     }
   }
+
+  int _calculateAge(DateTime birthDate) {
+    DateTime today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--; // Adjust age if birthday hasn't occurred yet this year
+    }
+    return age;
+  }
+
 
   @override
   void initState() {
@@ -103,11 +130,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _validateFields() {
     setState(() {
-      _loading = true;
       _validateuserName =
       _userName.text.isEmpty ? 'Please enter a fullName' : '';
       _validatephoneNumber =
-      _phoneNumber.text.isEmpty ? 'Please enter a phone number' : '';
+      _phoneNumber.text.isEmpty ||  _phoneNumber.text.length<10 ? 'Please enter a valid phone number' : '';
       _validateEmail =
       !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
           .hasMatch(_email.text)
@@ -117,7 +143,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ? 'Please enter a password'
           : _password.text.length < 8
           ? 'Password must be at least 8 characters long':"";
-      _validategender = _gender.text.isEmpty ? 'Please enter a gender' : '';
+      _validategender = selectedGender==null || selectedGender=="" ? 'Please Select Gender' : "";
+      _validatebloodGroop = selectedBloodGroup==null || selectedBloodGroup=="" ? 'Please Select Blood Group' : "";
       _validatedob = _dob.text.isEmpty ? 'Please select a dob' : '';
       _validateage = _age.text.isEmpty ? 'Please enter a age' : '';
       if (_validateuserName.isEmpty &&
@@ -138,35 +165,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
           "blood_group": _bloodGroup.text,
         };
         context.read<PatientRegisterCubit>().postRegister(data);
-      } else {
-        _loading = false;
       }
     });
   }
 
-  void PatientRegisterApi() async {
-    Response response = await UserApi.registerPatient(
-        _userName.text,
-        _phoneNumber.text,
-        _email.text,
-        _password.text,
-        _gender.text,
-        _dob.text,
-        _age.text,
-        _bloodGroup.text);
-    try {
-      setState(() {
-        if (response.data['settings']['success'] == 1) {
-          _loading = false;
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => LogInWithEmail()));
-        } else {
-          _loading = false;
-          CustomSnackBar.show(context, (response.data['settings']['message']));
-        }
-      });
-    } catch (e) {
-      print('failure');
+  // Function to get gender icon based on the selected option
+  IconData _getGenderIcon(String gender) {
+    switch (gender) {
+      case "Male":
+        return Icons.male;
+      case "Female":
+        return Icons.female;
+      case "Others":
+        return Icons.transgender;
+      default:
+        return Icons.person_outline;
     }
   }
 
@@ -204,7 +217,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Register with RevX',
                   style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: "poppins",
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(height: 10),
@@ -212,6 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Please fill the details to create an account',
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: "poppins",
                     color: Colors.grey,
                   ),
                 ),
@@ -230,6 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hintText: 'Phone number',
                   keyboardType: TextInputType.phone,
                   pattern: r'[0-9]',
+                  length: 10
                 ),
                 _buildTextField(
                   icon: Icons.email_outlined,
@@ -245,38 +261,233 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hintText: 'Password',
                   keyboardType: TextInputType.text,
                 ),
-                _buildTextField(
-                  icon: Icons.male,
-                  controller: _gender,
-                  validation: _validategender,
-                  hintText: 'Gender',
-                  keyboardType: TextInputType.text,
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2<String>(
+                    isExpanded: true,
+                    items: genderOptions.map((String item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Row(
+                          children: [
+                            Icon(
+                              _getGenderIcon(item), // Function to get icon based on gender
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 10), // Spacing between icon and text
+                            Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                                fontFamily: "Poppins"
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    value: selectedGender, // Initially null
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                        print("Selected Gender: $selectedGender");
+                      });
+                    },
+                    hint: Row(
+                      children: [
+                        const Icon(
+                          Icons.male, // Static male icon in hint
+                          color: Colors.grey,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          "Select Gender",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    buttonStyleData: ButtonStyleData(
+                      height: 50,
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: const Color(0xffCDE2FB)),
+                        color: Colors.white,
+                      ),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(Icons.arrow_drop_down, size: 25),
+                      iconSize: 14,
+                      iconEnabledColor: Colors.black,
+                      iconDisabledColor: Colors.black,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.white,
+                      ),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(40),
+                        thickness: MaterialStateProperty.all(6),
+                        thumbVisibility: MaterialStateProperty.all(true),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.symmetric(horizontal: 14),
+                    ),
+                  ),
                 ),
+                if(_validategender.isNotEmpty)...[
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: ShakeWidget(
+                      key: Key("gender"),
+                      duration: const Duration(milliseconds: 700),
+                      child: Text(
+                        _validategender,
+                        style: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 12,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]else...[
+                  SizedBox(height: 15,),
+                ],
                 _buildDateField('Date of birth', _dob, context),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildTextField(
-                        icon: Icons.cake,
-                        controller: _age,
-                        validation: _validateage,
-                        hintText: 'Age',
-                        keyboardType: TextInputType.number,
-                        pattern: r'[0-9]',
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: _buildTextField(
-                        icon: Icons.bloodtype,
-                        controller: _bloodGroup,
-                        validation: _validatebloodGroop,
-                        hintText: 'Blood Group',
-                        keyboardType: TextInputType.text,
-                      ),
-                    ),
-                  ],
+                _buildTextField(
+                  icon: Icons.cake,
+                  controller: _age,
+                  validation: _validateage,
+                  hintText: 'Age',
+                  keyboardType: TextInputType.number,
+                  pattern: r'[0-9]',
+                  readonly: true
                 ),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2<String>(
+                    isExpanded: true,
+                    items: bloodGroupOptions.map((String item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Row(
+                          children: [
+                            Icon(
+                             Icons.bloodtype_outlined, // Function to get icon based on gender
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 10), // Spacing between icon and text
+                            Text(
+                              item,
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                  fontFamily: "Poppins"
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    value: selectedBloodGroup, // Initially null
+                    onChanged: (value) {
+                      setState(() {
+                        selectedBloodGroup = value;
+                        print("Selected Gender: $selectedBloodGroup");
+                      });
+                    },
+                    hint: Row(
+                      children: [
+                        const Icon(
+                          Icons.bloodtype_outlined, // Static male icon in hint
+                          color: Colors.grey,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          "Select Blood Group",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    buttonStyleData: ButtonStyleData(
+                      height: 50,
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: const Color(0xffCDE2FB)),
+                        color: Colors.white,
+                      ),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(Icons.arrow_drop_down, size: 25),
+                      iconSize: 14,
+                      iconEnabledColor: Colors.black,
+                      iconDisabledColor: Colors.black,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.white,
+                      ),
+                      scrollbarTheme: ScrollbarThemeData(
+                        radius: const Radius.circular(40),
+                        thickness: MaterialStateProperty.all(6),
+                        thumbVisibility: MaterialStateProperty.all(true),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.symmetric(horizontal: 14),
+                    ),
+                  ),
+                ),
+                if(_validatebloodGroop.isNotEmpty)...[
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: ShakeWidget(
+                      key: Key("bloodgroup"),
+                      duration: const Duration(milliseconds: 700),
+                      child: Text(
+                        _validatebloodGroop,
+                        style: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 12,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]else...[
+                  SizedBox(height: 15,),
+                ],
                 SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
@@ -286,7 +497,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       backgroundColor: const Color(0xff27BDBE),
-                      foregroundColor:const Color(0xff27BDBE),
+                      disabledBackgroundColor: const Color(0xff27BDBE), // Same color when disabled
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30), // Rounded corners
                       ), // Padding
@@ -300,6 +511,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       'Register',
                       style: TextStyle(
                         color: Colors.white,
+                        fontFamily: "Poppins",
                         fontSize: 18,
                       ),
                     ),
@@ -309,7 +521,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Already have an account?'),
+                    Text('Already have an account?',style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14
+                    ),),
+                    SizedBox(width: 6,),
                     InkWell(
                       onTap: () {
                         Navigator.push(
@@ -321,7 +538,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Login',
                         style: TextStyle(
                           color:Color(0xFF27BDBE),
-                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -345,12 +563,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
           cursorColor: Colors.black,
           readOnly: true,
           onTap: () => _selectDate(context),
+          style:TextStyle(
+            fontSize: 15,
+            fontFamily: "Poppins",
+            color: Colors.black                                              ,
+            fontWeight: FontWeight.w400,
+          ) ,
           decoration: InputDecoration(
+            prefixIcon: Icon(Icons.date_range_outlined, color: Color(0xffAFAFAF)),
             hintText: "$hintText",
             hintStyle: TextStyle(
               fontSize: 15,
-              letterSpacing: 0,
-              height: 1.2,
+              fontFamily: "Poppins",
               color: Color(0xffAFAFAF),
               fontWeight: FontWeight.w400,
             ),
@@ -366,7 +590,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
-        SizedBox(height: 15),
+        if(_validatedob!="")...[
+          Container(
+            alignment: Alignment.topLeft,
+            margin: EdgeInsets.only(bottom: 10),
+            child: ShakeWidget(
+              key: Key("dob"),
+              duration: const Duration(milliseconds: 700),
+              child: Text(
+                _validatedob,
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 12,
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ]else...[
+          SizedBox(height: 15,),
+        ],
       ],
     );
   }
@@ -378,6 +622,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     required String hintText,
     required TextInputType keyboardType,
     String? pattern,
+    bool? readonly,
+    int? length
   }) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const SizedBox(height: 4),
@@ -385,14 +631,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: controller,
         cursorColor: Colors.black,
         keyboardType: keyboardType,
+        readOnly: readonly??false,
         inputFormatters: pattern != null
-            ? [FilteringTextInputFormatter.allow(RegExp(pattern))]
+            ? [FilteringTextInputFormatter.allow(RegExp(pattern)),
+          LengthLimitingTextInputFormatter(length)
+        ]
             : [],
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Color(0xffAFAFAF)),
           hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 15,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Poppins",
             color: Color(0xffAFAFAF),
           ),
           filled: true,
@@ -410,7 +661,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (validation.isNotEmpty) ...[
         Container(
           alignment: Alignment.topLeft,
-          margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
+          margin: EdgeInsets.only( bottom: 10, top: 5),
           width: MediaQuery.of(context).size.width,
           child: ShakeWidget(
             key: Key("value"),

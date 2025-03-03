@@ -720,6 +720,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       backgroundColor: const Color(0xff27BDBE), // Button color
+                      disabledBackgroundColor: const Color(0xff27BDBE), // Same color when disabled
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(30), // Rounded corners
@@ -817,6 +818,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
             hintText: hintText,
             hintStyle: const TextStyle(
               fontSize: 14,
+              fontFamily: "Poppins",
               color: Color(0xffAFAFAF),
             ),
             filled: true,

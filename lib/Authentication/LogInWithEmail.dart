@@ -243,18 +243,18 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                       onPressed: state is LoginLoading ? null : _validatefeilds,
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
-                        backgroundColor: const Color(0xff27BDBE),
-                        foregroundColor:const Color(0xff27BDBE),
+                        backgroundColor: const Color(0xff27BDBE), // Active color
+                        disabledBackgroundColor: const Color(0xff27BDBE), // Same color when disabled
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30), // Rounded corners
-                        ), // Padding
+                        ),
                       ),
                       child: state is LoginLoading
-                          ? CircularProgressIndicator(
+                          ? const CircularProgressIndicator(
                         color: Colors.white,
                         strokeWidth: 1,
                       )
-                          : Text(
+                          : const Text(
                         'Login',
                         style: TextStyle(
                           color: Colors.white,
@@ -263,6 +263,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                       ),
                     ),
                   ),
+
                   SizedBox(height: 20),
                   // OR Text
                   Text(

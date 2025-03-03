@@ -36,6 +36,29 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
     "Others": "others",
   };
 
+  List<String> bloodGroupOptions = [
+    "A+",
+    "A-",
+    "B+",
+    "B-",
+    "O+",
+    "O-",
+    "AB+",
+    "AB-"
+  ];
+
+  Map<String, String> bloodGroupSortOptionToValue = {
+    "A+": "A+ve",
+    "A-": "A-ve",
+    "B+": "B+ve",
+    "B-": "B-ve",
+    "O+": "O+ve",
+    "O-": "O-ve",
+    "AB+": "AB+ve",
+    "AB-": "AB-ve",
+  };
+
+
   @override
   void initState() {
     fetchPatient_details();

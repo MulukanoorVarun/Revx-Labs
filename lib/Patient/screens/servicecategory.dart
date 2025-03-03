@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
-import 'package:revxpharma/Models/CategoryModel.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
-import 'package:revxpharma/Services/UserapiServices.dart';
-
-import 'Pregnancy.dart';
 
 class ServiceCategory extends StatefulWidget {
   const ServiceCategory({super.key});
-
   @override
   State<ServiceCategory> createState() => _ServiceCategoryState();
 }
@@ -44,7 +39,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
       body:
           BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {
-          return _shimmer(context); // 🔄 Show
+          return _shimmer(context);
         } else if (state is CategoryLoaded) {
           return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
