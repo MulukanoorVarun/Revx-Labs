@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:revxpharma/Models/DiognosticGetCategoriesModel.dart';
 import 'package:revxpharma/Vendor/VendorModel/VendorGetTestsModel.dart';
 import 'package:revxpharma/data/api_routes/vendor_remote_urls.dart';
 import '../../Components/debugPrint.dart';
@@ -9,12 +10,15 @@ abstract class VendorRemoteDataSource {
   Future<SuccessModel?> postDiognosticRegister(FormData registerData);
   Future<VendorGetTestsModel?> DiagnosticgetTests();
   Future<SuccessModel?> DiagnosticDelateTest(String id);
+  Future<DiognosticGetCategoriesModel?> DiognosticGetCategorys();
 }
 
 class VendorRemoteDataSourceImpl implements VendorRemoteDataSource {
   Future<SuccessModel?> postDiognosticRegister(FormData registerData) async {
     try {
-      Response response = await ApiClient.post('${VendorRemoteUrls.vendorRegister}',data: registerData);
+      Response response = await ApiClient.post(
+          '${VendorRemoteUrls.vendorRegister}',
+          data: registerData);
       if (response.statusCode == 200) {
         LogHelper.printLog('postDiognosticRegister', response.data);
         return SuccessModel.fromJson(response.data);
@@ -52,6 +56,21 @@ class VendorRemoteDataSourceImpl implements VendorRemoteDataSource {
       return null;
     } catch (e) {
       print("Error DiagnosticDelateTest data: $e");
+    }
+  }
+
+  @override
+  Future<DiognosticGetCategoriesModel?> DiognosticGetCategorys() async {
+    try {
+      Response response =
+          await ApiClient.get('${VendorRemoteUrls.vendorGetCategories}');
+      if(response.statusCode==200){
+        LogHelper.printLog('Diognostic GetCategorys', response.data);
+        return DiognosticGetCategoriesModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error DiognosticGetCategorys data: $e");
     }
   }
 }

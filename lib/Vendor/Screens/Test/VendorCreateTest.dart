@@ -1,10 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Vendor/Screens/ApprovalPending.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_categories_cubit.dart';
 
 import '../../../Components/ShakeWidget.dart';
 
@@ -30,7 +32,11 @@ class _CreateNewTestState extends State<CreateNewTest> {
   String _validatetestParametrers = '';
   String _validateprocedureDescription = '';
   String _validateprice = '';
-
+@override
+  void initState() {
+  context.read<DiognosticCategoryCubit>().getDiognosticCategorys();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -134,12 +140,12 @@ class _CreateNewTestState extends State<CreateNewTest> {
                 height: 14,
               ),
               // DropdownButtonHideUnderline(
-              //   child: DropdownButton2<>(
+              //   child: DropdownButton2<String>(
               //     isExpanded: true,
               //     hint: const Row(
               //       children: [
               //         Text(
-              //           'Select service',
+              //           'Select Category',
               //           style: TextStyle(
               //             fontSize: 14,
               //             fontWeight: FontWeight.w400,

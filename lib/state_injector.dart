@@ -24,6 +24,8 @@ import 'package:revxpharma/Patient/logic/repository/cart_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_register_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_repository.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_categories_cubit.dart';
+import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_category_repository.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_repository.dart';
 import 'package:revxpharma/data/api_routes/VendorRemoteDataSource.dart';
@@ -37,8 +39,7 @@ import 'data/api_routes/remote_data_source.dart';
 class StateInjector {
   static final repositoryProviders = <RepositoryProvider>[
     RepositoryProvider<RemoteDataSource>(
-      create: (context) =>
-          RemoteDataSourceImpl(),
+      create: (context) => RemoteDataSourceImpl(),
     ),
     RepositoryProvider<CategoryRepository>(
       create: (context) => CategoryRepositoryImpl(
@@ -98,8 +99,7 @@ class StateInjector {
     ),
 
     RepositoryProvider<LoginRepository>(
-      create: (context) =>
-          LoginImpl(remoteDataSource: context.read()),
+      create: (context) => LoginImpl(remoteDataSource: context.read()),
     ),
 
     RepositoryProvider<PatientRegisterRepository>(
@@ -107,22 +107,22 @@ class StateInjector {
           PatientRegisterImpl(remoteDataSource: context.read()),
     ),
 
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///   Vendor Repositories /////////
 
-
     RepositoryProvider<VendorRemoteDataSource>(
-      create: (context) =>
-          VendorRemoteDataSourceImpl(),
+      create: (context) => VendorRemoteDataSourceImpl(),
     ),
 
     RepositoryProvider<VendorRegisterRepository>(
-      create: (context) =>
-          VendorRegisterImpl(remoteDataSource: context.read()),
+      create: (context) => VendorRegisterImpl(remoteDataSource: context.read()),
     ),
-
+    RepositoryProvider<DiagnosticGetTestsRepositors>(
+        create: (context) =>
+            DiagnosticGetTestsImp(vendorRemoteDataSource: context.read())),
+    RepositoryProvider<DiognosticGetCategoryRepository>(
+        create: (context) =>
+            DiognosticGetCategoryImpl(vendorRemoteDataSource: context.read())),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -169,15 +169,10 @@ class StateInjector {
     BlocProvider<PatientCubit>(
       create: (context) => PatientCubit(context.read<PatientRepository>()),
     ),
-    BlocProvider<DiagnosticGetTestsCubit>(
-      create: (context) =>
-          DiagnosticGetTestsCubit(context.read<DiagnosticGetTestsRepositors>()),
-    ),
     BlocProvider<CartCubit>(
       create: (context) => CartCubit(
         cartRepository: context.read<CartRepository>(),
-        testCubit:
-            context.read<TestCubit>(),
+        testCubit: context.read<TestCubit>(),
       ),
     ),
     BlocProvider<ProfileCubit>(
@@ -193,16 +188,13 @@ class StateInjector {
     ),
 
     BlocProvider<LoginCubit>(
-      create: (context) =>
-          LoginCubit(context.read<LoginRepository>()),
+      create: (context) => LoginCubit(context.read<LoginRepository>()),
     ),
 
     BlocProvider<PatientRegisterCubit>(
       create: (context) =>
           PatientRegisterCubit(context.read<PatientRegisterRepository>()),
     ),
-
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Vendor Bloc Providers //
@@ -211,9 +203,12 @@ class StateInjector {
       create: (context) =>
           VendorRegisterCubit(context.read<VendorRegisterRepository>()),
     ),
-
-
-
-
+    BlocProvider<DiagnosticGetTestsCubit>(
+        create: (context) => DiagnosticGetTestsCubit(
+            diagnosticGetTestsRepositors:
+                context.read<DiagnosticGetTestsRepositors>())),
+    BlocProvider<DiognosticCategoryCubit>(
+        create: (context) => DiognosticCategoryCubit(
+            diognosticRepo: context.read<DiognosticGetCategoryRepository>()))
   ];
 }
