@@ -110,7 +110,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                         ? OnBoard()
                         : Status1 == ''
                         ? OnBoardOne()
-                        : PermissionStatus == false
+                        : !permissions_granted
                         ? MyPermission()
                         : Token == ''
                         ? LogInWithEmail()
