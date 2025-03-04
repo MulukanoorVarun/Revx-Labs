@@ -503,7 +503,7 @@ class _alltestsState extends State<alltests> {
                     // Continue button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Apointments()),

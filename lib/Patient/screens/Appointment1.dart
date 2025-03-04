@@ -217,7 +217,7 @@ class _appointmentscreensState extends State<appointmentscreens> {
               ),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Payment()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>Payment()));
                 },
                 child: const Text(
                   'Continue to Payment',

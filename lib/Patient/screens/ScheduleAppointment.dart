@@ -15,6 +15,7 @@ import '../../Components/ShakeWidget.dart';
 import '../../Components/debugPrint.dart';
 import 'Appointment.dart';
 import 'MyAppointments.dart';
+import 'Payment.dart';
 
 class ScheduleAnAppointment extends StatefulWidget {
   final String vendorID;
@@ -36,7 +37,7 @@ class ScheduleAnAppointment extends StatefulWidget {
 
 class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   bool? groupValue;
-  int _selectedDateIndex = 0; // Track the selected index
+  int _selectedDateIndex = -1; // Track the selected index
   // List of dates for the current week
   final List<DateTime> _dates = List.generate(
     DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day, // Get the number of days in the current month
@@ -44,22 +45,33 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   );
 
   DateTime? _selectedDate;
+  String selectedDate = "";
+  String selectedTime = "";
+
   Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime firstDate = now; // Set firstDate as today
+
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: _selectedDate != null && _selectedDate!.isAfter(firstDate)
+          ? _selectedDate
+          : firstDate,
+      firstDate: firstDate,
       lastDate: DateTime(2101),
     );
 
     if (pickedDate != null) {
       setState(() {
         _selectedDate = pickedDate;
+        selectedDate= DateFormat('yyyy-MM-dd').format(pickedDate);
         _selectedDateIndex = _dates.indexWhere((date) =>
         date.year == pickedDate.year &&
             date.month == pickedDate.month &&
-            date.day == pickedDate.day);
-
+            date.day == pickedDate.day
+        );
+        timeSlots = generateTimeSlots(widget.starttime, widget.endtime, pickedDate);
+        validateSelectedDate = "";
         if (_selectedDateIndex != -1) {
           _scrollController1.animateTo(
             _selectedDateIndex! * 70.0, // Adjusting scroll position
@@ -72,15 +84,13 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   }
 
 
-  String selectedDate = "";
-  String selectedTime = "";
-
   void _onDateSelected(int index) {
     setState(() {
       _selectedDateIndex = index;
       _selectedDate = _dates[index];
     // Format and store selected date as 'yyyy-MM-dd' (String)
     selectedDate = DateFormat('yyyy-MM-dd').format(_dates[index]);
+      validateSelectedDate="";
     _scrollController1.animateTo(
       index * 70.0, // Smooth scroll to the selected date
       duration: Duration(milliseconds: 300),
@@ -160,6 +170,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     // Convert selected time to HH:mm:ss format
     String SelectedTime = "${timeSlots[index]}:00";
     selectedTime = "${timeSlots[index]}:00";
+    validateSelectedTime = "";
     print("Selected Time: $selectedTime");
     // Scroll to the selected index smoothly
     _scrollController.animateTo(
@@ -174,8 +185,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
 
   void submitData() {
     setState(() {
-      validateSelectedDate = (selectedDate.trim().isEmpty) ? "Please Select Appointment Date" : "";
-      validateSelectedTime = (selectedTime.trim().isEmpty) ? "Please Select Appointment Time" : "";
+      validateSelectedDate = selectedDate.isEmpty || selectedDate==null ? "Please Select Appointment Date" : "";
+      validateSelectedTime = selectedTime.isEmpty || selectedTime==null ? "Please Select Appointment Time" : "";
     });
     if (validateSelectedDate.isEmpty && validateSelectedTime.isEmpty) {
       Map<String, dynamic> data = {
@@ -183,12 +194,11 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
         'diagnostic_centre': widget.vendorID,
         'appointment_date': selectedDate,
         'start_time': selectedTime,
-        'total_amount': widget.totalamount,
-        'payment_mode': "cash_on_test",
+        'total_amount': widget.totalamount
       };
-
       try {
-        context.read<AppointmentCubit>().bookAppointment(data);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Payment(data: data)));
+        // context.read<AppointmentCubit>().bookAppointment(data);
         LogHelper.printLog('Appointment data:', data);
       } catch (error) {
         LogHelper.printLog('Error while booking:', error.toString());
@@ -202,23 +212,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     var h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: CustomAppBar(title: "Schedule an appointment", actions: []),
-      body: BlocConsumer<AppointmentCubit, AppointmentState>(
-        listener: (context, state) {
-          if (state is AppointmentLoaded) {
-            if (state.appointments.settings?.success == 1) {
-              CustomSnackBar.show(context, "Appointment Booked Successfully!");
-              context.read<CartCubit>().getCartList();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Myappointments()),
-              );
-            } else {
-              CustomSnackBar.show(context, "${state.appointments.settings?.message}");
-            }
-          }
-        },
-        builder: (context, state) {
-          return SingleChildScrollView(
+      body: SingleChildScrollView(
               padding: EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -400,9 +394,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                         final isSelected = index == _selectedDateIndex;
                         return GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _onDateSelected(index);
-                            });
+                            _onDateSelected(index);
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: 10),
@@ -527,9 +519,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                             time == DateFormat('HH:mm').format(DateTime.now());
                         return GestureDetector(
                           onTap: () {
-                            setState(() {
-                              validateSelectedTime = "";
-                            });
                             onSelectTime(index);
                           },
                           child: Container(
@@ -584,45 +573,35 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                     ),
                   ] else ...[
                     SizedBox(
-                      height: 10,
+                      height: 50,
                     ),
                   ],
-                  InkWell(
-                    onTap: state is AppointmentLoading
-                        ? null
-                        : () {
-                      submitData();
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 40, bottom: 20),
-                      width: w,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF00C4D3),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: submitData,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF00C4D3), // Button color
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Center(
-                        child:state is AppointmentLoading?
-                      CircularProgressIndicator(
+                      minimumSize: Size(w, 50), // Full-width button with height 50
+                      elevation: 0, // Remove shadow if needed
+                    ),
+                    child: const Text(
+                      'Book Appointment',
+                      style: TextStyle(
                         color: Colors.white,
-                        strokeWidth: 1,
-                      )
-                        :Text(
-                          'Book Appointment',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
+                        fontFamily: "Poppins",
+                        fontSize: 18,
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
-            );
-        },
-      ),
-    );
+            ),
+      );
   }
 
   Future _showBottomSheet(BuildContext context) {

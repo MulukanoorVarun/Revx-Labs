@@ -154,11 +154,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           "email": _email.text,
           "password": _password.text,
           "mobile": _phoneNumber.text,
-          "gender": _gender.text,
+          "gender": selectedGender,
           "date_of_birth": _dob.text,
           "age": _age.text,
-          "blood_group": _bloodGroup.text,
+          "blood_group": selectedBloodGroup,
         };
+        print("Register Data:${data}");
         context.read<PatientRegisterCubit>().postRegister(data);
       }
     });

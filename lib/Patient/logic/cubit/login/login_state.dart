@@ -20,7 +20,7 @@ class LoginSuccessState extends LoginState {
 }
 
 class LoginError extends LoginState {
-  String message;
+  final String message;
   LoginError(this.message);
 
 }

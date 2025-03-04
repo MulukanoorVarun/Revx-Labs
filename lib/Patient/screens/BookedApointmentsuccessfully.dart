@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:lottie/lottie.dart';
 
+import 'MyAppointments.dart';
+
 class ApointmentSuccess extends StatefulWidget {
-  const ApointmentSuccess({super.key});
+  final String appointmentmsg;
+  const ApointmentSuccess({Key? key, required this.appointmentmsg})
+      : super(key: key);
 
   @override
   State<ApointmentSuccess> createState() => _ApointmentSuccessState();
@@ -12,13 +16,25 @@ class ApointmentSuccess extends StatefulWidget {
 
 class _ApointmentSuccessState extends State<ApointmentSuccess> {
   @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => Myappointments()));
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         return false; // Prevent back navigation
       },
       child: Scaffold(
-        body: Center(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -30,7 +46,8 @@ class _ApointmentSuccessState extends State<ApointmentSuccess> {
               ),
               SizedBox(height: 20),
               Text(
-                "Appointment Booking Successfully",
+                "${widget.appointmentmsg}",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFF000000),
                   fontSize: 20,
@@ -41,15 +58,5 @@ class _ApointmentSuccessState extends State<ApointmentSuccess> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      // Future.delayed(Duration(seconds: 2), () {
-      //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Pay()));
-      // });
-    });
   }
 }

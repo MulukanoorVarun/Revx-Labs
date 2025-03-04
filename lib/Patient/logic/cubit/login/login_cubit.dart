@@ -6,25 +6,28 @@ import 'package:revxpharma/Patient/logic/repository/LoginRepository.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginRepository loginRepository;
+
   LoginCubit(this.loginRepository)
       : super(LoginIntially());
 
-  Future<void> postLogin( Map<String,dynamic> data) async {
+  Future<void> postLogin(Map<String, dynamic> data) async {
     emit(LoginLoading());
     try {
-      final vendor_register =
-      await loginRepository.postLogin(data);
-      if (vendor_register != null) {
-        if (vendor_register.settings?.success == 1) {
-          emit(LoginSuccessState(vendor_register,"${vendor_register.settings?.message}"));
+      final vendorRegister = await loginRepository.postLogin(data);
+
+      if (vendorRegister != null) {
+        if (vendorRegister.settings?.success == 1) {
+          emit(LoginSuccessState(vendorRegister,
+              vendorRegister.settings?.message ?? "Login successful!"));
         } else {
-          emit(LoginError("${vendor_register.settings?.message}"));
+          emit(LoginError("Invalid credentials. Please try again."));
         }
       } else {
-        emit(LoginError('${vendor_register?.settings?.message}'));
+        emit(LoginError("Unexpected error occurred. Please try again later."));
       }
     } catch (e) {
-      emit(LoginError('$e'));
+      emit(LoginError(
+          "An error occurred while logging in. Please check your network connection and try again."));
     }
   }
 }
