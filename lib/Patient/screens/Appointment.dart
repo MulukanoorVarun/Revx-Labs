@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 
 import '../logic/cubit/cart/cart_cubit.dart';
@@ -42,9 +43,7 @@ class _ApointmentsState extends State<Apointments> {
       appBar: CustomAppBar(title: "Appointment   ", actions: []),
       body: BlocBuilder<CartCubit, CartState>(builder: (context, cartState) {
         if (cartState is CartLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return _shimmerList();
         } else if (cartState is CartLoaded) {
           vendorID= cartState.cartList?.data?.diagnosticCentre?.id??"";
           startTime= cartState.cartList?.data?.diagnosticCentre?.starttime??"";
@@ -525,6 +524,153 @@ class _ApointmentsState extends State<Apointments> {
           // ✅ Fix: Ensure a return widget in all cases
           return SizedBox.shrink();
         },
+      ),
+    );
+  }
+  Widget _shimmerList(){
+    return  Padding(
+      padding:
+      EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+         shimmerText(120, 12, context),
+            ],
+          ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+          shimmerRectangle(20, context),
+              SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width *
+                        0.8, // 90% of screen width
+                    child: shimmerText(120, 12, context)
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 23),
+
+          Container(
+            padding:  EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics:  NeverScrollableScrollPhysics(),
+                  itemCount:6,
+                  separatorBuilder: (context, index) => const Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
+                    height: 16,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              shimmerText(160, 12, context),
+                              shimmerRectangle(20, context),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                      shimmerText(60, 12, context)
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 10),
+        shimmerText(120, 12, context),
+          SizedBox(height: 15),
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 1),
+                ),
+              ],
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                  shimmerText(80, 12, context),
+                    Spacer(),
+                    shimmerText(60, 12, context),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    shimmerText(60, 12, context),
+                    Spacer(),
+                    shimmerText(60, 12, context),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+
+                Divider(
+                  color: Color(0xff808080),
+                  height: 1,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  children: [
+                    shimmerText(100, 12, context),
+                    Spacer(),
+                    shimmerText(60, 12, context),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

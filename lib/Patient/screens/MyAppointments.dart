@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
 import 'package:revxpharma/Patient/screens/ApointmentDetails.dart';
 
@@ -30,9 +31,7 @@ class _MyappointmentsState extends State<Myappointments> {
                 child: BlocBuilder<AppointmentCubit, AppointmentState>(
                   builder: (context, state) {
                     if (state is AppointmentLoading) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return _shimmerList();
                     } else if (state is AppointmentListLoaded) {
                       final appointments = state.appointmentsList.appointments;
                       if (appointments == null || appointments.isEmpty) {
@@ -135,5 +134,53 @@ class _MyappointmentsState extends State<Myappointments> {
             ],
           ),
         ));
+  }
+  Widget _shimmerList(){
+    return  Column(
+      children: [
+        Expanded(
+          child: ListView.builder(shrinkWrap: true,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.all(12),
+              margin: EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                color: Colors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      shimmerText(120, 12, context),
+                      shimmerText(80, 12, context)
+                    ],
+                  ),
+                  Divider(
+                    height: 20,
+                    thickness: 0.5,
+                    color: Color(0xffA9A9A9),
+                  ),
+                  shimmerText(120, 12, context),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      shimmerText(70, 12, context),
+                      shimmerText(120, 12, context),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+          ),
+        ),
+      ],
+    );
   }
 }

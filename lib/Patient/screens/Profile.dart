@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dart';
 import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
@@ -32,7 +33,7 @@ class _ProfileState extends State<Profile> {
       appBar: CustomAppBar(title: "Profile", actions: []),
       body: BlocBuilder<ProfileCubit,ProfileState>(builder: (context, state) {
         if(state is ProfileStateLoading){
-          return Center(child: CircularProgressIndicator(color: Color(0xff27BDBE),));
+          return _shimmerList();
         }else if(state is ProfileStateLoaded){
           return Padding(
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 20),
@@ -204,7 +205,51 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+Widget _shimmerList(){
+    return Padding(
+      padding:  EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    shimmerContainer(60, 60, context),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+               shimmerText(50, 12, context),
+                SizedBox(
+                  height: 10,
+                ), shimmerText(50, 12, context),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          shimmerText(80, 12, context),
+          ListView.builder(shrinkWrap: true,itemCount: 10,
+            itemBuilder: (context, index) {
+            return  ListTile(
+              leading: shimmerRectangle(24, context),
+              title: shimmerText(100, 12, context),
+              trailing: shimmerRectangle(10, context),
+            );
+          },
 
+          ),
+
+        ],
+      ),
+    );
+
+}
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,

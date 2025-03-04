@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
+import 'package:revxpharma/Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
+import 'package:revxpharma/Utils/NoInternet.dart';
 
 import '../../Components/CustomSnackBar.dart';
 import 'Appointment.dart';
@@ -49,295 +51,306 @@ class _alltestsState extends State<alltests> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            BlocListener<CartCubit, CartState>(
-              listener: (context, state) {
-                if (state is CartSuccessState) {
-                  CustomSnackBar.show(context, "${state.message}");
-                } else if (state is CartErrorState) {
-                  CustomSnackBar.show(context, "${state.errorMessage}");
-                }
-              },
-              child: Expanded(
-                child: BlocBuilder<TestCubit, TestState>(
-                  builder: (context, state) {
-                    if (state is TestStateLoading) {
-                      return _shimmerList();
-                    } else if (state is TestStateLoaded ||
-                        state is TestStateLoadingMore) {
-                      final testModel = (state is TestStateLoaded)
-                          ? (state as TestStateLoaded).testModel
-                          : (state as TestStateLoadingMore).testModel;
-                      if ((testModel.data?.isEmpty ?? true)                                                        ) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 8,
-                            children: [
-                              SizedBox(
-                                height:
-                                MediaQuery.of(context).size.width * 0.05,
+            BlocListener<InternetStatusBloc, InternetStatusState>(listener: (context, state) {
+              if(state is InternetStatusLostState){
+                Future.microtask(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => NoInternetWidget()),
+                  );
+                });
+              }
+            },
+              child: BlocListener<CartCubit, CartState>(
+                listener: (context, state) {
+                  if (state is CartSuccessState) {
+                    CustomSnackBar.show(context, "${state.message}");
+                  } else if (state is CartErrorState) {
+                    CustomSnackBar.show(context, "${state.errorMessage}");
+                  }
+                },
+                child: Expanded(
+                  child: BlocBuilder<TestCubit, TestState>(
+                    builder: (context, state) {
+                      if (state is TestStateLoading) {
+                        return _shimmerList();
+                      } else if (state is TestStateLoaded ||
+                          state is TestStateLoadingMore) {
+                        final testModel = (state is TestStateLoaded)
+                            ? (state as TestStateLoaded).testModel
+                            : (state as TestStateLoadingMore).testModel;
+                        if ((testModel.data?.isEmpty ?? true)                                                        ) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              spacing: 8,
+                              children: [
+                                SizedBox(
+                                  height:
+                                  MediaQuery.of(context).size.width * 0.05,
+                                ),
+                                Text(
+                                  'Oops !',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  'No Data Found!',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  'Try Searching with a diffrent name. ',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+                            if (scrollInfo.metrics.pixels >=
+                                scrollInfo.metrics.maxScrollExtent * 0.9) {
+                              if (state is TestStateLoaded && state.hasNextPage) {
+                                context.read<TestCubit>().fetchMoreTestList(
+                                    widget.lat_lang ?? '',
+                                    widget.catId ?? '',
+                                    '',widget.diagnosticID);
+                              }
+                              return false;
+                            }
+                            return false;
+                          },
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final labTests = testModel.data?[index];
+                                    return Container(
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xff949494),
+                                            width: 0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            labTests?.testName ?? '',
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "Poppins",
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            '₹ ${labTests!.price}/-',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: "Poppins",
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  showSubTestsDialog(context,
+                                                      labTests.subTests ?? []);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  side: const BorderSide(
+                                                      color: Color(0xff27BDBE)),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        30),
+                                                  ),
+                                                  elevation: 0,
+                                                  visualDensity:
+                                                  VisualDensity.compact,
+                                                ),
+                                                child: Text(
+                                                  'View Detail',
+                                                  style: TextStyle(
+                                                      color: Color(0xff27BDBE),
+                                                      fontFamily: "Poppins"),
+                                                ),
+                                              ),
+                                              BlocBuilder<CartCubit, CartState>(
+                                                builder: (context, cartState) {
+                                                  bool isLoading = cartState
+                                                  is CartLoadingState &&
+                                                      cartState.testId ==
+                                                          labTests.id;
+                                                  return ElevatedButton(
+                                                    onPressed: isLoading
+                                                        ? null
+                                                        : () {
+                                                      if (labTests
+                                                          .exist_in_cart ??
+                                                          false) {
+                                                        context
+                                                            .read<
+                                                            CartCubit>()
+                                                            .removeFromCart(
+                                                            labTests.id ??
+                                                                "",
+                                                            context);
+                                                      } else {
+                                                        context
+                                                            .read<
+                                                            CartCubit>()
+                                                            .addToCart({
+                                                          "test":
+                                                          "${labTests.id}"
+                                                        }, context);
+                                                      }
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                        visualDensity:
+                                                        VisualDensity
+                                                            .compact,
+                                                        backgroundColor: labTests
+                                                            .exist_in_cart ??
+                                                            false
+                                                            ? Color(
+                                                            0xff137B7C)
+                                                            : const Color(
+                                                            0xff24AEB1),
+                                                        shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              30),
+                                                        ),
+                                                        elevation: 0),
+                                                    child: isLoading
+                                                        ? const SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                      CircularProgressIndicator(
+                                                        color:
+                                                        Colors.white,
+                                                        strokeWidth: 2,
+                                                      ),
+                                                    )
+                                                        : Row(
+                                                      children: [
+                                                        Text(
+                                                          labTests.exist_in_cart ??
+                                                              false
+                                                              ? 'Remove'
+                                                              : 'Add Test',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white,
+                                                              fontFamily:
+                                                              "Poppins"),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        labTests.exist_in_cart ??
+                                                            false
+                                                            ? Icon(
+                                                          Icons
+                                                              .cancel_outlined,
+                                                          color: Colors
+                                                              .white,
+                                                        )
+                                                            : Icon(
+                                                          Icons
+                                                              .add_circle_outline,
+                                                          color: Colors
+                                                              .white,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          if(labTests.distance!=null)...[
+                                            Container(
+                                              margin:
+                                              const EdgeInsets.only(top: 10),
+                                              padding: const EdgeInsets.all(6),
+                                              decoration: const BoxDecoration(
+                                                  color: Color(0xffD40000)),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(Icons.location_on,
+                                                      color: Colors.white,
+                                                      size: 15),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Text(
+                                                      '${labTests.diagnosticCentre} - ${labTests.distance} away',
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  childCount: testModel.data?.length ?? 0,
+                                ),
                               ),
-                              Text(
-                                'Oops !',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                textAlign: TextAlign.center,
-                                'No Data Found!',
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                'Try Searching with a diffrent name. ',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey),
-                              ),
+                              if (state is TestStateLoadingMore)
+                                SliverToBoxAdapter(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 0.8),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         );
+                      } else if (state is TestStateError) {
+                        return const Center(child: Text("Error loading data"));
                       }
-                      return NotificationListener<ScrollNotification>(
-                        onNotification: (scrollInfo) {
-                          if (scrollInfo.metrics.pixels >=
-                              scrollInfo.metrics.maxScrollExtent * 0.9) {
-                            if (state is TestStateLoaded && state.hasNextPage) {
-                              context.read<TestCubit>().fetchMoreTestList(
-                                  widget.lat_lang ?? '',
-                                  widget.catId ?? '',
-                                  '',widget.diagnosticID);
-                            }
-                            return false;
-                          }
-                          return false;
-                        },
-                        child: CustomScrollView(
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final labTests = testModel.data?[index];
-                                  return Container(
-                                    margin: const EdgeInsets.only(bottom: 10),
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xff949494),
-                                          width: 0.5),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          labTests?.testName ?? '',
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Poppins",
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          '₹ ${labTests!.price}/-',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "Poppins",
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                showSubTestsDialog(context,
-                                                    labTests.subTests ?? []);
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.white,
-                                                side: const BorderSide(
-                                                    color: Color(0xff27BDBE)),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      30),
-                                                ),
-                                                elevation: 0,
-                                                visualDensity:
-                                                VisualDensity.compact,
-                                              ),
-                                              child: Text(
-                                                'View Detail',
-                                                style: TextStyle(
-                                                    color: Color(0xff27BDBE),
-                                                    fontFamily: "Poppins"),
-                                              ),
-                                            ),
-                                            BlocBuilder<CartCubit, CartState>(
-                                              builder: (context, cartState) {
-                                                bool isLoading = cartState
-                                                is CartLoadingState &&
-                                                    cartState.testId ==
-                                                        labTests.id;
-                                                return ElevatedButton(
-                                                  onPressed: isLoading
-                                                      ? null
-                                                      : () {
-                                                    if (labTests
-                                                        .exist_in_cart ??
-                                                        false) {
-                                                      context
-                                                          .read<
-                                                          CartCubit>()
-                                                          .removeFromCart(
-                                                          labTests.id ??
-                                                              "",
-                                                          context);
-                                                    } else {
-                                                      context
-                                                          .read<
-                                                          CartCubit>()
-                                                          .addToCart({
-                                                        "test":
-                                                        "${labTests.id}"
-                                                      }, context);
-                                                    }
-                                                  },
-                                                  style: ElevatedButton
-                                                      .styleFrom(
-                                                      visualDensity:
-                                                      VisualDensity
-                                                          .compact,
-                                                      backgroundColor: labTests
-                                                          .exist_in_cart ??
-                                                          false
-                                                          ? Color(
-                                                          0xff137B7C)
-                                                          : const Color(
-                                                          0xff24AEB1),
-                                                      shape:
-                                                      RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            30),
-                                                      ),
-                                                      elevation: 0),
-                                                  child: isLoading
-                                                      ? const SizedBox(
-                                                    width: 20,
-                                                    height: 20,
-                                                    child:
-                                                    CircularProgressIndicator(
-                                                      color:
-                                                      Colors.white,
-                                                      strokeWidth: 2,
-                                                    ),
-                                                  )
-                                                      : Row(
-                                                    children: [
-                                                      Text(
-                                                        labTests.exist_in_cart ??
-                                                            false
-                                                            ? 'Remove'
-                                                            : 'Add Test',
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .white,
-                                                            fontFamily:
-                                                            "Poppins"),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      labTests.exist_in_cart ??
-                                                          false
-                                                          ? Icon(
-                                                        Icons
-                                                            .cancel_outlined,
-                                                        color: Colors
-                                                            .white,
-                                                      )
-                                                          : Icon(
-                                                        Icons
-                                                            .add_circle_outline,
-                                                        color: Colors
-                                                            .white,
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        if(labTests.distance!=null)...[
-                                          Container(
-                                            margin:
-                                            const EdgeInsets.only(top: 10),
-                                            padding: const EdgeInsets.all(6),
-                                            decoration: const BoxDecoration(
-                                                color: Color(0xffD40000)),
-                                            child: Row(
-                                              children: [
-                                                const Icon(Icons.location_on,
-                                                    color: Colors.white,
-                                                    size: 15),
-                                                const SizedBox(width: 8),
-                                                Expanded(
-                                                  child: Text(
-                                                    '${labTests.diagnosticCentre} - ${labTests.distance} away',
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                  );
-                                },
-                                childCount: testModel.data?.length ?? 0,
-                              ),
-                            ),
-                            if (state is TestStateLoadingMore)
-                              SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 0.8),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      );
-                    } else if (state is TestStateError) {
-                      return const Center(child: Text("Error loading data"));
-                    }
-                    return const Center(child: Text("No Data Available"));
-                  },
+                      return const Center(child: Text("No Data Available"));
+                    },
+                  ),
                 ),
               ),
             )

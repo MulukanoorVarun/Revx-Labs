@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment_details/appointment_details_state.dart';
 
 import '../logic/cubit/appointment_details/appointment_details_cubit.dart';
@@ -26,9 +27,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
       appBar: CustomAppBar(title: "Appointment Details", actions: []),
       body: BlocBuilder<AppointmentDetailsCubit, AppointmentDetailsState>(builder: (context, state) {
         if (state is AppointmentDetailsLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return _shimmerList();
         } else if (state is AppointmentDetailsLoaded) {
           return SingleChildScrollView(
             child: Padding(
@@ -174,6 +173,69 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                       ],
                     ),
                   ),
+                  // Container(
+                  //   padding: EdgeInsets.all(12),
+                  //   margin: EdgeInsets.only(bottom: 10,top: 20),
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                  //     borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //     color: Colors.white,
+                  //   ),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       ListView.separated(
+                  //         shrinkWrap: true,
+                  //         physics: const NeverScrollableScrollPhysics(),
+                  //         itemCount: state.appointmentDetails?.appointment_data?.appointmentTests?.length??0,
+                  //         separatorBuilder: (context, index) => const Divider(
+                  //           color: Colors.grey,
+                  //           thickness: 0.5,
+                  //           height: 16,
+                  //         ),
+                  //         itemBuilder: (context, index) {
+                  //           final test = state.appointmentDetails?.appointment_data?.appointmentTests?[index];
+                  //           return Padding(
+                  //             padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  //             child: Column(
+                  //               crossAxisAlignment: CrossAxisAlignment.start,
+                  //               children: [
+                  //                 Row(
+                  //                   children: [
+                  //                     Expanded(
+                  //                       child: Text("${test?.testName??""}",
+                  //                         maxLines: 2,
+                  //                         overflow: TextOverflow.ellipsis,
+                  //                         style: const TextStyle(
+                  //                           color: Color(0xff000000),
+                  //                           fontWeight: FontWeight.w600,
+                  //                           fontFamily: "Poppins",
+                  //                           fontSize: 15,
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //
+                  //                   ],
+                  //                 ),
+                  //                 const SizedBox(height: 4),
+                  //                 Text(
+                  //                   "₹${test?.price??0}",
+                  //                   style: const TextStyle(
+                  //                     color: Color(0xff000000),
+                  //                     fontWeight: FontWeight.w400,
+                  //                     fontFamily: "Poppins",
+                  //                     fontSize: 14,
+                  //                   ),
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           );
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+
                   Text(
                     "Bill Summary",
                     style: TextStyle(
@@ -237,4 +299,152 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
       }),
     );
   }
+  Widget _shimmerList(){
+    return  Padding(
+      padding:
+      EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              shimmerText(120, 12, context),
+            ],
+          ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              shimmerRectangle(20, context),
+              SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width *
+                          0.8, // 90% of screen width
+                      child: shimmerText(120, 12, context)
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 23),
+
+          Container(
+            padding:  EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics:  NeverScrollableScrollPhysics(),
+                  itemCount:6,
+                  separatorBuilder: (context, index) => const Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
+                    height: 16,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              shimmerText(160, 12, context),
+                              shimmerRectangle(20, context),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          shimmerText(60, 12, context)
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 10),
+          shimmerText(120, 12, context),
+          SizedBox(height: 15),
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 1),
+                ),
+              ],
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    shimmerText(80, 12, context),
+                    Spacer(),
+                    shimmerText(60, 12, context),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    shimmerText(60, 12, context),
+                    Spacer(),
+                    shimmerText(60, 12, context),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+
+                Divider(
+                  color: Color(0xff808080),
+                  height: 1,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  children: [
+                    shimmerText(100, 12, context),
+                    Spacer(),
+                    shimmerText(60, 12, context),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
