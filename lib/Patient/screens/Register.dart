@@ -129,15 +129,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _userName.text.isEmpty ? 'Please enter a fullName' : '';
       _validatephoneNumber =
       _phoneNumber.text.isEmpty ||  _phoneNumber.text.length<10 ? 'Please enter a valid phone number' : '';
-      _validateEmail =
-      !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+      _validateEmail = !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
           .hasMatch(_email.text)
           ? 'Please enter a valid email'
           : '';
       _validatepwd = _password.text.isEmpty
           ? 'Please enter a password'
           : _password.text.length < 8
-          ? 'Password must be at least 8 characters long':"";
+          ? 'Password must be at least 8 characters long'
+          : !RegExp(r'^(?=.*[a-z])').hasMatch(_password.text)
+          ? 'Password must contain at least one lowercase letter'
+          : !RegExp(r'^(?=.*[A-Z])').hasMatch(_password.text)
+          ? 'Password must contain at least one uppercase letter'
+          : !RegExp(r'^(?=.*[0-9])').hasMatch(_password.text)
+          ? 'Password must contain at least one number'
+          : !RegExp(r'^(?=.*[!@#$%^&*(),.?":{}|<>])')
+          .hasMatch(_password.text)
+          ? 'Password must contain at least one special character'
+          : '';
       _validategender = selectedGender==null || selectedGender=="" ? 'Please Select Gender' : "";
       _validatebloodGroop = selectedBloodGroup==null || selectedBloodGroup=="" ? 'Please Select Blood Group' : "";
       _validatedob = _dob.text.isEmpty ? 'Please select a dob' : '';
@@ -238,9 +247,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   icon: Icons.phone,
                   controller: _phoneNumber,
                   validation: _validatephoneNumber,
-                  hintText: 'Phone number',
+                  hintText: 'Phone number', pattern: r'[0-9]',
                   keyboardType: TextInputType.phone,
- 
                   length: 10
                 ),
                 _buildTextField(

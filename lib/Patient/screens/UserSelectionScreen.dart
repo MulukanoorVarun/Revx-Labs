@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
 
 import '../../Vendor/Screens/VendorRegisterScreen.dart';
 import 'Register.dart';
@@ -8,7 +9,7 @@ class UserSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Select User Type", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,fontFamily: "Poppins"))),
+      appBar: CustomAppBar(title: "Select User Type", actions: []),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

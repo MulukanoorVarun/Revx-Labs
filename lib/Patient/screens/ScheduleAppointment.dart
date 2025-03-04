@@ -38,11 +38,9 @@ class ScheduleAnAppointment extends StatefulWidget {
 class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   bool? groupValue;
   int _selectedDateIndex = -1; // Track the selected index
-  // List of dates for the current week
-  final List<DateTime> _dates = List.generate(
-    DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day, // Get the number of days in the current month
-        (index) => DateTime(DateTime.now().year, DateTime.now().month, index + 1),
-  );
+  final DateTime now = DateTime.now();
+  List<DateTime> _dates = [];
+
 
   DateTime? _selectedDate;
   String selectedDate = "";
@@ -119,6 +117,12 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     print(
         "VendorId: ${widget.vendorID}, starttime: ${widget.starttime}, endtime: ${widget.endtime}");
     DateTime selectedDate = DateTime.now();
+    DateTime now = DateTime.now();
+    int lastDay = DateTime(now.year, now.month + 1, 0).day;
+    _dates = List.generate(
+      lastDay - now.day + 1,
+          (index) => DateTime(now.year, now.month, now.day + index),
+    );
     timeSlots =
         generateTimeSlots(widget.starttime, widget.endtime, selectedDate);
   }
@@ -723,7 +727,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                 ),
                               ),
                               subtitle: Text(
-                                '${patient?.dob ?? ''} / ${patient?.gender ?? ''} / ${patient?.bloodGroup ?? ''}',
+                                '${patient?.age ?? ''} Years / ${patient?.gender ?? ''} / ${patient?.bloodGroup ?? ''}',
                                 style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 12,

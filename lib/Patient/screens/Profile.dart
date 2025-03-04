@@ -207,7 +207,7 @@ class _ProfileState extends State<Profile> {
   }
 Widget _shimmerList(){
     return Padding(
-      padding:  EdgeInsets.all(8.0),
+      padding:  EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,16 +217,16 @@ Widget _shimmerList(){
               children: [
                 Stack(
                   children: [
-                    shimmerContainer(60, 60, context),
+                    shimmerCircle(100,context),
                   ],
                 ),
                 SizedBox(
                   height: 10,
                 ),
-               shimmerText(50, 12, context),
+               shimmerText(100, 12, context),
                 SizedBox(
                   height: 10,
-                ), shimmerText(50, 12, context),
+                ), shimmerText(150, 12, context),
               ],
             ),
           ),
@@ -234,17 +234,15 @@ Widget _shimmerList(){
             height: 20,
           ),
           shimmerText(80, 12, context),
-          ListView.builder(shrinkWrap: true,itemCount: 10,
+          ListView.builder(shrinkWrap: true,itemCount: 7,
             itemBuilder: (context, index) {
             return  ListTile(
-              leading: shimmerRectangle(24, context),
-              title: shimmerText(100, 12, context),
-              trailing: shimmerRectangle(10, context),
+              leading: shimmerRectangle(30, context),
+              title: shimmerText(70, 12, context),
+              trailing: shimmerRectangle(20, context),
             );
           },
-
           ),
-
         ],
       ),
     );
