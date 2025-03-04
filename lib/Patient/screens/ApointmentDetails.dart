@@ -45,12 +45,12 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         "OrderID : ${state.appointmentDetails?.appointment_data?.appointmentNumber ?? ''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        "${state.appointmentDetails?.appointment_data?.appointmentDate ?? ''}",
+                        "Date: ${state.appointmentDetails?.appointment_data?.appointmentDate ?? ''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 14,
@@ -179,12 +179,12 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                     ),
                   ),
                   Text(
-                    "Selected Patients",
+                    "Selected Patient",
                     style: TextStyle(
                       color: Color(0xff1A1A1A),
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins",
-                      fontSize: 16,
+                      fontSize: 15,
                     ),
                   ),
                   Container(
@@ -242,10 +242,10 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                       color: Color(0xff1A1A1A),
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins",
-                      fontSize: 16,
+                      fontSize: 15,
                     ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.all(12),
                     margin: EdgeInsets.only(bottom: 10),
@@ -274,7 +274,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                                 '₹ ${state.appointmentDetails?.appointment_data?.totalAmount ?? ''}',
                                 style: TextStyle(
                                   color: Color(0xff000000),
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   fontFamily: "Poppins",
                                   fontSize: 14,
                                 ),
@@ -296,9 +296,10 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
     );
   }
 
-  Widget _shimmerList() {
-    return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+  Widget _shimmerList(){
+    return  Padding(
+      padding:
+      EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -306,12 +307,11 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               shimmerText(120, 12, context),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,16 +323,21 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      width: MediaQuery.of(context).size.width *
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width *
                           0.8, // 90% of screen width
-                      child: shimmerText(120, 12, context)),
+                      child: shimmerText(120, 12, context)
+                  ),
                 ],
               ),
             ],
           ),
           SizedBox(height: 23),
+
           Container(
-            padding: EdgeInsets.all(10),
+            padding:  EdgeInsets.all(10),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -349,8 +354,8 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
               children: [
                 ListView.separated(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 6,
+                  physics:  NeverScrollableScrollPhysics(),
+                  itemCount:6,
                   separatorBuilder: (context, index) => const Divider(
                     color: Colors.grey,
                     thickness: 0.5,
@@ -362,8 +367,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               shimmerText(160, 12, context),
                               shimmerRectangle(20, context),
@@ -379,50 +383,9 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
               ],
             ),
           ),
-          SizedBox(height: 10),
-          shimmerText(120, 12, context),
-          Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 1),
-                ),
-              ],
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                shimmerText(100, 12, context),
-                SizedBox(height: 10),
-                shimmerText(120, 12, context),
-                SizedBox(
-                  height: 16,
-                ),
-                Divider(
-                  color: Color(0xff808080),
-                  height: 1,
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  children: [
-                    shimmerText(100, 12, context),
-                    Spacer(),
-                    shimmerText(60, 12, context),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          shimmerText(120, 12, context),
 
+          SizedBox(height: 10),
+          shimmerText(120, 12, context),
           SizedBox(height: 15),
           Container(
             padding: EdgeInsets.all(10),
@@ -458,6 +421,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                 SizedBox(
                   height: 16,
                 ),
+
                 Divider(
                   color: Color(0xff808080),
                   height: 1,

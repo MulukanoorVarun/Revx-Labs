@@ -620,7 +620,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                 );
               } else if (state is PatientsListLoaded) {
                 return Container(
-                  padding: EdgeInsets.all(16                                ),
+                  padding: EdgeInsets.all(16),
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -699,7 +699,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(
-                                color: selectedPatientId == patient?.id ? Colors.teal : Colors.transparent,
+                                color: selectedPatientId == patient?.id ? Colors.teal : Colors.grey.shade300,
                                 width: 1,
                               ),
                             ),
@@ -713,7 +713,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                               },
                               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               title: Text(
-                                patient?.patientName ?? 'Unknown',
+                                "${patient?.patientName ?? 'Unknown'}",
+                                maxLines: 1,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -733,7 +734,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  IconButton(
+                                  IconButton.filled(
                                     onPressed: () {
                                       Navigator.pop(context);
                                       Navigator.push(
@@ -746,13 +747,24 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                         ),
                                       );
                                     },
-                                    icon: Icon(Icons.edit, size: 20, color: Colors.blue),
+                                    icon: Icon(Icons.edit, size: 20, color: Colors.white),
+                                    style: IconButton.styleFrom(
+                                      visualDensity: VisualDensity.compact,
+                                      backgroundColor: Color(0xff27BDBE),
+                                      padding: EdgeInsets.all(5),
+                                    ),
                                   ),
-                                  IconButton(
+                                  SizedBox(width: 8), // Spacing between buttons
+                                  IconButton.filled(
                                     onPressed: () {
                                       context.read<PatientCubit>().deletePatient(patient?.id ?? '');
                                     },
-                                    icon: Icon(Icons.delete, size: 20, color: Colors.red),
+                                    icon: Icon(Icons.delete, size: 20, color: Colors.white),
+                                    style: IconButton.styleFrom(
+                                      visualDensity: VisualDensity.compact,
+                                      backgroundColor: Color(0xff27BDBE),
+                                      padding: EdgeInsets.all(5),
+                                    ),
                                   ),
                                 ],
                               ),
