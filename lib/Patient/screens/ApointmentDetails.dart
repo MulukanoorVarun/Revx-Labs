@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment_details/appointment_details_state.dart';
-
+import 'package:path_provider/path_provider.dart';
 import '../logic/cubit/appointment_details/appointment_details_cubit.dart';
 
 class ApointmentDetails extends StatefulWidget {
@@ -20,6 +24,72 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
     context.read<AppointmentDetailsCubit>().fetchAppointmentDetails(widget.id);
     super.initState();
   }
+
+  Future<void> downloadInvoice(String url) async {
+    try {
+      print("Checking storage permission...");
+      var status = await Permission.mediaLibrary.status;
+
+      if (!status.isGranted) {
+        print("Storage permission not granted. Requesting...");
+        await Permission.mediaLibrary.request();
+      }
+      status = await Permission.mediaLibrary.status;
+      if (status.isGranted) {
+        print("Storage permission granted.");
+        Directory dir =
+        Directory('/storage/emulated/0/Download/'); // for Android
+        if (!await dir.exists()) {
+          print(
+              "Download directory does not exist. Using external storage directory.");
+          dir = await getExternalStorageDirectory() ?? Directory.systemTemp;
+        } else {
+          print("Download directory exists: ${dir.path}");
+        }
+
+        String generateFileName(String originalName) {
+          // Extract file extension
+          String extension = originalName.split('.').last;
+          // Generate unique identifier
+          String uniqueId = DateTime.now().millisecondsSinceEpoch.toString();
+          // Return unique filename with the same extension
+          String fileName = "Prescription_$uniqueId.$extension";
+          print("Generated filename: $fileName");
+          return fileName;
+        }
+
+        // Start downloading the file
+        print("Starting download from: $url");
+        FileDownloader.downloadFile(
+          url: url.toString().trim(),
+          name: generateFileName("Order_invoice.docx"), // Adjusted here
+          notificationType: NotificationType.all,
+          downloadDestination: DownloadDestinations.publicDownloads,
+          onDownloadRequestIdReceived: (downloadId) {
+            print('Download request ID received: $downloadId');
+          },
+          onProgress: (fileName, progress) {
+            print('Downloading $fileName: $progress%');
+          },
+          onDownloadError: (String error) {
+            print('DOWNLOAD ERROR: $error');
+          },
+          onDownloadCompleted: (path) {
+            print('Download completed! File saved at: $path');
+            setState(() {
+              // Update UI if necessary
+            });
+          },
+        );
+      } else {
+        print("Storage permission denied.");
+      }
+    } catch (e, s) {
+      print('Exception caught: $e');
+      print('Stack trace: $s');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +120,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         ),
                       ),
                       Text(
-                        "Date: ${state.appointmentDetails?.appointment_data?.appointmentDate ?? ''}",
+                        "${state.appointmentDetails?.appointment_data?.appointmentDate ?? ''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 14,
@@ -293,6 +363,24 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
         }
         return Center(child: Text("No Data Available"));
       }),
+      // bottomNavigationBar: BottomAppBar(
+      //   shape: CircularNotchedRectangle(),
+      //   color: Colors.white,
+      //   elevation: 10,
+      //   child: ElevatedButton.icon(
+      //     onPressed: () {
+      //     },
+      //     icon: Icon(Icons.download, color: Colors.white,applyTextScaling: true,),
+      //     label: Text("Download Report", style: TextStyle(color: Colors.white,fontFamily: "Poppins")),
+      //     style: ElevatedButton.styleFrom(
+      //       elevation: 0,
+      //       backgroundColor: Color(0xff27BDBE), // Change color as needed
+      //       padding: EdgeInsets.symmetric(vertical: 12),
+      //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      //     ),
+      //   ),
+      // ),
+
     );
   }
 
@@ -323,11 +411,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width *
-                          0.8, // 90% of screen width
+                      width: MediaQuery.of(context).size.width * 0.8, // 90% of screen width
                       child: shimmerText(120, 12, context)
                   ),
                 ],
@@ -355,7 +439,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                 ListView.separated(
                   shrinkWrap: true,
                   physics:  NeverScrollableScrollPhysics(),
-                  itemCount:6,
+                  itemCount:3,
                   separatorBuilder: (context, index) => const Divider(
                     color: Colors.grey,
                     thickness: 0.5,

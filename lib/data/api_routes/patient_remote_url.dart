@@ -10,7 +10,7 @@ class PatientRemoteUrls {
   static const String patientslist ='api/patients';
   static const String addPatient ='api/patients';
   static const String updatePatient ='api/patient-detail';
-  static const String deletePatient ='api/patients';
+  static const String deletePatient ='api/patient-detail';
   static const String cartlist ='api/cart-tests';
   static const String addToCart ='api/cart-tests';
   static const String removeCart ='api/remove-cart-test';

@@ -236,6 +236,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "flutter_file_downloader",
+      "rootUri": "file:///C:/Users/muluk/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_file_downloader-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "flutter_html",
       "rootUri": "file:///C:/Users/muluk/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_html-3.0.0-beta.2",
       "packageUri": "lib/",
@@ -914,7 +920,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2025-03-04T06:18:34.850830Z",
+  "generated": "2025-03-04T08:35:49.251058Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/flutter%20set%20up/flutter",

@@ -542,39 +542,38 @@ class _alltestsState extends State<alltests> {
   Widget _shimmerList() {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
-    return Expanded(
-        child: ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return Container(
-          width: w,
-          margin: EdgeInsets.only(bottom: 10),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Color(0xff949494), width: 1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+    return Container(
+      width: w,
+      margin: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color(0xff949494), width: 1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          shimmerText(120, 10, context),
+          SizedBox(height: 8),
+          shimmerText(120, 10, context),
+          SizedBox(height: 26),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              shimmerText(120, 10, context),
-              SizedBox(height: 8),
-              shimmerText(120, 10, context),
-              SizedBox(height: 26),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  shimmerContainer(140, 40, context),
-                  shimmerContainer(140, 40, context),
-                ],
-              ),
-              SizedBox(height: 26),
-              shimmerContainer(w, 25, context),
+              shimmerContainer(140, 40, context),
+              shimmerContainer(140, 40, context),
             ],
           ),
+          SizedBox(height: 26),
+          shimmerContainer(w, 25, context),
+        ],
+      ),
+    );
+          },
         );
-      },
-    ));
   }
 
   Widget _shimmerList1() {

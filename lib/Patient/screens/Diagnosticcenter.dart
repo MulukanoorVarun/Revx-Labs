@@ -45,9 +45,8 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                           state.diagnosticCenters.data?.length, // 5 products
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1, // 1 card per row
-                        childAspectRatio:
-                            2.35, // Adjust this to control the card's aspect ratio
+                        crossAxisCount: 1,
+                        childAspectRatio: 2.35,
                         crossAxisSpacing:
                             10, // Horizontal spacing between cards
                         mainAxisSpacing: 10, // Vertical spacing between cards
@@ -68,10 +67,8 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.grey, width: 1), // Gray border
-                              borderRadius:
-                                  BorderRadius.circular(10), // Rounded corners
+                              border: Border.all(color: Colors.grey, width: 1), // Gray border
+                              borderRadius: BorderRadius.circular(10), // Rounded corners
                             ),
                             child: Row(
                               children: [
@@ -229,55 +226,43 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
       ),
     );
   }
-
   Widget _shimmerList() {
     double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Expanded(
-        child: GridView.builder(
-            itemCount: 10,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              childAspectRatio: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Container(
+            width: w,
+            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Color(0xff949494), width: 1), // Gray border
+              borderRadius: BorderRadius.circular(10), // Rounded corners
             ),
-            itemBuilder: (context, index) {
-              return Container(
-                  width: w,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff949494), width: 1),
-                    // Gray border
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      shimmerContainer(100, 100, context),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          shimmerText(160, 12, context),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          shimmerText(160, 16, context),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          shimmerText(160, 12, context),
-                        ],
-                      )
-                    ],
-                  ));
-            }),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                shimmerContainer(100, 100, context),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    shimmerText(160, 12, context),
+                    SizedBox(height: 16),
+                    shimmerText(160, 16, context),
+                    SizedBox(height: 10),
+                    shimmerText(160, 12, context),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
+
 }

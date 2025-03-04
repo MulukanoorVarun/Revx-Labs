@@ -315,7 +315,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<SuccessModel?> DeletePatient(id) async {
     try {
       Response response =
-          await ApiClient.delete('${PatientRemoteUrls.deletePatient}');
+          await ApiClient.delete('${PatientRemoteUrls.deletePatient}/${id}');
       if (response.statusCode == 200) {
         LogHelper.printLog('DeletePatient:', response.data);
         return SuccessModel.fromJson(response.data);

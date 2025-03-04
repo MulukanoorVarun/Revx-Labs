@@ -54,10 +54,10 @@ class _PaymentState extends State<Payment> {
                     Text(
                       "Payment option",
                       style: TextStyle(
-                        color: Color(0xff808080),
-                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
                         fontFamily: "Poppins",
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
                     ),
                     SizedBox(height: 15),
