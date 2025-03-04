@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_state.dart';
@@ -28,36 +29,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
     var screenheight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Color(0xff24AEB1)),
-            onPressed: () => Navigator.pop(context)),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Diagnostic Centres",
-              style: TextStyle(
-                color: Color(0xff24AEB1),
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                fontFamily: "Poppins",
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Image.asset(
-            'assets/filter.png', // Replace with the actual asset path of your small image
-            width: 45, // Set the desired width for the small image
-            height: 22, // Set the desired height for the small image
-          ),
-        ],
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xff24AEB1)),
-      ),
+      appBar: CustomAppBar(title: "Diagnostic Centers", actions: []),
       body: BlocBuilder<DiagnosticCentersCubit, DiagnosticCentersState>(
         builder: (context, state) {
           if (state is DiagnosticCentersLoading) {
@@ -132,56 +104,58 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                       SizedBox(
                                         height: screenheight * 0.01,
                                       ),
-                                      Text(
-                                        item?.name ?? '',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Poppins",
-                                          color: Colors.black,
+                                      SizedBox(
+                                        width: screenwidth*0.5,
+                                        child: Text(
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          "${item?.name ?? ''}",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: "Poppins",
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
                                         height: screenheight * 0.01,
                                       ), // Space between product name and price
+                                      SizedBox(
+                                        width: screenwidth*0.5,
+                                        child: Text(
+                                          "${item?.location ?? "Unknown location"}",
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Poppins",
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      SizedBox(
+                                          height:
+                                          10), //
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SizedBox(
-                                            width: 170,
-                                            child: Text(
-                                              textAlign: TextAlign.start,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              item?.location ?? "",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                                fontFamily: "Poppins",
-                                                color: Colors.black,
-                                              ),
+                                          const Icon(
+                                            Icons.location_on,
+                                            color: Colors.red,
+                                            size: 18, // Adjusted icon size for better UI balance
+                                          ),
+                                          const SizedBox(width: 4), // Spacing between icon and text
+                                          Text(
+                                            item?.distance ?? '0 km', // Default to 0 km if distance is null
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "Poppins",
+                                              color: Colors.black,
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 6,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.location_on,
-                                                color: Colors.red,
-                                              ),
-                                              Text(
-                                                item?.distance ?? '',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "Poppins",
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ],
                                       ),
@@ -190,50 +164,50 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                               10), // Space between price and buttons
 
                                       // Row with "View" button and "Add Test" button
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .start, // Align content to the start
-                                        children: [
-                                          // Small image icon
-                                          Stack(
-                                            children: [
-                                              Image.asset(
-                                                'assets/offerbg.jpeg', // Replace with the actual asset path of your small image
-                                                width:
-                                                    60, // Set the desired width for the small image
-                                                height:
-                                                    24, // Set the desired height for the small image
-                                              ),
-                                              Positioned(
-                                                  left: 10,
-                                                  right: 3,
-                                                  top: 3,
-                                                  child: Text(
-                                                    "10% Off",
-                                                    style: TextStyle(
-                                                      fontFamily: "Poppins",
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 12,
-                                                      color: Colors.white,
-                                                    ),
-                                                  )),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            '',
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Poppins",
-                                              color: Color(0xff3A3A3A),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                      // Row(
+                                      //   mainAxisAlignment: MainAxisAlignment
+                                      //       .start, // Align content to the start
+                                      //   children: [
+                                      //     // Small image icon
+                                      //     Stack(
+                                      //       children: [
+                                      //         Image.asset(
+                                      //           'assets/offerbg.jpeg', // Replace with the actual asset path of your small image
+                                      //           width:
+                                      //               60, // Set the desired width for the small image
+                                      //           height:
+                                      //               24, // Set the desired height for the small image
+                                      //         ),
+                                      //         Positioned(
+                                      //             left: 10,
+                                      //             right: 3,
+                                      //             top: 3,
+                                      //             child: Text(
+                                      //               "10% Off",
+                                      //               style: TextStyle(
+                                      //                 fontFamily: "Poppins",
+                                      //                 fontWeight:
+                                      //                     FontWeight.normal,
+                                      //                 fontSize: 12,
+                                      //                 color: Colors.white,
+                                      //               ),
+                                      //             )),
+                                      //       ],
+                                      //     ),
+                                      //     SizedBox(
+                                      //       width: 5,
+                                      //     ),
+                                      //     Text(
+                                      //       '',
+                                      //       style: TextStyle(
+                                      //         fontSize: 13,
+                                      //         fontWeight: FontWeight.w400,
+                                      //         fontFamily: "Poppins",
+                                      //         color: Color(0xff3A3A3A),
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),

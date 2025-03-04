@@ -8,11 +8,8 @@ import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_state.dart';
-import 'package:revxpharma/Services/UserapiServices.dart';
-
 import '../../Components/ShakeWidget.dart';
-import 'Dashboard.dart';
-import '../../Authentication/LogInWithMobile.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -80,7 +77,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return age;
   }
 
-
   @override
   void initState() {
     _userName.addListener(() {
@@ -103,7 +99,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _validateEmail = '';
       });
     });
-
     _gender.addListener(() {
       setState(() {
         _validategender = "";
@@ -244,7 +239,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validation: _validatephoneNumber,
                   hintText: 'Phone number',
                   keyboardType: TextInputType.phone,
-                  pattern: r'[0-9]',
+ 
                   length: 10
                 ),
                 _buildTextField(

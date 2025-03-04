@@ -2,16 +2,16 @@ import 'package:revxpharma/Models/SuccessModel.dart';
 import 'package:revxpharma/Vendor/VendorModel/VendorGetTestsModel.dart';
 import 'package:revxpharma/data/api_routes/VendorRemoteDataSource.dart';
 
-abstract class DiagnosticGetTestsRepositors {
+abstract class DiagnosticTestsRepository {
 
   Future<VendorGetTestsModel?> VendorgetTest();
   Future<SuccessModel?> VendordelateTest(id);
 
 }
-class DiagnosticGetTestsImp extends DiagnosticGetTestsRepositors{
+class DiagnosticTestsImp extends DiagnosticTestsRepository{
 
    VendorRemoteDataSource vendorRemoteDataSource;
-   DiagnosticGetTestsImp({required this.vendorRemoteDataSource});
+   DiagnosticTestsImp({required this.vendorRemoteDataSource});
 
    Future<VendorGetTestsModel?> VendorgetTest() async{
      return await vendorRemoteDataSource.DiagnosticgetTests();

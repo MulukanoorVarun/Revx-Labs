@@ -23,7 +23,7 @@ class _VendorTestState extends State<VendorTest> {
   bool _isListening = false;
   @override
   void initState() {
-    context.read<DiagnosticGetTestsCubit>().getTests();
+    context.read<DiagnosticTestsCubit>().getTests();
     super.initState();
   }
 
@@ -204,7 +204,7 @@ class _VendorTestState extends State<VendorTest> {
                 SizedBox(
                   height: 20,
                 ),
-                BlocBuilder<DiagnosticGetTestsCubit, DiagnosticGetTestsState>(
+                BlocBuilder<DiagnosticTestsCubit, DiagnosticTestsState>(
                   builder: (context, state) {
                     if (state is DiagnosticTestsLoading) {
                       Center(
