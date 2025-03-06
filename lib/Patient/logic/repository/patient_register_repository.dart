@@ -6,7 +6,7 @@ abstract class PatientRegisterRepository {
   Future<SuccessModel?> postRegister( Map<String,dynamic> data);
 }
 
-class PatientRegisterImpl extends PatientRegisterRepository {
+class PatientRegisterImpl implements PatientRegisterRepository {
   RemoteDataSource remoteDataSource;
   PatientRegisterImpl({required this.remoteDataSource});
 

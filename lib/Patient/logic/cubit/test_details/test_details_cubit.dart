@@ -3,16 +3,14 @@ import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_state.d
 import '../../repository/test_details_repository.dart';
 
 class TestDetailsCubit extends Cubit<TestDetailsState> {
-  final TestDetailsRepository testDetailsRepository; // Fixed typo
+  final TestDetailsRepository testDetailsRepository;
 
-  TestDetailsCubit(this.testDetailsRepository)
-      : super(TestDetailsInitial());
+  TestDetailsCubit(this.testDetailsRepository) : super(TestDetailsInitial());
 
   Future<void> getTestDetails(String id) async {
     emit(TestDetailsLoading());
     try {
       final response = await testDetailsRepository.getTestDetails(id);
-
       if (response != null) {
         emit(TestDetailsLoaded(response));
       } else {

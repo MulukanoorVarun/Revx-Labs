@@ -52,8 +52,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<TestDetailsModel?> getTestDetailsApi(id) async {
     try {
-      Response response =
-          await ApiClient.get("${PatientRemoteUrls.test_details}/${id}");
+      Response response = await ApiClient.get("${PatientRemoteUrls.test_details}/${id}");
       if (response.statusCode == 200) {
         debugPrint("${response.data}");
         return TestDetailsModel.fromJson(response.data);
@@ -84,8 +83,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<LoginModel?> loginApi(Map<String, dynamic> data) async {
     try {
-      Response response =
-          await ApiClient.post("${PatientRemoteUrls.userLogin}", data: data);
+      Response response = await ApiClient.post("${PatientRemoteUrls.userLogin}", data: data);
       if (response.statusCode == 200) {
         LogHelper.printLog('loginApi:', response.data);
         return LoginModel.fromJson(response.data);

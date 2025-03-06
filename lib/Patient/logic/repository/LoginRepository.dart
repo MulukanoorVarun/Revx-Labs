@@ -7,7 +7,7 @@ abstract class LoginRepository {
   Future<LoginModel?> postLogin( Map<String,dynamic> data);
 }
 
-class LoginImpl extends LoginRepository {
+class LoginImpl implements LoginRepository {
   RemoteDataSource remoteDataSource;
   LoginImpl({required this.remoteDataSource});
 
