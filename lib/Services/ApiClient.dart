@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import '../data/api_routes/patient_remote_url.dart';
 import 'AuthService.dart';
 
 class ApiClient {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: "https://revx.ozrit.in/",
+      baseUrl: "${PatientRemoteUrls.baseUrl}",
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
       headers: {
