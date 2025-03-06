@@ -117,7 +117,7 @@ class _ApointmentsState extends State<Apointments> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 23),
+                    SizedBox(height: 10),
                     // Text(
                     //   "Selected Patient",
                     //   style: TextStyle(
@@ -193,17 +193,11 @@ class _ApointmentsState extends State<Apointments> {
                     // ),
                     // SizedBox(height: 10),
                     Container(
-                      padding: const EdgeInsets.all(10),
-                      width: w,
+                      padding: EdgeInsets.all(12),
+                      margin: EdgeInsets.only(bottom: 10,),
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            spreadRadius: 1,
-                            blurRadius: 2,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
+                        border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         color: Colors.white,
                       ),
                       child: Column(
@@ -368,17 +362,11 @@ class _ApointmentsState extends State<Apointments> {
                     ),
                     SizedBox(height: 15),
                     Container(
-                      padding: EdgeInsets.all(10),
-                      width: w,
+                      padding: EdgeInsets.all(12),
+                      margin: EdgeInsets.only(bottom: 10,),
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                          ),
-                        ],
+                        border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         color: Colors.white,
                       ),
                       child: Column(

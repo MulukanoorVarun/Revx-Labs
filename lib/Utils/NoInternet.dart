@@ -57,7 +57,7 @@ class NoInternetWidget extends StatelessWidget {
                     height: 46,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
-                      color: Color(0xff02017d),
+                      color: Color(0xff27BDBE),
                     ),
                     child: Center(
                       child: Text(

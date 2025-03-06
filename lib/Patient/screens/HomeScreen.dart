@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
+import 'package:flutter_touch_ripple/widgets/touch_ripple.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
@@ -46,19 +48,20 @@ class _HomescreenState extends State<Homescreen> {
             elevation: 0,
             leading: Container(),
             leadingWidth: 0,
-            toolbarHeight: screenWidth*0.37,
+            toolbarHeight: screenWidth * 0.37,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 6.0,right: 10),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding: const EdgeInsets.only(left: 6.0, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: screenWidth*0.7,
+                            width: screenWidth * 0.7,
                             child: Text(
                               "Hi, ${StringUtils.capitalizeFirstLetter(state.prfileDetails.data?.fullName)}",
                               maxLines: 1,
@@ -69,7 +72,9 @@ class _HomescreenState extends State<Homescreen> {
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +97,7 @@ class _HomescreenState extends State<Homescreen> {
                                 } else if (state is LocationLoaded) {
                                   lat_lang = state.latlng;
                                   return SizedBox(
-                                    width: screenWidth*0.6,
+                                    width: screenWidth * 0.6,
                                     child: Text(
                                       "${state.locationName}",
                                       style: TextStyle(
@@ -104,7 +109,9 @@ class _HomescreenState extends State<Homescreen> {
                                     ),
                                   );
                                 } else if (state is LocationError) {
-                                  return Center(child: Text(state.message,
+                                  return Center(
+                                      child: Text(
+                                    state.message,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
@@ -113,7 +120,9 @@ class _HomescreenState extends State<Homescreen> {
                                     ),
                                   ));
                                 }
-                                return Center(child: Text("No Data",
+                                return Center(
+                                    child: Text(
+                                  "No Data",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
@@ -134,23 +143,26 @@ class _HomescreenState extends State<Homescreen> {
                           );
                         },
                         child: CircleAvatar(
-                          backgroundColor: Color(0xff27BDBE), // Set background color for initials
+                          backgroundColor: Color(
+                              0xff27BDBE), // Set background color for initials
                           child:
-                          // state.prfileDetails.data?.image != null &&
-                          //     state.prfileDetails.data!.image!.isNotEmpty
-                          //     ? ClipRRect(
-                          //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
-                          //   child: Image.network(
-                          //     state.prfileDetails.data!.image!,
-                          //     fit: BoxFit.cover,
-                          //     width: double.infinity,
-                          //     height: double.infinity,
-                          //   ),
-                          // )
-                          //     :
-                          Text(
-                            state.prfileDetails.data?.fullName?.isNotEmpty == true
-                                ? state.prfileDetails.data!.fullName![0].toUpperCase()
+                              // state.prfileDetails.data?.image != null &&
+                              //     state.prfileDetails.data!.image!.isNotEmpty
+                              //     ? ClipRRect(
+                              //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
+                              //   child: Image.network(
+                              //     state.prfileDetails.data!.image!,
+                              //     fit: BoxFit.cover,
+                              //     width: double.infinity,
+                              //     height: double.infinity,
+                              //   ),
+                              // )
+                              //     :
+                              Text(
+                            state.prfileDetails.data?.fullName?.isNotEmpty ==
+                                    true
+                                ? state.prfileDetails.data!.fullName![0]
+                                    .toUpperCase()
                                 : "?",
                             style: TextStyle(
                               fontSize: 20,
@@ -166,12 +178,17 @@ class _HomescreenState extends State<Homescreen> {
                 SizedBox(
                   height: 6,
                 ),
-                InkResponse(onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Searchscreen(lat_lang: lat_lang)));
-                },
+                InkResponse(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Searchscreen(lat_lang: lat_lang)));
+                  },
                   child: Container(
                     padding: EdgeInsets.all(8),
-                    margin: EdgeInsets.only(top: 8,bottom: 10),
+                    margin: EdgeInsets.only(top: 8, bottom: 10),
                     decoration: BoxDecoration(
                         color: Color(0xffF9F9F9),
                         borderRadius: BorderRadius.circular(100),
@@ -179,7 +196,9 @@ class _HomescreenState extends State<Homescreen> {
                     child: Row(
                       children: [
                         Icon(Icons.search, color: Colors.grey),
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Text(
                           'Search Diagnostics',
                           style: TextStyle(
@@ -239,9 +258,9 @@ class _HomescreenState extends State<Homescreen> {
                                 MaterialPageRoute(
                                   builder: (context) => alltests(
                                     lat_lang: "",
-                                    catId:  id??"",
+                                    catId: id ?? "",
                                     catName: '',
-                                    diagnosticID: id??"",
+                                    diagnosticID: id ?? "",
                                   ),
                                 ));
                           } else if (type == "diagnostic") {
@@ -249,10 +268,10 @@ class _HomescreenState extends State<Homescreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => alltests(
-                                    lat_lang:"",
+                                    lat_lang: "",
                                     catId: '',
                                     catName: '',
-                                    diagnosticID: id??"",
+                                    diagnosticID: id ?? "",
                                   ),
                                 ));
                           }
@@ -269,14 +288,17 @@ class _HomescreenState extends State<Homescreen> {
                             placeholder: (context, url) => Center(
                               child: spinkits.getSpinningLinespinkit(),
                             ),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
                         ),
                       ),
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 8,),
+                SizedBox(
+                  height: 8,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -284,9 +306,13 @@ class _HomescreenState extends State<Homescreen> {
                       Container(
                         margin: EdgeInsets.all(3),
                         height: screenHeight * 0.008,
-                        width: currentIndex == i ? screenWidth * 0.025 : screenWidth * 0.014,
+                        width: currentIndex == i
+                            ? screenWidth * 0.025
+                            : screenWidth * 0.014,
                         decoration: BoxDecoration(
-                          color: currentIndex == i ? Color(0xff27BDBE) : Colors.grey.shade400,
+                          color: currentIndex == i
+                              ? Color(0xff27BDBE)
+                              : Colors.grey.shade400,
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
@@ -316,24 +342,8 @@ class _HomescreenState extends State<Homescreen> {
                   // Number of category items
                   itemBuilder: (context, index) {
                     final category = state.categories.category?[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => alltests(
-                                lat_lang: lat_lang,
-                                catId: category?.id ?? '',
-                                catName: category?.categoryName ?? '',
-                                diagnosticID: "",
-                              ),
-                            ));
-                      },
-                      child: _buildCategoryItem(
-                          category?.image ?? '',
-                          category?.categoryName ??
-                              ''), // No need for null check
-                    );
+                    return _buildCategoryItem(category?.image ?? '',
+                        category?.categoryName ?? '', category?.id ?? '');
                   },
                 ),
                 SizedBox(height: 20),
@@ -427,7 +437,8 @@ class _HomescreenState extends State<Homescreen> {
                         builder: (context) => alltests(
                           lat_lang: lat_lang ?? '',
                           catId: '',
-                          catName: '',diagnosticID: "",
+                          catName: '',
+                          diagnosticID: "",
                         ), // Adjust the index as needed
                       ),
                     );
@@ -499,18 +510,38 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  Widget _buildCategoryItem(String image, String label) {
+  Widget _buildCategoryItem(String image, String label, String catId) {
     return Column(
       children: [
-        Container(
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Color(0xffE9E9E9), width: 1),
-          ),
-          child: Center(
-            child: Image.network(image, width: 45, height: 45),
+        TouchRipple(
+          rippleBorderRadius: BorderRadius.circular(8),
+          previewDuration: Duration(milliseconds: 1000),
+          onTap: () {
+            // Delay navigation to allow ripple effect to show
+            Future.delayed(const Duration(milliseconds: 200), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => alltests(
+                    lat_lang: lat_lang,
+                    catId: catId,
+                    catName: label,
+                    diagnosticID: "",
+                  ),
+                ),
+              );
+            });
+          },
+          child: Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Color(0xffE9E9E9), width: 1),
+            ),
+            child: Center(
+              child: Image.network(image, width: 45, height: 45),
+            ),
           ),
         ),
         SizedBox(height: 8),

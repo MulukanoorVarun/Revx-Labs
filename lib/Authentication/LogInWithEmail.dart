@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
@@ -66,7 +65,8 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
             PreferenceService()
                 .saveInt('expiry_time', state.loginModel.data?.expiryTime ?? 0);
             PreferenceService().saveString('role', state.loginModel.data?.role ?? "");
-            AuthService.saveTokens( state.loginModel.data?.access ?? "",  state.loginModel.data?.refresh ?? "", state.loginModel.data?.expiryTime ?? 0);
+            AuthService.saveTokens( state.loginModel.data?.access ?? "",
+                state.loginModel.data?.refresh ?? "", state.loginModel.data?.expiryTime ?? 0);
             CustomSnackBar.show(context, state.message ?? '');
             if (state.loginModel.data?.role == "Patient") {
               Navigator.pushReplacement(context,

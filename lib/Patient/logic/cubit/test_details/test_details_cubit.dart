@@ -16,7 +16,7 @@ class TestDetailsCubit extends Cubit<TestDetailsState> {
       if (response != null) {
         emit(TestDetailsLoaded(response));
       } else {
-        emit(TestDetailsError("No details found for the given ID."));
+        emit(TestDetailsError("${response?.settings?.message?? 'No details found for the given ID'}"));
       }
     } catch (e) {
       emit(TestDetailsError(e.toString()));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
+import 'package:revxpharma/Utils/media_query_helper.dart';
 import 'package:revxpharma/state_injector.dart';
 
 import 'Patient/screens/Splash.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return MultiRepositoryProvider(
       providers: StateInjector.repositoryProviders,
       child: MultiBlocProvider(

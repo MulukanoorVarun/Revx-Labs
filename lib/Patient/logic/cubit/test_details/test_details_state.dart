@@ -1,6 +1,8 @@
 import 'package:revxpharma/Models/TestDetailsModel.dart';
 
-abstract class TestDetailsState{}
+abstract class TestDetailsState{
+
+}
 
 class TestDetailsInitial extends TestDetailsState{}
 

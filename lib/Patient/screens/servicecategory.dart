@@ -131,18 +131,18 @@ Widget _shimmer(BuildContext context) {
                 children: [
                   GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
+                      crossAxisCount: 3,
                       crossAxisSpacing: 10,
-                      childAspectRatio: 0.75,
+                      childAspectRatio: 1.1,
                       mainAxisSpacing: 5,
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: 8,
+                    itemCount: 15,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          shimmerContainer(72, 72, context),
+                          shimmerContainer(80, 80, context),
                           SizedBox(
                             height: 5,
                           ),
