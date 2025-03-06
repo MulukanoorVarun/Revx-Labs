@@ -10,7 +10,7 @@ class ProfileStateLoading extends ProfileState{
 
 }
 class ProfileStateLoaded extends ProfileState{
-  final   ProfileDetailModel profileDetailModel;
+  final ProfileDetailModel profileDetailModel;
   ProfileStateLoaded(this.profileDetailModel);
 
 }

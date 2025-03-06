@@ -14,6 +14,7 @@ import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_repository.dart';
+import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
@@ -24,6 +25,7 @@ import 'package:revxpharma/Patient/logic/repository/cart_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_register_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_repository.dart';
+import 'package:revxpharma/Patient/logic/repository/test_details_repository.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_categories_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_category_repository.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
@@ -102,6 +104,10 @@ class StateInjector {
       create: (context) =>
           PatientRegisterImpl(remoteDataSource: context.read()),
     ),
+
+    RepositoryProvider<TestDetailsRepository>(
+        create: (context) =>
+            TestDetailsRepositoryImpl(remoteDataSource: context.read())),
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///   Vendor Repositories /////////
@@ -199,6 +205,12 @@ class StateInjector {
       create: (context) =>
           PatientRegisterCubit(context.read<PatientRegisterRepository>()),
     ),
+
+    BlocProvider<TestDetailsCubit>(
+      create: (context) =>
+          TestDetailsCubit(context.read<TestDetailsRepository>()),
+    ),
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Vendor Bloc Providers //

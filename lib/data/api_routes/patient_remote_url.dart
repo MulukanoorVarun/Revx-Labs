@@ -8,6 +8,7 @@ class PatientRemoteUrls {
   static const String diagnosticCenterslist = 'api/diagnostic-centres';
   static const String diagnosticDetail = 'api/diagnostic-centre-detail';
   static const String test ='api/tests';
+  static const String test_details ='api/test-detail';
   static const String conditionBased ='api/conditions';
   static const String patientslist ='api/patients';
   static const String addPatient ='api/patients';
