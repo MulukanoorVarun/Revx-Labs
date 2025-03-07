@@ -84,14 +84,35 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       await Permission.photos.status; // For Android 13+
     }
 
-    bool allPermissionsGranted =
-    statuses.values.every((status) => status.isGranted);
+    bool allPermissionsGranted = statuses.values.every((status) => status.isGranted);
 
     setState(() {
       permissions_granted = allPermissionsGranted;
       print("permissions_granted:${permissions_granted}");
     });
+      _navigateToNextScreen();
   }
+  void _navigateToNextScreen() {
+    Future.microtask(() {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Status == ''
+              ? OnBoard()
+              : Status1 == ''
+              ? OnBoardOne()
+              : permissions_granted == false
+              ? MyPermission()
+              : Token == ''
+              ? LogInWithEmail()
+              : (role == "Patient")
+              ? Dashboard()
+              : VendorDashboard(),
+        ),
+      );
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,23 +122,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: BlocListener<InternetStatusBloc, InternetStatusState>(
         listener: (context, state) {
-          if (state is InternetStatusBackState) {
-            Future.microtask(() {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => Status == ''
-                        ? OnBoard()
-                        : Status1 == ''
-                        ? OnBoardOne()
-                        : !permissions_granted
-                        ? MyPermission()
-                        : Token == ''
-                        ? LogInWithEmail()
-                        : (role=="Patient")?Dashboard(): VendorDashboard()),
-              );
-            });
-          } else if (state is InternetStatusLostState) {
+            if (state is InternetStatusLostState) {
             Future.microtask(() {
               Navigator.push(
                 context,
