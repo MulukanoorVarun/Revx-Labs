@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Patient/screens/NewOnBoarding.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
 import 'package:revxpharma/Utils/media_query_helper.dart';
 import 'package:revxpharma/state_injector.dart';
@@ -74,7 +75,7 @@ class MyApp extends StatelessWidget {
             ),
             title: 'Revx Labs',
             debugShowCheckedModeBanner: false,
-            home: Splash()),
+            home: NewOnBoarding()),
       ),
     );
   }

@@ -58,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
             listener: (context, state) {
               if (state is LocationPermissionDenied) {
                 showLocationBottomSheet(
-                    context); // Show Bottom Sheet when permission is denied
+                    context);
               }
             },
             child: PageView(
