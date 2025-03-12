@@ -573,7 +573,7 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                   ],
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -601,10 +601,10 @@ class _HomescreenState extends State<Homescreen> {
                               width: screenWidth * 0.24,
                             ),
                             Text(
-                              'Scan',
+                              'Book My Scan',
                               style: TextStyle(
-                                  color: Color(0xff2A3890),
-                                  fontSize: 20,
+                                  color: Color(0xff000000),
+                                  fontSize: 14,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w600),
                             )
@@ -666,7 +666,7 @@ class _HomescreenState extends State<Homescreen> {
                   height: 11,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Bounce(
                       scaleFactor: 1.1,
@@ -701,43 +701,43 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                       ),
                     ),
-                    // SizedBox(
-                    //   width: 11,
-                    // ),
-                    // Bounce( scaleFactor: 1.1,
-                    //   onTap: (){
-                    //
-                    //   },
-                    //   child: Container(
-                    //     width: screenWidth * 0.435,
-                    //     height: screenWidth * 0.4,
-                    //     padding: EdgeInsets.only(left: 15, right: 15),
-                    //     decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(10),
-                    //         border: Border.all(
-                    //             color:  Color(0xff2D3894), width: 1)),
-                    //     child: Column(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       spacing: 10,
-                    //       children: [
-                    //         Image.asset(
-                    //           'assets/healthcare 1.png',
-                    //           fit: BoxFit.contain,
-                    //           height: screenWidth * 0.24,
-                    //           width: screenWidth * 0.24,
-                    //         ),
-                    //         Text(
-                    //           'Package’s',
-                    //           style: TextStyle(
-                    //               color: Color(0xff000000),
-                    //               fontSize: 14,
-                    //               fontFamily: 'Poppins',
-                    //               fontWeight: FontWeight.w600),
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
+                    SizedBox(
+                      width: 11,
+                    ),
+                    Bounce( scaleFactor: 1.1,
+                      onTap: (){
+
+                      },
+                      child: Container(
+                        width: screenWidth * 0.435,
+                        height: screenWidth * 0.4,
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color:  Color(0xff2D3894), width: 1)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            Image.asset(
+                              'assets/healthcare 1.png',
+                              fit: BoxFit.contain,
+                              height: screenWidth * 0.24,
+                              width: screenWidth * 0.24,
+                            ),
+                            Text(
+                              'Package’s',
+                              style: TextStyle(
+                                  color: Color(0xff000000),
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
