@@ -9,9 +9,13 @@ import 'package:flutter_touch_ripple/widgets/touch_ripple.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
+import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
+import 'package:revxpharma/Patient/screens/Appointment.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import 'package:revxpharma/Vendor/Screens/Appointment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/constants.dart';
 import '../logic/cubit/home/home_cubit.dart';
@@ -32,10 +36,11 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () {
-      _checkAndShowPopup();
-    });
+    // Future.delayed(Duration.zero, () {
+    // _checkAndShowPopup();
+    // });
     context.read<HomeCubit>().fetchHomeData(lat_lang);
+    context.read<CartCubit>().getCartList();
     super.initState();
   }
 
@@ -93,7 +98,7 @@ class _HomescreenState extends State<Homescreen> {
                                     width: 48,
                                   ),
                                   Text(
-                                      'Scan',
+                                    'Scan',
                                     style: TextStyle(
                                       color: Color(0xff000000),
                                       fontSize: 14,
@@ -105,7 +110,6 @@ class _HomescreenState extends State<Homescreen> {
                               ),
                             ),
                           ),
-
                           SizedBox(width: 11),
                           Bounce(
                             scaleFactor: 1.3,
@@ -122,7 +126,6 @@ class _HomescreenState extends State<Homescreen> {
                                   ), // Adjust the index as needed
                                 ),
                               );
-
                             },
                             child: Container(
                               width: 120,
@@ -143,7 +146,7 @@ class _HomescreenState extends State<Homescreen> {
                                     width: 48,
                                   ),
                                   Text(
-                                      'Test’s',
+                                    'Test’s',
                                     style: TextStyle(
                                       color: Color(0xff000000),
                                       fontSize: 14,
@@ -155,7 +158,6 @@ class _HomescreenState extends State<Homescreen> {
                               ),
                             ),
                           ),
-
                         ],
                       ),
                       SizedBox(height: 11),
@@ -184,7 +186,7 @@ class _HomescreenState extends State<Homescreen> {
                                     width: 48,
                                   ),
                                   Text(
-                                      'X-Ray’s',
+                                    'X-Ray’s',
                                     style: TextStyle(
                                       color: Color(0xff000000),
                                       fontSize: 14,
@@ -196,7 +198,6 @@ class _HomescreenState extends State<Homescreen> {
                               ),
                             ),
                           ),
-
                           SizedBox(width: 11),
                           Bounce(
                             scaleFactor: 1.3,
@@ -258,7 +259,6 @@ class _HomescreenState extends State<Homescreen> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -361,42 +361,71 @@ class _HomescreenState extends State<Homescreen> {
                           ),
                         ],
                       ),
-                      InkResponse(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Profile()),
+                      // InkResponse(
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => Profile()),
+                      //     );
+                      //   },
+                      //   child: CircleAvatar(
+                      //     backgroundColor: Color(
+                      //         0xff27BDBE), // Set background color for initials
+                      //     child:
+                      //         // state.prfileDetails.data?.image != null &&
+                      //         //     state.prfileDetails.data!.image!.isNotEmpty
+                      //         //     ? ClipRRect(
+                      //         //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
+                      //         //   child: Image.network(
+                      //         //     state.prfileDetails.data!.image!,
+                      //         //     fit: BoxFit.cover,
+                      //         //     width: double.infinity,
+                      //         //     height: double.infinity,
+                      //         //   ),
+                      //         // )
+                      //         //     :
+                      //         Text(
+                      //       state.prfileDetails.data?.fullName?.isNotEmpty ==
+                      //               true
+                      //           ? state.prfileDetails.data!.fullName![0]
+                      //               .toUpperCase()
+                      //           : "?",
+                      //       style: TextStyle(
+                      //         fontSize: 20,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // )
+                      BlocBuilder<CartCubit, CartState>(
+                        builder: (context, cartState) {
+                          int cartCount = 0;
+                          if (cartState is CartLoaded) {
+                            cartCount = cartState.cartCount;
+                          } else if (cartState is CartSuccessState) {
+                            cartCount = cartState.cartCount;
+                          }
+                          return Badge.count(
+                            count: cartCount,
+                            smallSize: 12,
+                            largeSize: 16,
+                            child: Bounce(
+                              scaleFactor: 1.2,
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Apointments()));
+                              },
+                              child: Icon(
+                                Icons.shopping_cart_outlined,
+                                color: Color(0xff27BDBE),
+                                size: 28,
+                              ),
+                            ),
                           );
                         },
-                        child: CircleAvatar(
-                          backgroundColor: Color(
-                              0xff27BDBE), // Set background color for initials
-                          child:
-                              // state.prfileDetails.data?.image != null &&
-                              //     state.prfileDetails.data!.image!.isNotEmpty
-                              //     ? ClipRRect(
-                              //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
-                              //   child: Image.network(
-                              //     state.prfileDetails.data!.image!,
-                              //     fit: BoxFit.cover,
-                              //     width: double.infinity,
-                              //     height: double.infinity,
-                              //   ),
-                              // )
-                              //     :
-                              Text(
-                            state.prfileDetails.data?.fullName?.isNotEmpty ==
-                                    true
-                                ? state.prfileDetails.data!.fullName![0]
-                                    .toUpperCase()
-                                : "?",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                       )
                     ],
                   ),
@@ -544,149 +573,176 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                   ],
                 ),
-                // SizedBox(height: 8),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     Bounce( scaleFactor: 1.1,
-                //       onTap: (){
-                //
-                //     },
-                //       child: Container(
-                //                         width: screenWidth * 0.435,
-                //                         height: screenWidth * 0.4,
-                //                         padding: EdgeInsets.only(left: 15, right: 15),
-                //                         decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(10),
-                //       border: Border.all(
-                //           color:  Color(0xff2D3894), width: 1),
-                //       // Adjusted size to fit the circle
-                //                         ),
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           spacing: 10,
-                //           children: [
-                //             Image.asset(
-                //               'assets/ct-scan.png',
-                //               fit: BoxFit.contain,
-                //               height: screenWidth * 0.24,
-                //               width: screenWidth * 0.24,
-                //             ),
-                //             Text(
-                //               'Scan',
-                //               style: TextStyle(
-                //                   color: Color(0xff2A3890),
-                //                   fontSize: 20,
-                //                   fontFamily: 'Poppins',
-                //                   fontWeight: FontWeight.w600),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 11,
-                //     ),
-                //     Container(
-                //       width: screenWidth * 0.435,
-                //       height: screenWidth * 0.4,
-                //       padding: EdgeInsets.only(left: 15, right: 15),
-                //       decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(10),
-                //         border: Border.all(
-                //             color:  Color(0xff2D3894), width: 1)),
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         spacing: 10,
-                //         children: [
-                //           Image.asset(
-                //             'assets/blood-test 1.png',
-                //             fit: BoxFit.contain,
-                //             height: screenWidth * 0.24,
-                //             width: screenWidth * 0.24,
-                //           ),
-                //           Text(
-                //             'Test’s',
-                //             style: TextStyle(
-                //                 color: Color(0xff000000),
-                //                 fontSize: 14,
-                //                 fontFamily: 'Poppins',
-                //                 fontWeight: FontWeight.w600),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 11,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     Container(
-                //       width: screenWidth * 0.435,
-                //       height: screenWidth * 0.4,
-                //       padding: EdgeInsets.only(left: 15, right: 15),
-                //       decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(10),
-                //           border: Border.all(
-                //               color:  Color(0xff2D3894), width: 1)),
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         spacing: 10,
-                //         children: [
-                //           Image.asset(
-                //             'assets/x-rays 1.png',
-                //             fit: BoxFit.contain,
-                //             height: screenWidth * 0.24,
-                //             width: screenWidth * 0.24,
-                //           ),
-                //           Text(
-                //             'X-Ray’s',
-                //             style: TextStyle(
-                //                 color: Color(0xff000000),
-                //                 fontSize: 14,
-                //                 fontFamily: 'Poppins',
-                //                 fontWeight: FontWeight.w600),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 11,
-                //     ),
-                //     Container(
-                //       width: screenWidth * 0.435,
-                //       height: screenWidth * 0.4,
-                //       padding: EdgeInsets.only(left: 15, right: 15),
-                //       decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(10),
-                //           border: Border.all(
-                //               color:  Color(0xff2D3894), width: 1)),
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         spacing: 10,
-                //         children: [
-                //           Image.asset(
-                //             'assets/healthcare 1.png',
-                //             fit: BoxFit.contain,
-                //             height: screenWidth * 0.24,
-                //             width: screenWidth * 0.24,
-                //           ),
-                //           Text(
-                //             'Package’s',
-                //             style: TextStyle(
-                //                 color: Color(0xff000000),
-                //                 fontSize: 14,
-                //                 fontFamily: 'Poppins',
-                //                 fontWeight: FontWeight.w600),
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Bounce(
+                      scaleFactor: 1.1,
+                      onTap: () {},
+                      child: Container(
+                        width: screenWidth * 0.435,
+                        height: screenWidth * 0.4,
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border:
+                              Border.all(color: Color(0xff2D3894), width: 1),
+                          // Adjusted size to fit the circle
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            Image.asset(
+                              'assets/ct-scan.png',
+                              fit: BoxFit.contain,
+                              height: screenWidth * 0.24,
+                              width: screenWidth * 0.24,
+                            ),
+                            Text(
+                              'Scan',
+                              style: TextStyle(
+                                  color: Color(0xff2A3890),
+                                  fontSize: 20,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 11,
+                    ),
+                    Bounce(
+                      scaleFactor: 1.1,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => alltests(
+                              lat_lang: lat_lang ?? '',
+                              catId: '',
+                              catName: '',
+                              diagnosticID: "",
+                            ), // Adjust the index as needed
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: screenWidth * 0.435,
+                        height: screenWidth * 0.4,
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border:
+                                Border.all(color: Color(0xff2D3894), width: 1)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            Image.asset(
+                              'assets/blood-test 1.png',
+                              fit: BoxFit.contain,
+                              height: screenWidth * 0.24,
+                              width: screenWidth * 0.24,
+                            ),
+                            Text(
+                              'Test’s',
+                              style: TextStyle(
+                                  color: Color(0xff000000),
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 11,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Bounce(
+                      scaleFactor: 1.1,
+                      onTap: () {},
+                      child: Container(
+                        width: screenWidth * 0.435,
+                        height: screenWidth * 0.4,
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border:
+                                Border.all(color: Color(0xff2D3894), width: 1)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            Image.asset(
+                              'assets/x-rays 1.png',
+                              fit: BoxFit.contain,
+                              height: screenWidth * 0.24,
+                              width: screenWidth * 0.24,
+                            ),
+                            Text(
+                              'X-Ray’s',
+                              style: TextStyle(
+                                  color: Color(0xff000000),
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    // SizedBox(
+                    //   width: 11,
+                    // ),
+                    // Bounce( scaleFactor: 1.1,
+                    //   onTap: (){
+                    //
+                    //   },
+                    //   child: Container(
+                    //     width: screenWidth * 0.435,
+                    //     height: screenWidth * 0.4,
+                    //     padding: EdgeInsets.only(left: 15, right: 15),
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(10),
+                    //         border: Border.all(
+                    //             color:  Color(0xff2D3894), width: 1)),
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       spacing: 10,
+                    //       children: [
+                    //         Image.asset(
+                    //           'assets/healthcare 1.png',
+                    //           fit: BoxFit.contain,
+                    //           height: screenWidth * 0.24,
+                    //           width: screenWidth * 0.24,
+                    //         ),
+                    //         Text(
+                    //           'Package’s',
+                    //           style: TextStyle(
+                    //               color: Color(0xff000000),
+                    //               fontSize: 14,
+                    //               fontFamily: 'Poppins',
+                    //               fontWeight: FontWeight.w600),
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
 
                 Text(
                   'Categories',

@@ -120,41 +120,43 @@ Widget _shimmer(BuildContext context) {
   return Column(
     children: [
       Expanded(
-        child: ListView.builder(
-          itemCount: 1,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 1.1,
-                      mainAxisSpacing: 5,
+        child: SingleChildScrollView(
+          child: ListView.builder(
+            itemCount: 1,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 1.1,
+                        mainAxisSpacing: 5,
+                      ),
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 15,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            shimmerContainer(80, 80, context),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            shimmerText(60, 12, context)
+                          ],
+                        );
+                      },
                     ),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 15,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          shimmerContainer(80, 80, context),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          shimmerText(60, 12, context)
-                        ],
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     ],

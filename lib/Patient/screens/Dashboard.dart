@@ -71,6 +71,7 @@ class _DashboardState extends State<Dashboard> {
                 ServiceCategory(),
                 // ChatSupport(),
                 // Notifications(),
+                Profile()
 
               ],
               physics: const NeverScrollableScrollPhysics(),
@@ -173,6 +174,24 @@ class _DashboardState extends State<Dashboard> {
               //       ],
               //     )
               // ),
+              BottomNavigationBarItem(
+                  label: "Profile",
+                  icon: Column(
+                    children: [
+                      _selectedIndex == 2
+                          ? Image.asset(
+                              "assets/activeprofile.png",
+                              width: 25,
+                              height: 25,
+                            )
+                          : Image.asset(
+                              "assets/profile.png",
+                              width: 25,
+                              height: 25,
+                            )
+                    ],
+                  )
+              ),
             ],
             currentIndex: _selectedIndex,
             onTap: onItemTapped,

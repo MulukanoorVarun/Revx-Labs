@@ -148,7 +148,7 @@ class _alltestsState extends State<alltests> {
                                       padding: EdgeInsets.only(bottom: 10),
                                       child: TouchRipple(
                                         longTapBehavior: TouchRippleBehavior(
-                                          lowerPercent:0.00001,
+                                          lowerPercent: 0.00001,
                                         ),
                                         rippleBorderRadius:
                                             BorderRadius.circular(10),
@@ -160,11 +160,14 @@ class _alltestsState extends State<alltests> {
                                               const Duration(milliseconds: 200),
                                               () {
                                             Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TestDetails(location: '${labTests.diagnosticCentre} - ${labTests.distance}',id: labTests.id??"",))
-                                            );
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TestDetails(
+                                                          location:
+                                                              '${labTests.diagnosticCentre} - ${labTests.distance}',
+                                                          id: labTests.id ?? "",
+                                                        )));
                                           });
                                         },
                                         child: Container(
