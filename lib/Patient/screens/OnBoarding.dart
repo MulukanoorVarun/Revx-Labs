@@ -16,6 +16,7 @@ class _OnBoardState extends State<OnBoard> {
   PreferenceService().saveString('on_boarding', '1');
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;

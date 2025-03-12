@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
             ),
             title: 'Revx Labs',
             debugShowCheckedModeBanner: false,
-            home: NewOnBoarding()),
+            home: Splash()),
       ),
     );
   }

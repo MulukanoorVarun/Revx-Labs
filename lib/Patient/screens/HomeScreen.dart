@@ -1,3 +1,4 @@
+import 'package:bounce/bounce.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/constants.dart';
 import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
@@ -30,8 +32,119 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
+    Future.delayed(Duration.zero, () {
+      _checkAndShowPopup();
+    });
     context.read<HomeCubit>().fetchHomeData(lat_lang);
     super.initState();
+  }
+  Future<void> _checkAndShowPopup() async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // bool? isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    //
+    // if (isFirstTime == null || isFirstTime) {
+      _showPopup(context);
+      // prefs.setBool('isFirstTime', false);
+    // }
+  }
+
+  void _showPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Dialog(
+                insetPadding:
+                    EdgeInsets.symmetric(horizontal: 24, vertical: 200),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildOptionCard('assets/ct-scan.png', 'Scan'),
+                          SizedBox(width: 11),
+                          _buildOptionCard('assets/blood-test 1.png', 'Test’s'),
+                        ],
+                      ),
+                      SizedBox(height: 11),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildOptionCard('assets/x-rays 1.png', 'X-Ray’s'),
+                          SizedBox(width: 11),
+                          _buildOptionCard(
+                              'assets/healthcare 1.png', 'Package’s'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 160,
+              left: MediaQuery.of(context).size.width * 0.42,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(
+                  Icons.cancel,
+                  size: 40,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  Widget _buildOptionCard(String imagePath, String label) {
+    return Bounce(scaleFactor: 1.1,onTap: (){
+
+    },
+      child: Container(
+        width: 120,
+        height: 120,
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.5, color: Color(0xff2D3894)),
+          color:Colors.white,
+          borderRadius: BorderRadius.circular(11),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              fit: BoxFit.contain,
+              height: 48,
+              width: 48,
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                color: Color(0xff000000),
+                fontSize: 14,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -318,7 +431,150 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                   ],
                 ),
-                SizedBox(height: 8),
+                // SizedBox(height: 8),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Bounce( scaleFactor: 1.1,
+                //       onTap: (){
+                //
+                //     },
+                //       child: Container(
+                //                         width: screenWidth * 0.435,
+                //                         height: screenWidth * 0.4,
+                //                         padding: EdgeInsets.only(left: 15, right: 15),
+                //                         decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(10),
+                //       border: Border.all(
+                //           color:  Color(0xff2D3894), width: 1),
+                //       // Adjusted size to fit the circle
+                //                         ),
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           spacing: 10,
+                //           children: [
+                //             Image.asset(
+                //               'assets/ct-scan.png',
+                //               fit: BoxFit.contain,
+                //               height: screenWidth * 0.24,
+                //               width: screenWidth * 0.24,
+                //             ),
+                //             Text(
+                //               'Scan',
+                //               style: TextStyle(
+                //                   color: Color(0xff2A3890),
+                //                   fontSize: 20,
+                //                   fontFamily: 'Poppins',
+                //                   fontWeight: FontWeight.w600),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 11,
+                //     ),
+                //     Container(
+                //       width: screenWidth * 0.435,
+                //       height: screenWidth * 0.4,
+                //       padding: EdgeInsets.only(left: 15, right: 15),
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(10),
+                //         border: Border.all(
+                //             color:  Color(0xff2D3894), width: 1)),
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         spacing: 10,
+                //         children: [
+                //           Image.asset(
+                //             'assets/blood-test 1.png',
+                //             fit: BoxFit.contain,
+                //             height: screenWidth * 0.24,
+                //             width: screenWidth * 0.24,
+                //           ),
+                //           Text(
+                //             'Test’s',
+                //             style: TextStyle(
+                //                 color: Color(0xff000000),
+                //                 fontSize: 14,
+                //                 fontFamily: 'Poppins',
+                //                 fontWeight: FontWeight.w600),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 11,
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Container(
+                //       width: screenWidth * 0.435,
+                //       height: screenWidth * 0.4,
+                //       padding: EdgeInsets.only(left: 15, right: 15),
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           border: Border.all(
+                //               color:  Color(0xff2D3894), width: 1)),
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         spacing: 10,
+                //         children: [
+                //           Image.asset(
+                //             'assets/x-rays 1.png',
+                //             fit: BoxFit.contain,
+                //             height: screenWidth * 0.24,
+                //             width: screenWidth * 0.24,
+                //           ),
+                //           Text(
+                //             'X-Ray’s',
+                //             style: TextStyle(
+                //                 color: Color(0xff000000),
+                //                 fontSize: 14,
+                //                 fontFamily: 'Poppins',
+                //                 fontWeight: FontWeight.w600),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 11,
+                //     ),
+                //     Container(
+                //       width: screenWidth * 0.435,
+                //       height: screenWidth * 0.4,
+                //       padding: EdgeInsets.only(left: 15, right: 15),
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           border: Border.all(
+                //               color:  Color(0xff2D3894), width: 1)),
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         spacing: 10,
+                //         children: [
+                //           Image.asset(
+                //             'assets/healthcare 1.png',
+                //             fit: BoxFit.contain,
+                //             height: screenWidth * 0.24,
+                //             width: screenWidth * 0.24,
+                //           ),
+                //           Text(
+                //             'Package’s',
+                //             style: TextStyle(
+                //                 color: Color(0xff000000),
+                //                 fontSize: 14,
+                //                 fontFamily: 'Poppins',
+                //                 fontWeight: FontWeight.w600),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 Text(
                   'Categories',
                   style: TextStyle(
