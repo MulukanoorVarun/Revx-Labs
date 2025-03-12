@@ -38,13 +38,14 @@ class _HomescreenState extends State<Homescreen> {
     context.read<HomeCubit>().fetchHomeData(lat_lang);
     super.initState();
   }
+
   Future<void> _checkAndShowPopup() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // bool? isFirstTime = prefs.getBool('isFirstTime') ?? true;
     //
     // if (isFirstTime == null || isFirstTime) {
-      _showPopup(context);
-      // prefs.setBool('isFirstTime', false);
+    _showPopup(context);
+    // prefs.setBool('isFirstTime', false);
     // }
   }
 
@@ -70,19 +71,167 @@ class _HomescreenState extends State<Homescreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildOptionCard('assets/ct-scan.png', 'Scan'),
+                          Bounce(
+                            scaleFactor: 1.3,
+                            onTap: () {},
+                            child: Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0.5, color: Color(0xff2D3894)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(11),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/ct-scan.png',
+                                    fit: BoxFit.contain,
+                                    height: 48,
+                                    width: 48,
+                                  ),
+                                  Text(
+                                      'Scan',
+                                    style: TextStyle(
+                                      color: Color(0xff000000),
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
                           SizedBox(width: 11),
-                          _buildOptionCard('assets/blood-test 1.png', 'Test’s'),
+                          Bounce(
+                            scaleFactor: 1.3,
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => alltests(
+                                    lat_lang: lat_lang ?? '',
+                                    catId: '',
+                                    catName: '',
+                                    diagnosticID: "",
+                                  ), // Adjust the index as needed
+                                ),
+                              );
+
+                            },
+                            child: Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0.5, color: Color(0xff2D3894)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(11),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/blood-test 1.png',
+                                    fit: BoxFit.contain,
+                                    height: 48,
+                                    width: 48,
+                                  ),
+                                  Text(
+                                      'Test’s',
+                                    style: TextStyle(
+                                      color: Color(0xff000000),
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
                         ],
                       ),
                       SizedBox(height: 11),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildOptionCard('assets/x-rays 1.png', 'X-Ray’s'),
+                          Bounce(
+                            scaleFactor: 1.3,
+                            onTap: () {},
+                            child: Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0.5, color: Color(0xff2D3894)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(11),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/x-rays 1.png',
+                                    fit: BoxFit.contain,
+                                    height: 48,
+                                    width: 48,
+                                  ),
+                                  Text(
+                                      'X-Ray’s',
+                                    style: TextStyle(
+                                      color: Color(0xff000000),
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
                           SizedBox(width: 11),
-                          _buildOptionCard(
-                              'assets/healthcare 1.png', 'Package’s'),
+                          Bounce(
+                            scaleFactor: 1.3,
+                            onTap: () {},
+                            child: Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0.5, color: Color(0xff2D3894)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(11),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/healthcare 1.png',
+                                    fit: BoxFit.contain,
+                                    height: 48,
+                                    width: 48,
+                                  ),
+                                  Text(
+                                    'Package’s',
+                                    style: TextStyle(
+                                      color: Color(0xff000000),
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ],
@@ -110,42 +259,6 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
-
-  Widget _buildOptionCard(String imagePath, String label) {
-    return Bounce(scaleFactor: 1.1,onTap: (){
-
-    },
-      child: Container(
-        width: 120,
-        height: 120,
-        decoration: BoxDecoration(
-          border: Border.all(width: 0.5, color: Color(0xff2D3894)),
-          color:Colors.white,
-          borderRadius: BorderRadius.circular(11),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              imagePath,
-              fit: BoxFit.contain,
-              height: 48,
-              width: 48,
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                color: Color(0xff000000),
-                fontSize: 14,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
