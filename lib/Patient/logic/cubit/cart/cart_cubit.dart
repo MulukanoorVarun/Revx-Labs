@@ -33,7 +33,6 @@ class CartCubit extends Cubit<CartState> {
 
   Future<void> addToCart(Map<String, dynamic> cartData, BuildContext context) async {
     emit(CartLoadingState(testId: cartData['test']));
-
     try {
       final response = await cartRepository.addToCart(cartData);
 

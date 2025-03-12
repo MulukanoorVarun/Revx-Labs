@@ -17,7 +17,6 @@ import '../../Models/CategoryModel.dart';
 import '../../Models/DiognisticCenterModel.dart';
 import '../../Models/LoginModel.dart';
 import '../../Models/PatientsListModel.dart';
-import '../../Models/ProfileDetailModel.dart';
 import '../../Models/SuccessModel.dart';
 import '../../Models/TestDetailsModel.dart';
 
@@ -28,8 +27,7 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(
-      latlang, catId, search_Query, page, diagnosticID);
+  Future<TestModel?> fetchTest(latlang, catId, search_Query, page, diagnosticID);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
