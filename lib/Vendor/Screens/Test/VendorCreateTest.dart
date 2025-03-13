@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/ApprovalPending.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_categories_cubit.dart';
 
@@ -543,7 +544,7 @@ class _CreateNewTestState extends State<CreateNewTest> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
         child: CustomAppButton(
-            color: Color(0xff27BDBE),
+            color: primaryColor,
             text: 'Submit for approval',
             onPlusTap: () {
               Navigator.push(context,

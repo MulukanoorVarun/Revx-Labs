@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class ChatSupport extends StatefulWidget {
   const ChatSupport({super.key});
@@ -27,7 +28,7 @@ class _ChatSupportState extends State<ChatSupport> {
               height: 32,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: Color(0xff27BDBE), width: 1),
+                border: Border.all(color: primaryColor, width: 1),
               ),
               child: Center(
                 child: Image.asset("assets/likitha.png"), // Profile image
@@ -40,7 +41,7 @@ class _ChatSupportState extends State<ChatSupport> {
                 "Liktha’s Diagnostics",
                 maxLines: 1,
                 style: TextStyle(
-                  color: Color(0xff27BDBE),
+                  color: primaryColor,
                   overflow: TextOverflow.ellipsis,
                   fontFamily: 'Poppins',
                   fontSize: 18,
@@ -108,7 +109,7 @@ class _ChatSupportState extends State<ChatSupport> {
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       margin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -154,7 +155,7 @@ class _ChatSupportState extends State<ChatSupport> {
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       margin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -200,7 +201,7 @@ class _ChatSupportState extends State<ChatSupport> {
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       margin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -237,7 +238,7 @@ class _ChatSupportState extends State<ChatSupport> {
                 ),
                 SizedBox(width: 10),
                 IconButton(
-                  icon: Icon(Icons.send, color: Color(0xff27BDBE)),
+                  icon: Icon(Icons.send, color: primaryColor),
                   onPressed: () {
                     // Handle send message action
                   },

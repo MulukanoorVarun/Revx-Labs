@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Authentication/ChangePassword.dart';
@@ -32,7 +33,7 @@ class _AccountsettingsState extends State<Accountsettings> {
         title: Text(
           "Account Settings",
           style: TextStyle(
-            color: Color(0xff27BDBE),
+            color: primaryColor,
             fontFamily: 'Poppins',
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -528,7 +529,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                     ),
                     Spacer(),
                     Switch(
-                      activeColor: Color(0xff27BDBE),
+                      activeColor: primaryColor,
                       inactiveThumbColor: Color(0xff868686),
                       value: isPromotional,
                       onChanged: (value) {
@@ -743,7 +744,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                           style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: "Poppins"
                           ),
                         ),
@@ -771,7 +772,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor:
-                                  Color(0xff27BDBE), // Filled button color
+                                  primaryColor, // Filled button color
                                   foregroundColor: Colors.white, // Text color
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
@@ -802,9 +803,9 @@ class _AccountsettingsState extends State<Accountsettings> {
                                 },
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor:
-                                  Color(0xff27BDBE), // Text color
+                                  primaryColor, // Text color
                                   side: BorderSide(
-                                      color: Color(0xff27BDBE)), // Border color
+                                      color: primaryColor), // Border color
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                 ),

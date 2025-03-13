@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_state.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Utils/media_query_helper.dart';
 
 import '../logic/cubit/cart/cart_cubit.dart';
@@ -117,8 +118,8 @@ class _TestDetailsState extends State<TestDetails>
                                 style: ElevatedButton.styleFrom(
                                   visualDensity: VisualDensity.compact,
                                   backgroundColor: state.testDetailsModel.data?.existInCart ?? false
-                                      ? Color(0xff137B7C)
-                                      : const Color(0xff24AEB1),
+                                      ? primaryColor
+                                      :  primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -161,14 +162,14 @@ class _TestDetailsState extends State<TestDetails>
                     boxShadow: [
                       BoxShadow(
                         color:
-                            Color(0xff27BDBE).withOpacity(0.5), // Shadow color
+                            primaryColor.withOpacity(0.5), // Shadow color
                         blurRadius: 1, // Shadow blur radius
                         offset: Offset(0, 0.1),
                       ),
                     ],
                     border: Border(
                       bottom: BorderSide(
-                        color: Color(0xff27BDBE).withOpacity(0.1),
+                        color: primaryColor.withOpacity(0.1),
                         width: 0.5,
                         style: BorderStyle.solid,
                       ),
@@ -178,7 +179,7 @@ class _TestDetailsState extends State<TestDetails>
                     dividerColor: Colors.transparent,
                     controller: _tabController,
                     isScrollable: true,
-                    indicatorColor: Color(0xff27BDBE),
+                    indicatorColor: primaryColor,
                     indicatorWeight: 4,
                     indicatorSize: TabBarIndicatorSize.label,
                     tabAlignment: TabAlignment.start,
@@ -189,7 +190,7 @@ class _TestDetailsState extends State<TestDetails>
                       fontFamily: 'pjs',
                       fontWeight: FontWeight.w500,
                       fontSize: SizeConfig.fontSize(12),
-                      color: Color(0xff27BDBE),
+                      color: primaryColor,
                     ),
                     unselectedLabelStyle: TextStyle(
                       fontFamily: 'pjs',
@@ -335,7 +336,7 @@ class _TestDetailsState extends State<TestDetails>
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff27BDBE),
+                        backgroundColor:  primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),

@@ -8,6 +8,7 @@ import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment_details/appointment_details_state.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../logic/cubit/appointment_details/appointment_details_cubit.dart';
 
 class ApointmentDetails extends StatefulWidget {
@@ -143,7 +144,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                               fontFamily: "Poppins",
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff27BDBE)),
+                              color: primaryColor),
                         ),
                       )
                     ],
@@ -374,7 +375,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
       //     label: Text("Download Report", style: TextStyle(color: Colors.white,fontFamily: "Poppins")),
       //     style: ElevatedButton.styleFrom(
       //       elevation: 0,
-      //       backgroundColor: Color(0xff27BDBE), // Change color as needed
+      //       backgroundColor: primaryColor, // Change color as needed
       //       padding: EdgeInsets.symmetric(vertical: 12),
       //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       //     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/PatientDetails.dart';
 import 'package:speech_to_text/speech_to_text.dart%20' as stt;
 
@@ -122,7 +123,7 @@ class _PatientsState extends State<Patients> {
               height: 38,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Color(0xff27BDBE),
+                  color: primaryColor,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -157,7 +158,7 @@ class _PatientsState extends State<Patients> {
                         ),
                       ),
                       style: TextStyle(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: "Poppins",
@@ -169,7 +170,7 @@ class _PatientsState extends State<Patients> {
                   IconButton(
                     icon: Icon(
                       _isListening ? Icons.stop : Icons.mic,
-                      color: Color(0xff27BDBE),
+                      color: primaryColor,
                       size: 18,
                     ),
                     onPressed: () {

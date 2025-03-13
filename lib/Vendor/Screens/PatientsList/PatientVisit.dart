@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/PatientUserData.dart';
 
 class PatientVisit extends StatefulWidget {
@@ -102,7 +103,7 @@ class _PatientVisitState extends State<PatientVisit> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 6, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Center(
@@ -127,7 +128,7 @@ class _PatientVisitState extends State<PatientVisit> {
                           height: 140,
                           decoration: BoxDecoration(
                             border: Border.all(
-                                color: Color(0xff27BDBE), width: 0.8),
+                                color: primaryColor, width: 0.8),
                           ),
                         ),
                         SizedBox(
@@ -219,7 +220,7 @@ class _PatientVisitState extends State<PatientVisit> {
                                   child: Text(
                                     'View User Data',
                                     style: TextStyle(
-                                        color: Color(0xff27BDBE),
+                                        color: primaryColor,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16,
                                         fontFamily: 'Poppins'),

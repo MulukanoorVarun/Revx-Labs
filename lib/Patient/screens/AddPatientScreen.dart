@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../../Components/ShakeWidget.dart';
 import '../logic/cubit/patient/patient_state.dart';
@@ -162,12 +163,12 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                 Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back_ios),
-              color: Color(0xff27BDBE),
+              color: primaryColor,
             ),
             Text(
               '${widget.type[0].toUpperCase()}${widget.type.substring(1)} Patient',
               style: TextStyle(
-                color: Color(0xff27BDBE),
+                color: primaryColor,
                 fontFamily: 'Poppins',
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -464,7 +465,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           _submitForm();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff27BDBE),
+                          backgroundColor: primaryColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12), // Rounded edges
                           ),

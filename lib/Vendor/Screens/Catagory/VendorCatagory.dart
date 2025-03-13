@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/Catagory/CreateCatagory.dart';
 import 'package:speech_to_text/speech_to_text.dart%20' as stt;
 
@@ -131,7 +132,7 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                   height: 38,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xff27BDBE),
+                      color: primaryColor,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -166,7 +167,7 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                             ),
                           ),
                           style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
                             fontFamily: "Poppins",
@@ -178,7 +179,7 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                       IconButton(
                         icon: Icon(
                           _isListening ? Icons.stop : Icons.mic,
-                          color: Color(0xff27BDBE),
+                          color: primaryColor,
                           size: 18,
                         ),
                         onPressed: () {
@@ -265,7 +266,7 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             side: BorderSide(
-                                                color: Color(0xff27BDBE),
+                                                color: primaryColor,
                                                 width: 1))),
                                     backgroundColor: MaterialStateProperty.all(
                                         Color(0xffFFFFFF)),
@@ -274,7 +275,7 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                                   child: Text(
                                     'View Detail',
                                     style: TextStyle(
-                                      color: Color(0xff27BDBE),
+                                      color: primaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       fontFamily: 'Poppins',
@@ -287,10 +288,10 @@ class _VendorCatagoryState extends State<VendorCatagory> {
                                             borderRadius:
                                                 BorderRadius.circular(100),
                                             side: BorderSide(
-                                                color: Color(0xff27BDBE),
+                                                color: primaryColor,
                                                 width: 1))),
                                     backgroundColor: MaterialStateProperty.all(
-                                        Color(0xff27BDBE)),
+                                        primaryColor),
                                   ),
                                   onPressed: () {},
                                   child: Row(

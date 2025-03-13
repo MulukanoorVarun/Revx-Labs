@@ -10,6 +10,7 @@ import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/ShakeWidget.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});
@@ -29,7 +30,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   FocusNode focusphone = FocusNode();
 
   final Color cursorColor = Colors.blue;
-  final Color backgroundCursorColor = Color(0xff27BDBE);
+  final Color backgroundCursorColor = primaryColor;
 
   File? _image;
   XFile? _pickedFile;
@@ -86,7 +87,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               if (state is ProfileStateLoading) {
                 return Center(
                     child: CircularProgressIndicator(
-                  color: Color(0xff27BDBE),
+                  color: primaryColor,
                 ));
               } else if (state is ProfileStateLoaded) {
                 String profile_image =
@@ -134,7 +135,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                     backgroundColor: Colors.white,
                                     child: Icon(
                                       Icons.camera_alt,
-                                      color: Color(0xff27BDBE),
+                                      color: primaryColor,
                                       size: 15, // Size of the camera icon
                                     ),
                                   ),

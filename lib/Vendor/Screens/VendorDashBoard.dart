@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/Appointment.dart';
 import 'package:revxpharma/Vendor/Screens/Catagory/CatagoryList.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/Patients.dart';
@@ -325,7 +326,7 @@ class _VendorDashboardState extends State<VendorDashboard> {
                                   width: 51.5,
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? Color(0xff27BDBE)
+                                        ? primaryColor
                                         : Colors.transparent,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -367,7 +368,7 @@ class _VendorDashboardState extends State<VendorDashboard> {
                         children: [
                           Icon(
                             Icons.circle,
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             size: 10,
                           ),
                           SizedBox(
@@ -1419,7 +1420,7 @@ void _showLogoutDialog(BuildContext context) {
                         style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: "Poppins"),
                       ),
                       const SizedBox(height: 10.0),
@@ -1445,7 +1446,7 @@ void _showLogoutDialog(BuildContext context) {
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 backgroundColor:
-                                    Color(0xff27BDBE), // Filled button color
+                                    primaryColor, // Filled button color
                                 foregroundColor: Colors.white, // Text color
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
@@ -1476,9 +1477,9 @@ void _showLogoutDialog(BuildContext context) {
                               },
                               style: OutlinedButton.styleFrom(
                                 foregroundColor:
-                                    Color(0xff27BDBE), // Text color
+                                    primaryColor, // Text color
                                 side: BorderSide(
-                                    color: Color(0xff27BDBE)), // Border color
+                                    color: primaryColor), // Border color
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         title: Text(
           "Change Password",
           style: TextStyle(
-            color: Color(0xff27BDBE),
+            color: primaryColor,
             fontFamily: 'Poppins',
             fontSize: 18,
             fontWeight: FontWeight.w600,

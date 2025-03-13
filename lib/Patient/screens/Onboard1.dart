@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../../Authentication/LogInWithMobile.dart';
 
@@ -115,7 +116,7 @@ class _OnBoardOneState extends State<OnBoardOne> {
                         "Skip",
                         style: TextStyle(
                           fontSize: 20,
-                          color: const Color(0xff27BDBE),
+                          color:  primaryColor,
                           fontWeight: FontWeight.w500,
                           fontFamily: "Poppins",
                         ),
@@ -127,10 +128,10 @@ class _OnBoardOneState extends State<OnBoardOne> {
                   ),
                   Container(
                     width: w,
-                    height: 40,
+                    height: 42,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      color: const Color(0xff008675),
+                      color:primaryColor,
                     ),
                     child: Center(
                       child: InkWell(onTap: (){

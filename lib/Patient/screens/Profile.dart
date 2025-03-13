@@ -6,6 +6,7 @@ import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_state.dart';
 import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Authentication/LogInWithEmail.dart';
@@ -48,7 +49,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           CircleAvatar(
                             radius:60,
-                            backgroundColor: Color(0xff27BDBE), // Set background color for initials
+                            backgroundColor: primaryColor, // Set background color for initials
                             child:
                             // state.prfileDetails.data?.image != null &&
                             //     state.prfileDetails.data!.image!.isNotEmpty
@@ -95,7 +96,7 @@ class _ProfileState extends State<Profile> {
                           //                   EdgeInsets.zero)),
                           //           icon: Icon(
                           //             Icons.edit,
-                          //             color: Color(0xff27BDBE),
+                          //             color: primaryColor,
                           //             size: 20,
                           //           ),
                           //         ))),
@@ -299,7 +300,7 @@ Widget _shimmerList(){
                           style: TextStyle(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff27BDBE),
+                              color: primaryColor,
                               fontFamily: "Poppins"
                           ),
                         ),
@@ -327,7 +328,7 @@ Widget _shimmerList(){
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor:
-                                  Color(0xff27BDBE), // Filled button color
+                                  primaryColor, // Filled button color
                                   foregroundColor: Colors.white, // Text color
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
@@ -358,9 +359,9 @@ Widget _shimmerList(){
                                 },
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor:
-                                  Color(0xff27BDBE), // Text color
+                                  primaryColor, // Text color
                                   side: BorderSide(
-                                      color: Color(0xff27BDBE)), // Border color
+                                      color: primaryColor), // Border color
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                 ),

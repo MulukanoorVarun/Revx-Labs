@@ -8,6 +8,7 @@ import 'package:revxpharma/Patient/screens/Dashboard.dart';
 import 'package:revxpharma/Services/AuthService.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/VendorDashBoard.dart';
 import '../Patient/screens/UserSelectionScreen.dart';
 
@@ -243,8 +244,8 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                       onPressed: state is LoginLoading ? null : _validatefeilds,
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
-                        backgroundColor: const Color(0xff27BDBE), // Active color
-                        disabledBackgroundColor: const Color(0xff27BDBE), // Same color when disabled
+                        backgroundColor:primaryColor,
+                        disabledBackgroundColor:primaryColor, // Same color when disabled
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30), // Rounded corners
                         ),
@@ -366,7 +367,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                           TextSpan(
                             text: "Register",
                             style: TextStyle(
-                                color: Color(0xFF00C4D3), // Register link color
+                                color: primaryColor, // Register link color
                                 fontWeight: FontWeight.w500,
                                 fontFamily: "Poppins"),
                           ),

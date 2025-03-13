@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class CustomSnackBar {
   static void show(BuildContext context, String message) {
@@ -9,7 +10,7 @@ class CustomSnackBar {
           style: TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 14 ),
         ),
         duration: Duration(seconds: 2),
-        backgroundColor: Color(0xff27bdbe),
+        backgroundColor: primaryColor,
       ),
     );
   }

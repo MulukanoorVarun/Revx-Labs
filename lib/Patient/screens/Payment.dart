@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../../Components/CustomSnackBar.dart';
 import '../logic/cubit/appointment/appointment_cubit.dart';
@@ -73,7 +74,7 @@ class _PaymentState extends State<Payment> {
                         children: [
                           RadioListTile<String>(
                             visualDensity: VisualDensity.compact,
-                            activeColor: Color(0xff27BDBE),
+                            activeColor: primaryColor,
                             title: Text("Cash"),
                             value: "cash_on_test",
                             groupValue: _selectedPaymentOption,

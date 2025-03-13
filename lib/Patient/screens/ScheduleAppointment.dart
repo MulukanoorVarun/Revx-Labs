@@ -11,6 +11,7 @@ import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_state.dart';
 import 'package:revxpharma/Patient/screens/AddPatientScreen.dart';
 import 'package:revxpharma/Patient/screens/widgets/DetailRow.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../../Components/ShakeWidget.dart';
 import '../../Components/debugPrint.dart';
 import 'Appointment.dart';
@@ -255,14 +256,14 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           ),
                           foregroundColor: MaterialStateProperty.resolveWith<Color>(
                                 (Set<MaterialState> states) {
-                              return Color(0xff27BDBE); // Default text color
+                              return primaryColor; // Default text color
                             },
                           ),
                         ),
                         child: Text(
                           "Change",
                           style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontWeight: FontWeight.w500,
                             fontFamily: "Poppins",
                             fontSize: 14,
@@ -282,7 +283,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                       //     icon: Icon(
                       //       Icons.add_circle_outline,
                       //       size: 36,
-                      //       color: Color(0xff27BDBE),
+                      //       color: primaryColor,
                       //     )
                       //     )
                     ],
@@ -292,7 +293,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                         if (state is PatientDetailsLoadingState) {
                           return Center(
                             child: CircularProgressIndicator(
-                              color: Color(0xff27BDBE),
+                              color: primaryColor,
                             ),
                           );
                         } else if (state is PatientsDetailsLoaded) {
@@ -372,7 +373,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                           ),
                           foregroundColor: MaterialStateProperty.resolveWith<Color>(
                                 (Set<MaterialState> states) {
-                              return Color(0xff27BDBE); // Default text color
+                              return primaryColor; // Default text color
                             },
                           ),
                         ),
@@ -405,7 +406,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                             width: 60,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: isSelected ? Color(0xff27BDBE) : Color(0xffD3D3D3),
+                              color: isSelected ? primaryColor : Color(0xffD3D3D3),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
@@ -492,7 +493,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                       //     ),
                       //     foregroundColor: MaterialStateProperty.resolveWith<Color>(
                       //       (Set<MaterialState> states) {
-                      //         return Color(0xff27BDBE); // Default text color
+                      //         return primaryColor; // Default text color
                       //       },
                       //     ),
                       //   ),
@@ -531,10 +532,10 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                             height: 50,
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? Color(
-                                  0xff27BDBE) // Highlight selected time slot
+                                  ?
+                                  primaryColor // Highlight selected time slot
                                   : (isCurrentHour
-                                  ? Color(0xff27BDBE)
+                                  ? primaryColor
                                   : Color(0xffD3D3D3)),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -619,7 +620,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
               if (state is PatientListLoadingState) {
                 return Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xff27BDBE),
+                    color: primaryColor,
                   ),
                 );
               } else if (state is PatientsListLoaded) {
@@ -649,7 +650,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               fontFamily: "Poppins",
-                              color: Color(0xff27BDBE),
+                              color: primaryColor,
                             ),
                           ),
                           OutlinedButton(
@@ -667,7 +668,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                             },
                             style: OutlinedButton.styleFrom(
                               visualDensity: VisualDensity.compact,
-                              side: BorderSide(color: Color(0xff27BDBE), width: 1), // Border color
+                              side: BorderSide(color: primaryColor, width: 1), // Border color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8), // Border radius
                               ),
@@ -681,12 +682,12 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xff27BDBE),
+                                    color: primaryColor,
                                     fontFamily: "Poppins",
                                   ),
                                 ),
                                 SizedBox(width: 5),
-                                Icon(Icons.add_circle_outline, color: Color(0xff27BDBE)),
+                                Icon(Icons.add_circle_outline, color: primaryColor),
                               ],
                             ),
                           ),
@@ -754,7 +755,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                     icon: Icon(Icons.edit, size: 20, color: Colors.white),
                                     style: IconButton.styleFrom(
                                       visualDensity: VisualDensity.compact,
-                                      backgroundColor: Color(0xff27BDBE),
+                                      backgroundColor: primaryColor,
                                       padding: EdgeInsets.all(5),
                                     ),
                                   ),
@@ -766,7 +767,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                                     icon: Icon(Icons.delete, size: 20, color: Colors.white),
                                     style: IconButton.styleFrom(
                                       visualDensity: VisualDensity.compact,
-                                      backgroundColor: Color(0xff27BDBE),
+                                      backgroundColor: primaryColor,
                                       padding: EdgeInsets.all(5),
                                     ),
                                   ),

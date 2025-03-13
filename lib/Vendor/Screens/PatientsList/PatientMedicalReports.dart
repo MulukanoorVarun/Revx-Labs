@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../../../Components/CustomAppButton.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
@@ -86,7 +87,7 @@ class _MedicalReportsState extends State<MedicalReports> {
                 borderType: BorderType.RRect,
                 radius: Radius.circular(10),
                 dashPattern: [4, 2],
-                color: Color(0xff27BDBE),
+                color: primaryColor,
                 strokeWidth: 0.5,
                 child: Column(
                   children: [
@@ -167,7 +168,7 @@ class _MedicalReportsState extends State<MedicalReports> {
                             LinearProgressIndicator(
                               value: file['progress'] / 100, // Normalize to [0, 1]
                               backgroundColor: Colors.grey[200],
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff27BDBE)),
+                              valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
                             ),
                           ],
                         ),

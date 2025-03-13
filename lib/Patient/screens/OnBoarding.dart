@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'Onboard1.dart';
 
 class OnBoard extends StatefulWidget {
@@ -90,7 +91,7 @@ class _OnBoardState extends State<OnBoard> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20,
                   ),
                   InkWell(onTap: (){
@@ -98,10 +99,10 @@ class _OnBoardState extends State<OnBoard> {
                   },
                     child: Container(
                       width: w,
-                      height: 40,
+                      height: 42,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
-                        color: const Color(0xff008675),
+                        color: primaryColor,
                       ),
                       child: Center(
                         child: Text(

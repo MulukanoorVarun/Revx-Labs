@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../../../Components/CustomAppButton.dart';
 
@@ -37,7 +38,7 @@ class _UserDataState extends State<UserData> {
                   Text(
                     'Patient Details',
                     style: TextStyle(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w400),
@@ -48,7 +49,7 @@ class _UserDataState extends State<UserData> {
                         vertical: 12, horizontal: 16),
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: Color(0xff27BDBE), width: 0.5),
+                            color: primaryColor, width: 0.5),
                         borderRadius: BorderRadius.circular(12)),
                     child: Column(
                       children: [
@@ -263,7 +264,7 @@ class _UserDataState extends State<UserData> {
                           Text(
                             'Appointment date',
                             style: TextStyle(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
@@ -287,7 +288,7 @@ class _UserDataState extends State<UserData> {
                           Text(
                             'Appointment Time',
                             style: TextStyle(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
@@ -319,7 +320,7 @@ class _UserDataState extends State<UserData> {
                           Text(
                             'No. of Tests',
                             style: TextStyle(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
@@ -357,7 +358,7 @@ class _UserDataState extends State<UserData> {
                           Text(
                             'Test Duration',
                             style: TextStyle(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
@@ -383,7 +384,7 @@ class _UserDataState extends State<UserData> {
                   Text(
                     'Test type - Anemia',
                     style: TextStyle(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w400),
@@ -433,7 +434,7 @@ class _UserDataState extends State<UserData> {
                           Text(
                             'Price of Tests',
                             style: TextStyle(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
@@ -460,7 +461,7 @@ class _UserDataState extends State<UserData> {
                           Text(
                             'PaymentType',
                             style: TextStyle(
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
@@ -488,7 +489,7 @@ class _UserDataState extends State<UserData> {
                       Text(
                         'Test type - Anemia',
                         style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -496,7 +497,7 @@ class _UserDataState extends State<UserData> {
                       Text(
                         'Status',
                         style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -540,7 +541,7 @@ class _UserDataState extends State<UserData> {
                             ),
                             Spacer(),
                             Checkbox(
-                                activeColor: Color(0xff27BDBE),
+                                activeColor: primaryColor,
                                 value: value,
                                 onChanged: onChanged)
                           ],
@@ -551,7 +552,7 @@ class _UserDataState extends State<UserData> {
                   Text(
                     'Tests Status',
                     style: TextStyle(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w400),
@@ -574,7 +575,7 @@ class _UserDataState extends State<UserData> {
                   Text(
                     'Description',
                     style: TextStyle(
-                        color: Color(0xff27BDBE),
+                        color: primaryColor,
                         fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w400),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class Pregnancy extends StatefulWidget {
   final String title;
@@ -26,7 +27,7 @@ class _PregnancyState extends State<Pregnancy> {
           leading: Container(
             padding: EdgeInsets.only(left: 10.0),
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Color(0xff24AEB1)),
+              icon: Icon(Icons.arrow_back_ios, color: primaryColor),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -37,7 +38,7 @@ class _PregnancyState extends State<Pregnancy> {
               Text(
                 "${widget.title}",
                 style: TextStyle(
-                  color: Color(0xff24AEB1),
+                  color: primaryColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   fontFamily: "Poppins",
@@ -48,7 +49,7 @@ class _PregnancyState extends State<Pregnancy> {
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: IconThemeData(color: Color(0xff24AEB1)),
+          iconTheme: IconThemeData(color: primaryColor),
         ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -152,13 +153,13 @@ class _PregnancyState extends State<Pregnancy> {
                                   decoration: BoxDecoration(
 
                                       borderRadius: BorderRadius.all(Radius.circular(30)),
-                                      border: Border.all(color: Color(0xff27BDBE))
+                                      border: Border.all(color: primaryColor)
                                   ),
                                   child: Text('View Detail',style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       fontFamily: "Poppins",
-                                      color: Color(0xff27BDBE)),),
+                                      color: primaryColor),),
                                 ),
                               ),
                               GestureDetector(
@@ -168,7 +169,7 @@ class _PregnancyState extends State<Pregnancy> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 7, horizontal: 20), // Adjust padding as needed
                                   decoration: BoxDecoration(
-                                    color: Color(0xff24AEB1), // Button color
+                                    color: primaryColor, // Button color
                                     borderRadius: BorderRadius.circular(30), // Rounded corners
                                   ),
                                   child: Row(

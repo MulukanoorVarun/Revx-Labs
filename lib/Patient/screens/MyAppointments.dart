@@ -4,6 +4,7 @@ import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
 import 'package:revxpharma/Patient/screens/ApointmentDetails.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class Myappointments extends StatefulWidget {
   const Myappointments({super.key});
@@ -89,7 +90,7 @@ class _MyappointmentsState extends State<Myappointments> {
                                             fontFamily: "Poppins",
                                             fontSize: 17,
                                             fontWeight: FontWeight.w500,
-                                            color: Color(0xff27BDBE)
+                                            color: primaryColor
                                           ),
                                         ),
                                         SizedBox(height: 8),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import 'Payment.dart';
 
@@ -27,13 +28,13 @@ class _appointmentscreensState extends State<appointmentscreens> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xff24AEB1)),
+          icon:  Icon(Icons.arrow_back, color: primaryColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title:  Text(
           "Appointment",
           style: TextStyle(
-            color: Color(0xff24AEB1),
+            color: primaryColor,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins",
@@ -41,7 +42,7 @@ class _appointmentscreensState extends State<appointmentscreens> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xff24AEB1)),
+        iconTheme:  IconThemeData(color: primaryColor),
       ),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -95,7 +96,7 @@ class _appointmentscreensState extends State<appointmentscreens> {
                               selectedAddressIndex = value ?? 0;
                             });
                           },
-                          activeColor: const Color(0xff24AEB1), // Radio button color
+                          activeColor:  primaryColor, // Radio button color
                         ),
                         Expanded(
                           child: Column(
@@ -212,7 +213,7 @@ class _appointmentscreensState extends State<appointmentscreens> {
               margin: EdgeInsets.only(left: 15,right: 15,top: 15,),// Use double.infinity for full width
               height: 50,
               decoration: BoxDecoration(
-                color: const Color(0xff24AEB1),
+                color:  primaryColor,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TextButton(

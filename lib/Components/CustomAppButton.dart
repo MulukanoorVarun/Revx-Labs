@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class CustomAppButton extends StatelessWidget implements PreferredSizeWidget {
   final String text;
@@ -30,7 +31,7 @@ class CustomAppButton extends StatelessWidget implements PreferredSizeWidget {
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100))),
             backgroundColor:
-                MaterialStateProperty.all(color ?? Color(0xff27BDBE)),
+                MaterialStateProperty.all(color ?? primaryColor),
           ),
           onPressed: onPlusTap,
           child: Text(

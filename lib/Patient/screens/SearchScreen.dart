@@ -11,6 +11,7 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 import 'package:revxpharma/Patient/screens/DiagnosticInformation.dart';
 import 'package:revxpharma/Patient/screens/Diagnosticcenter.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:speech_to_text/speech_to_text.dart%20' as stt;
 
 import 'Appointment.dart';
@@ -48,7 +49,7 @@ class _SearchscreenState extends State<Searchscreen> {
         leading: IconButton.filled(
           visualDensity: VisualDensity.compact,
           style: IconButton.styleFrom(
-            backgroundColor: Color(0xff27BDBE), // Set background color
+            backgroundColor: primaryColor, // Set background color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10), // Rounded corners
             ),
@@ -76,7 +77,7 @@ class _SearchscreenState extends State<Searchscreen> {
             });
           },
           decoration: InputDecoration(
-            focusColor: Color(0xff27BDBE),
+            focusColor: primaryColor,
             border: InputBorder.none,
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -102,10 +103,10 @@ class _SearchscreenState extends State<Searchscreen> {
             ),
           ),
           style: TextStyle(
-            color: Color(0xff27BDBE),
+            color: primaryColor,
             fontWeight: FontWeight.w400,
             fontSize: 16,
-            decorationColor: Color(0xff27BDBE),
+            decorationColor: primaryColor,
             fontFamily: "Inter",
             overflow: TextOverflow.ellipsis,
           ),
@@ -268,8 +269,8 @@ class _SearchscreenState extends State<Searchscreen> {
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: Colors.white,
-                                                  side: const BorderSide(
-                                                      color: Color(0xff27BDBE)),
+                                                  side:  BorderSide(
+                                                      color: primaryColor),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -282,7 +283,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                 child: Text(
                                                   'View Detail',
                                                   style: TextStyle(
-                                                      color: Color(0xff27BDBE),
+                                                      color: primaryColor,
                                                       fontFamily: "Poppins"),
                                                 ),
                                               ),
@@ -517,7 +518,7 @@ class _SearchscreenState extends State<Searchscreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff27BDBE),
+                        backgroundColor:  primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),

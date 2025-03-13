@@ -4,6 +4,7 @@ import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_state.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'DiagnosticInformation.dart';
 
 class Diagnosticcenter extends StatefulWidget {
@@ -73,7 +74,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                             child: Row(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
+                                  padding:  EdgeInsets.only(
                                       left: 15.0,
                                       right: 0), // Padding for the image
                                   child: Container(
@@ -82,7 +83,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Color(0xff24AEB1),
+                                          color: primaryColor,
                                           width: 1), // Gray border
                                       borderRadius: BorderRadius.circular(
                                           8), // Rounded corners for the image

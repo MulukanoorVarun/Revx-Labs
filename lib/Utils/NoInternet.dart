@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 
 class NoInternetWidget extends StatelessWidget {
@@ -51,13 +52,13 @@ class NoInternetWidget extends StatelessWidget {
                   context.read<InternetStatusBloc>().add(CheckInternetEvent());
                 },
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 38),
+                  padding:  EdgeInsets.only(top: 38),
                   child: Container(
                     width: 240,
                     height: 46,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
-                      color: Color(0xff27BDBE),
+                      color: primaryColor,
                     ),
                     child: Center(
                       child: Text(

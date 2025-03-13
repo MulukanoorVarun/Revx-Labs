@@ -8,6 +8,7 @@ import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_state.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../../Components/ShakeWidget.dart';
 
 
@@ -212,10 +213,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 40,
+                CircleAvatar(backgroundColor:whiteColor,
+                  radius: 46,
                   backgroundImage:
-                  AssetImage('assets/blueLogo.png'), // Add your image here
+                  AssetImage('assets/REVX_LOGO.png'),
                 ),
                 SizedBox(height: 20),
                 Text(
@@ -500,8 +501,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: state is PatientRegisterLoading ? null : _validateFields,
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      backgroundColor: const Color(0xff27BDBE),
-                      disabledBackgroundColor: const Color(0xff27BDBE), // Same color when disabled
+                      backgroundColor:primaryColor,
+                      disabledBackgroundColor:  primaryColor, // Same color when disabled
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30), // Rounded corners
                       ), // Padding
@@ -541,7 +542,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Text(
                         'Login',
                         style: TextStyle(
-                          color:Color(0xFF27BDBE),
+                          color:primaryColor,
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w600,
                         ),

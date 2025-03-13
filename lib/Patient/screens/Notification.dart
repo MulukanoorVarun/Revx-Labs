@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({super.key});
@@ -38,7 +39,7 @@ class _NotificationsState extends State<Notifications> {
           child: Text(
             "Notifications",
             style: TextStyle(
-                color: Color(0xff27BDBE),
+                color: primaryColor,
                 fontFamily: 'Poppins',
                 fontSize: 18,
                 fontWeight: FontWeight.w600),
@@ -62,7 +63,7 @@ class _NotificationsState extends State<Notifications> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color(0xff27BDBE), width: 1),
+                  border: Border.all(color: primaryColor, width: 1),
                 ),
                 child: Row(
                   children: [
@@ -77,7 +78,7 @@ class _NotificationsState extends State<Notifications> {
                         width: w * 0.44, // Adjusted width to match the design
                         decoration: BoxDecoration(
                           color: isNotificationsSelected
-                              ? Color(0xFF27BDBE)
+                              ? primaryColor
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -107,7 +108,7 @@ class _NotificationsState extends State<Notifications> {
                         width: w * 0.44, // Adjusted width to match the design
                         decoration: BoxDecoration(
                           color: !isNotificationsSelected
-                              ? Color(0xFF27BDBE)
+                              ? primaryColor
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -161,7 +162,7 @@ class _NotificationsState extends State<Notifications> {
                           Text(
                             "View",
                             style: TextStyle(
-                              color: Color(0xff27BDBE),
+                              color: primaryColor,
                               fontFamily: "Poppins",
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -213,7 +214,7 @@ class _NotificationsState extends State<Notifications> {
                           Text(
                             "View",
                             style: TextStyle(
-                              color: Color(0xff27BDBE),
+                              color: primaryColor,
                               fontFamily: "Poppins",
                               fontSize: 14,
                               fontWeight: FontWeight.w400,

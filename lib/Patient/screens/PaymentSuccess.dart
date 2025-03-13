@@ -62,7 +62,7 @@ class paymentoptionscreen extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color(0xff24AEB1), // Border color
+                  color: const primaryColor, // Border color
                 ),
                 borderRadius: BorderRadius.circular(30), // Curved corners
               ),
@@ -73,7 +73,7 @@ class paymentoptionscreen extends StatelessWidget {
                 child: const Text(
                   'Set a  Reminder',
                   style: TextStyle(
-                    color: Color(0xff27BDBE),
+                    color: primaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     fontFamily: 'Poppins',
@@ -89,7 +89,7 @@ class paymentoptionscreen extends StatelessWidget {
               width: screenWidth,
               height: 50,
               decoration: BoxDecoration(
-                color: const Color(0xff24AEB1), // Filled button background color
+                color: const primaryColor, // Filled button background color
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TextButton(

@@ -13,6 +13,7 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 import 'package:revxpharma/Patient/screens/TestDetails.dart';
 import 'package:revxpharma/Utils/NoInternet.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../../Components/CustomSnackBar.dart';
 import 'Appointment.dart';
@@ -203,7 +204,7 @@ class _alltestsState extends State<alltests> {
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                              const SizedBox(height: 5),
+                                               SizedBox(height: 5),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -224,9 +225,8 @@ class _alltestsState extends State<alltests> {
                                                         .styleFrom(
                                                       backgroundColor:
                                                           Colors.white,
-                                                      side: const BorderSide(
-                                                          color: Color(
-                                                              0xff27BDBE)),
+                                                      side:  BorderSide(
+                                                          color: primaryColor),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
@@ -241,7 +241,7 @@ class _alltestsState extends State<alltests> {
                                                       'View Detail',
                                                       style: TextStyle(
                                                           color:
-                                                              Color(0xff27BDBE),
+                                                              primaryColor,
                                                           fontFamily:
                                                               "Poppins"),
                                                     ),
@@ -286,10 +286,8 @@ class _alltestsState extends State<alltests> {
                                                                 backgroundColor: labTests
                                                                             .exist_in_cart ??
                                                                         false
-                                                                    ? Color(
-                                                                        0xff137B7C)
-                                                                    : const Color(
-                                                                        0xff24AEB1),
+                                                                    ? primaryColor
+                                                                    :  primaryColor,
                                                                 shape:
                                                                     RoundedRectangleBorder(
                                                                   borderRadius:
@@ -549,7 +547,7 @@ class _alltestsState extends State<alltests> {
                         else
                           Text(
                             "$cartCount",
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
@@ -568,7 +566,7 @@ class _alltestsState extends State<alltests> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff27BDBE),
+                        backgroundColor:  primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),

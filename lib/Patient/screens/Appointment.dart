@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../logic/cubit/cart/cart_cubit.dart';
 import '../logic/cubit/cart/cart_state.dart';
@@ -145,7 +146,7 @@ class _ApointmentsState extends State<Apointments> {
                     //   child: Row(
                     //     children: [
                     //       Radio(
-                    //         activeColor: Color(0xff27BDBE),
+                    //         activeColor: primaryColor,
                     //         value: 1,
                     //         groupValue: 1, // Update this as needed
                     //         onChanged: (value) {
@@ -491,7 +492,7 @@ class _ApointmentsState extends State<Apointments> {
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: const Color(0xFF27BDBE),
+                    backgroundColor:  primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),

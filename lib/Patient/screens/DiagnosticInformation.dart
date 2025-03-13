@@ -6,6 +6,7 @@ import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_state.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../../Utils/Preferances.dart';
 import 'ScheduleAppointment.dart';
 import 'alltests.dart';
@@ -119,7 +120,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color:  Color(0xff27BDBE), width: 1), // Added border color
+                              border: Border.all(color:  primaryColor, width: 1), // Added border color
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8), // Rounded corners
@@ -203,7 +204,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff24AEB1),
+                            color: primaryColor,
                             fontFamily: "Poppins"),
                       ),
                       // Heading Text
@@ -226,7 +227,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           fontFamily: "Poppins",
-                          color: Color(0xff24AEB1),
+                          color: primaryColor,
                         ),
                       ),
                       SizedBox(height: 16),
@@ -332,7 +333,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Color(0xff27BDBE), width: 1),
+                            border: Border.all(color: primaryColor, width: 1),
                           ),
                           child: Column(
                             children: [
@@ -341,7 +342,7 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                                     horizontal: 20, vertical: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xff27BDBE)),
+                                    color: primaryColor),
                                 child: Row(
                                   children: [
                                     Text(

@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/PatientMedicalReports.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/PatientUserData.dart';
 import 'package:revxpharma/Vendor/Screens/PatientsList/PatientVisit.dart';
@@ -78,7 +79,7 @@ class _PateintDetailsState extends State<PateintDetails>
                 dividerColor: Colors.transparent,
                 controller: _tabController,
                 isScrollable: true,
-                indicatorColor: Color(0xff24AEB1),
+                indicatorColor: primaryColor,
                 indicatorWeight: 0.01,
                 tabAlignment: TabAlignment.start,
                 labelPadding: EdgeInsets.symmetric(horizontal: 30),
@@ -86,7 +87,7 @@ class _PateintDetailsState extends State<PateintDetails>
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
-                  color: Color(0xff24AEB1),
+                  color: primaryColor,
                 ),
                 unselectedLabelStyle: TextStyle(
                   fontFamily: 'Poppins',

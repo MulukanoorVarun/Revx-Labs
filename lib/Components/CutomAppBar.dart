@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -21,13 +22,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: Icon(
           Icons.arrow_back_ios_new,
           size: 20,
-          color: Color(0xff27BDBE),
+          color: primaryColor,
         ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: Color(0xff27BDBE),
+          color: primaryColor,
           fontFamily: 'Poppins',
           fontSize: 18,
           fontWeight: FontWeight.w600,

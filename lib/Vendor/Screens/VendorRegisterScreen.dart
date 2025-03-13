@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_register/register_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_register/register_state.dart';
 import 'package:revxpharma/data/api_routes/remote_data_source.dart';
@@ -719,8 +720,8 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      backgroundColor: const Color(0xff27BDBE), // Button color
-                      disabledBackgroundColor: const Color(0xff27BDBE), // Same color when disabled
+                      backgroundColor:  primaryColor, // Button color
+                      disabledBackgroundColor:  primaryColor, // Same color when disabled
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(30), // Rounded corners
@@ -761,7 +762,7 @@ class _VendorRegisterScreenState extends State<VendorRegisterScreen> {
                         child: Text(
                           'Login',
                           style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w400,
                           ),

@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class Appointments extends StatefulWidget {
   const Appointments({super.key});
@@ -71,7 +72,7 @@ class _AppointmentsState extends State<Appointments>
                   dividerColor: Colors.transparent,
                   controller: _tabController,
                   isScrollable: true,
-                  indicatorColor: Color(0xff24AEB1),
+                  indicatorColor: primaryColor,
                   indicatorWeight: 0.01,
                   tabAlignment: TabAlignment.start,
                   labelPadding: EdgeInsets.symmetric(horizontal: 35),
@@ -79,7 +80,7 @@ class _AppointmentsState extends State<Appointments>
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
-                    color: Color(0xff24AEB1),
+                    color: primaryColor,
                   ),
                   unselectedLabelStyle: TextStyle(
                     fontFamily: 'Poppins',
@@ -133,7 +134,7 @@ class _AppointmentsState extends State<Appointments>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: isTodaySelected
-                                ? const Color(0xff27BDBE)
+                                ?  primaryColor
                                 : Colors.transparent,
                           ),
                           child: Center(
@@ -142,7 +143,7 @@ class _AppointmentsState extends State<Appointments>
                               style: TextStyle(
                                 color: isTodaySelected
                                     ? Colors.white
-                                    : const Color(0xff27BDBE),
+                                    :  primaryColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: "Poppins",
@@ -166,7 +167,7 @@ class _AppointmentsState extends State<Appointments>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: isTomarrowSelected
-                                ? const Color(0xff27BDBE)
+                                ?  primaryColor
                                 : Colors.transparent,
                           ),
                           child: Center(
@@ -175,7 +176,7 @@ class _AppointmentsState extends State<Appointments>
                               style: TextStyle(
                                 color: isTomarrowSelected
                                     ? Colors.white
-                                    : const Color(0xff27BDBE),
+                                    :  primaryColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: "Poppins",
@@ -199,7 +200,7 @@ class _AppointmentsState extends State<Appointments>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: isThisWeekSelected
-                                ? const Color(0xff27BDBE)
+                                ?  primaryColor
                                 : Colors.transparent,
                           ),
                           child: Center(
@@ -208,7 +209,7 @@ class _AppointmentsState extends State<Appointments>
                               style: TextStyle(
                                 color: isThisWeekSelected
                                     ? Colors.white
-                                    : const Color(0xff27BDBE),
+                                    :  primaryColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: "Poppins",
@@ -247,7 +248,7 @@ class _AppointmentsState extends State<Appointments>
                       child: Text(
                         'Calender',
                         style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -271,9 +272,7 @@ class _AppointmentsState extends State<Appointments>
                       decoration: BoxDecoration(
                         color: Color(0xffffffff),
                         border: Border.all(
-                            color: Color(
-                              0xff27BDBE,
-                            ),
+                            color: primaryColor,
                             width: 0.5),
                         borderRadius: BorderRadius.circular(4),
                       ),
@@ -376,7 +375,7 @@ class _AppointmentsState extends State<Appointments>
                               Text(
                                 'Complete blood picture',
                                 style: TextStyle(
-                                    color: Color(0xff27BDBE),
+                                    color: primaryColor,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
                                     fontFamily: 'Poppins'),
@@ -389,7 +388,7 @@ class _AppointmentsState extends State<Appointments>
                                               horizontal: 24, vertical: 0)),
                                       side: MaterialStateProperty.all(
                                           BorderSide(
-                                              color: Color(0xff27BDBE),
+                                              color: primaryColor,
                                               width: 0.5)),
                                       backgroundColor:
                                           MaterialStateProperty.all(

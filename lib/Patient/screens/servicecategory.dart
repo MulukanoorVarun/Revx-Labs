@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class ServiceCategory extends StatefulWidget {
   const ServiceCategory({super.key});
@@ -24,7 +25,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         title: Text(
           "Service Category",
           style: TextStyle(
-            color: Color(0xff24AEB1),
+            color: primaryColor,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins",
@@ -33,7 +34,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xff24AEB1)),
+        iconTheme: IconThemeData(color: primaryColor),
       ),
       body: BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {

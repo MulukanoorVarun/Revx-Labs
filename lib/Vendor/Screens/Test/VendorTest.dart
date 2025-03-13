@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/Test/VendorCreateTest.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
 import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_state.dart';
@@ -140,7 +141,7 @@ class _VendorTestState extends State<VendorTest> {
                   height: 38,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xff27BDBE),
+                      color: primaryColor,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -175,7 +176,7 @@ class _VendorTestState extends State<VendorTest> {
                             ),
                           ),
                           style: TextStyle(
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
                             fontFamily: "Poppins",
@@ -187,7 +188,7 @@ class _VendorTestState extends State<VendorTest> {
                       IconButton(
                         icon: Icon(
                           _isListening ? Icons.stop : Icons.mic,
-                          color: Color(0xff27BDBE),
+                          color: primaryColor,
                           size: 18,
                         ),
                         onPressed: () {

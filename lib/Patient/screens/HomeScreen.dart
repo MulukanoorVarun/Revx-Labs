@@ -15,6 +15,7 @@ import 'package:revxpharma/Patient/screens/Appointment.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import 'package:revxpharma/Utils/color.dart';
 import 'package:revxpharma/Vendor/Screens/Appointment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/constants.dart';
@@ -370,7 +371,7 @@ class _HomescreenState extends State<Homescreen> {
                       //   },
                       //   child: CircleAvatar(
                       //     backgroundColor: Color(
-                      //         0xff27BDBE), // Set background color for initials
+                      //         primaryColor), // Set background color for initials
                       //     child:
                       //         // state.prfileDetails.data?.image != null &&
                       //         //     state.prfileDetails.data!.image!.isNotEmpty
@@ -420,7 +421,7 @@ class _HomescreenState extends State<Homescreen> {
                               },
                               child: Icon(
                                 Icons.shopping_cart_outlined,
-                                color: Color(0xff27BDBE),
+                                color: primaryColor,
                                 size: 28,
                               ),
                             ),
@@ -566,7 +567,7 @@ class _HomescreenState extends State<Homescreen> {
                             : screenWidth * 0.014,
                         decoration: BoxDecoration(
                           color: currentIndex == i
-                              ? Color(0xff27BDBE)
+                              ? primaryColor
                               : Colors.grey.shade400,
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -749,7 +750,7 @@ class _HomescreenState extends State<Homescreen> {
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff27BDBE),
+                      color: primaryColor,
                       fontFamily: "Poppins"),
                 ),
                 SizedBox(height: 8),
@@ -780,7 +781,7 @@ class _HomescreenState extends State<Homescreen> {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff27BDBE),
+                          color: primaryColor,
                           fontFamily: "Poppins"),
                     ),
                     InkResponse(
@@ -798,7 +799,7 @@ class _HomescreenState extends State<Homescreen> {
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff27BDBE),
+                            color: primaryColor,
                             fontFamily: "Poppins"),
                       ),
                     ),
@@ -838,7 +839,7 @@ class _HomescreenState extends State<Homescreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  color: Color(0xff27BDBE), width: 1),
+                                  color: primaryColor, width: 1),
                               // Adjusted size to fit the circle
                             ),
                             child: Image.network(
@@ -873,7 +874,7 @@ class _HomescreenState extends State<Homescreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Color(0xff27BDBE), width: 1),
+                      border: Border.all(color: primaryColor, width: 1),
                       // Adjusted size to fit the circle
                     ),
                     child: Column(
@@ -894,7 +895,7 @@ class _HomescreenState extends State<Homescreen> {
                               horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(0xff27BDBE)),
+                              color: primaryColor),
                           child: Row(
                             children: [
                               Text(

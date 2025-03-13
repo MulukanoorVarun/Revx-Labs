@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../../../Components/CustomAppButton.dart';
 import '../../../Components/CutomAppBar.dart';
@@ -389,7 +390,7 @@ class _CreateNewCategoryState extends State<CreateNewCategory>  {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
         child: CustomAppButton(
-            color: Color(0xff27BDBE),
+            color: primaryColor,
             text: 'Submit for approval',
             onPlusTap: () {
               Navigator.push(context,

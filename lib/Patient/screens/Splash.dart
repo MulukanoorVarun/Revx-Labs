@@ -140,7 +140,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
               height: screenheight,
               child: Center(
                 child: Image.asset(
-                  "assets/logo.png",
+                  "assets/REVX_LOGO.png",
                   width: 260,
                   height: 150,
                   fit: BoxFit.contain,

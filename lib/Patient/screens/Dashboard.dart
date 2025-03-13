@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
+import 'package:revxpharma/Utils/color.dart';
 import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
 import '../logic/cubit/Location/location_cubit.dart';
@@ -97,7 +98,7 @@ class _DashboardState extends State<Dashboard> {
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
-            selectedItemColor: Color(0xff27BDBE),
+            selectedItemColor: primaryColor,
             unselectedItemColor: Colors.black,
             selectedFontSize: 12.0,
             unselectedFontSize: 9.0,
@@ -114,6 +115,7 @@ class _DashboardState extends State<Dashboard> {
                               "assets/activehome.png",
                               width: 25,
                               height: 25,
+                        color: primaryColor,
                             )
                           : Image.asset(
                               "assets/home.png",
@@ -130,7 +132,7 @@ class _DashboardState extends State<Dashboard> {
                           ? Image.asset(
                               "assets/activeservicecatogry.png",
                               width: 25,
-                              height: 25,
+                              height: 25,        color: primaryColor,
                             )
                           : Image.asset(
                               "assets/servicecatagory.png",
@@ -182,7 +184,7 @@ class _DashboardState extends State<Dashboard> {
                           ? Image.asset(
                               "assets/activeprofile.png",
                               width: 25,
-                              height: 25,
+                              height: 25,        color: primaryColor,
                             )
                           : Image.asset(
                               "assets/profile.png",
