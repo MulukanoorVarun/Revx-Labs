@@ -16,7 +16,6 @@ class _ServiceCategoryState extends State<ServiceCategory> {
     context.read<CategoryCubit>().fetchCategories();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +35,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff24AEB1)),
       ),
-      body:
-          BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
+      body: BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {
           return _shimmer(context);
         } else if (state is CategoryLoaded) {
@@ -48,8 +46,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                   crossAxisCount: 3, // Number of columns
                   childAspectRatio: 0.8, // Aspect ratio for items
                 ),
-                itemCount:
-                    state.categories.category?.length, // Total number of items
+                itemCount: state.categories.category?.length, // Total number of items
                 itemBuilder: (context, index) {
                   final item = state.categories
                       .category?[index]; // Get the map for the current index
