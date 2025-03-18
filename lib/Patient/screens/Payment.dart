@@ -116,8 +116,8 @@ class _PaymentState extends State<Payment> {
                               }
                             },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00C4D3),
-                        disabledBackgroundColor: const Color(0xFF00C4D3),
+                        backgroundColor: primaryColor,
+                        disabledBackgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),

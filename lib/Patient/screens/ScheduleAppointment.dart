@@ -38,7 +38,7 @@ class ScheduleAnAppointment extends StatefulWidget {
 
 class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
   bool? groupValue;
-  int _selectedDateIndex = -1; // Track the selected index
+  int _selectedDateIndex = -1;
   final DateTime now = DateTime.now();
   List<DateTime> _dates = [];
 
@@ -533,7 +533,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ?
-                                  primaryColor // Highlight selected time slot
+                                  primaryColor
                                   : (isCurrentHour
                                   ? primaryColor
                                   : Color(0xffD3D3D3)),
@@ -587,7 +587,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                   ElevatedButton(
                     onPressed: submitData,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF00C4D3), // Button color
+                      backgroundColor: primaryColor, // Button color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),

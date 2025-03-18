@@ -6,6 +6,7 @@ import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Patient/screens/Dashboard.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class MyPermission extends StatefulWidget {
   const MyPermission({super.key});
@@ -213,7 +214,7 @@ class _MyPermissionState extends State<MyPermission> {
             height: 45,
             padding: EdgeInsets.symmetric(vertical: 12.0),
             decoration: BoxDecoration(
-              color: Color(0xFF00C4D3),
+              color: primaryColor,
               borderRadius: BorderRadius.circular(30),
             ),
             alignment: Alignment.center,

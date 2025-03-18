@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import '../Components/ShakeWidget.dart';
 import '../Patient/screens/Dashboard.dart';
@@ -177,7 +178,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     decoration: BoxDecoration(
-                      color: Color(0xFF00C4D3),
+                      color: primaryColor,
                       borderRadius: BorderRadius.circular(30),
                     ),
                     alignment: Alignment.center,
@@ -286,7 +287,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                         TextSpan(
                           text: "Register",
                           style: TextStyle(
-                              color: Color(0xFF00C4D3), // Register link color
+                              color: primaryColor, // Register link color
                               fontWeight: FontWeight.w500,
                               fontFamily: "Poppins"
                           ),

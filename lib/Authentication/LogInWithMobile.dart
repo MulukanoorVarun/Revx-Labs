@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import 'OtpVerify.dart';
 import '../Patient/screens/UserSelectionScreen.dart';
@@ -82,7 +83,7 @@ class LoginMobile extends StatelessWidget {
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     decoration: BoxDecoration(
-                      color: Color(0xFF00C4D3),
+                      color: primaryColor,
                       borderRadius: BorderRadius.circular(30),
                     ),
                     alignment: Alignment.center,
@@ -198,7 +199,7 @@ class LoginMobile extends StatelessWidget {
                         TextSpan(
                           text: "Register",
                           style: TextStyle(
-                              color: Color(0xFF00C4D3), // Register link color
+                              color: primaryColor, // Register link color
                               fontWeight: FontWeight.w500,
                               fontFamily: "Poppins"),
                         ),

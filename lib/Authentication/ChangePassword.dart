@@ -80,7 +80,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               width: w,
               height: 50,
               decoration: BoxDecoration(
-                color: Color(0xFF00C4D3),
+                color: primaryColor,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
