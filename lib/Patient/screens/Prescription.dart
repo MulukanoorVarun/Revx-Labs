@@ -34,6 +34,7 @@ class _PrescriptionState extends State<Prescription> {
                     spreadRadius: 1,
                     blurRadius: 2,
                     offset: Offset(0, 2),
+
                   ),
                 ],
               ),
