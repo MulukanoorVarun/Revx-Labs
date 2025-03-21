@@ -957,10 +957,11 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future _bottomsheet(BuildContext context) {
+    final h= MediaQuery.of(context).size.width;
     return showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Container(
+        return Container(height: h*0.8,
           padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -996,16 +997,23 @@ class _HomescreenState extends State<Homescreen> {
                     fontWeight: FontWeight.w400),
               ),
 
-              Row(spacing: 10,
+              Row(
+                spacing: 10,
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
                       color: primaryColor,
                     ),
-                    child:  Row(spacing: 10,
+                    child: Row(
+                      spacing: 10,
                       children: [
-                        Icon(Icons.camera_alt_rounded,size: 16,color: Color(0xffffffff),),
+                        Icon(
+                          Icons.camera_alt_rounded,
+                          size: 16,
+                          color: Color(0xffffffff),
+                        ),
                         Text(
                           'Camera',
                           style: TextStyle(
@@ -1020,12 +1028,17 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color:primaryColor,width: 1)
-                    ),
-                    child:  Row(spacing: 10,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: primaryColor, width: 1)),
+                    child: Row(
+                      spacing: 10,
                       children: [
-                        Icon(Icons.photo,size: 16,color: Color(0xff202020),),
+                        Icon(
+                          Icons.photo,
+                          size: 16,
+                          color: Color(0xff202020),
+                        ),
                         Text(
                           'Gallery',
                           style: TextStyle(
@@ -1040,16 +1053,139 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                 ],
               ),
-              Divider(color: Color(0xffC5B8B8),height: 10,),
-              Text(
-                'Note:',
-                style: TextStyle(
+              Divider(
+                color: Color(0xffC5B8B8),
+                height: 10,
+              ),
+              RichText(
+                text: TextSpan(
+                  text: 'Note: ',
+                  style: TextStyle(
                     color: Color(0xff1A1A1A),
                     fontSize: 16,
                     fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400),
+                    fontWeight: FontWeight.w400,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Prescription should Contains',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins',
+                        color: Color(0xff1A1A1A),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(width: 80,height: 80,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: Color(0xffEAEBF4),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Center(
+                      child: Column(spacing: 6,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/Stethoscope.png',
+                            scale: 3,
+                          ),
+                          Text(textAlign: TextAlign.center,
+                            'Doctor\nDetails',
+                            style: TextStyle(
+                                color: Color(0xff1A1A1A),
+                                fontSize: 10,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(width: 80,height: 80,
+                    padding: EdgeInsets.symmetric(horizontal: 12,),
+                    decoration: BoxDecoration(
+                        color: Color(0xffEAEBF4),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Column(spacing: 6,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/CalendarDots.png',
+                          scale: 3,
+                        ),
+                        Text(textAlign: TextAlign.center,
+                          'Date of\nPresription ',
+                          style: TextStyle(
+                              color: Color(0xff1A1A1A),
+                              fontSize: 10,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(width: 80,height: 80,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                    decoration: BoxDecoration(
+                        color: Color(0xffEAEBF4),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Center(
+                      child: Column(spacing: 6,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/UserList.png',
+                            scale: 3,
+                          ),
+                          Text(textAlign: TextAlign.center,
+                            'Patient\nDetails',
+                            style: TextStyle(
+                                color: Color(0xff1A1A1A),
+                                fontSize: 10,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(width: 80,height: 80,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: Color(0xffEAEBF4),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Center(
+                      child: Column(spacing: 6,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/Pill.png',
+                            scale: 3,
+                          ),
+                          Text(textAlign: TextAlign.center,
+                            'Dosage\nDetails',
+                            style: TextStyle(
+                                color: Color(0xff1A1A1A),
+                                fontSize: 10,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
+                ],
+              )
             ],
           ),
         );

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:revxpharma/Patient/screens/Prescription.dart';
+import 'package:revxpharma/Patient/screens/YourReportes.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Utils/color.dart';
 import '../../Utils/NoInternet.dart';
@@ -68,6 +70,8 @@ class _DashboardState extends State<Dashboard> {
                 ServiceCategory(),
                 // ChatSupport(),
                 // Notifications(),
+                // Reports(),
+                Prescription(),
                 Profile()
 
               ],
@@ -173,10 +177,28 @@ class _DashboardState extends State<Dashboard> {
               //     )
               // ),
               BottomNavigationBarItem(
-                  label: "Profile",
+                  label: "Reports",
                   icon: Column(
                     children: [
                       _selectedIndex == 2
+                          ? Image.asset(
+                        "assets/active_reports.png",
+                        width: 25,
+                        height: 25,
+                        color: primaryColor,
+                      )
+                          : Image.asset(
+                        "assets/reports.png",
+                        width: 25,
+                        height: 25,
+                      )
+                    ],
+                  )),
+              BottomNavigationBarItem(
+                  label: "Profile",
+                  icon: Column(
+                    children: [
+                      _selectedIndex == 3
                           ? Image.asset(
                               "assets/activeprofile.png",
                               width: 25,

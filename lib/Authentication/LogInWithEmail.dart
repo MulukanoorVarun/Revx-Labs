@@ -74,9 +74,9 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                 state.loginModel.data?.expiryTime ?? 0);
             CustomSnackBar.show(context, state.message ?? '');
             if (state.loginModel.data?.role == "Patient") {
-              context.go('/dashboard');
+              context.pushReplacement('/dashboard');
             } else {
-              context.go('/vendor_dashboard');
+              context.pushReplacement('/vendor_dashboard');
             }
           } else {
             CustomSnackBar.show(context, state.message ?? '');
