@@ -1,6 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
@@ -141,18 +142,11 @@ class _MyPermissionState extends State<MyPermission> {
     );
   }
 
-// Function to handle navigation based on token
   void _navigateToAppropriateScreen() {
     if (token != "") {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Dashboard()),
-      );
+context.go('/dashboard');
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LogInWithEmail()),
-      );
+ context.go(('/login'));
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/bloc/internet_status/internet_status_bloc.dart';
@@ -204,7 +205,7 @@ class _alltestsState extends State<alltests> {
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                               SizedBox(height: 5),
+                                              SizedBox(height: 5),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -225,7 +226,7 @@ class _alltestsState extends State<alltests> {
                                                         .styleFrom(
                                                       backgroundColor:
                                                           Colors.white,
-                                                      side:  BorderSide(
+                                                      side: BorderSide(
                                                           color: primaryColor),
                                                       shape:
                                                           RoundedRectangleBorder(
@@ -240,8 +241,7 @@ class _alltestsState extends State<alltests> {
                                                     child: Text(
                                                       'View Detail',
                                                       style: TextStyle(
-                                                          color:
-                                                              primaryColor,
+                                                          color: primaryColor,
                                                           fontFamily:
                                                               "Poppins"),
                                                     ),
@@ -283,11 +283,11 @@ class _alltestsState extends State<alltests> {
                                                                 visualDensity:
                                                                     VisualDensity
                                                                         .compact,
-                                                                backgroundColor: labTests
-                                                                            .exist_in_cart ??
-                                                                        false
-                                                                    ? primaryColor
-                                                                    :  primaryColor,
+                                                                backgroundColor:
+                                                                    labTests.exist_in_cart ??
+                                                                            false
+                                                                        ? primaryColor
+                                                                        : primaryColor,
                                                                 shape:
                                                                     RoundedRectangleBorder(
                                                                   borderRadius:
@@ -547,7 +547,7 @@ class _alltestsState extends State<alltests> {
                         else
                           Text(
                             "$cartCount",
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
@@ -556,17 +556,12 @@ class _alltestsState extends State<alltests> {
                       ],
                     ),
 
-                    // Continue button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Apointments()),
-                        );
+                        context.pushReplacement('/appointments');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:  primaryColor,
+                        backgroundColor: primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),
@@ -733,7 +728,7 @@ class _alltestsState extends State<alltests> {
                     right: 0,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                   context.pop();
                       },
                       icon: Icon(
                         Icons.cancel,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
@@ -21,10 +22,7 @@ class _OnBoardOneState extends State<OnBoardOne> {
   }
 
   void nextPage(){
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MyPermission()),
-    );
+context.pushReplacement('/my_permissions');
 
   }
 

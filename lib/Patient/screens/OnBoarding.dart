@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
 import 'package:revxpharma/Utils/color.dart';
 import 'Onboard1.dart';
@@ -11,10 +12,9 @@ class OnBoard extends StatefulWidget {
 }
 
 class _OnBoardState extends State<OnBoard> {
-
   @override
   void initState() {
-  PreferenceService().saveString('on_boarding', '1');
+    PreferenceService().saveString('on_boarding', '1');
     super.initState();
   }
 
@@ -91,12 +91,13 @@ class _OnBoardState extends State<OnBoard> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
-                  InkWell(onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>OnBoardOne()));
-                  },
+                  InkWell(
+                    onTap: () {
+                      context.pushReplacement('/on_board1');
+                    },
                     child: Container(
                       width: w,
                       height: 42,

@@ -37,6 +37,5 @@ class AppointmentCubit extends Cubit<AppointmentState> {
       emit(AppointmentError("Failed to fetch appointments"));
     }
   }
-
 }
 

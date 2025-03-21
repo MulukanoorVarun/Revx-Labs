@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
@@ -30,9 +31,9 @@ class _ApointmentsState extends State<Apointments> {
     {"name": "Lipid Profile", "price": 800},
   ];
 
-  String vendorID="";
-  String startTime="";
-  String endTime="";
+  String vendorID = "";
+  String startTime = "";
+  String endTime = "";
   double? totalamount;
 
   @override
@@ -46,15 +47,16 @@ class _ApointmentsState extends State<Apointments> {
         if (cartState is CartLoadingState) {
           return _shimmerList();
         } else if (cartState is CartLoaded) {
-          vendorID= cartState.cartList?.data?.diagnosticCentre?.id??"";
-          startTime= cartState.cartList?.data?.diagnosticCentre?.starttime??"";
-          endTime= cartState.cartList?.data?.diagnosticCentre?.endtime??"";
-          totalamount= cartState.cartList?.data?.totalAmount??0.0 ;
-          if(totalamount!=0.0 && totalamount!=null){
+          vendorID = cartState.cartList?.data?.diagnosticCentre?.id ?? "";
+          startTime =
+              cartState.cartList?.data?.diagnosticCentre?.starttime ?? "";
+          endTime = cartState.cartList?.data?.diagnosticCentre?.endtime ?? "";
+          totalamount = cartState.cartList?.data?.totalAmount ?? 0.0;
+          if (totalamount != 0.0 && totalamount != null) {
             return SingleChildScrollView(
               child: Padding(
                 padding:
-                EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+                    EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -97,10 +99,7 @@ class _ApointmentsState extends State<Apointments> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width *
+                              width: MediaQuery.of(context).size.width *
                                   0.8, // 90% of screen width
                               child: Text(
                                 "${cartState.cartList?.data?.diagnosticCentre?.location}",
@@ -195,9 +194,12 @@ class _ApointmentsState extends State<Apointments> {
                     // SizedBox(height: 10),
                     Container(
                       padding: EdgeInsets.all(12),
-                      margin: EdgeInsets.only(bottom: 10,),
+                      margin: EdgeInsets.only(
+                        bottom: 10,
+                      ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                        border:
+                            Border.all(color: Color(0xffA9A9A9), width: 0.5),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                         color: Colors.white,
                       ),
@@ -207,23 +209,28 @@ class _ApointmentsState extends State<Apointments> {
                           ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: cartState.cartList?.data?.cartTests?.length??0,
+                            itemCount:
+                                cartState.cartList?.data?.cartTests?.length ??
+                                    0,
                             separatorBuilder: (context, index) => const Divider(
                               color: Colors.grey,
                               thickness: 0.5,
                               height: 16,
                             ),
                             itemBuilder: (context, index) {
-                              final test = cartState.cartList?.data?.cartTests?[index];
+                              final test =
+                                  cartState.cartList?.data?.cartTests?[index];
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: Text("${test?.testName??""}",
+                                          child: Text(
+                                            "${test?.testName ?? ""}",
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
@@ -235,9 +242,14 @@ class _ApointmentsState extends State<Apointments> {
                                           ),
                                         ),
                                         IconButton(
-                                            visualDensity: VisualDensity.compact,
+                                            visualDensity:
+                                                VisualDensity.compact,
                                             onPressed: () {
-                                              context.read<CartCubit>().removeFromCart(test?.testId ?? "",context);
+                                              context
+                                                  .read<CartCubit>()
+                                                  .removeFromCart(
+                                                      test?.testId ?? "",
+                                                      context);
                                             },
                                             icon: const Icon(
                                               Icons.delete_outline,
@@ -248,7 +260,7 @@ class _ApointmentsState extends State<Apointments> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      "₹${test?.testPrice??""}",
+                                      "₹${test?.testPrice ?? ""}",
                                       style: const TextStyle(
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w400,
@@ -364,9 +376,12 @@ class _ApointmentsState extends State<Apointments> {
                     SizedBox(height: 15),
                     Container(
                       padding: EdgeInsets.all(12),
-                      margin: EdgeInsets.only(bottom: 10,),
+                      margin: EdgeInsets.only(
+                        bottom: 10,
+                      ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                        border:
+                            Border.all(color: Color(0xffA9A9A9), width: 0.5),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                         color: Colors.white,
                       ),
@@ -423,7 +438,6 @@ class _ApointmentsState extends State<Apointments> {
                           SizedBox(
                             height: 16,
                           ),
-
                           Divider(
                             color: Color(0xff808080),
                             height: 1,
@@ -461,7 +475,7 @@ class _ApointmentsState extends State<Apointments> {
                 ),
               ),
             );
-          }else{
+          } else {
             return Center(child: Text("No Data Available"));
           }
         }
@@ -470,29 +484,22 @@ class _ApointmentsState extends State<Apointments> {
       bottomNavigationBar: BlocBuilder<CartCubit, CartState>(
         builder: (context, cartState) {
           if (cartState is CartLoaded) {
-            if (cartState.cartList?.data?.totalAmount != null && cartState.cartList!.data!.totalAmount != 0.0) {
+            if (cartState.cartList?.data?.totalAmount != null &&
+                cartState.cartList!.data!.totalAmount != 0.0) {
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScheduleAnAppointment(
-                          vendorID: vendorID,
-                          starttime: startTime,
-                          endtime: endTime,
-                          totalamount: cartState.cartList!.data!.totalAmount.toString(), // ✅ Fix: Use from state
-                        ),
-                      ),
-                    );
+                    context.pushReplacement(
+                        '/shedule_appointment?vendorID=${vendorID}&starttime=${startTime}&endtime=${endTime}totalamount=${cartState.cartList!.data!.totalAmount.toString()}');
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor:  primaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -516,10 +523,10 @@ class _ApointmentsState extends State<Apointments> {
       ),
     );
   }
-  Widget _shimmerList(){
-    return  Padding(
-      padding:
-      EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+
+  Widget _shimmerList() {
+    return Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -527,37 +534,33 @@ class _ApointmentsState extends State<Apointments> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-         shimmerText(120, 12, context),
+              shimmerText(120, 12, context),
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          shimmerRectangle(20, context),
+              shimmerRectangle(20, context),
               SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width *
-                        0.8, // 90% of screen width
-                    child: shimmerText(120, 12, context)
-                  ),
+                      width: MediaQuery.of(context).size.width *
+                          0.8, // 90% of screen width
+                      child: shimmerText(120, 12, context)),
                 ],
               ),
             ],
           ),
           SizedBox(height: 23),
-
           Container(
-            padding:  EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -574,8 +577,8 @@ class _ApointmentsState extends State<Apointments> {
               children: [
                 ListView.separated(
                   shrinkWrap: true,
-                  physics:  NeverScrollableScrollPhysics(),
-                  itemCount:6,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 6,
                   separatorBuilder: (context, index) => const Divider(
                     color: Colors.grey,
                     thickness: 0.5,
@@ -587,14 +590,15 @@ class _ApointmentsState extends State<Apointments> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               shimmerText(160, 12, context),
                               shimmerRectangle(20, context),
                             ],
                           ),
                           const SizedBox(height: 4),
-                      shimmerText(60, 12, context)
+                          shimmerText(60, 12, context)
                         ],
                       ),
                     );
@@ -603,9 +607,8 @@ class _ApointmentsState extends State<Apointments> {
               ],
             ),
           ),
-
           SizedBox(height: 10),
-        shimmerText(120, 12, context),
+          shimmerText(120, 12, context),
           SizedBox(height: 15),
           Container(
             padding: EdgeInsets.all(10),
@@ -625,7 +628,7 @@ class _ApointmentsState extends State<Apointments> {
               children: [
                 Row(
                   children: [
-                  shimmerText(80, 12, context),
+                    shimmerText(80, 12, context),
                     Spacer(),
                     shimmerText(60, 12, context),
                   ],
@@ -641,7 +644,6 @@ class _ApointmentsState extends State<Apointments> {
                 SizedBox(
                   height: 16,
                 ),
-
                 Divider(
                   color: Color(0xff808080),
                   height: 1,

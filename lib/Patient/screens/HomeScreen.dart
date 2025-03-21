@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_context.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple.dart';
+import 'package:go_router/go_router.dart';
+import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
@@ -115,18 +117,8 @@ class _HomescreenState extends State<Homescreen> {
                           Bounce(
                             scaleFactor: 1.3,
                             onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => alltests(
-                                    lat_lang: lat_lang ?? '',
-                                    catId: '',
-                                    catName: '',
-                                    diagnosticID: "",
-                                  ), // Adjust the index as needed
-                                ),
-                              );
+                              context.pop();
+                              context.push('/all_tests');
                             },
                             child: Container(
                               width: 120,
@@ -246,7 +238,7 @@ class _HomescreenState extends State<Homescreen> {
               left: MediaQuery.of(context).size.width * 0.42,
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
                 icon: Icon(
                   Icons.cancel,
@@ -414,10 +406,7 @@ class _HomescreenState extends State<Homescreen> {
                             child: Bounce(
                               scaleFactor: 1.2,
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Apointments()));
+                                context.push('/appointments');
                               },
                               child: Icon(
                                 Icons.shopping_cart_outlined,
@@ -436,11 +425,7 @@ class _HomescreenState extends State<Homescreen> {
                 ),
                 InkResponse(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                Searchscreen(lat_lang: lat_lang)));
+                    context.push('/search_screen');
                   },
                   child: Container(
                     padding: EdgeInsets.all(8),
@@ -509,27 +494,9 @@ class _HomescreenState extends State<Homescreen> {
 
                         if (id != null && type != null) {
                           if (type == "category") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => alltests(
-                                    lat_lang: "",
-                                    catId: id ?? "",
-                                    catName: '',
-                                    diagnosticID: id ?? "",
-                                  ),
-                                ));
+                            context.push('/all_tests');
                           } else if (type == "diagnostic") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => alltests(
-                                    lat_lang: "",
-                                    catId: '',
-                                    catName: '',
-                                    diagnosticID: id ?? "",
-                                  ),
-                                ));
+                            context.push('/all_tests');
                           }
                         }
                       },
@@ -619,17 +586,7 @@ class _HomescreenState extends State<Homescreen> {
                     Bounce(
                       scaleFactor: 1.1,
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => alltests(
-                              lat_lang: lat_lang ?? '',
-                              catId: '',
-                              catName: '',
-                              diagnosticID: "",
-                            ), // Adjust the index as needed
-                          ),
-                        );
+                        context.push('/all_tests');
                       },
                       child: Container(
                         width: screenWidth * 0.435,
@@ -705,18 +662,17 @@ class _HomescreenState extends State<Homescreen> {
                     SizedBox(
                       width: 11,
                     ),
-                    Bounce( scaleFactor: 1.1,
-                      onTap: (){
-
-                      },
+                    Bounce(
+                      scaleFactor: 1.1,
+                      onTap: () {},
                       child: Container(
                         width: screenWidth * 0.435,
                         height: screenWidth * 0.4,
                         padding: EdgeInsets.only(left: 15, right: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color:  Color(0xff2D3894), width: 1)),
+                            border:
+                                Border.all(color: Color(0xff2D3894), width: 1)),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 10,
@@ -737,6 +693,92 @@ class _HomescreenState extends State<Homescreen> {
                             )
                           ],
                         ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border:
+                              Border.all(color: Color(0xffEAEBF4), width: 1)),
+                      child: Row(
+                        spacing: 8,
+                        children: [
+                          Icon(
+                            Icons.call,
+                            size: 16,
+                          ),
+                          Text(
+                            'Call',
+                            style: TextStyle(
+                                color: Color(0xff1D1D1D),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'Poppins',
+                                fontSize: 12),
+                          )
+                        ],
+                      ),
+                    ),
+                    Bounce(
+                      scaleFactor: 0.8,
+                      onTap: () {
+                        _bottomsheet(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border:
+                                Border.all(color: Color(0xffEAEBF4), width: 1)),
+                        child: Row(
+                          spacing: 8,
+                          children: [
+                            Icon(
+                              Icons.file_present_sharp,
+                              size: 16,
+                            ),
+                            Text(
+                              'Upload Prescription',
+                              style: TextStyle(
+                                  color: Color(0xff1D1D1D),
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 12),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border:
+                              Border.all(color: Color(0xffEAEBF4), width: 1)),
+                      child: Row(
+                        spacing: 8,
+                        children: [
+                          Image.asset(
+                            'assets/whatsp.png',
+                            scale: 5,
+                          ),
+                          Text(
+                            'What’s up call',
+                            style: TextStyle(
+                                color: Color(0xff1D1D1D),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'Poppins',
+                                fontSize: 12),
+                          )
+                        ],
                       ),
                     ),
                   ],
@@ -786,13 +828,8 @@ class _HomescreenState extends State<Homescreen> {
                     ),
                     InkResponse(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                Diagnosticcenter(lat_lng: lat_lang),
-                          ),
-                        );
+                        print("Latlng::${lat_lang}");
+                        context.push('/diognostic_center');
                       },
                       child: Text(
                         'See All',
@@ -823,14 +860,8 @@ class _HomescreenState extends State<Homescreen> {
                       children: [
                         InkResponse(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DiagnosticInformation(
-                                  diognosticId: dignosticCenter?.id ?? '',
-                                ),
-                              ),
-                            );
+                            context.push(
+                                '/diognostic_information?diognosticId=${dignosticCenter?.id ?? ''}');
                           },
                           child: Container(
                             width: w * 0.435,
@@ -838,8 +869,7 @@ class _HomescreenState extends State<Homescreen> {
                             padding: EdgeInsets.only(left: 15, right: 15),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  color: primaryColor, width: 1),
+                              border: Border.all(color: primaryColor, width: 1),
                               // Adjusted size to fit the circle
                             ),
                             child: Image.network(
@@ -857,17 +887,7 @@ class _HomescreenState extends State<Homescreen> {
 
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => alltests(
-                          lat_lang: lat_lang ?? '',
-                          catId: '',
-                          catName: '',
-                          diagnosticID: "",
-                        ), // Adjust the index as needed
-                      ),
-                    );
+                    context.push('/all_tests');
                   },
                   child: Container(
                     width: double.infinity,
@@ -936,6 +956,107 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
+  Future _bottomsheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+          child: Column(
+            spacing: 10,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 60,
+                  height: 3,
+                  decoration: BoxDecoration(
+                      color: CupertinoColors.inactiveGray,
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
+              Image.asset(
+                'assets/file_upload.png',
+                width: 24,
+                height: 24,
+                fit: BoxFit.contain,
+              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              Text(
+                'Upload Your Prescription',
+                style: TextStyle(
+                    color: Color(0xff1A1A1A),
+                    fontSize: 20,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400),
+              ),
+
+              Row(spacing: 10,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
+                      color: primaryColor,
+                    ),
+                    child:  Row(spacing: 10,
+                      children: [
+                        Icon(Icons.camera_alt_rounded,size: 16,color: Color(0xffffffff),),
+                        Text(
+                          'Camera',
+                          style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color:primaryColor,width: 1)
+                    ),
+                    child:  Row(spacing: 10,
+                      children: [
+                        Icon(Icons.photo,size: 16,color: Color(0xff202020),),
+                        Text(
+                          'Gallery',
+                          style: TextStyle(
+                            color: Color(0xff202020),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Divider(color: Color(0xffC5B8B8),height: 10,),
+              Text(
+                'Note:',
+                style: TextStyle(
+                    color: Color(0xff1A1A1A),
+                    fontSize: 16,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400),
+              ),
+
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildCategoryItem(String image, String label, String catId) {
     return Column(
       children: [
@@ -945,17 +1066,7 @@ class _HomescreenState extends State<Homescreen> {
           onTap: () {
             // Delay navigation to allow ripple effect to show
             Future.delayed(const Duration(milliseconds: 200), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => alltests(
-                    lat_lang: lat_lang,
-                    catId: catId,
-                    catName: label,
-                    diagnosticID: "",
-                  ),
-                ),
-              );
+              context.push('/all_tests');
             });
           },
           child: Container(

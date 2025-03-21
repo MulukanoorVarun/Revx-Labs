@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import 'MyAppointments.dart';
@@ -20,8 +21,7 @@ class _ApointmentSuccessState extends State<ApointmentSuccess> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 3), () {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => Myappointments()));
+      context.pushReplacement('/my_appointments');
       });
     });
   }

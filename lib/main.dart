@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revxpharma/Patient/screens/NewOnBoarding.dart';
 import 'package:revxpharma/Services/ApiClient.dart';
 import 'package:revxpharma/Utils/media_query_helper.dart';
+import 'package:revxpharma/router.dart';
 import 'package:revxpharma/state_injector.dart';
 
 import 'Patient/screens/Splash.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       providers: StateInjector.repositoryProviders,
       child: MultiBlocProvider(
         providers: StateInjector.blocProviders,
-        child: MaterialApp(
+        child: MaterialApp.router(
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
             ),
             title: 'Revx Labs',
             debugShowCheckedModeBanner: false,
-            home: Splash()),
+            routerConfig: goRouter),
       ),
     );
   }

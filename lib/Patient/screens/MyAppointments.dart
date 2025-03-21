@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
@@ -45,7 +46,9 @@ class _MyappointmentsState extends State<Myappointments> {
                                   (context, index) {
                                 final appointment = appointments[index];
                                 return InkResponse(onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ApointmentDetails(id: appointment.id??'')));
+                                  context.push('/appointments_details?id=${appointment.id??''}');
+
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>ApointmentDetails(id: appointment.id??'')));
                                 },
                                   child: Container(
                                     padding: EdgeInsets.all(12),

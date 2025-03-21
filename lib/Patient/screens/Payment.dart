@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Utils/color.dart';
-
 import '../../Components/CustomSnackBar.dart';
 import '../logic/cubit/appointment/appointment_cubit.dart';
-import '../logic/cubit/cart/cart_cubit.dart';
 import 'BookedApointmentsuccessfully.dart';
-import 'MyAppointments.dart';
+
 
 class Payment extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -30,14 +29,15 @@ class _PaymentState extends State<Payment> {
         listener: (context, state) {
           if (state is AppointmentLoaded) {
             if (state.appointments.settings?.success == 1) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ApointmentSuccess(
-                          appointmentmsg:
-                              state.appointments.settings?.message ?? "",
-                        )),
-              );
+              context.pushReplacement('/apointment_success?appointmentmsg=${state.appointments.settings?.message ?? ""}');
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => ApointmentSuccess(
+              //             appointmentmsg:
+              //                 state.appointments.settings?.message ?? "",
+              //           )),
+              // );
             } else {
               CustomSnackBar.show(
                   context, "${state.appointments.settings?.message}");
@@ -92,7 +92,6 @@ class _PaymentState extends State<Payment> {
                 ),
               ),
 
-              // Confirm & Pay Button
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -102,7 +101,7 @@ class _PaymentState extends State<Payment> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: state is AppointmentLoading
-                          ? null // Disable button when loading
+                          ? null
                           : () {
                               if (_selectedPaymentOption != null) {
                                 widget.data['payment_mode'] =

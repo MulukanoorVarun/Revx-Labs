@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Utils/color.dart';
 import '../../Utils/NoInternet.dart';
@@ -47,12 +48,7 @@ class _DashboardState extends State<Dashboard> {
         body: BlocListener<InternetStatusBloc, InternetStatusState>(
           listener: (context, state) {
             if (state is InternetStatusLostState) {
-              Future.microtask(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => NoInternetWidget()),
-                );
-              });
+    context.push('/no_internet');
             }
           },
           child: BlocListener<LocationCubit, LocationState>(

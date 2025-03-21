@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 
 import '../../Vendor/Screens/VendorRegisterScreen.dart';
 import 'Register.dart';
-
 
 class UserSelectionScreen extends StatelessWidget {
   @override
@@ -15,8 +15,14 @@ class UserSelectionScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 100,),
-            Text("Register as:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600,fontFamily: "Poppins")),
+            SizedBox(
+              height: 100,
+            ),
+            Text("Register as:",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Poppins")),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -25,22 +31,16 @@ class UserSelectionScreen extends StatelessWidget {
                   context,
                   "Vendor",
                   "assets/lab.webp",
-                      () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => VendorRegisterScreen()));
+                  () {
+                    context.push('/vendor_registration');
                   },
                 ),
                 _buildUserCard(
                   context,
                   "Patient",
                   "assets/patient.webp", // Replace with actual image path
-                      () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterScreen()));
+                  () {
+                    context.push('/registarion');
                   },
                 ),
               ],
@@ -51,23 +51,26 @@ class UserSelectionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUserCard(BuildContext context, String title, String imagePath, VoidCallback onTap) {
+  Widget _buildUserCard(BuildContext context, String title, String imagePath,
+      VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
-            child: Image.asset(imagePath, height: 100, width: 100, fit: BoxFit.cover),
+            borderRadius:
+                BorderRadius.circular(16), // Adjust the radius as needed
+            child: Image.asset(imagePath,
+                height: 100, width: 100, fit: BoxFit.cover),
           ),
           SizedBox(height: 10),
-          Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500,fontFamily: "Poppins")),
+          Text(title,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Poppins")),
         ],
       ),
     );
   }
-
-
-
-
 }

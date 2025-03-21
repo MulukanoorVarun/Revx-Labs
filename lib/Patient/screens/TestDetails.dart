@@ -162,8 +162,8 @@ class _TestDetailsState extends State<TestDetails>
                     boxShadow: [
                       BoxShadow(
                         color:
-                            primaryColor.withOpacity(0.5), // Shadow color
-                        blurRadius: 1, // Shadow blur radius
+                            primaryColor.withOpacity(0.5),
+                        blurRadius: 1,
                         offset: Offset(0, 0.1),
                       ),
                     ],
@@ -184,7 +184,7 @@ class _TestDetailsState extends State<TestDetails>
                     indicatorSize: TabBarIndicatorSize.label,
                     tabAlignment: TabAlignment.start,
                     labelPadding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.width(4),
+                      horizontal: SizeConfig.width(2),
                     ),
                     labelStyle: TextStyle(
                       fontFamily: 'pjs',
@@ -208,21 +208,21 @@ class _TestDetailsState extends State<TestDetails>
                       Tab(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Parameters'),
+                          child: Text('Test Includes '),
                         ),
                       ),
                       Tab(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Open Jobs'),
+                          child: Text('Frequently Asked Questions'),
                         ),
                       ),
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Review'),
-                        ),
-                      ),
+                      // Tab(
+                      //   child: Align(
+                      //     alignment: Alignment.centerLeft,
+                      //     child: Text('Review'),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

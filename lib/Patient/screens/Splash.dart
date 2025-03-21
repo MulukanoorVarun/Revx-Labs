@@ -2,6 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Patient/screens/Dashboard.dart';
@@ -50,7 +51,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   String Status1 = '';
   String Token = '';
   bool permissions_granted = false;
-  String role="";
+  String role = "";
 
   void fetchDetails() async {
     var status = await PreferenceService().getString('on_boarding');
@@ -62,7 +63,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       Status = status ?? '';
       Status1 = status1 ?? '';
       Token = token ?? '';
-      role = Role ?? "" ;
+      role = Role ?? "";
     });
   }
 
@@ -76,43 +77,62 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     };
 
     if (android.version.sdkInt < 33) {
-
       statuses[Permission.storage] =
-      await Permission.storage.status; // For Android 12 and below
+          await Permission.storage.status; // For Android 12 and below
     } else {
       statuses[Permission.photos] =
-      await Permission.photos.status; // For Android 13+
+          await Permission.photos.status; // For Android 13+
     }
 
-    bool allPermissionsGranted = statuses.values.every((status) => status.isGranted);
+    bool allPermissionsGranted =
+        statuses.values.every((status) => status.isGranted);
 
     setState(() {
       permissions_granted = allPermissionsGranted;
       print("permissions_granted:${permissions_granted}");
     });
-      _navigateToNextScreen();
+    _navigateToNextScreen();
   }
+
   void _navigateToNextScreen() {
     Future.microtask(() {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => Status == ''
-              ? OnBoard()
-              : Status1 == ''
-              ? OnBoardOne()
-              : permissions_granted == false
-              ? MyPermission()
-              : Token == ''
-              ? LogInWithEmail()
-              : (role == "Patient")
-              ? Dashboard()
-              : VendorDashboard(),
-        ),
-      );
+      String destination = '';
+      if (Status == '') {
+        destination = '/on_board';
+      } else if (Status1 == '') {
+        destination = '/on_board1';
+      } else if (permissions_granted == false) {
+        destination = '/my_permissions';
+      } else if (Token == '') {
+        destination = '/login';
+      } else {
+        destination = role == "Patient" ? '/dashboard' : '/vendor_dashboard';
+      }
+      context.pushReplacement(destination);
     });
   }
 
+  // void _navigateToNextScreen() {
+  //   Future.microtask(() {
+  //     String destination = '';
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (_) => Status == ''
+  //             ? OnBoard()
+  //             : Status1 == ''
+  //             ? OnBoardOne()
+  //             : permissions_granted == false
+  //             ? MyPermission()
+  //             : Token == ''
+  //             ? LogInWithEmail()
+  //             : (role == "Patient")
+  //             ? Dashboard()
+  //             : VendorDashboard(),
+  //       ),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +142,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: BlocListener<InternetStatusBloc, InternetStatusState>(
         listener: (context, state) {
-            if (state is InternetStatusLostState) {
+          if (state is InternetStatusLostState) {
             Future.microtask(() {
               Navigator.push(
                 context,

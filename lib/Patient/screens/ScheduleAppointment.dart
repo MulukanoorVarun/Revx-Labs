@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
@@ -171,8 +172,6 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
     setState(() {
       selectedIndex = index;
     });
-
-    // Convert selected time to HH:mm:ss format
     String SelectedTime = "${timeSlots[index]}:00";
     selectedTime = "${timeSlots[index]}:00";
     validateSelectedTime = "";
@@ -202,8 +201,8 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
         'total_amount': widget.totalamount
       };
       try {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Payment(data: data)));
-        // context.read<AppointmentCubit>().bookAppointment(data);
+        context.pushReplacement('/payment', extra: data);
+
         LogHelper.printLog('Appointment data:', data);
       } catch (error) {
         LogHelper.printLog('Error while booking:', error.toString());
@@ -594,7 +593,7 @@ class _ScheduleAnAppointmentState extends State<ScheduleAnAppointment> {
                       minimumSize: Size(w, 50), // Full-width button with height 50
                       elevation: 0, // Remove shadow if needed
                     ),
-                    child: const Text(
+                    child:  Text(
                       'Book Appointment',
                       style: TextStyle(
                         color: Colors.white,
