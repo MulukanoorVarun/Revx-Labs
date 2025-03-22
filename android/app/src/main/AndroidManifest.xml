@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
 
     <application
-        android:label="Revx Labs"
+        android:label="Revx"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
