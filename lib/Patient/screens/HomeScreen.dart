@@ -722,7 +722,7 @@ class _HomescreenState extends State<Homescreen> {
                                 color: Color(0xff1D1D1D),
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Poppins',
-                                fontSize: 12),
+                                fontSize: 10),
                           )
                         ],
                       ),
@@ -751,7 +751,7 @@ class _HomescreenState extends State<Homescreen> {
                                   color: Color(0xff1D1D1D),
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'Poppins',
-                                  fontSize: 12),
+                                  fontSize: 10),
                             )
                           ],
                         ),
@@ -776,7 +776,7 @@ class _HomescreenState extends State<Homescreen> {
                                 color: Color(0xff1D1D1D),
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Poppins',
-                                fontSize: 12),
+                                fontSize: 10),
                           )
                         ],
                       ),
@@ -786,7 +786,6 @@ class _HomescreenState extends State<Homescreen> {
                 SizedBox(
                   height: 16,
                 ),
-
                 Text(
                   'Categories',
                   style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../Utils/color.dart';
 import 'Dashboard.dart';
 
 class paymentoptionscreen extends StatelessWidget {
@@ -62,7 +63,7 @@ class paymentoptionscreen extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const primaryColor, // Border color
+                  color: primaryColor, // Border color
                 ),
                 borderRadius: BorderRadius.circular(30), // Curved corners
               ),
@@ -70,7 +71,7 @@ class paymentoptionscreen extends StatelessWidget {
                 onPressed: () {
                   // Handle set reminder action here
                 },
-                child: const Text(
+                child:  Text(
                   'Set a  Reminder',
                   style: TextStyle(
                     color: primaryColor,
@@ -89,7 +90,7 @@ class paymentoptionscreen extends StatelessWidget {
               width: screenWidth,
               height: 50,
               decoration: BoxDecoration(
-                color: const primaryColor, // Filled button background color
+                color: primaryColor, // Filled button background color
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TextButton(
