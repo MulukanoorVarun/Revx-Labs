@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_state.dart';
@@ -329,11 +330,7 @@ class _TestDetailsState extends State<TestDetails>
                     // Continue button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Apointments()),
-                        );
+                        context.pushReplacement('/appointments');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:  primaryColor,

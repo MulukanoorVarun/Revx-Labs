@@ -103,7 +103,7 @@ class _MyPermissionState extends State<MyPermission> {
                   fontFamily: 'Poppins',
                 )),
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
               checkPermissions(); // Retry permission request
             },
           ),
@@ -132,7 +132,7 @@ class _MyPermissionState extends State<MyPermission> {
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
               SystemNavigator.pop();
               openAppSettings(); // Open app settings
             },

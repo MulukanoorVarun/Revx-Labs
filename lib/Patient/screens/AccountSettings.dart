@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
@@ -26,7 +27,7 @@ class _AccountsettingsState extends State<Accountsettings> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            context.pop();
           },
           child: Icon(Icons.arrow_back_ios_new),
         ),
@@ -60,10 +61,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Profile()));
+                  context.push('/profile');
                 },
                 child: Container(
                   width: w,
@@ -112,10 +110,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChangePassword()));
+                context.push('/change_password');
                 },
                 child: Row(
                   children: [
@@ -161,10 +156,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+              context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -210,10 +202,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                 context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -264,10 +253,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -316,10 +302,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -376,10 +359,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -431,10 +411,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -486,10 +463,7 @@ class _AccountsettingsState extends State<Accountsettings> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -558,10 +532,7 @@ class _AccountsettingsState extends State<Accountsettings> {
 
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -609,10 +580,7 @@ class _AccountsettingsState extends State<Accountsettings> {
 
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Accountsettings()));
+                  context.push('/account_settings');
                 },
                 child: Row(
                   children: [
@@ -768,7 +736,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                             SizedBox(
                               width: 100,
                               child: ElevatedButton(
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => context.pop(),
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor:
@@ -795,11 +763,7 @@ class _AccountsettingsState extends State<Accountsettings> {
                                   SharedPreferences sharedPreferences =
                                   await SharedPreferences.getInstance();
                                   sharedPreferences.remove('access_token');
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              LogInWithEmail()));
+                                  context.push('/login');
                                 },
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor:

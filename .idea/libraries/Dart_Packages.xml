@@ -264,7 +264,7 @@
         <entry key="flutter">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../flutter set up/flutter/packages/flutter/lib" />
+              <option value="$PROJECT_DIR$/../../../../flutter_setup/flutter/packages/flutter/lib" />
             </list>
           </value>
         </entry>
@@ -320,7 +320,7 @@
         <entry key="flutter_test">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../flutter set up/flutter/packages/flutter_test/lib" />
+              <option value="$PROJECT_DIR$/../../../../flutter_setup/flutter/packages/flutter_test/lib" />
             </list>
           </value>
         </entry>
@@ -341,7 +341,7 @@
         <entry key="flutter_web_plugins">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../flutter set up/flutter/packages/flutter_web_plugins/lib" />
+              <option value="$PROJECT_DIR$/../../../../flutter_setup/flutter/packages/flutter_web_plugins/lib" />
             </list>
           </value>
         </entry>
@@ -412,6 +412,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_windows-0.2.3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="go_router">
+          <value>
+            <list>
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-14.8.1/lib" />
             </list>
           </value>
         </entry>
@@ -601,6 +608,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/location_web-6.0.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="logging">
+          <value>
+            <list>
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.3.0/lib" />
             </list>
           </value>
         </entry>
@@ -901,7 +915,7 @@
         <entry key="sky_engine">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../flutter set up/flutter/bin/cache/pkg/sky_engine/lib" />
+              <option value="$PROJECT_DIR$/../../../../flutter_setup/flutter/bin/cache/pkg/sky_engine/lib" />
             </list>
           </value>
         </entry>
@@ -1139,6 +1153,7 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_platform_interface-4.2.4/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_web-4.1.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_windows-0.2.3/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-14.8.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps-8.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter-2.9.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_android-2.14.5/lib" />
@@ -1166,6 +1181,7 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/location-8.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/location_platform_interface-6.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/location_web-6.0.0/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.3.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/lottie-3.3.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/matcher-0.12.17/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/material_color_utilities-0.11.1/lib" />
@@ -1233,10 +1249,10 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/win32_registry-1.1.5/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.5.0/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../flutter set up/flutter/bin/cache/pkg/sky_engine/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../flutter set up/flutter/packages/flutter/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../flutter set up/flutter/packages/flutter_test/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../flutter set up/flutter/packages/flutter_web_plugins/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../flutter_setup/flutter/bin/cache/pkg/sky_engine/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../flutter_setup/flutter/packages/flutter/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../flutter_setup/flutter/packages/flutter_test/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../flutter_setup/flutter/packages/flutter_web_plugins/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,8 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:revxpharma/Authentication/ChangePassword.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
+import 'package:revxpharma/Authentication/OtpVerify.dart';
+import 'package:revxpharma/Patient/screens/AccountSettings.dart';
 import 'package:revxpharma/Patient/screens/ApointmentDetails.dart';
 import 'package:revxpharma/Patient/screens/Appointment.dart';
 import 'package:revxpharma/Patient/screens/BookedApointmentsuccessfully.dart';
@@ -14,6 +16,7 @@ import 'package:revxpharma/Patient/screens/OnBoarding.dart';
 import 'package:revxpharma/Patient/screens/Onboard1.dart';
 import 'package:revxpharma/Patient/screens/Payment.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
+import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/Register.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
@@ -21,8 +24,7 @@ import 'package:revxpharma/Patient/screens/Splash.dart';
 import 'package:revxpharma/Patient/screens/UserSelectionScreen.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/NoInternet.dart';
-import 'package:revxpharma/Vendor/Screens/VendorDashBoard.dart';
-import 'package:revxpharma/Vendor/Screens/VendorRegisterScreen.dart';
+
 
 final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(path: '/', builder: (context, state) => Splash()),
@@ -30,6 +32,12 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     path: '/on_board',
     pageBuilder: (context, state) {
       return buildSlideTransitionPage(OnBoard(), state);
+    },
+  ),
+  GoRoute(
+    path: '/otp_verify',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(OtpVerify(), state);
     },
   ),
   GoRoute(
@@ -57,23 +65,12 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     },
   ),
   GoRoute(
-    path: '/vendor_dashboard',
-    pageBuilder: (context, state) {
-      return buildSlideTransitionPage(VendorDashboard(), state);
-    },
-  ),
-  GoRoute(
     path: '/user_selection',
     pageBuilder: (context, state) {
       return buildSlideTransitionPage(UserSelectionScreen(), state);
     },
   ),
-  GoRoute(
-    path: '/vendor_registration',
-    pageBuilder: (context, state) {
-      return buildSlideTransitionPage(VendorRegisterScreen(), state);
-    },
-  ),
+
   GoRoute(
     path: '/registarion',
     pageBuilder: (context, state) {
@@ -84,6 +81,23 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     path: '/no_internet',
     pageBuilder: (context, state) {
       return buildSlideTransitionPage(NoInternetWidget(), state);
+    },
+  ),
+  GoRoute(
+    path: '/profile',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(Profile(), state);
+    },
+  ),   GoRoute(
+    path: '/account_settings',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(Accountsettings(), state);
+    },
+  ),
+  GoRoute(
+    path: '/change_password',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(ChangePassword(), state);
     },
   ),
   GoRoute(
@@ -151,19 +165,16 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(
     path: '/my_appointments',
     pageBuilder: (context, state) {
-      return buildSlideTransitionPage(
-          Myappointments(), state);
+      return buildSlideTransitionPage(Myappointments(), state);
     },
   ),
   GoRoute(
     path: '/appointments_details',
     pageBuilder: (context, state) {
-      final id=state.uri.queryParameters['id']??"";
-      return buildSlideTransitionPage(
-          ApointmentDetails(id:id ), state);
+      final id = state.uri.queryParameters['id'] ?? "";
+      return buildSlideTransitionPage(ApointmentDetails(id: id), state);
     },
   ),
-
   GoRoute(
     path: '/shedule_appointment',
     pageBuilder: (context, state) {

@@ -1,7 +1,7 @@
-// patient_state.dart
+
 import 'package:revxpharma/Models/SuccessModel.dart';
 import 'package:revxpharma/Models/getPatientDetailModel.dart';
-import 'package:revxpharma/Vendor/Screens/PatientsList/PatientDetails.dart';
+
 
 import '../../../../Models/PatientsListModel.dart';
 

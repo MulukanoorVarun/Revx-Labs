@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 import 'Dashboard.dart';
 
@@ -89,13 +91,12 @@ class paymentoptionscreen extends StatelessWidget {
               width: screenWidth,
               height: 50,
               decoration: BoxDecoration(
-                color: const primaryColor, // Filled button background color
+                color:  primaryColor,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Dashboard()));
+                context.push('/dashboard');
                 },
                 child: const Text(
                   'Done',

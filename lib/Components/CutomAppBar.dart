@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -17,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         visualDensity: VisualDensity.compact,
         onPressed: () {
-          Navigator.pop(context, true);
+          context.pop(true);
         },
         icon: Icon(
           Icons.arrow_back_ios_new,

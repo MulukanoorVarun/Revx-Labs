@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 import 'Payment.dart';
@@ -29,7 +30,7 @@ class _appointmentscreensState extends State<appointmentscreens> {
       appBar: AppBar(
         leading: IconButton(
           icon:  Icon(Icons.arrow_back, color: primaryColor),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop()
         ),
         title:  Text(
           "Appointment",

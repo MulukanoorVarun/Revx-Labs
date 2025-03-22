@@ -61,10 +61,7 @@ class _alltestsState extends State<alltests> {
               listener: (context, state) {
                 if (state is InternetStatusLostState) {
                   Future.microtask(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => NoInternetWidget()),
-                    );
+                   context.push('/no_internet');
                   });
                 }
               },

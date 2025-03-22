@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 class Pregnancy extends StatefulWidget {
@@ -29,7 +30,7 @@ class _PregnancyState extends State<Pregnancy> {
             child: IconButton(
               icon: Icon(Icons.arrow_back_ios, color: primaryColor),
               onPressed: () {
-                Navigator.of(context).pop();
+               context.pop();
               },
             ),
           ),

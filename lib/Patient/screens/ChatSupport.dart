@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 class ChatSupport extends StatefulWidget {
@@ -16,7 +17,7 @@ class _ChatSupportState extends State<ChatSupport> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            context.pop();
           },
           child: Icon(Icons.arrow_back_ios_new),
         ),

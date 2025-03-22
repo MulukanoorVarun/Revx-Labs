@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 import 'OtpVerify.dart';
@@ -76,8 +77,7 @@ class LoginMobile extends StatelessWidget {
                 // Get OTP Button
                 InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => OtpVerify()));
+                  context.push('/otp_verify');
                   },
                   child: Container(
                     width: double.infinity,
@@ -186,10 +186,7 @@ class LoginMobile extends StatelessWidget {
                 // Registration Link
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserSelectionScreen()));
+                  context.push('/user_selection');
                   },
                   child: RichText(
                     text: TextSpan(

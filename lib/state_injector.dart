@@ -26,16 +26,9 @@ import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository
 import 'package:revxpharma/Patient/logic/repository/patient_register_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/patient_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/test_details_repository.dart';
-import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_categories_cubit.dart';
-import 'package:revxpharma/Vendor/bloc/diognostic_categories/diognostic_get_category_repository.dart';
-import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_cubit.dart';
-import 'package:revxpharma/Vendor/bloc/diognostic_get_tests/diognostic_getTests_repository.dart';
-import 'package:revxpharma/data/api_routes/VendorRemoteDataSource.dart';
 import 'Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'Patient/logic/cubit/cart/cart_cubit.dart';
 import 'Patient/logic/repository/category_repository.dart';
-import 'Vendor/bloc/diognostic_register/register_cubit.dart';
-import 'Vendor/bloc/diognostic_register/register_repository.dart';
 import 'data/api_routes/remote_data_source.dart';
 
 class StateInjector {
@@ -110,28 +103,7 @@ class StateInjector {
             TestDetailsRepositoryImpl(remoteDataSource: context.read())),
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///   Vendor Repositories /////////
 
-    RepositoryProvider<VendorRemoteDataSource>(
-      create: (context) => VendorRemoteDataSourceImpl(),
-    ),
-
-    RepositoryProvider<VendorRegisterRepository>(
-      create: (context) => VendorRegisterImpl(remoteDataSource: context.read()),
-    ),
-
-    RepositoryProvider<DiagnosticTestsRepository>(
-      create: (context) =>
-          DiagnosticTestsImp(vendorRemoteDataSource: context.read()),
-    ),
-
-    RepositoryProvider<VendorRegisterRepository>(
-      create: (context) => VendorRegisterImpl(remoteDataSource: context.read()),
-    ),
-
-    RepositoryProvider<DiognosticGetCategoryRepository>(
-        create: (context) =>
-            DiognosticGetCategoryImpl(vendorRemoteDataSource: context.read())),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -215,18 +187,18 @@ class StateInjector {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Vendor Bloc Providers //
 
-    BlocProvider<VendorRegisterCubit>(
-      create: (context) =>
-          VendorRegisterCubit(context.read<VendorRegisterRepository>()),
-    ),
-
-    BlocProvider<DiagnosticTestsCubit>(
-      create: (context) =>
-          DiagnosticTestsCubit(context.read<DiagnosticTestsRepository>()),
-    ),
-
-    BlocProvider<DiognosticCategoryCubit>(
-        create: (context) => DiognosticCategoryCubit(
-            diognosticRepo: context.read<DiognosticGetCategoryRepository>()))
+    // BlocProvider<VendorRegisterCubit>(
+    //   create: (context) =>
+    //       VendorRegisterCubit(context.read<VendorRegisterRepository>()),
+    // ),
+    //
+    // BlocProvider<DiagnosticTestsCubit>(
+    //   create: (context) =>
+    //       DiagnosticTestsCubit(context.read<DiagnosticTestsRepository>()),
+    // ),
+    //
+    // BlocProvider<DiognosticCategoryCubit>(
+    //     create: (context) => DiognosticCategoryCubit(
+    //         diognosticRepo: context.read<DiognosticGetCategoryRepository>()))
   ];
 }

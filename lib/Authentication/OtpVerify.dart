@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:revxpharma/Utils/color.dart';
 
@@ -171,8 +172,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                 // Get OTP Button
                 InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Dashboard()));
+                   context.push('/dashboard');
                   },
                   child: Container(
                     width: double.infinity,
@@ -273,11 +273,9 @@ class _OtpVerifyState extends State<OtpVerify> {
                   ),
                 ),
                 SizedBox(height: 40),
-
-                // Registration Link
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterScreen()));
+                  context.push('/registarion');
                   },
                   child: RichText(
                     text: TextSpan(

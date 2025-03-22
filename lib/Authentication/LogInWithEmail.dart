@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Components/ShakeWidget.dart';
 import 'package:revxpharma/Patient/logic/cubit/login/login_cubit.dart';
@@ -10,7 +11,6 @@ import 'package:revxpharma/Services/AuthService.dart';
 import 'package:revxpharma/Services/UserapiServices.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
 import 'package:revxpharma/Utils/color.dart';
-import 'package:revxpharma/Vendor/Screens/VendorDashBoard.dart';
 import '../Patient/screens/UserSelectionScreen.dart';
 
 class LogInWithEmail extends StatefulWidget {
@@ -45,7 +45,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                               ? 'Password must contain at least one special character'
                               : '';
       if (_validateEmail.isEmpty && _validatepwd.isEmpty) {
-        Map<String,dynamic> data={
+        Map<String, dynamic> data = {
           "email": _emailController.text,
           "password": _pwdController.text,
         };
@@ -66,17 +66,20 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                 'refresh_token', state.loginModel.data?.refresh ?? "");
             PreferenceService()
                 .saveInt('expiry_time', state.loginModel.data?.expiryTime ?? 0);
-            PreferenceService().saveString('role', state.loginModel.data?.role ?? "");
-            AuthService.saveTokens( state.loginModel.data?.access ?? "",
-                state.loginModel.data?.refresh ?? "", state.loginModel.data?.expiryTime ?? 0);
+            PreferenceService()
+                .saveString('role', state.loginModel.data?.role ?? "");
+            AuthService.saveTokens(
+                state.loginModel.data?.access ?? "",
+                state.loginModel.data?.refresh ?? "",
+                state.loginModel.data?.expiryTime ?? 0);
             CustomSnackBar.show(context, state.message ?? '');
             if (state.loginModel.data?.role == "Patient") {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Dashboard()));
-            } else {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => VendorDashboard()));
+              context.pushReplacement('/dashboard');
             }
+            // else {
+            //   Navigator.pushReplacement(context,
+            //       MaterialPageRoute(builder: (context) => VendorDashboard()));
+            // }
           } else {
             CustomSnackBar.show(context, state.message ?? '');
           }
@@ -245,24 +248,26 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                       onPressed: state is LoginLoading ? null : _validatefeilds,
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
-                        backgroundColor:primaryColor,
-                        disabledBackgroundColor:primaryColor, // Same color when disabled
+                        backgroundColor: primaryColor,
+                        disabledBackgroundColor:
+                            primaryColor, // Same color when disabled
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(30), // Rounded corners
                         ),
                       ),
                       child: state is LoginLoading
                           ? const CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 1,
-                      )
+                              color: Colors.white,
+                              strokeWidth: 1,
+                            )
                           : const Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
+                              'Login',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
                     ),
                   ),
 
@@ -355,10 +360,8 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                   // Registration Link
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
+
+                   context.push('/registarion');
                     },
                     child: RichText(
                       text: TextSpan(

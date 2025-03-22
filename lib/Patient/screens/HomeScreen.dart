@@ -18,7 +18,6 @@ import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Utils/color.dart';
-import 'package:revxpharma/Vendor/Screens/Appointment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/constants.dart';
 import '../logic/cubit/home/home_cubit.dart';
@@ -957,11 +956,12 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future _bottomsheet(BuildContext context) {
-    final h= MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.width;
     return showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Container(height: h*0.8,
+        return Container(
+          height: h * 0.8,
           padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -1079,15 +1079,19 @@ class _HomescreenState extends State<Homescreen> {
                   ],
                 ),
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(width: 80,height: 80,
+                  Container(
+                    width: 80,
+                    height: 80,
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                         color: Color(0xffEAEBF4),
                         borderRadius: BorderRadius.circular(4)),
                     child: Center(
-                      child: Column(spacing: 6,
+                      child: Column(
+                        spacing: 6,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -1095,7 +1099,8 @@ class _HomescreenState extends State<Homescreen> {
                             'assets/Stethoscope.png',
                             scale: 3,
                           ),
-                          Text(textAlign: TextAlign.center,
+                          Text(
+                            textAlign: TextAlign.center,
                             'Doctor\nDetails',
                             style: TextStyle(
                                 color: Color(0xff1A1A1A),
@@ -1107,12 +1112,17 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                     ),
                   ),
-                  Container(width: 80,height: 80,
-                    padding: EdgeInsets.symmetric(horizontal: 12,),
+                  Container(
+                    width: 80,
+                    height: 80,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                    ),
                     decoration: BoxDecoration(
                         color: Color(0xffEAEBF4),
                         borderRadius: BorderRadius.circular(4)),
-                    child: Column(spacing: 6,
+                    child: Column(
+                      spacing: 6,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -1120,7 +1130,8 @@ class _HomescreenState extends State<Homescreen> {
                           'assets/CalendarDots.png',
                           scale: 3,
                         ),
-                        Text(textAlign: TextAlign.center,
+                        Text(
+                          textAlign: TextAlign.center,
                           'Date of\nPresription ',
                           style: TextStyle(
                               color: Color(0xff1A1A1A),
@@ -1131,13 +1142,16 @@ class _HomescreenState extends State<Homescreen> {
                       ],
                     ),
                   ),
-                  Container(width: 80,height: 80,
+                  Container(
+                    width: 80,
+                    height: 80,
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     decoration: BoxDecoration(
                         color: Color(0xffEAEBF4),
                         borderRadius: BorderRadius.circular(4)),
                     child: Center(
-                      child: Column(spacing: 6,
+                      child: Column(
+                        spacing: 6,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -1145,7 +1159,8 @@ class _HomescreenState extends State<Homescreen> {
                             'assets/UserList.png',
                             scale: 3,
                           ),
-                          Text(textAlign: TextAlign.center,
+                          Text(
+                            textAlign: TextAlign.center,
                             'Patient\nDetails',
                             style: TextStyle(
                                 color: Color(0xff1A1A1A),
@@ -1157,13 +1172,16 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                     ),
                   ),
-                  Container(width: 80,height: 80,
+                  Container(
+                    width: 80,
+                    height: 80,
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                         color: Color(0xffEAEBF4),
                         borderRadius: BorderRadius.circular(4)),
                     child: Center(
-                      child: Column(spacing: 6,
+                      child: Column(
+                        spacing: 6,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -1171,7 +1189,8 @@ class _HomescreenState extends State<Homescreen> {
                             'assets/Pill.png',
                             scale: 3,
                           ),
-                          Text(textAlign: TextAlign.center,
+                          Text(
+                            textAlign: TextAlign.center,
                             'Dosage\nDetails',
                             style: TextStyle(
                                 color: Color(0xff1A1A1A),
@@ -1183,7 +1202,6 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                     ),
                   ),
-
                 ],
               )
             ],
