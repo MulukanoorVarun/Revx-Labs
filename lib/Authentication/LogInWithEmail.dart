@@ -72,14 +72,8 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                 state.loginModel.data?.access ?? "",
                 state.loginModel.data?.refresh ?? "",
                 state.loginModel.data?.expiryTime ?? 0);
+            context.pushReplacement('/dashboard');
             CustomSnackBar.show(context, state.message ?? '');
-            if (state.loginModel.data?.role == "Patient") {
-              context.pushReplacement('/dashboard');
-            }
-            // else {
-            //   Navigator.pushReplacement(context,
-            //       MaterialPageRoute(builder: (context) => VendorDashboard()));
-            // }
           } else {
             CustomSnackBar.show(context, state.message ?? '');
           }
@@ -360,8 +354,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                   // Registration Link
                   InkWell(
                     onTap: () {
-
-                   context.push('/registarion');
+                      context.push('/registarion');
                     },
                     child: RichText(
                       text: TextSpan(

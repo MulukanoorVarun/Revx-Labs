@@ -26,7 +26,7 @@ class CartListModel {
 class Data {
   List<CartTests>? cartTests;
   DiagnosticCentre? diagnosticCentre;
-  dynamic                                                                                                                                                totalAmount;
+  int? totalAmount;
 
   Data({this.cartTests, this.diagnosticCentre, this.totalAmount});
 
@@ -60,15 +60,18 @@ class CartTests {
   String? id;
   String? testId;
   String? testName;
-  String? testPrice;
+  int? price;
+  int? noOfPersons;
 
-  CartTests({this.id, this.testId, this.testName, this.testPrice});
+  CartTests(
+      {this.id, this.testId, this.testName, this.price, this.noOfPersons});
 
   CartTests.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     testId = json['test_id'];
     testName = json['test_name'];
-    testPrice = json['test_price'];
+    price = json['price'];
+    noOfPersons = json['no_of_persons'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,7 +79,8 @@ class CartTests {
     data['id'] = this.id;
     data['test_id'] = this.testId;
     data['test_name'] = this.testName;
-    data['test_price'] = this.testPrice;
+    data['price'] = this.price;
+    data['no_of_persons'] = this.noOfPersons;
     return data;
   }
 }
@@ -85,22 +89,25 @@ class DiagnosticCentre {
   String? id;
   String? name;
   String? location;
-  String? image;
-  String? distance;
-  String? starttime;
-  String? endtime;
+  List<String>? daysOpened;
+  String? startTime;
+  String? endTime;
 
   DiagnosticCentre(
-      {this.id, this.name, this.location, this.image, this.distance,this.endtime,this.starttime});
+      {this.id,
+        this.name,
+        this.location,
+        this.daysOpened,
+        this.startTime,
+        this.endTime});
 
   DiagnosticCentre.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     location = json['location'];
-    image = json['image'];
-    distance = json['distance'];
-    starttime = json['start_time'];
-    endtime = json['end_time'];
+    daysOpened = json['days_opened'].cast<String>();
+    startTime = json['start_time'];
+    endTime = json['end_time'];
   }
 
   Map<String, dynamic> toJson() {
@@ -108,10 +115,9 @@ class DiagnosticCentre {
     data['id'] = this.id;
     data['name'] = this.name;
     data['location'] = this.location;
-    data['image'] = this.image;
-    data['distance'] = this.distance;
-    data['start_time'] = this.starttime;
-    data['end_time'] = this.endtime;
+    data['days_opened'] = this.daysOpened;
+    data['start_time'] = this.startTime;
+    data['end_time'] = this.endTime;
     return data;
   }
 }

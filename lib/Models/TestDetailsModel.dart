@@ -25,57 +25,106 @@ class TestDetailsModel {
 
 class Data {
   String? id;
-  String? testName;
   String? diagnosticCentre;
-  String? price;
-  String? distance;
-  int? noOfTests;
-  List<String>? subTests;
   bool? existInCart;
-  String? purposeDescription;
-  String? parameters;
-  String? procedureDescription;
+  TestDetails? testDetails;
 
-  Data(
-      {this.id,
-        this.testName,
-        this.diagnosticCentre,
-        this.price,
-        this.distance,
-        this.noOfTests,
-        this.subTests,
-        this.existInCart,
-        this.purposeDescription,
-        this.parameters,
-        this.procedureDescription});
+  Data({this.id, this.diagnosticCentre, this.existInCart, this.testDetails});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    testName = json['test_name'];
     diagnosticCentre = json['diagnostic_centre'];
-    price = json['price'];
-    distance = json['distance'];
+    existInCart = json['exist_in_cart'];
+    testDetails = json['test_details'] != null
+        ? new TestDetails.fromJson(json['test_details'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['diagnostic_centre'] = this.diagnosticCentre;
+    data['exist_in_cart'] = this.existInCart;
+    if (this.testDetails != null) {
+      data['test_details'] = this.testDetails!.toJson();
+    }
+    return data;
+  }
+}
+
+class TestDetails {
+  String? id;
+  String? testName;
+  String? description;
+  String? overview;
+  String? ranges;
+  String? testResultInterpretation;
+  String? riskAssessment;
+  int? noOfTests;
+  List<String>? subTests;
+  String? sampleType;
+  bool? fastingRequired;
+  String? category;
+  int? price;
+  String? condition;
+  int? reportsDeliveredIn;
+  String? image;
+
+  TestDetails(
+      {this.id,
+        this.testName,
+        this.description,
+        this.overview,
+        this.ranges,
+        this.testResultInterpretation,
+        this.riskAssessment,
+        this.noOfTests,
+        this.subTests,
+        this.sampleType,
+        this.fastingRequired,
+        this.category,
+        this.price,
+        this.condition,
+        this.reportsDeliveredIn,
+        this.image});
+
+  TestDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    testName = json['test_name'];
+    description = json['description'];
+    overview = json['overview'];
+    ranges = json['ranges'];
+    testResultInterpretation = json['test_result_interpretation'];
+    riskAssessment = json['risk_assessment'];
     noOfTests = json['no_of_tests'];
     subTests = json['sub_tests'].cast<String>();
-    existInCart = json['exist_in_cart'];
-    purposeDescription = json['purpose_description'];
-    parameters = json['parameters'];
-    procedureDescription = json['procedure_description'];
+    sampleType = json['sample_type'];
+    fastingRequired = json['fasting_required'];
+    category = json['category'];
+    price = json['price'];
+    condition = json['condition'];
+    reportsDeliveredIn = json['reports_delivered_in'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['test_name'] = this.testName;
-    data['diagnostic_centre'] = this.diagnosticCentre;
-    data['price'] = this.price;
-    data['distance'] = this.distance;
+    data['description'] = this.description;
+    data['overview'] = this.overview;
+    data['ranges'] = this.ranges;
+    data['test_result_interpretation'] = this.testResultInterpretation;
+    data['risk_assessment'] = this.riskAssessment;
     data['no_of_tests'] = this.noOfTests;
     data['sub_tests'] = this.subTests;
-    data['exist_in_cart'] = this.existInCart;
-    data['purpose_description'] = this.purposeDescription;
-    data['parameters'] = this.parameters;
-    data['procedure_description'] = this.procedureDescription;
+    data['sample_type'] = this.sampleType;
+    data['fasting_required'] = this.fastingRequired;
+    data['category'] = this.category;
+    data['price'] = this.price;
+    data['condition'] = this.condition;
+    data['reports_delivered_in'] = this.reportsDeliveredIn;
+    data['image'] = this.image;
     return data;
   }
 }

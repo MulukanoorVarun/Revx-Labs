@@ -21,6 +21,7 @@ import 'package:revxpharma/Patient/screens/Register.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/Splash.dart';
+import 'package:revxpharma/Patient/screens/TestDetails.dart';
 import 'package:revxpharma/Patient/screens/UserSelectionScreen.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/NoInternet.dart';
@@ -104,6 +105,14 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     path: '/appointments',
     pageBuilder: (context, state) {
       return buildSlideTransitionPage(Apointments(), state);
+    },
+  ),
+  GoRoute(
+    path: '/test_details',
+    pageBuilder: (context, state) {
+      final location=state.uri.queryParameters['location']??'';
+      final id=state.uri.queryParameters['id']??'';
+      return buildSlideTransitionPage(TestDetails(location: location, id: id), state);
     },
   ),
   GoRoute(

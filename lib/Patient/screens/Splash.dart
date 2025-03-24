@@ -105,7 +105,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       } else if (Token == '') {
         destination = '/login';
       } else {
-        destination = role == "Patient" ? '/dashboard' : '/vendor_dashboard';
+        destination ='/dashboard' ;
       }
       context.pushReplacement(destination);
     });

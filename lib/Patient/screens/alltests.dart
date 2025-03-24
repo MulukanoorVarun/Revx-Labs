@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_touch_ripple/widgets/touch_ripple.dart';
 import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
+import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
@@ -45,6 +47,180 @@ class _alltestsState extends State<alltests> {
   }
 
   bool isLabTestSelected = true;
+  int selectedPatientCount = 0;
+  // Future<void> _showModelBottomSheet() {
+  //   return showModalBottomSheet(
+  //     context: context,
+  //     builder: (context) {
+  //       final h = MediaQuery.of(context).size.height;  // Corrected height calculation
+  //       return StatefulBuilder(  // Wrap with StatefulBuilder to use setState inside the modal
+  //         builder: (context, setState) {
+  //           return Container(
+  //             height: h * 0.5, // Adjust the height for better visibility
+  //             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
+  //             decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.only(
+  //                     topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+  //             child: Column(
+  //               spacing: 10,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Center(
+  //                   child: Container(
+  //                     width: 60,
+  //                     height: 3,
+  //                     decoration: BoxDecoration(
+  //                         color: CupertinoColors.inactiveGray,
+  //                         borderRadius: BorderRadius.circular(8)),
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   'Book For',
+  //                   style: TextStyle(
+  //                       color: Colors.black,
+  //                       fontFamily: 'Poppins',
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.w500),
+  //                 ),
+  //                 Divider(height: 2, color: Color(0xffDADADA)),
+  //                 Column(
+  //                   children: [
+  //                     // Patient 1
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Text(
+  //                           'Patient 1',
+  //                           style: TextStyle(
+  //                               color: Colors.black,
+  //                               fontFamily: 'Poppins',
+  //                               fontSize: 14,
+  //                               fontWeight: FontWeight.w500),
+  //                         ),
+  //                         Radio(
+  //                           activeColor: primaryColor,
+  //                           value: 1, // Unique value for Patient 1
+  //                           groupValue: patient,
+  //                           onChanged: (value) {
+  //                             setState(() {
+  //                               patient = value; // Set selected value
+  //                             });
+  //                           },
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Divider(height: 2, color: Color(0xffDADADA)),
+  //
+  //                     // Patient 2
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Text(
+  //                           'Patient 2',
+  //                           style: TextStyle(
+  //                               color: Colors.black,
+  //                               fontFamily: 'Poppins',
+  //                               fontSize: 14,
+  //                               fontWeight: FontWeight.w500),
+  //                         ),
+  //                         Radio(
+  //                           activeColor: primaryColor,
+  //                           value: 2, // Unique value for Patient 2
+  //                           groupValue: patient,
+  //                           onChanged: (value) {
+  //                             setState(() {
+  //                               patient = value; // Set selected value
+  //                             });
+  //                           },
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Divider(height: 2, color: Color(0xffDADADA)),
+  //
+  //                     // Patient 3
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Text(
+  //                           'Patient 3',
+  //                           style: TextStyle(
+  //                               color: Colors.black,
+  //                               fontFamily: 'Poppins',
+  //                               fontSize: 14,
+  //                               fontWeight: FontWeight.w500),
+  //                         ),
+  //                         Radio(
+  //                           activeColor: primaryColor,
+  //                           value: 3,
+  //                           groupValue: patient,
+  //                           onChanged: (value) {
+  //                             setState(() {
+  //                               patient = value;
+  //                             });
+  //                           },
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Divider(height: 2, color: Color(0xffDADADA)),
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Text(
+  //                           'Patient 4',
+  //                           style: TextStyle(
+  //                               color: Colors.black,
+  //                               fontFamily: 'Poppins',
+  //                               fontSize: 14,
+  //                               fontWeight: FontWeight.w500),
+  //                         ),
+  //                         Radio(
+  //                           activeColor: primaryColor,
+  //                           value: 4,
+  //                           groupValue: patient,
+  //                           onChanged: (value) {
+  //                             setState(() {
+  //                               patient = value;
+  //                             });
+  //                           },
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Divider(height: 2, color: Color(0xffDADADA)),
+  //
+  //                     // Patient 5
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Text(
+  //                           'Patient 5',
+  //                           style: TextStyle(
+  //                               color: Colors.black,
+  //                               fontFamily: 'Poppins',
+  //                               fontSize: 14,
+  //                               fontWeight: FontWeight.w500),
+  //                         ),
+  //                         Radio(
+  //                           activeColor: primaryColor,
+  //                           value: 5,
+  //                           groupValue: patient,
+  //                           onChanged: (value) {
+  //                             setState(() {
+  //                               patient = value;
+  //                             });
+  //                           },
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +237,7 @@ class _alltestsState extends State<alltests> {
               listener: (context, state) {
                 if (state is InternetStatusLostState) {
                   Future.microtask(() {
-                   context.push('/no_internet');
+                    context.push('/no_internet');
                   });
                 }
               },
@@ -156,17 +332,9 @@ class _alltestsState extends State<alltests> {
                                         onTap: () {
                                           // Delay navigation to allow ripple effect to show
                                           Future.delayed(
-                                              const Duration(milliseconds: 200),
-                                              () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        TestDetails(
-                                                          location:
-                                                              '${labTests.diagnosticCentre} - ${labTests.distance}',
-                                                          id: labTests.id ?? "",
-                                                        )));
+                                              Duration(milliseconds: 200), () {
+                                            context.push(
+                                                '/test_details?location=${labTests?.diagnosticCentre} - ${labTests?.distance}&id=${labTests?.id ?? ""}');
                                           });
                                         },
                                         child: Container(
@@ -182,106 +350,608 @@ class _alltestsState extends State<alltests> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                labTests?.testName ?? '',
-                                                maxLines: 1,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "Poppins",
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                '₹ ${labTests!.price}/-',
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontFamily: "Poppins",
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(height: 5),
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                spacing: 10,
                                                 children: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      // Navigator.push(
-                                                      //     context,
-                                                      //     MaterialPageRoute(
-                                                      //         builder: (context) =>
-                                                      //             TestDetails()));
-
-                                                      // showSubTestsDialog(context,
-                                                      //     labTests.subTests ?? []);
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      side: BorderSide(
-                                                          color: primaryColor),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(30),
+                                                  Container(
+                                                    width: w * 0.25,
+                                                    height: w * 0.3,
+                                                    decoration: BoxDecoration(),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: Image.network(
+                                                        labTests?.testDetails
+                                                                ?.image ??
+                                                            '',
+                                                        fit: BoxFit.cover,
                                                       ),
-                                                      elevation: 0,
-                                                      visualDensity:
-                                                          VisualDensity.compact,
-                                                    ),
-                                                    child: Text(
-                                                      'View Detail',
-                                                      style: TextStyle(
-                                                          color: primaryColor,
-                                                          fontFamily:
-                                                              "Poppins"),
                                                     ),
                                                   ),
-                                                  BlocBuilder<CartCubit,
-                                                      CartState>(
-                                                    builder:
-                                                        (context, cartState) {
-                                                      bool isLoading = cartState
-                                                              is CartLoadingState &&
-                                                          cartState.testId ==
-                                                              labTests.id;
-                                                      return ElevatedButton(
-                                                        onPressed: isLoading
-                                                            ? null
-                                                            : () {
-                                                                if (labTests
-                                                                        .exist_in_cart ??
-                                                                    false) {
-                                                                  context
-                                                                      .read<
-                                                                          CartCubit>()
-                                                                      .removeFromCart(
-                                                                          labTests.id ??
-                                                                              "",
-                                                                          context);
-                                                                } else {
-                                                                  context
-                                                                      .read<
-                                                                          CartCubit>()
-                                                                      .addToCart({
-                                                                    "test":
-                                                                        "${labTests.id}"
-                                                                  }, context);
+                                                  Container(
+                                                    width: w * 0.56,
+                                                    child: Column(
+                                                      spacing: 12,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          labTests?.testDetails
+                                                                  ?.testName ??
+                                                              '',
+                                                          maxLines: 2,
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontFamily:
+                                                                "Poppins",
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '₹ ${labTests?.testDetails?.price ?? 0}/-',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontFamily:
+                                                                "Poppins",
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'No of tests : ${labTests?.testDetails?.noOfTests ?? 0}',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontFamily:
+                                                                "Poppins",
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        // BlocBuilder<CartCubit,
+                                                        //     CartState>(
+                                                        //   builder: (context,
+                                                        //       cartState) {
+                                                        //     int? patient = 0;
+                                                        //     bool isLoading = cartState
+                                                        //             is CartLoadingState &&
+                                                        //         cartState
+                                                        //                 .testId ==
+                                                        //             labTests
+                                                        //                 ?.id;
+                                                        //     return ElevatedButton(
+                                                        //       onPressed:
+                                                        //           isLoading
+                                                        //               ? null
+                                                        //               : () {
+                                                        //                     showModalBottomSheet(
+                                                        //                       context: context,
+                                                        //                       builder: (context) {
+                                                        //                         final h = MediaQuery.of(context).size.height; // Corrected height calculation
+                                                        //                         return StatefulBuilder(
+                                                        //                           builder: (context, setState) {
+                                                        //                             return Container(
+                                                        //                               height: h * 0.5,
+                                                        //                               padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
+                                                        //                               decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+                                                        //                               child: Column(
+                                                        //                                 spacing: 10,
+                                                        //                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                        //                                 children: [
+                                                        //                                   Center(
+                                                        //                                     child: Container(
+                                                        //                                       width: 60,
+                                                        //                                       height: 3,
+                                                        //                                       decoration: BoxDecoration(color: CupertinoColors.inactiveGray, borderRadius: BorderRadius.circular(8)),
+                                                        //                                     ),
+                                                        //                                   ),
+                                                        //                                   Text(
+                                                        //                                     'Book For',
+                                                        //                                     style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 18, fontWeight: FontWeight.w500),
+                                                        //                                   ),
+                                                        //                                   Divider(height: 2, color: Color(0xffDADADA)),
+                                                        //                                   Column(
+                                                        //                                     children: [
+                                                        //                                       if (patient != null && patient! > 0) ...[
+                                                        //                                         Row(
+                                                        //                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        //                                           children: [
+                                                        //                                             Text(
+                                                        //                                               'Remove Selection',
+                                                        //                                               style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w500),
+                                                        //                                             ),
+                                                        //                                             IconButton.outlined(visualDensity: VisualDensity.compact,
+                                                        //                                                 onPressed: (){
+                                                        //                                                   context.read<CartCubit>().removeFromCart(labTests?.id ?? "", context);
+                                                        //
+                                                        //                                             }, icon: Icon(Icons.delete_outline,color: Colors.red,))
+                                                        //                                           ],
+                                                        //                                         )
+                                                        //                                       ],
+                                                        //                                       Row(
+                                                        //                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        //                                         children: [
+                                                        //                                           Text(
+                                                        //                                             'Patient 1',
+                                                        //                                             style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w500),
+                                                        //                                           ),
+                                                        //                                           Row(spacing: 12,
+                                                        //                                             children: [
+                                                        //                                               Text(
+                                                        //                                                 '₹ ${(1) * (labTests?.testDetails?.price ?? 0)}',
+                                                        //                                                 style:
+                                                        //                                                 const TextStyle(
+                                                        //                                                   fontSize: 14,
+                                                        //                                                   fontWeight:
+                                                        //                                                   FontWeight.w600,
+                                                        //                                                   fontFamily:
+                                                        //                                                   "Poppins",
+                                                        //                                                   color: Colors.black,
+                                                        //                                                 ),
+                                                        //                                               ),
+                                                        //
+                                                        //
+                                                        //                                               Radio(
+                                                        //                                                 activeColor: primaryColor,
+                                                        //                                                 value: 1, // Unique value for Patient 1
+                                                        //                                                 groupValue: patient,
+                                                        //                                                 onChanged: (value) {
+                                                        //                                                   setState(() {
+                                                        //                                                     patient = value;
+                                                        //                                                     context.read<CartCubit>().addToCart({
+                                                        //                                                       "test": "${labTests?.id}",
+                                                        //                                                       'no_of_persons': '${patient}'
+                                                        //                                                     }, context);
+                                                        //                                                     print('Selected patient number = $patient');
+                                                        //                                                     context.pop();
+                                                        //                                                   });
+                                                        //                                                 },
+                                                        //                                               ),
+                                                        //                                             ],
+                                                        //                                           ),
+                                                        //                                         ],
+                                                        //                                       ),
+                                                        //                                       Divider(height: 2, color: Color(0xffDADADA)),
+                                                        //
+                                                        //                                       // Patient 2
+                                                        //                                       Row(
+                                                        //                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        //                                         children: [
+                                                        //                                           Text(
+                                                        //                                             'Patient 2',
+                                                        //                                             style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w500),
+                                                        //                                           ),
+                                                        //                                           Row(spacing: 12,
+                                                        //                                             children: [
+                                                        //                                               Text(
+                                                        //                                                 '₹ ${(2) * (labTests?.testDetails?.price ?? 0)}',
+                                                        //                                                 style:
+                                                        //                                                 const TextStyle(
+                                                        //                                                   fontSize: 14,
+                                                        //                                                   fontWeight:
+                                                        //                                                   FontWeight.w600,
+                                                        //                                                   fontFamily:
+                                                        //                                                   "Poppins",
+                                                        //                                                   color: Colors.black,
+                                                        //                                                 ),
+                                                        //                                               ),
+                                                        //                                               Radio(
+                                                        //                                                 activeColor: primaryColor,
+                                                        //                                                 value: 2, // Unique value for Patient 2
+                                                        //                                                 groupValue: patient,
+                                                        //                                                 onChanged: (value) {
+                                                        //                                                   setState(() {
+                                                        //                                                     patient = value;
+                                                        //                                                     context.read<CartCubit>().addToCart({
+                                                        //                                                       "test": "${labTests?.id}",
+                                                        //                                                       'no_of_persons': '${patient}'
+                                                        //                                                     }, context);
+                                                        //                                                     print('Selected patient number = $patient');
+                                                        //
+                                                        //                                                     context.pop();
+                                                        //                                                   });
+                                                        //                                                 },
+                                                        //                                               ),
+                                                        //                                             ],
+                                                        //                                           ),
+                                                        //                                         ],
+                                                        //                                       ),
+                                                        //                                       Divider(height: 2, color: Color(0xffDADADA)),
+                                                        //
+                                                        //                                       // Patient 3
+                                                        //                                       Row(
+                                                        //                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        //                                         children: [
+                                                        //                                           Text(
+                                                        //                                             'Patient 3',
+                                                        //                                             style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w500),
+                                                        //                                           ),
+                                                        //                                           Row(spacing: 12,
+                                                        //                                             children: [
+                                                        //                                               Text(
+                                                        //                                                 '₹ ${(3) * (labTests?.testDetails?.price ?? 0)}',
+                                                        //                                                 style:
+                                                        //                                                 const TextStyle(
+                                                        //                                                   fontSize: 14,
+                                                        //                                                   fontWeight:
+                                                        //                                                   FontWeight.w600,
+                                                        //                                                   fontFamily:
+                                                        //                                                   "Poppins",
+                                                        //                                                   color: Colors.black,
+                                                        //                                                 ),
+                                                        //                                               ),
+                                                        //                                               Radio(
+                                                        //                                                 activeColor: primaryColor,
+                                                        //                                                 value: 3,
+                                                        //                                                 groupValue: patient,
+                                                        //                                                 onChanged: (value) {
+                                                        //                                                   setState(() {
+                                                        //                                                     patient = value;
+                                                        //                                                     context.read<CartCubit>().addToCart({
+                                                        //                                                       "test": "${labTests?.id}",
+                                                        //                                                       'no_of_persons': '${patient}'
+                                                        //                                                     }, context);
+                                                        //                                                     print('Selected patient number = $patient');
+                                                        //
+                                                        //                                                     context.pop();
+                                                        //                                                   });
+                                                        //                                                 },
+                                                        //                                               ),
+                                                        //                                             ],
+                                                        //                                           ),
+                                                        //                                         ],
+                                                        //                                       ),
+                                                        //                                       Divider(height: 2, color: Color(0xffDADADA)),
+                                                        //                                       Row(
+                                                        //                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        //                                         children: [
+                                                        //                                           Text(
+                                                        //                                             'Patient 4',
+                                                        //                                             style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w500),
+                                                        //                                           ),
+                                                        //                                           Row(spacing: 12,
+                                                        //                                             children: [
+                                                        //                                               Text(
+                                                        //                                                 '₹ ${(4) * (labTests?.testDetails?.price ?? 0)}',
+                                                        //                                                 style:
+                                                        //                                                 const TextStyle(
+                                                        //                                                   fontSize: 14,
+                                                        //                                                   fontWeight:
+                                                        //                                                   FontWeight.w600,
+                                                        //                                                   fontFamily:
+                                                        //                                                   "Poppins",
+                                                        //                                                   color: Colors.black,
+                                                        //                                                 ),
+                                                        //                                               ),
+                                                        //                                               Radio(
+                                                        //                                                 activeColor: primaryColor,
+                                                        //                                                 value: 4,
+                                                        //                                                 groupValue: patient,
+                                                        //                                                 onChanged: (value) {
+                                                        //                                                   setState(() {
+                                                        //                                                     patient = value;
+                                                        //                                                     context.read<CartCubit>().addToCart({
+                                                        //                                                       "test": "${labTests?.id}",
+                                                        //                                                       'no_of_persons': '${patient}'
+                                                        //                                                     }, context);
+                                                        //                                                     print('Selected patient number = $patient');
+                                                        //
+                                                        //                                                     context.pop();
+                                                        //                                                   });
+                                                        //                                                 },
+                                                        //                                               ),
+                                                        //                                             ],
+                                                        //                                           ),
+                                                        //                                         ],
+                                                        //                                       ),
+                                                        //                                       Divider(height: 2, color: Color(0xffDADADA)),
+                                                        //
+                                                        //                                       // Patient 5
+                                                        //                                       Row(
+                                                        //                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        //                                         children: [
+                                                        //                                           Text(
+                                                        //                                             'Patient 5',
+                                                        //                                             style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w500),
+                                                        //                                           ),
+                                                        //                                           Row(spacing: 12,
+                                                        //                                             children: [
+                                                        //                                               Text(
+                                                        //                                                 '₹ ${(5) * (labTests?.testDetails?.price ?? 0)}',
+                                                        //                                                 style:
+                                                        //                                                 const TextStyle(
+                                                        //                                                   fontSize: 14,
+                                                        //                                                   fontWeight:
+                                                        //                                                   FontWeight.w600,
+                                                        //                                                   fontFamily:
+                                                        //                                                   "Poppins",
+                                                        //                                                   color: Colors.black,
+                                                        //                                                 ),
+                                                        //                                               ),
+                                                        //
+                                                        //                                               Radio(
+                                                        //                                                 activeColor: primaryColor,
+                                                        //                                                 value: 5,
+                                                        //                                                 groupValue: patient,
+                                                        //                                                 onChanged: (value) {
+                                                        //                                                   setState(() {
+                                                        //                                                     patient = value;
+                                                        //                                                     context.read<CartCubit>().addToCart({
+                                                        //                                                       "test": "${labTests?.id}",
+                                                        //                                                       'no_of_persons': '${patient}'
+                                                        //                                                     }, context);
+                                                        //                                                     print('Selected patient number = $patient');
+                                                        //
+                                                        //                                                     context.pop();
+                                                        //                                                   });
+                                                        //                                                 },
+                                                        //                                               ),
+                                                        //                                             ],
+                                                        //                                           ),
+                                                        //                                         ],
+                                                        //                                       ),
+                                                        //                                     ],
+                                                        //                                   )
+                                                        //                                 ],
+                                                        //                               ),
+                                                        //                             );
+                                                        //                           },
+                                                        //                         );
+                                                        //                       },
+                                                        //                     );
+                                                        //                 },
+                                                        //       style: ElevatedButton
+                                                        //           .styleFrom(
+                                                        //               visualDensity:
+                                                        //                   VisualDensity
+                                                        //                       .compact,
+                                                        //               backgroundColor: labTests
+                                                        //                           ?.existInCart ??
+                                                        //                       false
+                                                        //                   ? primaryColor
+                                                        //                   : primaryColor,
+                                                        //               shape:
+                                                        //                   RoundedRectangleBorder(
+                                                        //                 borderRadius:
+                                                        //                     BorderRadius.circular(30),
+                                                        //               ),
+                                                        //               elevation:
+                                                        //                   0),
+                                                        //       child: Row(
+                                                        //         crossAxisAlignment:
+                                                        //             CrossAxisAlignment
+                                                        //                 .center,
+                                                        //         mainAxisAlignment:
+                                                        //             MainAxisAlignment
+                                                        //                 .center,
+                                                        //         children: [
+                                                        //           isLoading
+                                                        //               ? CircularProgressIndicator(
+                                                        //                   color:
+                                                        //                       Colors.white,
+                                                        //                   strokeWidth:
+                                                        //                       2,
+                                                        //                 )
+                                                        //               : labTests?.existInCart ??
+                                                        //                       false
+                                                        //                   ? Text(
+                                                        //                       '${patient} Patient',
+                                                        //                       style: TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                                                        //                     )
+                                                        //                   : Text(
+                                                        //                       'Add Test',
+                                                        //                       style: TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                                                        //                     ),
+                                                        //           SizedBox(
+                                                        //             width: 10,
+                                                        //           ),
+                                                        //           labTests?.existInCart ??
+                                                        //                   false
+                                                        //               ? Icon(
+                                                        //                   Icons
+                                                        //                       .arrow_drop_down_sharp,
+                                                        //                   color:
+                                                        //                       Colors.white,
+                                                        //                 )
+                                                        //               : Icon(
+                                                        //                   Icons
+                                                        //                       .add_circle_outline,
+                                                        //                   color:
+                                                        //                       Colors.white,
+                                                        //                 )
+                                                        //         ],
+                                                        //       ),
+                                                        //     );
+                                                        //   },
+                                                        // ),
+                                                        BlocBuilder<CartCubit,
+                                                            CartState>(
+                                                          builder: (context,
+                                                              cartState) {
+                                                            // Get the current number of patients from the cart state or labTests
+
+                                                            if (labTests?.existInCart ??false) {
+                                                              if (cartState is CartLoaded) {
+                                                                final cartTests = cartState.cartList?.data?.cartTests;
+                                                                if (cartTests != null && cartTests.isNotEmpty) {
+                                                                  final currentTest =
+                                                                      cartTests.firstWhere(
+                                                                    (test) =>
+                                                                        test.testId ==
+                                                                        labTests
+                                                                            ?.id,
+                                                                    orElse: () =>
+                                                                        CartTests(
+                                                                            noOfPersons:
+                                                                                1),
+                                                                  );
+                                                                  selectedPatientCount =
+                                                                      currentTest.noOfPersons ?? 1;
                                                                 }
-                                                              },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
+                                                              }
+                                                            }
+
+                                                            return ElevatedButton(
+                                                              onPressed: cartState
+                                                                          is CartLoadingState &&
+                                                                      cartState
+                                                                              .testId ==
+                                                                          labTests
+                                                                              ?.id
+                                                                  ? null
+                                                                  : () {
+                                                                      showModalBottomSheet(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          return StatefulBuilder(
+                                                                            builder:
+                                                                                (BuildContext context, StateSetter setModalState) {
+                                                                              return Container(
+                                                                                height: MediaQuery.of(context).size.height * 0.5,
+                                                                                padding: const EdgeInsets.all(16),
+                                                                                decoration: const BoxDecoration(
+                                                                                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                                                                ),
+                                                                                child: Column(
+                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Center(
+                                                                                      child: Container(
+                                                                                        width: 60,
+                                                                                        height: 3,
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: CupertinoColors.inactiveGray,
+                                                                                          borderRadius: BorderRadius.circular(8),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    const SizedBox(height: 10),
+                                                                                    const Text(
+                                                                                      'Book For',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.black,
+                                                                                        fontFamily: 'Poppins',
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                      ),
+                                                                                    ),
+                                                                                    const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                    Expanded(
+                                                                                      child: ListView(
+                                                                                        children: [
+                                                                                          if (selectedPatientCount > 0) ...[
+                                                                                            Row(
+                                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                              children: [
+                                                                                                const Text(
+                                                                                                  'Remove Selection',
+                                                                                                  style: TextStyle(
+                                                                                                    color: Colors.black,
+                                                                                                    fontFamily: 'Poppins',
+                                                                                                    fontSize: 14,
+                                                                                                    fontWeight: FontWeight.w500,
+                                                                                                  ),
+                                                                                                ),
+                                                                                                IconButton.outlined(
+                                                                                                    visualDensity: VisualDensity.compact,
+                                                                                                    onPressed: () {
+                                                                                                      context.read<CartCubit>().removeFromCart(labTests?.id ?? "", context);
+                                                                                                      context.pop();
+                                                                                                    },
+                                                                                                    icon: Icon(
+                                                                                                      Icons.delete_outline,
+                                                                                                      color: Colors.red,
+                                                                                                    ))
+                                                                                              ],
+                                                                                            ),
+                                                                                            const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                          ],
+                                                                                          ...List.generate(5, (index) {
+                                                                                            final patientCount = index + 1;
+                                                                                            return Column(
+                                                                                              children: [
+                                                                                                Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                                  children: [
+                                                                                                    Text(
+                                                                                                      'Patient $patientCount',
+                                                                                                      style: const TextStyle(
+                                                                                                        color: Colors.black,
+                                                                                                        fontFamily: 'Poppins',
+                                                                                                        fontSize: 14,
+                                                                                                        fontWeight: FontWeight.w500,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      spacing: 12,
+                                                                                                      children: [
+                                                                                                        Text(
+                                                                                                          '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
+                                                                                                          style: const TextStyle(
+                                                                                                            fontSize: 14,
+                                                                                                            fontWeight: FontWeight.w600,
+                                                                                                            fontFamily: "Poppins",
+                                                                                                            color: Colors.black,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        Radio<int>(
+                                                                                                          activeColor: primaryColor,
+                                                                                                          value: patientCount,
+                                                                                                          groupValue: selectedPatientCount,
+                                                                                                          onChanged: (value) {
+                                                                                                            setModalState(() {
+                                                                                                              selectedPatientCount = patientCount;
+                                                                                                            });
+                                                                                                            context.read<CartCubit>().addToCart({
+                                                                                                              "test": "${labTests?.id}",
+                                                                                                              'no_of_persons': '$patientCount'
+                                                                                                            }, context);
+                                                                                                            print('Selected patient number = $patientCount');
+                                                                                                            Navigator.pop(context);
+                                                                                                          },
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                                const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                              ],
+                                                                                            );
+                                                                                          }),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
                                                                 visualDensity:
                                                                     VisualDensity
                                                                         .compact,
                                                                 backgroundColor:
-                                                                    labTests.exist_in_cart ??
+                                                                    labTests?.existInCart ??
                                                                             false
                                                                         ? primaryColor
                                                                         : primaryColor,
@@ -292,57 +962,199 @@ class _alltestsState extends State<alltests> {
                                                                           .circular(
                                                                               30),
                                                                 ),
-                                                                elevation: 0),
-                                                        child: isLoading
-                                                            ? const SizedBox(
-                                                                width: 20,
-                                                                height: 20,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  strokeWidth:
-                                                                      2,
-                                                                ),
-                                                              )
-                                                            : Row(
+                                                                elevation: 0,
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
                                                                 children: [
-                                                                  Text(
-                                                                    labTests.exist_in_cart ??
+                                                                  cartState is CartLoadingState &&
+                                                                          cartState.testId ==
+                                                                              labTests?.id
+                                                                      ? const CircularProgressIndicator(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          strokeWidth:
+                                                                              2,
+                                                                        )
+                                                                      : Text(
+                                                                          labTests?.existInCart ?? false
+                                                                              ? '$selectedPatientCount Patient${selectedPatientCount != 1 ? 's' : ''}'
+                                                                              : 'Add Test',
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontFamily:
+                                                                                "Poppins",
+                                                                          ),
+                                                                        ),
+                                                                  const SizedBox(
+                                                                      width:
+                                                                          10),
+                                                                  Icon(
+                                                                    labTests?.existInCart ??
                                                                             false
-                                                                        ? 'Remove'
-                                                                        : 'Add Test',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            "Poppins"),
+                                                                        ? Icons
+                                                                            .arrow_drop_down_sharp
+                                                                        : Icons
+                                                                            .add_circle_outline,
+                                                                    color: Colors
+                                                                        .white,
                                                                   ),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  labTests.exist_in_cart ??
-                                                                          false
-                                                                      ? Icon(
-                                                                          Icons
-                                                                              .cancel_outlined,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        )
-                                                                      : Icon(
-                                                                          Icons
-                                                                              .add_circle_outline,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        )
                                                                 ],
                                                               ),
-                                                      );
-                                                    },
-                                                  ),
+                                                            );
+                                                          },
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               ),
-                                              if (labTests.distance !=
+
+                                              // SizedBox(height: 5),
+                                              // Row(
+                                              //   mainAxisAlignment:
+                                              //       MainAxisAlignment
+                                              //           .spaceBetween,
+                                              //   children: [
+                                              //     ElevatedButton(
+                                              //       onPressed: () {
+                                              //         // Navigator.push(
+                                              //         //     context,
+                                              //         //     MaterialPageRoute(
+                                              //         //         builder: (context) =>
+                                              //         //             TestDetails()));
+                                              //
+                                              //         // showSubTestsDialog(context,
+                                              //         //     labTests.subTests ?? []);
+                                              //       },
+                                              //       style: ElevatedButton
+                                              //           .styleFrom(
+                                              //         backgroundColor:
+                                              //             Colors.white,
+                                              //         side: BorderSide(
+                                              //             color: primaryColor),
+                                              //         shape:
+                                              //             RoundedRectangleBorder(
+                                              //           borderRadius:
+                                              //               BorderRadius
+                                              //                   .circular(30),
+                                              //         ),
+                                              //         elevation: 0,
+                                              //         visualDensity:
+                                              //             VisualDensity.compact,
+                                              //       ),
+                                              //       child: Text(
+                                              //         'View Detail',
+                                              //         style: TextStyle(
+                                              //             color: primaryColor,
+                                              //             fontFamily:
+                                              //                 "Poppins"),
+                                              //       ),
+                                              //     ),
+                                              //     BlocBuilder<CartCubit,
+                                              //         CartState>(
+                                              //       builder:
+                                              //           (context, cartState) {
+                                              //         bool isLoading = cartState
+                                              //                 is CartLoadingState &&
+                                              //             cartState.testId ==
+                                              //                 labTests.id;
+                                              //         return ElevatedButton(
+                                              //           onPressed: isLoading
+                                              //               ? null
+                                              //               : () {
+                                              //                   if (labTests
+                                              //                           .existInCart ??
+                                              //                       false) {
+                                              //                     context
+                                              //                         .read<
+                                              //                             CartCubit>()
+                                              //                         .removeFromCart(
+                                              //                             labTests.id ??
+                                              //                                 "",
+                                              //                             context);
+                                              //                   } else {
+                                              //                     context
+                                              //                         .read<
+                                              //                             CartCubit>()
+                                              //                         .addToCart({
+                                              //                       "test":
+                                              //                           "${labTests.id}"
+                                              //                     }, context);
+                                              //                   }
+                                              //                 },
+                                              //           style: ElevatedButton
+                                              //               .styleFrom(
+                                              //                   visualDensity:
+                                              //                       VisualDensity
+                                              //                           .compact,
+                                              //                   backgroundColor:
+                                              //                       labTests.existInCart ??
+                                              //                               false
+                                              //                           ? primaryColor
+                                              //                           : primaryColor,
+                                              //                   shape:
+                                              //                       RoundedRectangleBorder(
+                                              //                     borderRadius:
+                                              //                         BorderRadius
+                                              //                             .circular(
+                                              //                                 30),
+                                              //                   ),
+                                              //                   elevation: 0),
+                                              //           child: isLoading
+                                              //               ? const SizedBox(
+                                              //                   width: 20,
+                                              //                   height: 20,
+                                              //                   child:
+                                              //                       CircularProgressIndicator(
+                                              //                     color: Colors
+                                              //                         .white,
+                                              //                     strokeWidth:
+                                              //                         2,
+                                              //                   ),
+                                              //                 )
+                                              //               : Row(
+                                              //                   children: [
+                                              //                     Text(
+                                              //                       labTests.existInCart ??
+                                              //                               false
+                                              //                           ? 'Remove'
+                                              //                           : 'Add Test',
+                                              //                       style: TextStyle(
+                                              //                           color: Colors
+                                              //                               .white,
+                                              //                           fontFamily:
+                                              //                               "Poppins"),
+                                              //                     ),
+                                              //                     SizedBox(
+                                              //                       width: 10,
+                                              //                     ),
+                                              //                     labTests.existInCart ??
+                                              //                             false
+                                              //                         ? Icon(
+                                              //                             Icons
+                                              //                                 .cancel_outlined,
+                                              //                             color:
+                                              //                                 Colors.white,
+                                              //                           )
+                                              //                         : Icon(
+                                              //                             Icons
+                                              //                                 .add_circle_outline,
+                                              //                             color:
+                                              //                                 Colors.white,
+                                              //                           )
+                                              //                   ],
+                                              //                 ),
+                                              //         );
+                                              //       },
+                                              //     ),
+                                              //   ],
+                                              // ),
+                                              if (labTests?.distance !=
                                                   null) ...[
                                                 Container(
                                                   margin: const EdgeInsets.only(
@@ -362,7 +1174,7 @@ class _alltestsState extends State<alltests> {
                                                       const SizedBox(width: 8),
                                                       Expanded(
                                                         child: Text(
-                                                          '${labTests.diagnosticCentre} - ${labTests.distance} away',
+                                                          '${labTests?.diagnosticCentre} - ${labTests?.distance} away',
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style:
@@ -725,7 +1537,7 @@ class _alltestsState extends State<alltests> {
                     right: 0,
                     child: IconButton(
                       onPressed: () {
-                   context.pop();
+                        context.pop();
                       },
                       icon: Icon(
                         Icons.cancel,
