@@ -35,7 +35,7 @@ class Data {
   String? price;
   String? distance;
   bool? existInCart;
-  int? noOfTests;
+  int? noOfPersons;
   List<String>? subTests;
   TestDetails? testDetails;
 
@@ -46,7 +46,7 @@ class Data {
     this.price,
     this.distance,
     this.existInCart,
-    this.noOfTests,
+    this.noOfPersons,
     this.subTests,
     this.testDetails,
   });
@@ -59,7 +59,7 @@ class Data {
     String? price,
     String? distance,
     bool? existInCart,
-    int? noOfTests,
+    int? noOfPersons,
     List<String>? subTests,
     TestDetails? testDetails,
   }) {
@@ -70,7 +70,7 @@ class Data {
       price: price ?? this.price,
       distance: distance ?? this.distance,
       existInCart: existInCart ?? this.existInCart,
-      noOfTests: noOfTests ?? this.noOfTests,
+      noOfPersons: noOfPersons ?? this.noOfPersons,
       subTests: subTests ?? this.subTests,
       testDetails: testDetails ?? this.testDetails,
     );
@@ -84,7 +84,7 @@ class Data {
     price = json['price'];
     distance = json['distance'];
     existInCart = json['exist_in_cart'];
-    noOfTests = json['no_of_tests'];
+    noOfPersons = json['no_of_persons'];
     subTests = json['sub_tests'] != null
         ? List<String>.from(json['sub_tests'])
         : null;
@@ -102,7 +102,7 @@ class Data {
     dataMap['price'] = price;
     dataMap['distance'] = distance;
     dataMap['exist_in_cart'] = existInCart;
-    dataMap['no_of_tests'] = noOfTests;
+    dataMap['no_of_persons'] = noOfPersons;
     dataMap['sub_tests'] = subTests;
     if (testDetails != null) {
       dataMap['test_details'] = testDetails!.toJson();

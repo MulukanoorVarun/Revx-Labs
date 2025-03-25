@@ -52,14 +52,14 @@ class TestCubit extends Cubit<TestState> {
     }
   }
 
-  void updateTestCartStatus({required String testId, required bool isAdded}) {
+  void updateTestCartStatus({required String testId,required int persons, required bool isAdded}) {
     print("Updating cart status for Test ID: $testId to $isAdded");
 
     if (testModel.data != null) {
       final updatedTests = List<Data>.from(testModel.data!.map((test) {
         if (test.id == testId) {
           print("Updating cart status for: ${test.id}");
-          return test.copyWith(existInCart: isAdded);
+          return test.copyWith(existInCart: isAdded,noOfPersons: persons);
         }
         return test;
       }));

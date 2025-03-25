@@ -37,6 +37,7 @@ abstract class RemoteDataSource {
   Future<getPatientDetailModel?> GetDefaultPatientDetails();
   Future<CartListModel?> fetchCartList();
   Future<SuccessModel?> AddToCart(Map<String, dynamic> Data);
+  Future<SuccessModel?> updateCart(String id,int noOfPersons);
   Future<SuccessModel?> RemoveFromCart(id);
   Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data);
   Future<ProfileDetailModel?> getProfileDetails();
@@ -153,6 +154,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       LogHelper.printLog('Error RemoveFromCart::', e);
+      return null;
+    }
+  }
+
+
+  @override
+  Future<SuccessModel?> updateCart(String id,int noofPersons) async {
+    try {
+      Response response =
+      await ApiClient.put("${PatientRemoteUrls.updateCart}/${id}?no_of_persons=${noofPersons}");
+      if (response.statusCode == 200) {
+        LogHelper.printLog('updateCart:', response.data);
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error updateCart::', e);
       return null;
     }
   }

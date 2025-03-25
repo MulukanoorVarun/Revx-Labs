@@ -31,22 +31,23 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> addToCart(Map<String, dynamic> cartData, BuildContext context) async {
+  Future<void> addToCart(Map<String, dynamic> cartData) async {
     emit(CartLoadingState(testId: cartData['test']));
     try {
       final response = await cartRepository.addToCart(cartData);
-
       if (response?.settings?.success == 1) {
         // Update count only if API succeeds
         cartCount++;
         testCubit.updateTestCartStatus(
           testId: cartData['test'],
+          persons: cartData['no_of_persons'],
           isAdded: true,
         );
         emit(CartSuccessState(
           message: 'Item added to cart successfully.',
           cartCount: cartCount,
           testId: cartData['test'],
+          persons: cartData['no_of_persons'],
           isAdded: true,
         ));
       } else {
@@ -63,9 +64,42 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  Future<void> updateCart(String id, int no_of_persons) async {
+    emit(CartLoadingState(testId: id));
+    try {
+      final response = await cartRepository.updateCart(id,no_of_persons);
+      if (response?.settings?.success == 1) {
+        // Update count only if API succeeds
+        cartCount++;
+        testCubit.updateTestCartStatus(
+          testId:  id,
+          persons: no_of_persons,
+          isAdded: true,
+        );
+        emit(CartSuccessState(
+          message: 'Cart Updated successfully.',
+          cartCount: cartCount,
+          testId: id,
+          persons: no_of_persons,
+          isAdded: true,
+        ));
+      } else {
+        // Emit failure but retain previous count
+        emit(CartErrorState(
+          errorMessage: response?.settings?.message ?? 'Failed to update item.',
+        ));
+        emit(CartLoaded(null, cartCount)); // Preserve current cart count
+      }
+    } catch (e) {
+      // Handle exceptions and preserve count
+      emit(CartErrorState(errorMessage: e.toString()));
+      emit(CartLoaded(null, cartCount));
+    }
+  }
+
 
   // Remove from cart with cart count update only on success
-  Future<void> removeFromCart(String id, BuildContext context) async {
+  Future<void> removeFromCart(String id) async {
     emit(CartLoadingState(testId: id));
     try {
       final response = await cartRepository.removeFromCart(id);
@@ -77,12 +111,14 @@ class CartCubit extends Cubit<CartState> {
         testCubit.updateTestCartStatus(
           testId: id,
           isAdded: false,
+          persons: 0,
         );
 
         emit(CartSuccessState(
           message: 'Item removed from cart successfully.',
           cartCount: cartCount,
           testId: id,
+          persons: 0,
           isAdded: false,
         ));
       } else {

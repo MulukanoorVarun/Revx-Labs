@@ -303,9 +303,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                                   .read<
                                                                       CartCubit>()
                                                                   .removeFromCart(
-                                                                      labTests.id ??
-                                                                          "",
-                                                                      context);
+                                                                      labTests.id ?? "");
                                                             } else {
                                                               context
                                                                   .read<
@@ -313,7 +311,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                                   .addToCart({
                                                                 "test":
                                                                     "${labTests.id}"
-                                                              }, context);
+                                                              });
                                                             }
                                                           },
                                                     style: ElevatedButton

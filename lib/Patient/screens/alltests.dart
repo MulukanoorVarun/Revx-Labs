@@ -47,7 +47,6 @@ class _alltestsState extends State<alltests> {
   }
 
   bool isLabTestSelected = true;
-  int selectedPatientCount = 0;
   // Future<void> _showModelBottomSheet() {
   //   return showModalBottomSheet(
   //     context: context,
@@ -357,7 +356,7 @@ class _alltestsState extends State<alltests> {
                                                 children: [
                                                   Container(
                                                     width: w * 0.25,
-                                                    height: w * 0.3,
+                                                    height: w * 0.35,
                                                     decoration: BoxDecoration(),
                                                     child: ClipRRect(
                                                       borderRadius:
@@ -372,7 +371,7 @@ class _alltestsState extends State<alltests> {
                                                     ),
                                                   ),
                                                   Container(
-                                                    width: w * 0.56,
+                                                    width: w * 0.53,
                                                     child: Column(
                                                       spacing: 12,
                                                       crossAxisAlignment:
@@ -777,231 +776,183 @@ class _alltestsState extends State<alltests> {
                                                         //     );
                                                         //   },
                                                         // ),
-                                                        BlocBuilder<CartCubit,
-                                                            CartState>(
-                                                          builder: (context,
-                                                              cartState) {
-                                                            // Get the current number of patients from the cart state or labTests
-
-                                                            if (labTests?.existInCart ??false) {
-                                                              if (cartState is CartLoaded) {
-                                                                final cartTests = cartState.cartList?.data?.cartTests;
-                                                                if (cartTests != null && cartTests.isNotEmpty) {
-                                                                  final currentTest =
-                                                                      cartTests.firstWhere(
-                                                                    (test) =>
-                                                                        test.testId ==
-                                                                        labTests
-                                                                            ?.id,
-                                                                    orElse: () =>
-                                                                        CartTests(
-                                                                            noOfPersons:
-                                                                                1),
-                                                                  );
-                                                                  selectedPatientCount =
-                                                                      currentTest.noOfPersons ?? 1;
-                                                                }
-                                                              }
-                                                            }
-
+                                                        BlocBuilder<CartCubit, CartState>(
+                                                          builder: (context, cartState) {
                                                             return ElevatedButton(
-                                                              onPressed: cartState
-                                                                          is CartLoadingState &&
-                                                                      cartState
-                                                                              .testId ==
-                                                                          labTests
-                                                                              ?.id
+                                                              onPressed: cartState is CartLoadingState && cartState.testId == labTests?.id
                                                                   ? null
                                                                   : () {
-                                                                      showModalBottomSheet(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (context) {
-                                                                          return StatefulBuilder(
-                                                                            builder:
-                                                                                (BuildContext context, StateSetter setModalState) {
-                                                                              return Container(
-                                                                                height: MediaQuery.of(context).size.height * 0.5,
-                                                                                padding: const EdgeInsets.all(16),
-                                                                                decoration: const BoxDecoration(
-                                                                                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                                                showModalBottomSheet(
+                                                                  context: context,
+                                                                  builder: (context) {
+                                                                    return StatefulBuilder(
+                                                                      builder: (BuildContext context, StateSetter setModalState) {
+                                                                        int modalPatientCount = labTests?.noOfPersons??0; // Use the button's current count
+                                                                        return Container(
+                                                                          height: MediaQuery.of(context).size.height * 0.5,
+                                                                          padding: const EdgeInsets.all(16),
+                                                                          decoration: const BoxDecoration(
+                                                                            borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                                                          ),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Center(
+                                                                                child: Container(
+                                                                                  width: 60,
+                                                                                  height: 3,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: CupertinoColors.inactiveGray,
+                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                  ),
                                                                                 ),
-                                                                                child: Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              ),
+                                                                              const SizedBox(height: 10),
+                                                                              const Text(
+                                                                                'Book For',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.black,
+                                                                                  fontFamily: 'Poppins',
+                                                                                  fontSize: 18,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
+                                                                              ),
+                                                                              const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                              Expanded(
+                                                                                child: ListView(
                                                                                   children: [
-                                                                                    Center(
-                                                                                      child: Container(
-                                                                                        width: 60,
-                                                                                        height: 3,
-                                                                                        decoration: BoxDecoration(
-                                                                                          color: CupertinoColors.inactiveGray,
-                                                                                          borderRadius: BorderRadius.circular(8),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    const SizedBox(height: 10),
-                                                                                    const Text(
-                                                                                      'Book For',
-                                                                                      style: TextStyle(
-                                                                                        color: Colors.black,
-                                                                                        fontFamily: 'Poppins',
-                                                                                        fontSize: 18,
-                                                                                        fontWeight: FontWeight.w500,
-                                                                                      ),
-                                                                                    ),
-                                                                                    const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                    Expanded(
-                                                                                      child: ListView(
+                                                                                    if (labTests?.existInCart ?? false) ...[
+                                                                                      Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                         children: [
-                                                                                          if (selectedPatientCount > 0) ...[
-                                                                                            Row(
-                                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                              children: [
-                                                                                                const Text(
-                                                                                                  'Remove Selection',
-                                                                                                  style: TextStyle(
-                                                                                                    color: Colors.black,
-                                                                                                    fontFamily: 'Poppins',
-                                                                                                    fontSize: 14,
-                                                                                                    fontWeight: FontWeight.w500,
-                                                                                                  ),
-                                                                                                ),
-                                                                                                IconButton.outlined(
-                                                                                                    visualDensity: VisualDensity.compact,
-                                                                                                    onPressed: () {
-                                                                                                      context.read<CartCubit>().removeFromCart(labTests?.id ?? "", context);
-                                                                                                      context.pop();
-                                                                                                    },
-                                                                                                    icon: Icon(
-                                                                                                      Icons.delete_outline,
-                                                                                                      color: Colors.red,
-                                                                                                    ))
-                                                                                              ],
+                                                                                          const Text(
+                                                                                            'Remove Selection',
+                                                                                            style: TextStyle(
+                                                                                              color: Colors.black,
+                                                                                              fontFamily: 'Poppins',
+                                                                                              fontSize: 14,
+                                                                                              fontWeight: FontWeight.w500,
                                                                                             ),
-                                                                                            const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                          ],
-                                                                                          ...List.generate(5, (index) {
-                                                                                            final patientCount = index + 1;
-                                                                                            return Column(
-                                                                                              children: [
-                                                                                                Row(
-                                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                  children: [
-                                                                                                    Text(
-                                                                                                      'Patient $patientCount',
-                                                                                                      style: const TextStyle(
-                                                                                                        color: Colors.black,
-                                                                                                        fontFamily: 'Poppins',
-                                                                                                        fontSize: 14,
-                                                                                                        fontWeight: FontWeight.w500,
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                    Row(
-                                                                                                      spacing: 12,
-                                                                                                      children: [
-                                                                                                        Text(
-                                                                                                          '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
-                                                                                                          style: const TextStyle(
-                                                                                                            fontSize: 14,
-                                                                                                            fontWeight: FontWeight.w600,
-                                                                                                            fontFamily: "Poppins",
-                                                                                                            color: Colors.black,
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                        Radio<int>(
-                                                                                                          activeColor: primaryColor,
-                                                                                                          value: patientCount,
-                                                                                                          groupValue: selectedPatientCount,
-                                                                                                          onChanged: (value) {
-                                                                                                            setModalState(() {
-                                                                                                              selectedPatientCount = patientCount;
-                                                                                                            });
-                                                                                                            context.read<CartCubit>().addToCart({
-                                                                                                              "test": "${labTests?.id}",
-                                                                                                              'no_of_persons': '$patientCount'
-                                                                                                            }, context);
-                                                                                                            print('Selected patient number = $patientCount');
-                                                                                                            Navigator.pop(context);
-                                                                                                          },
-                                                                                                        ),
-                                                                                                      ],
-                                                                                                    ),
-                                                                                                  ],
-                                                                                                ),
-                                                                                                const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                              ],
-                                                                                            );
-                                                                                          }),
+                                                                                          ),
+                                                                                          IconButton.outlined(
+                                                                                            visualDensity: VisualDensity.compact,
+                                                                                            onPressed: () {
+                                                                                              context.read<CartCubit>().removeFromCart(labTests?.id ?? "");
+                                                                                              setModalState(() {
+                                                                                                modalPatientCount = 1; // Reset to 1 on removal
+                                                                                              });
+                                                                                              context.pop();
+                                                                                            },
+                                                                                            icon: const Icon(
+                                                                                              Icons.delete_outline,
+                                                                                              color: Colors.red,
+                                                                                            ),
+                                                                                          ),
                                                                                         ],
                                                                                       ),
-                                                                                    ),
+                                                                                      const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                    ],
+                                                                                    ...List.generate(5, (index) {
+                                                                                      final patientCount = index + 1;
+                                                                                      return Column(
+                                                                                        children: [
+                                                                                          Row(
+                                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                            children: [
+                                                                                              Text(
+                                                                                                'Patient $patientCount',
+                                                                                                style: const TextStyle(
+                                                                                                  color: Colors.black,
+                                                                                                  fontFamily: 'Poppins',
+                                                                                                  fontSize: 14,
+                                                                                                  fontWeight: FontWeight.w500,
+                                                                                                ),
+                                                                                              ),
+                                                                                              Row(
+                                                                                                spacing: 12,
+                                                                                                children: [
+                                                                                                  Text(
+                                                                                                    '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
+                                                                                                    style: const TextStyle(
+                                                                                                      fontSize: 14,
+                                                                                                      fontWeight: FontWeight.w600,
+                                                                                                      fontFamily: "Poppins",
+                                                                                                      color: Colors.black,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Radio<int>(
+                                                                                                    activeColor: primaryColor,
+                                                                                                    value: patientCount,
+                                                                                                    groupValue: modalPatientCount, // Use modal-specific count
+                                                                                                    onChanged: (value) {
+                                                                                                      setModalState(() {
+                                                                                                        modalPatientCount = patientCount; // Update modal state
+                                                                                                      });
+                                                                                                      if(labTests?.existInCart??false){
+                                                                                                        context.read<CartCubit>().updateCart(
+                                                                                                            labTests?.id??"",
+                                                                                                            patientCount
+                                                                                                        );
+                                                                                                      }else{
+                                                                                                        context.read<CartCubit>().addToCart({
+                                                                                                          "test": "${labTests?.id}",
+                                                                                                          'no_of_persons': patientCount
+                                                                                                        });
+                                                                                                      }
+                                                                                                      Navigator.pop(context);
+                                                                                                    },
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                        ],
+                                                                                      );
+                                                                                    }),
                                                                                   ],
                                                                                 ),
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                        },
-                                                                      );
-                                                                    },
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                visualDensity:
-                                                                    VisualDensity
-                                                                        .compact,
-                                                                backgroundColor:
-                                                                    labTests?.existInCart ??
-                                                                            false
-                                                                        ? primaryColor
-                                                                        : primaryColor,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              30),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              style: ElevatedButton.styleFrom(
+                                                                visualDensity: VisualDensity.compact,
+                                                                backgroundColor: primaryColor,
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(30),
                                                                 ),
                                                                 elevation: 0,
                                                               ),
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
-                                                                  cartState is CartLoadingState &&
-                                                                          cartState.testId ==
-                                                                              labTests?.id
-                                                                      ? const CircularProgressIndicator(
-                                                                          color:
-                                                                              Colors.white,
-                                                                          strokeWidth:
-                                                                              2,
-                                                                        )
-                                                                      : Text(
-                                                                          labTests?.existInCart ?? false
-                                                                              ? '$selectedPatientCount Patient${selectedPatientCount != 1 ? 's' : ''}'
-                                                                              : 'Add Test',
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontFamily:
-                                                                                "Poppins",
-                                                                          ),
-                                                                        ),
-                                                                  const SizedBox(
-                                                                      width:
-                                                                          10),
+                                                                  if (cartState is CartLoadingState && cartState.testId == labTests?.id)
+                                                                    const CircularProgressIndicator(
+                                                                      color: Colors.white,
+                                                                      strokeWidth: 2,
+                                                                    )
+                                                                  else
+                                                                    Text(
+                                                                      labTests?.existInCart ?? false
+                                                                          ? '${labTests?.noOfPersons} Patient${labTests?.noOfPersons != 1 ? 's' : ''}'
+                                                                          : 'Add Test',
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontFamily: "Poppins",
+                                                                      ),
+                                                                    ),
+                                                                  const SizedBox(width: 10),
                                                                   Icon(
-                                                                    labTests?.existInCart ??
-                                                                            false
-                                                                        ? Icons
-                                                                            .arrow_drop_down_sharp
-                                                                        : Icons
-                                                                            .add_circle_outline,
-                                                                    color: Colors
-                                                                        .white,
+                                                                    labTests?.existInCart ?? false
+                                                                        ? Icons.arrow_drop_down_sharp
+                                                                        : Icons.add_circle_outline,
+                                                                    color: Colors.white,
                                                                   ),
                                                                 ],
                                                               ),

@@ -15,8 +15,9 @@ class CartSuccessState extends CartState {
   final int cartCount;
   final String? testId;
   final bool? isAdded;
+  final int? persons;
 
-  CartSuccessState({required this.message, required this.cartCount, this.testId, this.isAdded});
+  CartSuccessState({required this.message, required this.cartCount,required this.persons, this.testId, this.isAdded});
 }
 
 class CartLoaded extends CartState {

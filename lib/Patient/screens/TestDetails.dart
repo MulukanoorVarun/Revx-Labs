@@ -143,13 +143,9 @@ class _TestDetailsState extends State<TestDetails>
                                               .removeFromCart(
                                                   state.testDetailsModel.data
                                                           ?.testDetails?.id ??
-                                                      "",
-                                                  context);
+                                                      "");
                                         } else {
-                                          context.read<CartCubit>().addToCart({
-                                            "test":
-                                                "${state.testDetailsModel.data?.testDetails?.id}"
-                                          }, context);
+
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(

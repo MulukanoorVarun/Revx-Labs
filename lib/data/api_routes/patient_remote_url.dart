@@ -16,6 +16,7 @@ class PatientRemoteUrls {
   static const String deletePatient ='api/patient-detail';
   static const String cartlist ='api/cart-tests';
   static const String addToCart ='api/cart-tests';
+  static const String updateCart ='api/update-cart-test';
   static const String removeCart ='api/remove-cart-test';
   static const String pateint_details ='api/patient-detail';
   static const String default_pateint_details ='api/default-patient';

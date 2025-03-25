@@ -248,8 +248,7 @@ class _ApointmentsState extends State<Apointments> {
                                               context
                                                   .read<CartCubit>()
                                                   .removeFromCart(
-                                                      test?.testId ?? "",
-                                                      context);
+                                                      test?.testId ?? "");
                                             },
                                             icon: const Icon(
                                               Icons.delete_outline,
