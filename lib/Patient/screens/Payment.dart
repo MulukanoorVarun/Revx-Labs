@@ -30,14 +30,7 @@ class _PaymentState extends State<Payment> {
           if (state is AppointmentLoaded) {
             if (state.appointments.settings?.success == 1) {
               context.pushReplacement('/apointment_success?appointmentmsg=${state.appointments.settings?.message ?? ""}');
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => ApointmentSuccess(
-              //             appointmentmsg:
-              //                 state.appointments.settings?.message ?? "",
-              //           )),
-              // );
+
             } else {
               CustomSnackBar.show(
                   context, "${state.appointments.settings?.message}");

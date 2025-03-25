@@ -113,7 +113,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "OrderID : ${state.appointmentDetails?.appointment_data?.appointmentNumber ?? ''}",
+                        "OrderID : ${state.appointmentDetails?.appointmentData?.appointmentNumber ?? ''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 16,
@@ -121,7 +121,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         ),
                       ),
                       Text(
-                        "${state.appointmentDetails?.appointment_data?.appointmentDate ?? ''}",
+                        "${state.appointmentDetails?.appointmentData?.appointmentDate ?? ''}",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 14,
@@ -139,7 +139,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         child: Text(
                           maxLines: 2,
                           textAlign: TextAlign.start,
-                          "${state.appointmentDetails?.appointment_data?.diagnosticCentre?.name ?? ''}",
+                          "${state.appointmentDetails?.appointmentData?.diagnosticCentre?.name ?? ''}",
                           style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 17,
@@ -168,7 +168,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                           Container(
                             width: w * 0.8, // 90% of screen width
                             child: Text(
-                              "${state.appointmentDetails?.appointment_data?.diagnosticCentre?.location ?? ''}",
+                              "${state.appointmentDetails?.appointmentData?.diagnosticCentre?.location ?? ''}",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -197,8 +197,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.appointmentDetails?.appointment_data
-                                  ?.appointmentTests?.length ??
+                          itemCount: state.appointmentDetails?.appointmentData?.appointmentTests?.length ??
                               0,
                           separatorBuilder: (context, index) => const Divider(
                             color: Colors.grey,
@@ -206,8 +205,9 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                             height: 16,
                           ),
                           itemBuilder: (context, index) {
-                            final test = state.appointmentDetails
-                                ?.appointment_data?.appointmentTests?[index];
+                            final test=state.appointmentDetails?.appointmentData?.appointmentTests?[index];
+                            // final test = state.appointmentDetails
+                            //     ?.appointment_data?.appointmentTests?[index];
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 4.0),
@@ -218,7 +218,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          "${test?.testName ?? ""}",
+                                          test?.testDetails?.testDetailsModel?.testName??"",
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -233,7 +233,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "₹${test?.price ?? 0}",
+                                    "₹${  test?.testDetails?.testDetailsModel?.price ?? 0}",
                                     style: const TextStyle(
                                       color: Color(0xff000000),
                                       fontWeight: FontWeight.w400,
@@ -275,7 +275,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                           children: [
                             Expanded(
                               child: Text(
-                                state.appointmentDetails?.appointment_data
+                                state.appointmentDetails?.appointmentData
                                         ?.patientDetails?.patientName ??
                                     '',
                                 maxLines: 2,
@@ -294,7 +294,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                           height: 10,
                         ),
                         Text(
-                          '${state.appointmentDetails?.appointment_data?.patientDetails?.age ?? ""} Years / ${state.appointmentDetails?.appointment_data?.patientDetails?.bloodGroup ?? ""} / ${state.appointmentDetails?.appointment_data?.patientDetails?.gender ?? ""}',
+                          '${state.appointmentDetails?.appointmentData?.patientDetails?.age ?? ""} Years / ${state.appointmentDetails?.appointmentData?.patientDetails?.bloodGroup ?? ""} / ${state.appointmentDetails?.appointmentData?.patientDetails?.gender ?? ""}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -342,7 +342,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                             Spacer(),
                             SizedBox(
                               child: Text(
-                                '₹ ${state.appointmentDetails?.appointment_data?.totalAmount ?? ''}',
+                                '₹ ${state.appointmentDetails?.appointmentData?.totalAmount ?? ''}',
                                 style: TextStyle(
                                   color: Color(0xff000000),
                                   fontWeight: FontWeight.w600,
