@@ -4,24 +4,7 @@
             "outputFile": "com.revx.labs.app-mergeDebugResources-46:/values-sw/values-sw.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Chara\\.gradle\\caches\\transforms-3\\6e67c4268d2fbe841a5c3c03d1b06112\\transformed\\core-1.13.1\\res\\values-sw\\values-sw.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,149,251,348,449,556,663,778",
-                        "endColumns": "93,101,96,100,106,106,114,100",
-                        "endOffsets": "144,246,343,444,551,658,773,874"
-                    },
-                    "to": {
-                        "startLines": "29,30,31,32,33,34,35,59",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "2801,2895,2997,3094,3195,3302,3409,6262",
-                        "endColumns": "93,101,96,100,106,106,114,100",
-                        "endOffsets": "2890,2992,3089,3190,3297,3404,3519,6358"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Chara\\.gradle\\caches\\transforms-3\\001ead96a039b54de57fa412533e5f33\\transformed\\jetified-play-services-base-18.5.0\\res\\values-sw\\values.xml",
+                    "source": "C:\\Users\\muluk\\.gradle\\caches\\transforms-3\\001ead96a039b54de57fa412533e5f33\\transformed\\jetified-play-services-base-18.5.0\\res\\values-sw\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +21,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Chara\\.gradle\\caches\\transforms-3\\dc08d7fbcbfc744f2c3028d78eda1f9c\\transformed\\appcompat-1.4.0\\res\\values-sw\\values-sw.xml",
+                    "source": "C:\\Users\\muluk\\.gradle\\caches\\transforms-3\\bef55b76f0323a126f69e44e29cd9800\\transformed\\preference-1.2.1\\res\\values-sw\\values-sw.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "105,175,272,349,499,668,753",
+                        "endColumns": "69,96,76,149,168,84,82",
+                        "endOffsets": "170,267,344,494,663,748,831"
+                    },
+                    "to": {
+                        "startLines": "54,55,56,57,60,61,62",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "5785,5855,5952,6029,6363,6532,6617",
+                        "endColumns": "69,96,76,149,168,84,82",
+                        "endOffsets": "5850,5947,6024,6174,6527,6612,6695"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\muluk\\.gradle\\caches\\transforms-3\\dc08d7fbcbfc744f2c3028d78eda1f9c\\transformed\\appcompat-1.4.0\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -55,7 +55,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Chara\\.gradle\\caches\\transforms-3\\4bc371b45348a7590eef7dd92a32d2c0\\transformed\\jetified-play-services-basement-18.4.0\\res\\values-sw\\values.xml",
+                    "source": "C:\\Users\\muluk\\.gradle\\caches\\transforms-3\\6e67c4268d2fbe841a5c3c03d1b06112\\transformed\\core-1.13.1\\res\\values-sw\\values-sw.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,149,251,348,449,556,663,778",
+                        "endColumns": "93,101,96,100,106,106,114,100",
+                        "endOffsets": "144,246,343,444,551,658,773,874"
+                    },
+                    "to": {
+                        "startLines": "29,30,31,32,33,34,35,59",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "2801,2895,2997,3094,3195,3302,3409,6262",
+                        "endColumns": "93,101,96,100,106,106,114,100",
+                        "endOffsets": "2890,2992,3089,3190,3297,3404,3519,6358"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\muluk\\.gradle\\caches\\transforms-3\\4bc371b45348a7590eef7dd92a32d2c0\\transformed\\jetified-play-services-basement-18.4.0\\res\\values-sw\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -69,23 +86,6 @@
                         "startOffsets": "4539",
                         "endColumns": "145",
                         "endOffsets": "4680"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Chara\\.gradle\\caches\\transforms-3\\bef55b76f0323a126f69e44e29cd9800\\transformed\\preference-1.2.1\\res\\values-sw\\values-sw.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "105,175,272,349,499,668,753",
-                        "endColumns": "69,96,76,149,168,84,82",
-                        "endOffsets": "170,267,344,494,663,748,831"
-                    },
-                    "to": {
-                        "startLines": "54,55,56,57,60,61,62",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "5785,5855,5952,6029,6363,6532,6617",
-                        "endColumns": "69,96,76,149,168,84,82",
-                        "endOffsets": "5850,5947,6024,6174,6527,6612,6695"
                     }
                 }
             ]
