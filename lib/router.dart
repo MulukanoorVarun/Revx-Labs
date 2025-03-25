@@ -118,11 +118,10 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(
     path: '/all_tests',
     pageBuilder: (context, state) {
-      final latLang = state.pathParameters['lat_lang'] ?? '';
-      final catId = state.pathParameters['catId'] ?? '';
-      final catName = state.pathParameters['catName'] ?? '';
-      final diagnosticID = state.pathParameters['diagnosticID'] ?? '';
-
+      final latLang = state.uri.queryParameters['lat_lang'] ?? '';
+      final catId = state.uri.queryParameters['catId'] ?? '';
+      final catName = state.uri.queryParameters['catName'] ?? '';
+      final diagnosticID = state.uri.queryParameters['diagnosticID'] ?? '';
       return buildSlideTransitionPage(
         alltests(
           lat_lang: latLang,

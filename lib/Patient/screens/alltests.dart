@@ -47,180 +47,6 @@ class _alltestsState extends State<alltests> {
   }
 
   bool isLabTestSelected = true;
-  // Future<void> _showModelBottomSheet() {
-  //   return showModalBottomSheet(
-  //     context: context,
-  //     builder: (context) {
-  //       final h = MediaQuery.of(context).size.height;  // Corrected height calculation
-  //       return StatefulBuilder(  // Wrap with StatefulBuilder to use setState inside the modal
-  //         builder: (context, setState) {
-  //           return Container(
-  //             height: h * 0.5, // Adjust the height for better visibility
-  //             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
-  //             decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.only(
-  //                     topLeft: Radius.circular(8), topRight: Radius.circular(8))),
-  //             child: Column(
-  //               spacing: 10,
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Center(
-  //                   child: Container(
-  //                     width: 60,
-  //                     height: 3,
-  //                     decoration: BoxDecoration(
-  //                         color: CupertinoColors.inactiveGray,
-  //                         borderRadius: BorderRadius.circular(8)),
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   'Book For',
-  //                   style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontFamily: 'Poppins',
-  //                       fontSize: 18,
-  //                       fontWeight: FontWeight.w500),
-  //                 ),
-  //                 Divider(height: 2, color: Color(0xffDADADA)),
-  //                 Column(
-  //                   children: [
-  //                     // Patient 1
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           'Patient 1',
-  //                           style: TextStyle(
-  //                               color: Colors.black,
-  //                               fontFamily: 'Poppins',
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.w500),
-  //                         ),
-  //                         Radio(
-  //                           activeColor: primaryColor,
-  //                           value: 1, // Unique value for Patient 1
-  //                           groupValue: patient,
-  //                           onChanged: (value) {
-  //                             setState(() {
-  //                               patient = value; // Set selected value
-  //                             });
-  //                           },
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     Divider(height: 2, color: Color(0xffDADADA)),
-  //
-  //                     // Patient 2
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           'Patient 2',
-  //                           style: TextStyle(
-  //                               color: Colors.black,
-  //                               fontFamily: 'Poppins',
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.w500),
-  //                         ),
-  //                         Radio(
-  //                           activeColor: primaryColor,
-  //                           value: 2, // Unique value for Patient 2
-  //                           groupValue: patient,
-  //                           onChanged: (value) {
-  //                             setState(() {
-  //                               patient = value; // Set selected value
-  //                             });
-  //                           },
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     Divider(height: 2, color: Color(0xffDADADA)),
-  //
-  //                     // Patient 3
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           'Patient 3',
-  //                           style: TextStyle(
-  //                               color: Colors.black,
-  //                               fontFamily: 'Poppins',
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.w500),
-  //                         ),
-  //                         Radio(
-  //                           activeColor: primaryColor,
-  //                           value: 3,
-  //                           groupValue: patient,
-  //                           onChanged: (value) {
-  //                             setState(() {
-  //                               patient = value;
-  //                             });
-  //                           },
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     Divider(height: 2, color: Color(0xffDADADA)),
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           'Patient 4',
-  //                           style: TextStyle(
-  //                               color: Colors.black,
-  //                               fontFamily: 'Poppins',
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.w500),
-  //                         ),
-  //                         Radio(
-  //                           activeColor: primaryColor,
-  //                           value: 4,
-  //                           groupValue: patient,
-  //                           onChanged: (value) {
-  //                             setState(() {
-  //                               patient = value;
-  //                             });
-  //                           },
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     Divider(height: 2, color: Color(0xffDADADA)),
-  //
-  //                     // Patient 5
-  //                     Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         Text(
-  //                           'Patient 5',
-  //                           style: TextStyle(
-  //                               color: Colors.black,
-  //                               fontFamily: 'Poppins',
-  //                               fontSize: 14,
-  //                               fontWeight: FontWeight.w500),
-  //                         ),
-  //                         Radio(
-  //                           activeColor: primaryColor,
-  //                           value: 5,
-  //                           groupValue: patient,
-  //                           onChanged: (value) {
-  //                             setState(() {
-  //                               patient = value;
-  //                             });
-  //                           },
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -356,7 +182,7 @@ class _alltestsState extends State<alltests> {
                                                 children: [
                                                   Container(
                                                     width: w * 0.25,
-                                                    height: w * 0.35,
+                                                    height: w * 0.31,
                                                     decoration: BoxDecoration(),
                                                     child: ClipRRect(
                                                       borderRadius:
@@ -373,7 +199,7 @@ class _alltestsState extends State<alltests> {
                                                   Container(
                                                     width: w * 0.53,
                                                     child: Column(
-                                                      spacing: 12,
+                                                      spacing: 5,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
@@ -386,7 +212,7 @@ class _alltestsState extends State<alltests> {
                                                           labTests?.testDetails
                                                                   ?.testName ??
                                                               '',
-                                                          maxLines: 2,
+                                                          maxLines: 1,
                                                           style: TextStyle(
                                                             fontSize: 15,
                                                             fontWeight:
@@ -1111,7 +937,7 @@ class _alltestsState extends State<alltests> {
                                                   margin: const EdgeInsets.only(
                                                       top: 10),
                                                   padding:
-                                                      const EdgeInsets.all(6),
+                                                      const EdgeInsets.all(3),
                                                   decoration:
                                                       const BoxDecoration(
                                                           color: Color(

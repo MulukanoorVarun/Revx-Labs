@@ -1252,7 +1252,7 @@ class _HomescreenState extends State<Homescreen> {
           onTap: () {
             // Delay navigation to allow ripple effect to show
             Future.delayed(const Duration(milliseconds: 200), () {
-              context.push('/all_tests');
+              context.push('/all_tests?catId=${catId}&lat_lang=${lat_lang}&catName=${label}');
             });
           },
           child: Container(
