@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -24,7 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            context.pop();
           },
           child: Icon(Icons.arrow_back_ios_new),
         ),

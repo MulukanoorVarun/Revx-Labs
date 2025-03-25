@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
@@ -55,12 +56,13 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                     children: [
                       InkResponse(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    alltests(lat_lang:'',catId: item?.id??'',catName: item?.categoryName??'',diagnosticID: "",),
-                              ));
+                          context.push('/alltests?lat_lang=${''}&catId=${item?.id??''}&catName=${item?.categoryName??''}&diagnosticID=${""}');
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           alltests(lat_lang:'',catId: item?.id??'',catName: item?.categoryName??'',diagnosticID: "",),
+                          //     ));
                         },
                         child: Container(
                           width: 100,

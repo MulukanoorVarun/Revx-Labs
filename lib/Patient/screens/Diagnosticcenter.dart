@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
@@ -57,24 +58,20 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                         // Each card in the grid
                         return InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DiagnosticInformation(
-                                  diognosticId: item?.id ?? '',
-                                ),
-                              ),
-                            );
+                            context.push('/diognostic_information?diognosticId=${item?.id ?? ''}');
+
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 1), // Gray border
-                              borderRadius: BorderRadius.circular(10), // Rounded corners
+                              border: Border.all(
+                                  color: Colors.grey, width: 1), // Gray border
+                              borderRadius:
+                                  BorderRadius.circular(10), // Rounded corners
                             ),
                             child: Row(
                               children: [
                                 Padding(
-                                  padding:  EdgeInsets.only(
+                                  padding: EdgeInsets.only(
                                       left: 15.0,
                                       right: 0), // Padding for the image
                                   child: Container(
@@ -103,7 +100,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                         height: screenheight * 0.01,
                                       ),
                                       SizedBox(
-                                        width: screenwidth*0.5,
+                                        width: screenwidth * 0.5,
                                         child: Text(
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
@@ -120,7 +117,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                         height: screenheight * 0.01,
                                       ), // Space between product name and price
                                       SizedBox(
-                                        width: screenwidth*0.5,
+                                        width: screenwidth * 0.5,
                                         child: Text(
                                           "${item?.location ?? "Unknown location"}",
                                           textAlign: TextAlign.start,
@@ -135,19 +132,21 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
                                         ),
                                       ),
                                       const SizedBox(width: 8),
-                                      SizedBox(
-                                          height:
-                                          10), //
+                                      SizedBox(height: 10), //
                                       Row(
                                         children: [
                                           const Icon(
                                             Icons.location_on,
                                             color: Colors.red,
-                                            size: 18, // Adjusted icon size for better UI balance
+                                            size:
+                                                18, // Adjusted icon size for better UI balance
                                           ),
-                                          const SizedBox(width: 4), // Spacing between icon and text
+                                          const SizedBox(
+                                              width:
+                                                  4), // Spacing between icon and text
                                           Text(
-                                            item?.distance ?? '0 km', // Default to 0 km if distance is null
+                                            item?.distance ??
+                                                '0 km', // Default to 0 km if distance is null
                                             style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -227,6 +226,7 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
       ),
     );
   }
+
   Widget _shimmerList() {
     double w = MediaQuery.of(context).size.width;
     return Container(
@@ -239,7 +239,8 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
             margin: EdgeInsets.only(bottom: 10),
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff949494), width: 1), // Gray border
+              border:
+                  Border.all(color: Color(0xff949494), width: 1), // Gray border
               borderRadius: BorderRadius.circular(10), // Rounded corners
             ),
             child: Row(
@@ -265,5 +266,4 @@ class _Diagnosticcenter extends State<Diagnosticcenter> {
       ),
     );
   }
-
 }

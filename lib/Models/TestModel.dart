@@ -8,23 +8,23 @@ class TestModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     settings = json['settings'] != null
-        ? new Settings.fromJson(json['settings'])
+        ? Settings.fromJson(json['settings'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> dataMap = <String, dynamic>{};
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      dataMap['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     if (this.settings != null) {
-      data['settings'] = this.settings!.toJson();
+      dataMap['settings'] = this.settings!.toJson();
     }
-    return data;
+    return dataMap;
   }
 }
 
@@ -34,9 +34,10 @@ class Data {
   String? diagnosticCentre;
   String? price;
   String? distance;
-  bool? exist_in_cart;
+  bool? existInCart;
   int? noOfTests;
   List<String>? subTests;
+  TestDetails? testDetails;
 
   Data({
     this.id,
@@ -44,45 +45,23 @@ class Data {
     this.diagnosticCentre,
     this.price,
     this.distance,
+    this.existInCart,
     this.noOfTests,
-    this.exist_in_cart,
     this.subTests,
+    this.testDetails,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    testName = json['test_name'];
-    diagnosticCentre = json['diagnostic_centre'];
-    price = json['price'];
-    distance = json['distance'];
-    noOfTests = json['no_of_tests'];
-    exist_in_cart = json['exist_in_cart'];
-    subTests = json['sub_tests']?.cast<String>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['test_name'] = testName;
-    data['diagnostic_centre'] = diagnosticCentre;
-    data['price'] = price;
-    data['distance'] = distance;
-    data['no_of_tests'] = noOfTests;
-    data['sub_tests'] = subTests;
-    data['exist_in_cart'] = exist_in_cart;
-    return data;
-  }
-
-  // ✅ CopyWith Method
+  // CopyWith method to clone an object and update specific fields
   Data copyWith({
     String? id,
     String? testName,
     String? diagnosticCentre,
     String? price,
     String? distance,
-    bool? exist_in_cart,
+    bool? existInCart,
     int? noOfTests,
     List<String>? subTests,
+    TestDetails? testDetails,
   }) {
     return Data(
       id: id ?? this.id,
@@ -90,10 +69,97 @@ class Data {
       diagnosticCentre: diagnosticCentre ?? this.diagnosticCentre,
       price: price ?? this.price,
       distance: distance ?? this.distance,
-      exist_in_cart: exist_in_cart ?? this.exist_in_cart,
+      existInCart: existInCart ?? this.existInCart,
       noOfTests: noOfTests ?? this.noOfTests,
       subTests: subTests ?? this.subTests,
+      testDetails: testDetails ?? this.testDetails,
     );
+  }
+
+  // fromJson to convert JSON to Data object
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    testName = json['test_name'];
+    diagnosticCentre = json['diagnostic_centre'];
+    price = json['price'];
+    distance = json['distance'];
+    existInCart = json['exist_in_cart'];
+    noOfTests = json['no_of_tests'];
+    subTests = json['sub_tests'] != null
+        ? List<String>.from(json['sub_tests'])
+        : null;
+    testDetails = json['test_details'] != null
+        ? TestDetails.fromJson(json['test_details'])
+        : null;
+  }
+
+  // toJson to convert Data object to JSON map
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> dataMap = <String, dynamic>{};
+    dataMap['id'] = id;
+    dataMap['test_name'] = testName;
+    dataMap['diagnostic_centre'] = diagnosticCentre;
+    dataMap['price'] = price;
+    dataMap['distance'] = distance;
+    dataMap['exist_in_cart'] = existInCart;
+    dataMap['no_of_tests'] = noOfTests;
+    dataMap['sub_tests'] = subTests;
+    if (testDetails != null) {
+      dataMap['test_details'] = testDetails!.toJson();
+    }
+    return dataMap;
+  }
+}
+
+class TestDetails {
+  String? id;
+  String? testName;
+  String? category;
+  int? price;
+  String? condition;
+  bool? fastingRequired;
+  int? reportsDeliveredIn;
+  String? image;
+  int? noOfTests;
+
+  TestDetails({
+    this.id,
+    this.testName,
+    this.category,
+    this.price,
+    this.condition,
+    this.fastingRequired,
+    this.reportsDeliveredIn,
+    this.image,
+    this.noOfTests,
+  });
+
+  // fromJson to convert JSON to TestDetails object
+  TestDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    testName = json['test_name'];
+    category = json['category'];
+    price = json['price'];
+    condition = json['condition'];
+    fastingRequired = json['fasting_required'];
+    reportsDeliveredIn = json['reports_delivered_in'];
+    image = json['image'];
+    noOfTests = json['no_of_tests'];
+  }
+
+  // toJson to convert TestDetails object to JSON map
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> dataMap = <String, dynamic>{};
+    dataMap['id'] = this.id;
+    dataMap['test_name'] = this.testName;
+    dataMap['category'] = this.category;
+    dataMap['price'] = this.price;
+    dataMap['condition'] = this.condition;
+    dataMap['fasting_required'] = this.fastingRequired;
+    dataMap['reports_delivered_in'] = this.reportsDeliveredIn;
+    dataMap['image'] = this.image;
+    dataMap['no_of_tests'] = this.noOfTests;
+    return dataMap;
   }
 }
 
@@ -106,15 +172,17 @@ class Settings {
   bool? nextPage;
   bool? prevPage;
 
-  Settings(
-      {this.success,
-        this.message,
-        this.status,
-        this.count,
-        this.page,
-        this.nextPage,
-        this.prevPage});
+  Settings({
+    this.success,
+    this.message,
+    this.status,
+    this.count,
+    this.page,
+    this.nextPage,
+    this.prevPage,
+  });
 
+  // fromJson to convert JSON to Settings object
   Settings.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
@@ -125,15 +193,16 @@ class Settings {
     prevPage = json['prev_page'];
   }
 
+  // toJson to convert Settings object to JSON map
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
-    data['status'] = this.status;
-    data['count'] = this.count;
-    data['page'] = this.page;
-    data['next_page'] = this.nextPage;
-    data['prev_page'] = this.prevPage;
-    return data;
+    final Map<String, dynamic> dataMap = <String, dynamic>{};
+    dataMap['success'] = this.success;
+    dataMap['message'] = this.message;
+    dataMap['status'] = this.status;
+    dataMap['count'] = this.count;
+    dataMap['page'] = this.page;
+    dataMap['next_page'] = this.nextPage;
+    dataMap['prev_page'] = this.prevPage;
+    return dataMap;
   }
 }

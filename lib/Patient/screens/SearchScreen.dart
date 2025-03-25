@@ -297,8 +297,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                     onPressed: isLoading
                                                         ? null
                                                         : () {
-                                                            if (labTests
-                                                                    .exist_in_cart ??
+                                                            if (labTests.existInCart ??
                                                                 false) {
                                                               context
                                                                   .read<
@@ -323,7 +322,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                                 VisualDensity
                                                                     .compact,
                                                             backgroundColor: labTests
-                                                                        .exist_in_cart ??
+                                                                        .existInCart ??
                                                                     false
                                                                 ? Color(
                                                                     0xff137B7C)
@@ -351,7 +350,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                         : Row(
                                                             children: [
                                                               Text(
-                                                                labTests.exist_in_cart ??
+                                                                labTests.existInCart ??
                                                                         false
                                                                     ? 'Remove'
                                                                     : 'Add Test',
@@ -364,7 +363,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                                               SizedBox(
                                                                 width: 10,
                                                               ),
-                                                              labTests.exist_in_cart ??
+                                                              labTests.existInCart ??
                                                                       false
                                                                   ? Icon(
                                                                       Icons

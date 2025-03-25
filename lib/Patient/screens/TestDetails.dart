@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_state.dart';
@@ -26,12 +27,13 @@ class _TestDetailsState extends State<TestDetails>
   @override
   void initState() {
     context.read<TestDetailsCubit>().getTestDetails(widget.id);
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Test Details',
@@ -46,10 +48,11 @@ class _TestDetailsState extends State<TestDetails>
               children: [
                 SizedBox(height: 8),
                 Padding(
-                  padding: EdgeInsets.only(left: 16,bottom: 10),
+                  padding: EdgeInsets.only(left: 16, bottom: 10),
                   child: Row(
                     children: [
-                      const Icon(Icons.location_on, color: Colors.red, size: 18),
+                      const Icon(Icons.location_on,
+                          color: Colors.red, size: 18),
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -65,104 +68,149 @@ class _TestDetailsState extends State<TestDetails>
                     ],
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin:
-                      EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xff949494), width: 0.5),
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Column(
-                    spacing: 4,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        state.testDetailsModel.data?.testName ?? '',
-                        style: TextStyle(
-                            color: Color(0xff000000),
-                            fontSize: SizeConfig.fontSize(12),
-                            fontFamily: 'pjs',
-                            fontWeight: FontWeight.w500),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 10,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 16, right: 16, bottom: 16, top: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      width: w * 0.25,
+                      height: w * 0.3,
+                      decoration: BoxDecoration(),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          '${state.testDetailsModel.data?.testDetails?.image ?? ""}',
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      Text(
-                        'No.of Tests: ${state.testDetailsModel.data?.noOfTests.toString() ?? ''}',
-                        style: TextStyle(
-                            color: Color(0xff000000).withOpacity(0.5),
-                            fontSize: SizeConfig.fontSize(10),
-                            fontFamily: 'pjs',
-                            fontWeight: FontWeight.w400),
-                      ),
-                      BlocBuilder<CartCubit, CartState>(
-                        builder: (context, cartState) {
-                          bool isLoading = cartState is CartLoadingState &&
-                              cartState.testId == state.testDetailsModel.data?.id;
-
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end, // Align button to right
-                            children: [
-                              ElevatedButton(
+                    ),
+                    Container(
+                      width: w * 0.56,
+                      child: Column(
+                        spacing: 12,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            state.testDetailsModel.data?.testDetails
+                                    ?.testName ??
+                                "",
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            '₹ ${state.testDetailsModel.data?.testDetails?.price ?? 0}/-',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'No of tests : ${state.testDetailsModel.data?.testDetails?.noOfTests ?? 0}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Poppins",
+                              color: Colors.black,
+                            ),
+                          ),
+                          BlocBuilder<CartCubit, CartState>(
+                            builder: (context, cartState) {
+                              bool isLoading = cartState is CartLoadingState &&
+                                  cartState.testId ==
+                                      state.testDetailsModel.data?.id;
+                              return ElevatedButton(
                                 onPressed: isLoading
                                     ? null
                                     : () {
-                                  if (state.testDetailsModel.data?.existInCart ?? false) {
-                                    context
-                                        .read<CartCubit>()
-                                        .removeFromCart(state.testDetailsModel.data?.id ?? "", context);
-                                  } else {
-                                    context
-                                        .read<CartCubit>()
-                                        .addToCart({"test": "${state.testDetailsModel.data?.id}"}, context);
-                                  }
-                                },
+                                        if (state.testDetailsModel.data
+                                                ?.existInCart ??
+                                            false) {
+                                          context
+                                              .read<CartCubit>()
+                                              .removeFromCart(
+                                                  state.testDetailsModel.data
+                                                          ?.testDetails?.id ??
+                                                      "",
+                                                  context);
+                                        } else {
+                                          context.read<CartCubit>().addToCart({
+                                            "test":
+                                                "${state.testDetailsModel.data?.testDetails?.id}"
+                                          }, context);
+                                        }
+                                      },
                                 style: ElevatedButton.styleFrom(
-                                  visualDensity: VisualDensity.compact,
-                                  backgroundColor: state.testDetailsModel.data?.existInCart ?? false
-                                      ? primaryColor
-                                      :  primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  elevation: 0,
-                                ),
-                                child: isLoading
-                                    ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                                    : Row(
-                                  children: [
-                                    Text(
-                                      state.testDetailsModel.data?.existInCart ?? false
-                                          ? 'Remove'
-                                          : 'Add Test',
-                                      style: TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                                    visualDensity: VisualDensity.compact,
+                                    backgroundColor: state.testDetailsModel.data
+                                                ?.existInCart ??
+                                            false
+                                        ? primaryColor
+                                        : primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                    SizedBox(width: 10),
-                                    state.testDetailsModel.data?.existInCart ?? false
-                                        ? Icon(Icons.cancel_outlined, color: Colors.white)
-                                        : Icon(Icons.add_circle_outline, color: Colors.white),
+                                    elevation: 0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    isLoading
+                                        ? CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2,
+                                          )
+                                        : Text(
+                                            state.testDetailsModel.data
+                                                        ?.existInCart ??
+                                                    false
+                                                ? 'Remove'
+                                                : 'Add Test',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    state.testDetailsModel.data?.existInCart ??
+                                            false
+                                        ? Icon(
+                                            Icons.cancel_outlined,
+                                            color: Colors.white,
+                                          )
+                                        : Icon(
+                                            Icons.add_circle_outline,
+                                            color: Colors.white,
+                                          )
                                   ],
                                 ),
-                              ),
-                            ],
-                          );
-                        },
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
                 Container(
                   decoration: BoxDecoration(
                     color: Color(0xffffffff),
                     boxShadow: [
                       BoxShadow(
-                        color:
-                            primaryColor.withOpacity(0.5),
+                        color: primaryColor.withOpacity(0.5),
                         blurRadius: 1,
                         offset: Offset(0, 0.1),
                       ),
@@ -208,21 +256,27 @@ class _TestDetailsState extends State<TestDetails>
                       Tab(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Test Includes '),
+                          child: Text('Overview'),
                         ),
                       ),
                       Tab(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Frequently Asked Questions'),
+                          child: Text('Ranges'),
                         ),
                       ),
-                      // Tab(
-                      //   child: Align(
-                      //     alignment: Alignment.centerLeft,
-                      //     child: Text('Review'),
-                      //   ),
-                      // ),
+                      Tab(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Test Result Iinterpretation'),
+                        ),
+                      ),
+                      Tab(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Risk Assessment'),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -236,9 +290,7 @@ class _TestDetailsState extends State<TestDetails>
                         child: Column(
                           children: [
                             Html(
-                                data: state.testDetailsModel.data
-                                        ?.procedureDescription ??
-                                    '',
+                                data: state.testDetailsModel.data?.testDetails?.description??'',
                                 style: {
                                   "body": Style(
                                     fontSize: FontSize(12),
@@ -248,7 +300,75 @@ class _TestDetailsState extends State<TestDetails>
                                 })
                           ],
                         ),
-                      ))
+                      )),
+                      Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                Html(
+                                    data: state.testDetailsModel.data?.testDetails?.overview??'',
+                                    style: {
+                                      "body": Style(
+                                        fontSize: FontSize(12),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    })
+                              ],
+                            ),
+                          )),
+                      Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                Html(
+                                    data: state.testDetailsModel.data?.testDetails?.ranges??'',
+                                    style: {
+                                      "body": Style(
+                                        fontSize: FontSize(12),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    })
+                              ],
+                            ),
+                          )),
+                      Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                Html(
+                                    data: state.testDetailsModel.data?.testDetails?.testResultInterpretation??'',
+                                    style: {
+                                      "body": Style(
+                                        fontSize: FontSize(12),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    })
+                              ],
+                            ),
+                          )),
+                      Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                Html(
+                                    data: state.testDetailsModel.data?.testDetails?.riskAssessment??'',
+                                    style: {
+                                      "body": Style(
+                                        fontSize: FontSize(12),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    })
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                 ),
@@ -326,17 +446,12 @@ class _TestDetailsState extends State<TestDetails>
                           ),
                       ],
                     ),
-                    // Continue button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Apointments()),
-                        );
+                        context.pushReplacement('/appointments');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:  primaryColor,
+                        backgroundColor: primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),

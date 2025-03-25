@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
@@ -316,17 +317,18 @@ class _DiagnosticInformationState extends State<DiagnosticInformation> {
                       SizedBox(height: 26),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => alltests(
-                                lat_lang: '',
-                                catId: '',
-                                catName: '',
-                                diagnosticID: state.diagnostic_details.diognostic_details?.id ?? '',
-                              ),
-                            ),
-                          );
+                          context.push('/alltests?lat_lang=${''}&catId=${''}&catName=${''}&diagnosticID=${state.diagnostic_details.diognostic_details?.id ?? ''}');
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => alltests(
+                          //       lat_lang: '',
+                          //       catId: '',
+                          //       catName: '',
+                          //       diagnosticID: state.diagnostic_details.diognostic_details?.id ?? '',
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: Container(
                           width: double.infinity,

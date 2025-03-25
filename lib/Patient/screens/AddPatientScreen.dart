@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
@@ -160,7 +161,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                context.pop();
               },
               icon: Icon(Icons.arrow_back_ios),
               color: primaryColor,
@@ -183,7 +184,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               if (state is PatientLoaded) {
               if(state.successModel.settings?.success==1){
                 CustomSnackBar.show(context, "Patient Added Successfully!");
-                Navigator.pop(context);
+                context.pop();
               }
               else{
                 CustomSnackBar.show(context,state.successModel.settings?.message??"");

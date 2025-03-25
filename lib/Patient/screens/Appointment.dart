@@ -34,7 +34,7 @@ class _ApointmentsState extends State<Apointments> {
   String vendorID = "";
   String startTime = "";
   String endTime = "";
-  double? totalamount;
+  int? totalamount;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,9 @@ class _ApointmentsState extends State<Apointments> {
         } else if (cartState is CartLoaded) {
           vendorID = cartState.cartList?.data?.diagnosticCentre?.id ?? "";
           startTime =
-              cartState.cartList?.data?.diagnosticCentre?.starttime ?? "";
-          endTime = cartState.cartList?.data?.diagnosticCentre?.endtime ?? "";
-          totalamount = cartState.cartList?.data?.totalAmount ?? 0.0;
+              cartState.cartList?.data?.diagnosticCentre?.startTime ?? "";
+          endTime = cartState.cartList?.data?.diagnosticCentre?.endTime ?? "";
+          totalamount = cartState.cartList?.data?.totalAmount??0;
           if (totalamount != 0.0 && totalamount != null) {
             return SingleChildScrollView(
               child: Padding(
@@ -260,7 +260,7 @@ class _ApointmentsState extends State<Apointments> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      "₹${test?.testPrice ?? ""}",
+                                      "₹${test?.price ?? ""}",
                                       style: const TextStyle(
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w400,

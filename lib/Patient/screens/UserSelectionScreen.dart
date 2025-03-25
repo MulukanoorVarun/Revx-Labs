@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 
-import '../../Vendor/Screens/VendorRegisterScreen.dart';
-import 'Register.dart';
-
 class UserSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
