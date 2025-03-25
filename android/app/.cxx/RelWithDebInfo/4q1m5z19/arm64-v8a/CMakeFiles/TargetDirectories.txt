@@ -1,0 +1,2 @@
+C:/Users/muluk/AndroidStudioProjects/Revx-Labs/android/app/.cxx/RelWithDebInfo/4q1m5z19/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/muluk/AndroidStudioProjects/Revx-Labs/android/app/.cxx/RelWithDebInfo/4q1m5z19/arm64-v8a/CMakeFiles/rebuild_cache.dir
