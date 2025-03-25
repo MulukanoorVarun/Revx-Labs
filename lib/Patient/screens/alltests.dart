@@ -796,10 +796,10 @@ class _alltestsState extends State<alltests> {
                                                                     orElse: () =>
                                                                         CartTests(
                                                                             noOfPersons:
-                                                                                1),
+                                                                                0),
                                                                   );
                                                                   selectedPatientCount =
-                                                                      currentTest.noOfPersons ?? 1;
+                                                                      currentTest.noOfPersons ?? 0;
                                                                 }
                                                               }
                                                             }
@@ -841,7 +841,7 @@ class _alltestsState extends State<alltests> {
                                                                                       ),
                                                                                     ),
                                                                                     const SizedBox(height: 10),
-                                                                                    const Text(
+                                                                                     Text(
                                                                                       'Book For',
                                                                                       style: TextStyle(
                                                                                         color: Colors.black,
@@ -850,11 +850,11 @@ class _alltestsState extends State<alltests> {
                                                                                         fontWeight: FontWeight.w500,
                                                                                       ),
                                                                                     ),
-                                                                                    const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                    Divider(height: 2, color: Color(0xffDADADA)),
                                                                                     Expanded(
                                                                                       child: ListView(
                                                                                         children: [
-                                                                                          if (selectedPatientCount > 0) ...[
+                                                                                          if (labTests?.existInCart ??false) ...[
                                                                                             Row(
                                                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                               children: [
@@ -902,7 +902,7 @@ class _alltestsState extends State<alltests> {
                                                                                                       children: [
                                                                                                         Text(
                                                                                                           '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
-                                                                                                          style: const TextStyle(
+                                                                                                          style: TextStyle(
                                                                                                             fontSize: 14,
                                                                                                             fontWeight: FontWeight.w600,
                                                                                                             fontFamily: "Poppins",

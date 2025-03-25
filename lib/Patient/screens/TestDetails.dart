@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
+import 'package:revxpharma/Models/CartListModel.dart' show CartTests;
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_state.dart';
 import 'package:revxpharma/Utils/color.dart';
@@ -30,7 +32,7 @@ class _TestDetailsState extends State<TestDetails>
     _tabController = TabController(length: 5, vsync: this);
     super.initState();
   }
-
+  int selectedPatientCount = 0;
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -126,80 +128,309 @@ class _TestDetailsState extends State<TestDetails>
                               color: Colors.black,
                             ),
                           ),
-                          BlocBuilder<CartCubit, CartState>(
-                            builder: (context, cartState) {
-                              bool isLoading = cartState is CartLoadingState &&
-                                  cartState.testId ==
-                                      state.testDetailsModel.data?.id;
+                          // BlocBuilder<CartCubit, CartState>(
+                          //   builder: (context, cartState) {
+                          //     bool isLoading = cartState is CartLoadingState &&
+                          //         cartState.testId ==
+                          //             state.testDetailsModel.data?.id;
+                          //     return ElevatedButton(
+                          //       onPressed: isLoading
+                          //           ? null
+                          //           : () {
+                          //               if (state.testDetailsModel.data
+                          //                       ?.existInCart ??
+                          //                   false) {
+                          //                 context
+                          //                     .read<CartCubit>()
+                          //                     .removeFromCart(
+                          //                         state.testDetailsModel.data
+                          //                                 ?.testDetails?.id ??
+                          //                             "",
+                          //                         context);
+                          //               } else {
+                          //                 context.read<CartCubit>().addToCart({
+                          //                   "test":
+                          //                       "${state.testDetailsModel.data?.testDetails?.id}"
+                          //                 }, context);
+                          //               }
+                          //             },
+                          //       style: ElevatedButton.styleFrom(
+                          //           visualDensity: VisualDensity.compact,
+                          //           backgroundColor: state.testDetailsModel.data
+                          //                       ?.existInCart ??
+                          //                   false
+                          //               ? primaryColor
+                          //               : primaryColor,
+                          //           shape: RoundedRectangleBorder(
+                          //             borderRadius: BorderRadius.circular(30),
+                          //           ),
+                          //           elevation: 0),
+                          //       child: Row(
+                          //         crossAxisAlignment: CrossAxisAlignment.center,
+                          //         mainAxisAlignment: MainAxisAlignment.center,
+                          //         children: [
+                          //           isLoading
+                          //               ? CircularProgressIndicator(
+                          //                   color: Colors.white,
+                          //                   strokeWidth: 2,
+                          //                 )
+                          //               : Text(
+                          //                   state.testDetailsModel.data
+                          //                               ?.existInCart ??
+                          //                           false
+                          //                       ? 'Remove'
+                          //                       : 'Add Test',
+                          //                   style: TextStyle(
+                          //                       color: Colors.white,
+                          //                       fontFamily: "Poppins"),
+                          //                 ),
+                          //           SizedBox(
+                          //             width: 10,
+                          //           ),
+                          //           state.testDetailsModel.data?.existInCart ??
+                          //                   false
+                          //               ? Icon(
+                          //                   Icons.cancel_outlined,
+                          //                   color: Colors.white,
+                          //                 )
+                          //               : Icon(
+                          //                   Icons.add_circle_outline,
+                          //                   color: Colors.white,
+                          //                 )
+                          //         ],
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
+                          BlocBuilder<CartCubit,
+                              CartState>(
+                            builder: (context,
+                                cartState) {
+                              // Get the current number of patients from the cart state or labTests
+
+                              if (state.testDetailsModel.data?.existInCart ??false) {
+                                if (cartState is CartLoaded) {
+                                  final cartTests = cartState.cartList?.data?.cartTests;
+                                  if (cartTests != null && cartTests.isNotEmpty) {
+                                    final currentTest =
+                                    cartTests.firstWhere(
+                                          (test) =>
+                                      test.testId ==
+                                          state.testDetailsModel.data
+                                              ?.id,
+                                      orElse: () =>
+                                          CartTests(noOfPersons: 0),
+                                    );
+                                    selectedPatientCount =
+                                        currentTest.noOfPersons ?? 0;
+                                  }
+                                }
+                              }
+
                               return ElevatedButton(
-                                onPressed: isLoading
+                                onPressed: cartState
+                                is CartLoadingState &&
+                                    cartState
+                                        .testId ==
+                                        state.testDetailsModel.data
+                                            ?.id
                                     ? null
                                     : () {
-                                        if (state.testDetailsModel.data
-                                                ?.existInCart ??
-                                            false) {
-                                          context
-                                              .read<CartCubit>()
-                                              .removeFromCart(
-                                                  state.testDetailsModel.data
-                                                          ?.testDetails?.id ??
-                                                      "",
-                                                  context);
-                                        } else {
-                                          context.read<CartCubit>().addToCart({
-                                            "test":
-                                                "${state.testDetailsModel.data?.testDetails?.id}"
-                                          }, context);
-                                        }
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                    visualDensity: VisualDensity.compact,
-                                    backgroundColor: state.testDetailsModel.data
-                                                ?.existInCart ??
-                                            false
-                                        ? primaryColor
-                                        : primaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    elevation: 0),
+                                  showModalBottomSheet(
+                                    context:
+                                    context,
+                                    builder:
+                                        (context) {
+                                      return StatefulBuilder(
+                                        builder:
+                                            (BuildContext context, StateSetter setModalState) {
+                                          return Container(
+                                            height: MediaQuery.of(context).size.height * 0.5,
+                                            padding: const EdgeInsets.all(16),
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Center(
+                                                  child: Container(
+                                                    width: 60,
+                                                    height: 3,
+                                                    decoration: BoxDecoration(
+                                                      color: CupertinoColors.inactiveGray,
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Text(
+                                                  'Book For',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Divider(height: 2, color: Color(0xffDADADA)),
+                                                Expanded(
+                                                  child: ListView(
+                                                    children: [
+                                                      if (state.testDetailsModel.data?.existInCart ??false) ...[
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            const Text(
+                                                              'Remove Selection',
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontFamily: 'Poppins',
+                                                                fontSize: 14,
+                                                                fontWeight: FontWeight.w500,
+                                                              ),
+                                                            ),
+                                                            IconButton.outlined(
+                                                                visualDensity: VisualDensity.compact,
+                                                                onPressed: () {
+                                                                  context.read<CartCubit>().removeFromCart(state.testDetailsModel.data?.id ?? "", context);
+                                                                  context.pop();
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons.delete_outline,
+                                                                  color: Colors.red,
+                                                                ))
+                                                          ],
+                                                        ),
+                                                        const Divider(height: 2, color: Color(0xffDADADA)),
+                                                      ],
+                                                      ...List.generate(5, (index) {
+                                                        final patientCount = index + 1;
+                                                        return Column(
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  'Patient $patientCount',
+                                                                  style: const TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontFamily: 'Poppins',
+                                                                    fontSize: 14,
+                                                                    fontWeight: FontWeight.w500,
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  spacing: 12,
+                                                                  children: [
+                                                                    Text(
+                                                                      '₹ ${(patientCount) * (state.testDetailsModel.data?.testDetails?.price ?? 0)}',
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        fontWeight: FontWeight.w600,
+                                                                        fontFamily: "Poppins",
+                                                                        color: Colors.black,
+                                                                      ),
+                                                                    ),
+                                                                    Radio<int>(
+                                                                      activeColor: primaryColor,
+                                                                      value: patientCount,
+                                                                      groupValue: selectedPatientCount,
+                                                                      onChanged: (value) {
+                                                                        setModalState(() {
+                                                                          selectedPatientCount = patientCount;
+                                                                        });
+                                                                        context.read<CartCubit>().addToCart({
+                                                                          "test": "${state.testDetailsModel.data?.id}",
+                                                                          'no_of_persons': '$patientCount'
+                                                                        }, context);
+                                                                        print('Selected patient number = $patientCount');
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            const Divider(height: 2, color: Color(0xffDADADA)),
+                                                          ],
+                                                        );
+                                                      }),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                                style:
+                                ElevatedButton
+                                    .styleFrom(
+                                  visualDensity:
+                                  VisualDensity
+                                      .compact,
+                                  backgroundColor:
+                                  state.testDetailsModel.data?.existInCart ??
+                                      false
+                                      ? primaryColor
+                                      : primaryColor,
+                                  shape:
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius
+                                        .circular(
+                                        30),
+                                  ),
+                                  elevation: 0,
+                                ),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .center,
                                   children: [
-                                    isLoading
-                                        ? CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2,
-                                          )
+                                    cartState is CartLoadingState &&
+                                        cartState.testId ==
+                                            state.testDetailsModel.data?.id
+                                        ? const CircularProgressIndicator(
+                                      color:
+                                      Colors.white,
+                                      strokeWidth:
+                                      2,
+                                    )
                                         : Text(
-                                            state.testDetailsModel.data
-                                                        ?.existInCart ??
-                                                    false
-                                                ? 'Remove'
-                                                : 'Add Test',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                    SizedBox(
-                                      width: 10,
+                                      state.testDetailsModel.data?.existInCart ?? false
+                                          ? '$selectedPatientCount Patient${selectedPatientCount != 1 ? 's' : ''}'
+                                          : 'Add Test',
+                                      style:
+                                      const TextStyle(
+                                        color:
+                                        Colors.white,
+                                        fontFamily:
+                                        "Poppins",
+                                      ),
                                     ),
-                                    state.testDetailsModel.data?.existInCart ??
-                                            false
-                                        ? Icon(
-                                            Icons.cancel_outlined,
-                                            color: Colors.white,
-                                          )
-                                        : Icon(
-                                            Icons.add_circle_outline,
-                                            color: Colors.white,
-                                          )
+                                    const SizedBox(
+                                        width:
+                                        10),
+                                    Icon(
+                                      state.testDetailsModel.data?.existInCart ??
+                                          false
+                                          ? Icons
+                                          .arrow_drop_down_sharp
+                                          : Icons
+                                          .add_circle_outline,
+                                      color: Colors
+                                          .white,
+                                    ),
                                   ],
                                 ),
                               );
                             },
-                          ),
+                          )
                         ],
                       ),
                     )
