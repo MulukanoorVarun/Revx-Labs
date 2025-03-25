@@ -71,7 +71,7 @@ class _DashboardState extends State<Dashboard> {
                 // ChatSupport(),
                 // Notifications(),
                 // Reports(),
-                Prescription(),
+                // Prescription(),
                 Profile()
 
               ],
@@ -176,29 +176,29 @@ class _DashboardState extends State<Dashboard> {
               //       ],
               //     )
               // ),
-              BottomNavigationBarItem(
-                  label: "Reports",
-                  icon: Column(
-                    children: [
-                      _selectedIndex == 2
-                          ? Image.asset(
-                        "assets/active_reports.png",
-                        width: 25,
-                        height: 25,
-                        color: primaryColor,
-                      )
-                          : Image.asset(
-                        "assets/reports.png",
-                        width: 25,
-                        height: 25,
-                      )
-                    ],
-                  )),
+              // BottomNavigationBarItem(
+              //     label: "Reports",
+              //     icon: Column(
+              //       children: [
+              //         _selectedIndex == 2
+              //             ? Image.asset(
+              //           "assets/active_reports.png",
+              //           width: 25,
+              //           height: 25,
+              //           color: primaryColor,
+              //         )
+              //             : Image.asset(
+              //           "assets/reports.png",
+              //           width: 25,
+              //           height: 25,
+              //         )
+              //       ],
+              //     )),
               BottomNavigationBarItem(
                   label: "Profile",
                   icon: Column(
                     children: [
-                      _selectedIndex == 3
+                      _selectedIndex == 2
                           ? Image.asset(
                               "assets/activeprofile.png",
                               width: 25,
