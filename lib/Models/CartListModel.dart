@@ -62,9 +62,10 @@ class CartTests {
   String? testName;
   int? price;
   int? noOfPersons;
+  String? testImage;
 
   CartTests(
-      {this.id, this.testId, this.testName, this.price, this.noOfPersons});
+      {this.id, this.testId, this.testName, this.price, this.noOfPersons, this.testImage});
 
   CartTests.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,6 +73,7 @@ class CartTests {
     testName = json['test_name'];
     price = json['price'];
     noOfPersons = json['no_of_persons'];
+    testImage = json['test_image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +83,7 @@ class CartTests {
     data['test_name'] = this.testName;
     data['price'] = this.price;
     data['no_of_persons'] = this.noOfPersons;
+    data['test_image'] = this.testImage;
     return data;
   }
 }
