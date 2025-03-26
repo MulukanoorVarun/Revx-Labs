@@ -296,7 +296,6 @@ class _ApointmentsState extends State<Apointments> {
                           "assets/location.png",
                           height: 20,
                           width: 20,
-
                           color: Colors.red,
                         ),
                         SizedBox(width: 10),
