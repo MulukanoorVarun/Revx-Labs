@@ -222,7 +222,7 @@ class _ApointmentsState extends State<Apointments> {
         'total_amount': totalamount
       };
       try {
-        context.pushReplacement('/payment', extra: data);
+        context.push('/payment', extra: data);
         LogHelper.printLog('Appointment data:', data);
       } catch (error) {
         LogHelper.printLog('Error while booking:', error.toString());
@@ -321,7 +321,7 @@ class _ApointmentsState extends State<Apointments> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    ListView.separated(
+                    ListView.separated(physics: NeverScrollableScrollPhysics(),
                       separatorBuilder: (context, index) => SizedBox(height: 12),
                       shrinkWrap: true,
                       itemCount:

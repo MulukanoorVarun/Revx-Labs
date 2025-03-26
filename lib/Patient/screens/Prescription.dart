@@ -1,214 +1,291 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
-import 'package:revxpharma/Components/ShakeWidget.dart';
+import 'package:revxpharma/Utils/color.dart';
 
 class Prescription extends StatefulWidget {
   const Prescription({super.key});
-
   @override
   State<Prescription> createState() => _PrescriptionState();
+
 }
 
 class _PrescriptionState extends State<Prescription> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _aboutPrescriptionController = TextEditingController();
-  TextEditingController _relationController = TextEditingController();
-  String _validateName = '';
-  String _validateAbout = '';
-  String _validateRelation = '';
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+
+  Future<void> _pickImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.camera,
+      maxHeight: 800,
+      maxWidth: 800,
+    );
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
+
+  // Function to pick image from gallery
+  Future<void> _pickImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 800,
+      maxWidth: 800,
+    );
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: 'Prescription', actions: []),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    spreadRadius: 1,
-                    blurRadius: 2,
-                    offset: Offset(0, 2),
+    final w = MediaQuery.of(context).size.width;
 
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: CustomAppBar(
+        title: 'Upload Prescription',
+        actions: [
+          if (_selectedImage != null)
+            IconButton(
+              icon: Icon(Icons.clear, color: Colors.red),
+              onPressed: () => setState(() => _selectedImage = null),
+            ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image Preview Container (Template for prescription image)
+              Container(
+                width: w,
+                height: 200, // Fixed height for image preview
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      'assets/Medical prescription.png', // Placeholder for prescription template
+                      fit: BoxFit.cover,
+                      width: w,
+                      height: 200,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 24),
+
+              // Prescription Requirements
+              Text(
+                'A Valid Prescription Should Contain',
+                style: TextStyle(
+                  color: Color(0xff333333),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildRequirementItem(
+                    icon: 'assets/CalendarDots.png',
+                    label: 'Date of\nPrescription',
+                    color: Color(0xffE5FFAD),
+                  ),
+                  _buildRequirementItem(
+                    icon: 'assets/Stethoscope.png',
+                    label: 'Doctor\nDetails',
+                    color: Color(0xffFFD9AD),
+                  ),
+                  _buildRequirementItem(
+                    icon: 'assets/UserList.png',
+                    label: 'Patient\nDetails',
+                    color: Color(0xffE0D8FF),
+                  ),
+                  _buildRequirementItem(
+                    icon: 'assets/Pill.png',
+                    label: 'Dosage\nDetails',
+                    color: Color(0xffBFFCBE),
                   ),
                 ],
               ),
-              child: Material(
-                elevation: 0, // Set elevation to 0 when using BoxShadow
-                borderRadius: BorderRadius.circular(30.0),
-                child: TextField(
-                  onTap: () {
-                    setState(() {
-                      _validateName = '';
-                    });
-                  },
-                  controller: _nameController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: 'Name',
-                    hintStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                    border: InputBorder.none, // Removes the default border
+
+              SizedBox(height: 24),
+
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/file_upload.png',
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
                   ),
-                ),
-              ),
-            ),
-            if (_validateName.isNotEmpty) ...[
-              Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-                width: MediaQuery.of(context).size.width,
-                child: ShakeWidget(
-                  key: Key("value"),
-                  duration: Duration(milliseconds: 700),
-                  child: Text(
-                    _validateName,
+                  SizedBox(width: 8),
+                  Text(
+                    'Upload Your Prescription',
                     style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 12,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
+                      color: Color(0xff1A1A1A),
+                      fontSize: 20,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                ),
-              ),
-            ] else ...[
-              SizedBox(height: 15),
-            ],
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25), // Shadow color
-                    spreadRadius: 1, // Adjusts the size of the shadow
-                    blurRadius: 2, // How blurry the shadow is
-                    offset: Offset(0, 2), // Position of the shadow
                   ),
                 ],
               ),
-              child: Material(
-                elevation: 0, // Set elevation to 0 when using BoxShadow
-                borderRadius: BorderRadius.circular(30.0),
-                child: TextField(
-                  onTap: () {
-                    setState(() {
-                      _validateAbout = '';
-                    });
-                  },
-                  controller: _aboutPrescriptionController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: 'About Prescription',
-                    hintStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                    border: InputBorder.none, // Removes the default border
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildActionButton(
+                    icon: Icons.camera_alt_rounded,
+                    label: 'Camera',
+                    color: primaryColor,
+                    textColor: Colors.white,
+                    onTap: _pickImageFromCamera,
                   ),
-                ),
-              ),
-            ),
-            if (_validateAbout.isNotEmpty) ...[
-              Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-                width: MediaQuery.of(context).size.width,
-                child: ShakeWidget(
-                  key: Key("value"),
-                  duration: Duration(milliseconds: 700),
-                  child: Text(
-                    _validateAbout,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 12,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ] else ...[
-              SizedBox(height: 15),
-            ],
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25), // Shadow color
-                    spreadRadius: 1, // Adjusts the size of the shadow
-                    blurRadius: 2, // How blurry the shadow is
-                    offset: Offset(0, 2), // Position of the shadow
+                  _buildActionButton(
+                    icon: Icons.photo,
+                    label: 'Gallery',
+                    color: Colors.white,
+                    textColor: primaryColor,
+                    borderColor: primaryColor,
+                    onTap: _pickImageFromGallery,
                   ),
                 ],
               ),
-              child: Material(
-                elevation: 0, // Set elevation to 0 when using BoxShadow
-                borderRadius: BorderRadius.circular(30.0),
-                child: TextField(
-                  onTap: () {
-                    setState(() {
-                      _validateRelation = '';
-                    });
-                  },
-                  controller: _relationController,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: 'Relation',
-                    hintStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                    border: InputBorder.none, // Removes the default border
-                  ),
-                ),
-              ),
-            ),
-            if (_validateRelation.isNotEmpty) ...[
-              Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-                width: MediaQuery.of(context).size.width,
-                child: ShakeWidget(
-                  key: Key("value"),
-                  duration: Duration(milliseconds: 700),
-                  child: Text(
-                    _validateRelation,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 12,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ] else ...[
-              SizedBox(height: 15),
             ],
-          ],
+          ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CustomAppButton(text: 'Upload', onPlusTap: () {}),
+      bottomNavigationBar: _selectedImage != null
+          ? Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: CustomAppButton(
+          text: 'Submit Prescription',
+          onPlusTap: () {
+            // Add your submission logic here
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Prescription submitted successfully')),
+            );
+          },
+        ),
+      )
+          : null,
+    );
+  }
+
+  // Helper widget for requirement items
+  Widget _buildRequirementItem({
+    required String icon,
+    required String label,
+    required Color color,
+  }) {
+    return Column(
+      children: [
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 3,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Image.asset(
+              icon,
+              scale: 3,
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xff1A1A1A),
+            fontSize: 12,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required Color textColor,
+    Color? borderColor,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+          border: borderColor != null ? Border.all(color: borderColor, width: 1) : null,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 20, color: textColor),
+            SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

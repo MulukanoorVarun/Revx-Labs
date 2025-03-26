@@ -16,6 +16,7 @@ import 'package:revxpharma/Patient/screens/OnBoarding.dart';
 import 'package:revxpharma/Patient/screens/Onboard1.dart';
 import 'package:revxpharma/Patient/screens/Payment.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
+import 'package:revxpharma/Patient/screens/Prescription.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/Register.dart';
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
@@ -89,10 +90,17 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     pageBuilder: (context, state) {
       return buildSlideTransitionPage(Profile(), state);
     },
-  ),   GoRoute(
+  ),
+  GoRoute(
     path: '/account_settings',
     pageBuilder: (context, state) {
       return buildSlideTransitionPage(Accountsettings(), state);
+    },
+  ),
+  GoRoute(
+    path: '/prescription',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(Prescription(), state);
     },
   ),
   GoRoute(
