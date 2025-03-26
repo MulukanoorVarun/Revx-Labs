@@ -27,7 +27,6 @@ import 'package:revxpharma/Patient/screens/UserSelectionScreen.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/NoInternet.dart';
 
-
 final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(path: '/', builder: (context, state) => Splash()),
   GoRoute(
@@ -72,7 +71,6 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
       return buildSlideTransitionPage(UserSelectionScreen(), state);
     },
   ),
-
   GoRoute(
     path: '/registarion',
     pageBuilder: (context, state) {
@@ -118,9 +116,10 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(
     path: '/test_details',
     pageBuilder: (context, state) {
-      final location=state.uri.queryParameters['location']??'';
-      final id=state.uri.queryParameters['id']??'';
-      return buildSlideTransitionPage(TestDetails(location: location, id: id), state);
+      final location = state.uri.queryParameters['location'] ?? '';
+      final id = state.uri.queryParameters['id'] ?? '';
+      return buildSlideTransitionPage(
+          TestDetails(location: location, id: id), state);
     },
   ),
   GoRoute(
@@ -149,9 +148,11 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     },
   ),
   GoRoute(
-    path: '/diognostic_center/:',
+    path:
+        '/diagnostic_center/:lat_lang', // Correct spelling and proper parameter syntax
     pageBuilder: (context, state) {
-      final latLng = state.pathParameters['lat_lang'] ?? '';
+      final latLng =
+          state.pathParameters['lat_lang'] ?? ''; // Matches parameter name
       return buildSlideTransitionPage(Diagnosticcenter(lat_lng: latLng), state);
     },
   ),

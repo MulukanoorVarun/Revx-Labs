@@ -61,21 +61,25 @@ class _ApointmentsState extends State<Apointments> {
     int lastDay = DateTime(year, month + 1, 0).day;
     List<DateTime> allDates = List.generate(
       lastDay,
-          (index) => DateTime(year, month, index + 1),
+      (index) => DateTime(year, month, index + 1),
     );
 
     // Filter dates based on daysOpened
-    List<String> lowercaseDays = daysOpened.map((day) => day.toLowerCase()).toList();
+    List<String> lowercaseDays =
+        daysOpened.map((day) => day.toLowerCase()).toList();
     _dates = allDates.where((date) {
       String weekday = DateFormat('EEEE').format(date).toLowerCase();
       // If daysOpened is empty, show all dates; otherwise, filter by opened days
       return daysOpened.isEmpty ||
           (lowercaseDays.contains(weekday) &&
               (date.isAfter(now.subtract(Duration(days: 1))) ||
-                  (date.day == now.day && date.month == now.month && date.year == now.year)));
+                  (date.day == now.day &&
+                      date.month == now.month &&
+                      date.year == now.year)));
     }).toList();
 
-    print("Generated dates for $year-$month: ${_dates.map((d) => DateFormat('yyyy-MM-dd EEE').format(d)).toList()}");
+    print(
+        "Generated dates for $year-$month: ${_dates.map((d) => DateFormat('yyyy-MM-dd EEE').format(d)).toList()}");
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -88,7 +92,8 @@ class _ApointmentsState extends State<Apointments> {
       firstDate: firstDate,
       lastDate: DateTime(2101),
       selectableDayPredicate: (DateTime date) {
-        if (daysOpened.isEmpty) return true; // Show all days if daysOpened is empty
+        if (daysOpened.isEmpty)
+          return true; // Show all days if daysOpened is empty
         String weekday = DateFormat('EEEE').format(date).toLowerCase();
         return daysOpened.map((day) => day.toLowerCase()).contains(weekday);
       },
@@ -103,7 +108,7 @@ class _ApointmentsState extends State<Apointments> {
 
         // Find index of selected date or closest available date
         _selectedDateIndex = _dates.indexWhere((date) =>
-        date.day == pickedDate.day &&
+            date.day == pickedDate.day &&
             date.month == pickedDate.month &&
             date.year == pickedDate.year);
 
@@ -111,7 +116,9 @@ class _ApointmentsState extends State<Apointments> {
           // If exact date not available, select closest available date
           _selectedDateIndex = 0;
           DateTime closestDate = _dates.reduce((a, b) =>
-          a.difference(pickedDate).abs() < b.difference(pickedDate).abs() ? a : b);
+              a.difference(pickedDate).abs() < b.difference(pickedDate).abs()
+                  ? a
+                  : b);
           _selectedDateIndex = _dates.indexOf(closestDate);
           _selectedDate = _dates[_selectedDateIndex];
           selectedDate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
@@ -210,9 +217,9 @@ class _ApointmentsState extends State<Apointments> {
   void submitData() {
     setState(() {
       validateSelectedDate =
-      selectedDate.isEmpty ? "Please Select Appointment Date" : "";
+          selectedDate.isEmpty ? "Please Select Appointment Date" : "";
       validateSelectedTime =
-      selectedTime.isEmpty ? "Please Select Appointment Time" : "";
+          selectedTime.isEmpty ? "Please Select Appointment Time" : "";
     });
     if (validateSelectedDate.isEmpty && validateSelectedTime.isEmpty) {
       Map<String, dynamic> data = {
@@ -246,13 +253,14 @@ class _ApointmentsState extends State<Apointments> {
               cartState.cartList?.data?.diagnosticCentre?.startTime ?? "";
           endTime = cartState.cartList?.data?.diagnosticCentre?.endTime ?? "";
           totalamount = cartState.cartList?.data?.totalAmount ?? 0;
-          daysOpened = cartState.cartList?.data?.diagnosticCentre?.daysOpened ?? []; // Update daysOpened
+          daysOpened = cartState.cartList?.data?.diagnosticCentre?.daysOpened ??
+              []; // Update daysOpened
 
           // Regenerate dates when daysOpened is available
           if (daysOpened.isNotEmpty) {
             _generateDatesForMonth(_selectedDate!.year, _selectedDate!.month);
             _selectedDateIndex = _dates.indexWhere((date) =>
-            date.day == _selectedDate!.day &&
+                date.day == _selectedDate!.day &&
                 date.month == _selectedDate!.month &&
                 date.year == _selectedDate!.year);
             if (_selectedDateIndex == -1 && _dates.isNotEmpty) {
@@ -262,11 +270,11 @@ class _ApointmentsState extends State<Apointments> {
             }
             timeSlots = generateTimeSlots(startTime, endTime, _selectedDate!);
           }
-          if (totalamount != 0 && totalamount != null) {
+          if ((cartState.cartList?.data?.cartTests?.length)! > 0) {
             return SingleChildScrollView(
               child: Padding(
                 padding:
-                EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+                    EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -321,27 +329,31 @@ class _ApointmentsState extends State<Apointments> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    ListView.separated(physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) => SizedBox(height: 12),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 12),
                       shrinkWrap: true,
                       itemCount:
-                      cartState.cartList?.data?.cartTests?.length ?? 0,
+                          cartState.cartList?.data?.cartTests?.length ?? 0,
                       itemBuilder: (context, index) {
                         final cartLists =
-                        cartState.cartList?.data?.cartTests![index];
+                            cartState.cartList?.data?.cartTests![index];
                         String selectedPatient = '1 Patient';
                         return Container(
                           padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xffABABAB), width: 0.5),
+                              border: Border.all(
+                                  color: Color(0xffABABAB), width: 0.5),
                               color: Color(0xffFAF9F6),
                               borderRadius: BorderRadius.circular(8)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '${cartLists?.testName ?? ''}',
@@ -351,29 +363,35 @@ class _ApointmentsState extends State<Apointments> {
                                       fontSize: 14,
                                     ),
                                   ),
-                                  IconButton.outlined(
-                                      visualDensity: VisualDensity.compact,
-                                      onPressed: () {
-                                        context
-                                            .read<CartCubit>()
-                                            .removeFromCart(
-                                            cartLists?.testId ?? "",);
-                                        context.pop();
-                                      },
-                                      style: IconButton.styleFrom(
-                                        side: BorderSide.none,
-                                      ),
-                                      icon: Icon(
-                                        Icons.delete_outline,
-                                        color: Colors.red,
-                                      ))
+                                  Transform.scale(
+                                    scale: 0.8,
+                                    child: IconButton.outlined(
+                                        visualDensity: VisualDensity.compact,
+                                        onPressed: () {
+                                          context
+                                              .read<CartCubit>()
+                                              .removeFromCart(
+                                                cartLists?.testId ?? "",
+                                              );
+                                        },
+                                        style: IconButton.styleFrom(
+                                          side: BorderSide.none,
+                                        ),
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.red,
+                                        )),
+                                  )
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '₹ ${cartLists?.price ?? 0}',
@@ -383,68 +401,129 @@ class _ApointmentsState extends State<Apointments> {
                                           fontSize: 18,
                                         ),
                                       ),
-                                      Container(height: 25,
-                                        padding: EdgeInsets.symmetric(horizontal: 8),
-                                        decoration: BoxDecoration(
-                                            color: Color(0xffD9F2EF),
-                                            borderRadius: BorderRadius.circular(8)),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            DropdownButtonHideUnderline(
-                                              child: DropdownButton<String>(
-                                                borderRadius: BorderRadius.circular(8),
-                                                value: selectedPatient,
-                                                icon: Icon(
-                                                  Icons.arrow_drop_down,
-                                                  color: Color(0xff00A991),
-                                                  size: 18,
-                                                ),
-                                                style: TextStyle(
-                                                  color: Color(0xff333333),
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Poppins',
-                                                ),
-                                                onChanged: (String? newValue) {
-                                                  if (newValue != null) {
-                                                    setState(() {
-                                                      selectedPatient = newValue;
-                                                      print(
-                                                          'Selected patient: $selectedPatient');
-                                                    });
-                                                  }
-                                                },
-                                                items: patientOptions
-                                                    .map<DropdownMenuItem<String>>(
-                                                        (String value) {
-                                                      return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(
-                                                          value,
-                                                          style: TextStyle(
-                                                            color: Color(0xff333333),
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.w400,
-                                                            fontFamily: 'Poppins',
+                                      SizedBox(
+                                        height: 30,
+                                        child: OutlinedButton(
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) {
+                                                return StatefulBuilder(
+                                                  builder: (BuildContext context, StateSetter setModalState) {
+                                                    int modalPatientCount = cartLists?.noOfPersons ?? 1; // Default to 1 if not set
+                                                    return Container(
+                                                      height: MediaQuery.of(context).size.height * 0.5,
+                                                      padding: const EdgeInsets.all(16),
+                                                      decoration: const BoxDecoration(
+                                                        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                                      ),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Center(
+                                                            child: Container(
+                                                              width: 60,
+                                                              height: 3,
+                                                              decoration: BoxDecoration(
+                                                                color: CupertinoColors.inactiveGray,
+                                                                borderRadius: BorderRadius.circular(8),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                              ),
-                                            ),
-                                          ],
+                                                          const SizedBox(height: 10),
+                                                          const Text(
+                                                            'Book For',
+                                                            style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontFamily: 'Poppins',
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                          const Divider(height: 2, color: Color(0xffDADADA)),
+                                                          Expanded(
+                                                            child: ListView(
+                                                              children: [
+                                                                ...List.generate(5, (index) {
+                                                                  final patientCount = index + 1;
+                                                                  return Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Text(
+                                                                            'Patient $patientCount',
+                                                                            style: const TextStyle(
+                                                                              color: Colors.black,
+                                                                              fontFamily: 'Poppins',
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Radio<int>(
+                                                                                activeColor: primaryColor,
+                                                                                value: patientCount,
+                                                                                groupValue: modalPatientCount, // Bind to modalPatientCount
+                                                                                onChanged: (value) {
+                                                                                  if (value != null) {
+                                                                                    setModalState(() {
+                                                                                      modalPatientCount = value; // Update modal state
+                                                                                    });
+                                                                                      context.read<CartCubit>().updateCart(
+                                                                                        cartLists?.testId ?? "",
+                                                                                        value,
+                                                                                      );
+                                                                                    // Close modal immediately after selection
+                                                                                    Navigator.pop(context);
+                                                                                  }
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                    ],
+                                                                  );
+                                                                }),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          },
+                                          style: OutlinedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                            side: BorderSide(color: primaryColor), // Border color
+                                            foregroundColor: Colors.blue, // Text and icon color
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min, // To wrap content
+                                            children:  [
+                                              Text("Patients ${cartLists?.noOfPersons}",style: TextStyle(color: primaryColor),),
+                                              SizedBox(width: 5), // Space between text and icon
+                                              Icon(Icons.arrow_drop_down,color: primaryColor,),
+                                            ],
+                                          ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
-                                  ClipRRect(borderRadius: BorderRadius.circular(8),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
                                     child: Image.network(
-                                      width: w * 0.2,
-                                      height: w * 0.2,
-                                      cartLists?.testImage??'',
-                                      fit: BoxFit.cover
-                                      ,
+                                      width: w * 0.18,
+                                      height: w * 0.18,
+                                      cartLists?.testImage ?? '',
+                                      fit: BoxFit.cover,
                                     ),
                                   )
                                 ],
@@ -472,8 +551,9 @@ class _ApointmentsState extends State<Apointments> {
                           },
                           style: ButtonStyle(
                             visualDensity: VisualDensity.compact,
-                            overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                                  (Set<MaterialState> states) {
+                            overlayColor:
+                                MaterialStateProperty.resolveWith<Color?>(
+                              (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.hovered)) {
                                   return Colors.teal.withOpacity(0.1);
                                 }
@@ -483,8 +563,9 @@ class _ApointmentsState extends State<Apointments> {
                                 return null;
                               },
                             ),
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
+                            foregroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
                                 return primaryColor;
                               },
                             ),
@@ -518,7 +599,9 @@ class _ApointmentsState extends State<Apointments> {
                               width: 60,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: isSelected ? primaryColor : Color(0xffD3D3D3),
+                                color: isSelected
+                                    ? primaryColor
+                                    : Color(0xffD3D3D3),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -528,7 +611,9 @@ class _ApointmentsState extends State<Apointments> {
                                   Text(
                                     DateFormat('dd').format(date),
                                     style: TextStyle(
-                                      color: isSelected ? Colors.white : Color(0xff1A1A1A),
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Color(0xff1A1A1A),
                                       fontWeight: FontWeight.w600,
                                       fontFamily: "Poppins",
                                       fontSize: 16,
@@ -538,7 +623,9 @@ class _ApointmentsState extends State<Apointments> {
                                   Text(
                                     DateFormat('EEE').format(date),
                                     style: TextStyle(
-                                      color: isSelected ? Colors.white : Color(0xff1A1A1A),
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Color(0xff1A1A1A),
                                       fontWeight: FontWeight.w400,
                                       fontFamily: "Poppins",
                                       fontSize: 14,
@@ -593,8 +680,8 @@ class _ApointmentsState extends State<Apointments> {
                         itemBuilder: (context, index) {
                           final time = timeSlots[index];
                           final isSelected = selectedIndex == index;
-                          final isCurrentHour =
-                              time == DateFormat('HH:mm').format(DateTime.now());
+                          final isCurrentHour = time ==
+                              DateFormat('HH:mm').format(DateTime.now());
                           return GestureDetector(
                             onTap: () {
                               onSelectTime(index);
@@ -607,8 +694,8 @@ class _ApointmentsState extends State<Apointments> {
                                 color: isSelected
                                     ? primaryColor
                                     : (isCurrentHour
-                                    ? primaryColor
-                                    : Color(0xffD3D3D3)),
+                                        ? primaryColor
+                                        : Color(0xffD3D3D3)),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
@@ -618,8 +705,8 @@ class _ApointmentsState extends State<Apointments> {
                                     color: isSelected
                                         ? Colors.white
                                         : (isCurrentHour
-                                        ? Colors.white
-                                        : Color(0xff4B4B4B)),
+                                            ? Colors.white
+                                            : Color(0xff4B4B4B)),
                                     fontWeight: FontWeight.w400,
                                     fontFamily: "Poppins",
                                     fontSize: 14,
@@ -667,7 +754,7 @@ class _ApointmentsState extends State<Apointments> {
                       margin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
                         border:
-                        Border.all(color: Color(0xffA9A9A9), width: 0.5),
+                            Border.all(color: Color(0xffA9A9A9), width: 0.5),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                         color: Colors.white,
                       ),
@@ -766,11 +853,10 @@ class _ApointmentsState extends State<Apointments> {
       bottomNavigationBar: BlocBuilder<CartCubit, CartState>(
         builder: (context, cartState) {
           if (cartState is CartLoaded) {
-            if (cartState.cartList?.data?.totalAmount != null &&
-                cartState.cartList!.data!.totalAmount != 0) {
+            if ((cartState.cartList?.data?.cartTests?.length)! > 0) {
               return Container(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(color: Colors.white),
                 child: ElevatedButton(
                   onPressed: () {

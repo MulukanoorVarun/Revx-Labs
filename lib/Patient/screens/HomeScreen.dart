@@ -859,8 +859,7 @@ class _HomescreenState extends State<Homescreen> {
                     ),
                     InkResponse(
                       onTap: () {
-                        print("Latlng::${lat_lang}");
-                        context.push('/diognostic_center');
+                        context.push('/diagnostic_center/$lat_lang');
                       },
                       child: Text(
                         'See All',

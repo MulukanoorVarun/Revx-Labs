@@ -102,8 +102,6 @@ class StateInjector {
         create: (context) =>
             TestDetailsRepositoryImpl(remoteDataSource: context.read())),
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -150,55 +148,32 @@ class StateInjector {
     BlocProvider<PatientCubit>(
       create: (context) => PatientCubit(context.read<PatientRepository>()),
     ),
-
+    // Moved TestDetailsCubit BEFORE CartCubit
+    BlocProvider<TestDetailsCubit>(
+      create: (context) => TestDetailsCubit(context.read<TestDetailsRepository>()),
+    ),
     BlocProvider<CartCubit>(
       create: (context) => CartCubit(
         cartRepository: context.read<CartRepository>(),
         testCubit: context.read<TestCubit>(),
+        testDetailsCubit: context.read<TestDetailsCubit>(),
       ),
     ),
     BlocProvider<ProfileCubit>(
-        create: (context) =>
-            ProfileCubit(profileRepository: context.read<ProfileRepository>())),
+      create: (context) => ProfileCubit(profileRepository: context.read<ProfileRepository>()),
+    ),
     BlocProvider<AppointmentCubit>(
-      create: (context) =>
-          AppointmentCubit(context.read<AppointmentRepository>()),
+      create: (context) => AppointmentCubit(context.read<AppointmentRepository>()),
     ),
     BlocProvider<AppointmentDetailsCubit>(
-      create: (context) =>
-          AppointmentDetailsCubit(context.read<AppointmentRepository>()),
+      create: (context) => AppointmentDetailsCubit(context.read<AppointmentRepository>()),
     ),
-
     BlocProvider<LoginCubit>(
       create: (context) => LoginCubit(context.read<LoginRepository>()),
     ),
-
     BlocProvider<PatientRegisterCubit>(
-      create: (context) =>
-          PatientRegisterCubit(context.read<PatientRegisterRepository>()),
+      create: (context) => PatientRegisterCubit(context.read<PatientRegisterRepository>()),
     ),
-
-    BlocProvider<TestDetailsCubit>(
-      create: (context) =>
-          TestDetailsCubit(context.read<TestDetailsRepository>()),
-    ),
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Vendor Bloc Providers //
-
-    // BlocProvider<VendorRegisterCubit>(
-    //   create: (context) =>
-    //       VendorRegisterCubit(context.read<VendorRegisterRepository>()),
-    // ),
-    //
-    // BlocProvider<DiagnosticTestsCubit>(
-    //   create: (context) =>
-    //       DiagnosticTestsCubit(context.read<DiagnosticTestsRepository>()),
-    // ),
-    //
-    // BlocProvider<DiognosticCategoryCubit>(
-    //     create: (context) => DiognosticCategoryCubit(
-    //         diognosticRepo: context.read<DiognosticGetCategoryRepository>()))
+    // ... other providers ...
   ];
 }

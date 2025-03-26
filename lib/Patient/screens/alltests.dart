@@ -158,8 +158,7 @@ class _alltestsState extends State<alltests> {
                                           // Delay navigation to allow ripple effect to show
                                           Future.delayed(
                                               Duration(milliseconds: 200), () {
-                                            context.push(
-                                                '/test_details?location=${labTests?.diagnosticCentre} - ${labTests?.distance}&id=${labTests?.id ?? ""}');
+                                            context.push('/test_details?location=${labTests?.diagnosticCentre} - ${labTests?.distance}&id=${labTests?.id ?? ""}');
                                           });
                                         },
                                         child: Container(

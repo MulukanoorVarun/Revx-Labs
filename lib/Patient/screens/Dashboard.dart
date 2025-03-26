@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Patient/screens/Prescription.dart';
-import 'package:revxpharma/Patient/screens/YourReportes.dart';
+import 'package:revxpharma/Patient/screens/ScanReports.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Utils/color.dart';
 import '../../Utils/NoInternet.dart';
@@ -50,14 +50,13 @@ class _DashboardState extends State<Dashboard> {
         body: BlocListener<InternetStatusBloc, InternetStatusState>(
           listener: (context, state) {
             if (state is InternetStatusLostState) {
-    context.push('/no_internet');
+              context.push('/no_internet');
             }
           },
           child: BlocListener<LocationCubit, LocationState>(
             listener: (context, state) {
               if (state is LocationPermissionDenied) {
-                showLocationBottomSheet(
-                    context);
+                showLocationBottomSheet(context);
               }
             },
             child: PageView(
@@ -68,12 +67,8 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 Homescreen(),
                 ServiceCategory(),
-                // ChatSupport(),
-                // Notifications(),
-                // Reports(),
-                // Prescription(),
+                ScanReports(),
                 Profile()
-
               ],
               physics: const NeverScrollableScrollPhysics(),
             ),
@@ -115,7 +110,7 @@ class _DashboardState extends State<Dashboard> {
                               "assets/activehome.png",
                               width: 25,
                               height: 25,
-                        color: primaryColor,
+                              color: primaryColor,
                             )
                           : Image.asset(
                               "assets/home.png",
@@ -132,7 +127,8 @@ class _DashboardState extends State<Dashboard> {
                           ? Image.asset(
                               "assets/activeservicecatogry.png",
                               width: 25,
-                              height: 25,        color: primaryColor,
+                              height: 25,
+                              color: primaryColor,
                             )
                           : Image.asset(
                               "assets/servicecatagory.png",
@@ -141,23 +137,20 @@ class _DashboardState extends State<Dashboard> {
                             )
                     ],
                   )),
-              // BottomNavigationBarItem(
-              //     label: "ServiceCategory",
-              //     icon: Column(
-              //       children: [
-              //         _selectedIndex == 2
-              //             ? Image.asset(
-              //                 "assets/activechat.png",
-              //                 width: 25,
-              //                 height: 25,
-              //               )
-              //             : Image.asset(
-              //                 "assets/chat.png",
-              //                 width: 25,
-              //                 height: 25,
-              //               )
-              //       ],
-              //     )),
+              BottomNavigationBarItem(
+                  label: "ScanReports",
+                  icon: Column(
+                    children: [
+                      _selectedIndex == 2
+                          ? Image.asset("assets/scanreports1.png",
+                              width: 25, height: 25, color: primaryColor)
+                          : Image.asset(
+                              "assets/FileText.png",
+                              width: 25,
+                              height: 25,
+                            )
+                    ],
+                  )),
               // BottomNavigationBarItem(
               //     label: "Notification",
               //     icon: Column(
@@ -198,11 +191,12 @@ class _DashboardState extends State<Dashboard> {
                   label: "Profile",
                   icon: Column(
                     children: [
-                      _selectedIndex == 2
+                      _selectedIndex == 3
                           ? Image.asset(
                               "assets/activeprofile.png",
                               width: 25,
-                              height: 25,        color: primaryColor,
+                              height: 25,
+                              color: primaryColor,
                             )
                           : Image.asset(
                               "assets/profile.png",
@@ -210,8 +204,7 @@ class _DashboardState extends State<Dashboard> {
                               height: 25,
                             )
                     ],
-                  )
-              ),
+                  )),
             ],
             currentIndex: _selectedIndex,
             onTap: onItemTapped,
@@ -256,10 +249,10 @@ class _DashboardState extends State<Dashboard> {
                           onPressed: isLoading
                               ? null
                               : () async {
-                            context
-                                .read<LocationCubit>()
-                                .requestLocationPermission();
-                          },
+                                  context
+                                      .read<LocationCubit>()
+                                      .requestLocationPermission();
+                                },
                           child: isLoading
                               ? CircularProgressIndicator(strokeWidth: 2)
                               : const Text('GRANT'),
@@ -280,5 +273,4 @@ class _DashboardState extends State<Dashboard> {
       },
     );
   }
-
 }

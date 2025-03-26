@@ -124,38 +124,49 @@ class _SearchscreenState extends State<Searchscreen> {
           children: [
             if (_searchController.text == "") ...[
               Center(
-                child: Column(
-                  spacing: 8,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.width * 0.6,
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.5, // Limit height
                     ),
-                    Text(
-                      'Oops !',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min, // Use minimum size
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width * 0.6,
+                        ),
+                        Text(
+                          'Oops !',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          textAlign: TextAlign.center,
+                          'No Data Found.',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          'Try Searching with a different name.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      textAlign: TextAlign.center,
-                      'No Data Found.',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      'Try Searching with a diffrent name. ',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey),
-                    ),
-                  ],
+                  ),
                 ),
-              )
+              ),
             ] else ...[
               BlocListener<CartCubit, CartState>(
                 listener: (context, state) {
@@ -177,39 +188,44 @@ class _SearchscreenState extends State<Searchscreen> {
                             : (state as TestStateLoadingMore).testModel;
                         if ((testModel.data?.isEmpty ?? true)) {
                           return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              spacing: 8,
-                              children: [
-                                SizedBox(
-                                  height:
-                                  MediaQuery.of(context).size.width * 0.05,
+                            child: SingleChildScrollView(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxHeight: MediaQuery.of(context).size.height * 0.5, // Limit height
                                 ),
-                                Text(
-                                  'Oops !',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min, // Use minimum size
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Oops !',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      'No Data Found.',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Try Searching with a different name.',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  textAlign: TextAlign.center,
-                                  'No Data Found!',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  'Try Searching with a diffrent name. ',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey),
-                                ),
-                              ],
+                              ),
                             ),
                           );
                         }
