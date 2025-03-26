@@ -27,28 +27,47 @@ class Data {
   String? id;
   String? diagnosticCentre;
   bool? existInCart;
+  int? noOfPersons;
   TestDetails? testDetails;
 
-  Data({this.id, this.diagnosticCentre, this.existInCart, this.testDetails});
+  Data({this.id, this.diagnosticCentre, this.existInCart, this.testDetails,this.noOfPersons});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    noOfPersons = json['no_of_persons'];
     diagnosticCentre = json['diagnostic_centre'];
     existInCart = json['exist_in_cart'];
     testDetails = json['test_details'] != null
-        ? new TestDetails.fromJson(json['test_details'])
+        ? TestDetails.fromJson(json['test_details'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['no_of_persons'] = this.noOfPersons;
     data['diagnostic_centre'] = this.diagnosticCentre;
     data['exist_in_cart'] = this.existInCart;
     if (this.testDetails != null) {
       data['test_details'] = this.testDetails!.toJson();
     }
     return data;
+  }
+
+  Data copyWith({
+    String? id,
+    String? diagnosticCentre,
+    int? noOfPersons,
+    bool? existInCart,
+    TestDetails? testDetails,
+  }) {
+    return Data(
+      id: id ?? this.id,
+      noOfPersons: noOfPersons ?? this.noOfPersons,
+      diagnosticCentre: diagnosticCentre ?? this.diagnosticCentre,
+      existInCart: existInCart ?? this.existInCart,
+      testDetails: testDetails ?? this.testDetails,
+    );
   }
 }
 
@@ -63,30 +82,31 @@ class TestDetails {
   int? noOfTests;
   List<String>? subTests;
   String? sampleType;
-  bool? fastingRequired;
+  int? fastingRequired;
   String? category;
   int? price;
   String? condition;
   int? reportsDeliveredIn;
   String? image;
 
-  TestDetails(
-      {this.id,
-        this.testName,
-        this.description,
-        this.overview,
-        this.ranges,
-        this.testResultInterpretation,
-        this.riskAssessment,
-        this.noOfTests,
-        this.subTests,
-        this.sampleType,
-        this.fastingRequired,
-        this.category,
-        this.price,
-        this.condition,
-        this.reportsDeliveredIn,
-        this.image});
+  TestDetails({
+    this.id,
+    this.testName,
+    this.description,
+    this.overview,
+    this.ranges,
+    this.testResultInterpretation,
+    this.riskAssessment,
+    this.noOfTests,
+    this.subTests,
+    this.sampleType,
+    this.fastingRequired,
+    this.category,
+    this.price,
+    this.condition,
+    this.reportsDeliveredIn,
+    this.image,
+  });
 
   TestDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -97,7 +117,7 @@ class TestDetails {
     testResultInterpretation = json['test_result_interpretation'];
     riskAssessment = json['risk_assessment'];
     noOfTests = json['no_of_tests'];
-    subTests = json['sub_tests'].cast<String>();
+    subTests = json['sub_tests']?.cast<String>();
     sampleType = json['sample_type'];
     fastingRequired = json['fasting_required'];
     category = json['category'];
@@ -126,6 +146,44 @@ class TestDetails {
     data['reports_delivered_in'] = this.reportsDeliveredIn;
     data['image'] = this.image;
     return data;
+  }
+
+  TestDetails copyWith({
+    String? id,
+    String? testName,
+    String? description,
+    String? overview,
+    String? ranges,
+    String? testResultInterpretation,
+    String? riskAssessment,
+    int? noOfTests,
+    List<String>? subTests,
+    String? sampleType,
+    int? fastingRequired,
+    String? category,
+    int? price,
+    String? condition,
+    int? reportsDeliveredIn,
+    String? image,
+  }) {
+    return TestDetails(
+      id: id ?? this.id,
+      testName: testName ?? this.testName,
+      description: description ?? this.description,
+      overview: overview ?? this.overview,
+      ranges: ranges ?? this.ranges,
+      testResultInterpretation: testResultInterpretation ?? this.testResultInterpretation,
+      riskAssessment: riskAssessment ?? this.riskAssessment,
+      noOfTests: noOfTests ?? this.noOfTests,
+      subTests: subTests ?? this.subTests,
+      sampleType: sampleType ?? this.sampleType,
+      fastingRequired: fastingRequired ?? this.fastingRequired,
+      category: category ?? this.category,
+      price: price ?? this.price,
+      condition: condition ?? this.condition,
+      reportsDeliveredIn: reportsDeliveredIn ?? this.reportsDeliveredIn,
+      image: image ?? this.image,
+    );
   }
 }
 

@@ -57,34 +57,61 @@ class Data {
 }
 
 class CartTests {
-  String? id;
-  String? testId;
-  String? testName;
-  int? price;
-  int? noOfPersons;
-  String? testImage;
+  final String? id;
+  final String? testId;
+  final String? testName;
+  final int? price;
+  final int? noOfPersons;
+  final String? testImage;
 
-  CartTests(
-      {this.id, this.testId, this.testName, this.price, this.noOfPersons, this.testImage});
+  CartTests({
+    this.id,
+    this.testId,
+    this.testName,
+    this.price,
+    this.noOfPersons,
+    this.testImage,
+  });
 
-  CartTests.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    testId = json['test_id'];
-    testName = json['test_name'];
-    price = json['price'];
-    noOfPersons = json['no_of_persons'];
-    testImage = json['test_image'];
+  // CopyWith method
+  CartTests copyWith({
+    String? id,
+    String? testId,
+    String? testName,
+    int? price,
+    int? noOfPersons,
+    String? testImage,
+  }) {
+    return CartTests(
+      id: id ?? this.id,
+      testId: testId ?? this.testId,
+      testName: testName ?? this.testName,
+      price: price ?? this.price,
+      noOfPersons: noOfPersons ?? this.noOfPersons,
+      testImage: testImage ?? this.testImage,
+    );
+  }
+
+  factory CartTests.fromJson(Map<String, dynamic> json) {
+    return CartTests(
+      id: json['id'],
+      testId: json['test_id'],
+      testName: json['test_name'],
+      price: json['price'],
+      noOfPersons: json['no_of_persons'],
+      testImage: json['test_image'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['test_id'] = this.testId;
-    data['test_name'] = this.testName;
-    data['price'] = this.price;
-    data['no_of_persons'] = this.noOfPersons;
-    data['test_image'] = this.testImage;
-    return data;
+    return {
+      'id': id,
+      'test_id': testId,
+      'test_name': testName,
+      'price': price,
+      'no_of_persons': noOfPersons,
+      'test_image': testImage,
+    };
   }
 }
 
