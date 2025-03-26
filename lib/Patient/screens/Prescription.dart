@@ -8,16 +8,16 @@ import 'package:revxpharma/Utils/color.dart';
 
 class Prescription extends StatefulWidget {
   const Prescription({super.key});
-
   @override
   State<Prescription> createState() => _PrescriptionState();
+
 }
 
 class _PrescriptionState extends State<Prescription> {
-  File? _selectedImage; // To store the selected image
+  File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
 
-  // Function to pick image from camera
+
   Future<void> _pickImageFromCamera() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.camera,
@@ -30,6 +30,7 @@ class _PrescriptionState extends State<Prescription> {
       });
     }
   }
+
 
   // Function to pick image from gallery
   Future<void> _pickImageFromGallery() async {
