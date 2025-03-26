@@ -400,18 +400,18 @@ class _HomescreenState extends State<Homescreen> {
                           }
                           return Badge.count(
                             count: cartCount,
-                            smallSize: 12,
-                            largeSize: 16,
-                            child: Bounce(
-                              scaleFactor: 1.2,
-                              onTap: () {
+                            child: IconButton(
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () {
+                                // Navigate with animation
                                 context.push('/appointments');
                               },
-                              child: Icon(
-                                Icons.shopping_cart_outlined,
-                                color: primaryColor,
-                                size: 28,
-                              ),
+                              icon: const Icon(Icons.shopping_cart),
+                              color: primaryColor,
+                              tooltip: 'View Shopping Cart ($cartCount items)',
+                              padding: const EdgeInsets.all(0),
+                              hoverColor: primaryColor.withOpacity(0.1),
+                              splashRadius: 20,
                             ),
                           );
                         },

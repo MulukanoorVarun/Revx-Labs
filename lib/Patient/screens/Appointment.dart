@@ -736,7 +736,7 @@ class _ApointmentsState extends State<Apointments> {
                         ),
                       ),
                     ] else ...[
-                      SizedBox(height: 50),
+                      SizedBox(height: 10),
                     ],
                     SizedBox(height: 15),
                     Text(

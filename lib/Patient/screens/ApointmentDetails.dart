@@ -39,7 +39,7 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
       if (status.isGranted) {
         print("Storage permission granted.");
         Directory dir =
-        Directory('/storage/emulated/0/Download/'); // for Android
+            Directory('/storage/emulated/0/Download/'); // for Android
         if (!await dir.exists()) {
           print(
               "Download directory does not exist. Using external storage directory.");
@@ -90,7 +90,6 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
       print('Stack trace: $s');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +196,8 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                         ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.appointmentDetails?.appointmentData?.appointmentTests?.length ??
+                          itemCount: state.appointmentDetails?.appointmentData
+                                  ?.appointmentTests?.length ??
                               0,
                           separatorBuilder: (context, index) => const Divider(
                             color: Colors.grey,
@@ -205,104 +205,75 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                             height: 16,
                           ),
                           itemBuilder: (context, index) {
-                            final test=state.appointmentDetails?.appointmentData?.appointmentTests?[index];
+                            final test = state.appointmentDetails
+                                ?.appointmentData?.appointmentTests?[index];
                             // final test = state.appointmentDetails
                             //     ?.appointment_data?.appointmentTests?[index];
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          test?.testDetails?.testDetailsModel?.testName??"",
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "Poppins",
-                                            fontSize: 15,
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        width: w * 0.18,
+                                        height: w * 0.18,
+                                        test?.testDetails?.testDetailsModel
+                                                ?.image ??
+                                            '',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${test?.testDetails?.testDetailsModel?.testName ?? ''}',
+                                          style: TextStyle(
+                                            color: Color(0xff222222),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "₹${  test?.testDetails?.testDetailsModel?.price ?? 0}",
-                                    style: const TextStyle(
-                                      color: Color(0xff000000),
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Poppins",
-                                      fontSize: 14,
+                                        Text(
+                                          '₹ ${test?.testDetails?.testDetailsModel?.price ?? 0}',
+                                          style: TextStyle(
+                                            color: Color(0xff222222),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: primaryColor),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 3),
+                                          child: Center(
+                                            child: Text(
+                                              "Patients ${test?.noOfPersons}",
+                                              style: TextStyle(
+                                                  color: primaryColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ],
+                                ),
+                              ],
                             );
                           },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    "Selected Patient",
-                    style: TextStyle(
-                      color: Color(0xff1A1A1A),
-                      fontWeight: FontWeight.w600,
-                      fontFamily: "Poppins",
-                      fontSize: 15,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    margin: EdgeInsets.only(
-                      bottom: 10,top: 10
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffA9A9A9), width: 0.5),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                state.appointmentDetails?.appointmentData
-                                        ?.patientDetails?.patientName ??
-                                    '',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Color(0xff000000),
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins",
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          '${state.appointmentDetails?.appointmentData?.patientDetails?.age ?? ""} Years / ${state.appointmentDetails?.appointmentData?.patientDetails?.bloodGroup ?? ""} / ${state.appointmentDetails?.appointmentData?.patientDetails?.gender ?? ""}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Color(0xff000000),
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Poppins",
-                            fontSize: 14,
-                          ),
                         ),
                       ],
                     ),
@@ -357,6 +328,47 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                       ],
                     ),
                   ),
+                  if (state.appointmentDetails?.appointmentData?.appointmentReports?.isNotEmpty ?? false)...[
+                    ElevatedButton(
+                      onPressed: () {
+                        downloadInvoice(state.appointmentDetails?.appointmentData?.appointmentReports?[0].reportUrl??"");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor, // Background color
+                        foregroundColor: primaryColor, // Text/icon color
+                        elevation: 8, // Shadow elevation
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(12), // Rounded corners
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 10,
+                        ), // Button padding
+                        minimumSize: const Size(360, 30), // Button size
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.download_rounded,
+                            size: 24,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 8), // Space between icon and text
+                          Text(
+                            'Download Invoice',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.5,
+                                color: Colors.white,
+                                fontFamily: "Poppins"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]
                 ],
               ),
             ),
@@ -381,14 +393,12 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
       //     ),
       //   ),
       // ),
-
     );
   }
 
-  Widget _shimmerList(){
-    return  Padding(
-      padding:
-      EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
+  Widget _shimmerList() {
+    return Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, bottom: 30, top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -396,11 +406,12 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               shimmerText(120, 12, context),
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,17 +423,16 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      width: MediaQuery.of(context).size.width * 0.8, // 90% of screen width
-                      child: shimmerText(120, 12, context)
-                  ),
+                      width: MediaQuery.of(context).size.width *
+                          0.8, // 90% of screen width
+                      child: shimmerText(120, 12, context)),
                 ],
               ),
             ],
           ),
           SizedBox(height: 23),
-
           Container(
-            padding:  EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -439,8 +449,8 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
               children: [
                 ListView.separated(
                   shrinkWrap: true,
-                  physics:  NeverScrollableScrollPhysics(),
-                  itemCount:3,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 3,
                   separatorBuilder: (context, index) => const Divider(
                     color: Colors.grey,
                     thickness: 0.5,
@@ -452,7 +462,8 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               shimmerText(160, 12, context),
                               shimmerRectangle(20, context),
@@ -468,7 +479,6 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
               ],
             ),
           ),
-
           SizedBox(height: 10),
           shimmerText(120, 12, context),
           SizedBox(height: 15),
@@ -506,7 +516,6 @@ class _ApointmentDetailsState extends State<ApointmentDetails> {
                 SizedBox(
                   height: 16,
                 ),
-
                 Divider(
                   color: Color(0xff808080),
                   height: 1,

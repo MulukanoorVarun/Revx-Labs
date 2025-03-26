@@ -639,15 +639,22 @@ class _alltestsState extends State<alltests> {
                                                                                   color: Colors.black,
                                                                                   fontFamily: 'Poppins',
                                                                                   fontSize: 18,
-                                                                                  fontWeight: FontWeight.w500,
+                                                                                  fontWeight: FontWeight.w600,
                                                                                 ),
                                                                               ),
-                                                                              const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                              if(labTests?.existInCart ?? false)...[
+                                                                                const Divider(height: 10, color: Color(0xffDADADA)),
+                                                                              ],
                                                                               Expanded(
-                                                                                child: ListView(
-                                                                                  children: [
-                                                                                    if (labTests?.existInCart ?? false) ...[
-                                                                                      Row(
+                                                                                child:ListView.separated(
+                                                                                  itemCount: (labTests?.existInCart ?? false) ? 6 : 5, // 5 patients + 1 for remove section if in cart
+                                                                                  separatorBuilder: (context, index) => const Divider(
+                                                                                    height: 15,
+                                                                                    color: Color(0xffDADADA),
+                                                                                  ),
+                                                                                  itemBuilder: (context, index) {
+                                                                                    if ((labTests?.existInCart ?? false) && index == 0) {
+                                                                                      return Row(
                                                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                         children: [
                                                                                           const Text(
@@ -659,13 +666,14 @@ class _alltestsState extends State<alltests> {
                                                                                               fontWeight: FontWeight.w500,
                                                                                             ),
                                                                                           ),
-                                                                                          IconButton.outlined(
+                                                                                          IconButton.filled(
+                                                                                            style: IconButton.styleFrom(
+                                                                                              backgroundColor: Colors.red.shade100,
+                                                                                              shape: const CircleBorder(),
+                                                                                            ),
                                                                                             visualDensity: VisualDensity.compact,
                                                                                             onPressed: () {
                                                                                               context.read<CartCubit>().removeFromCart(labTests?.id ?? "");
-                                                                                              setModalState(() {
-                                                                                                modalPatientCount = 1; // Reset to 1 on removal
-                                                                                              });
                                                                                               context.pop();
                                                                                             },
                                                                                             icon: const Icon(
@@ -674,68 +682,63 @@ class _alltestsState extends State<alltests> {
                                                                                             ),
                                                                                           ),
                                                                                         ],
-                                                                                      ),
-                                                                                      const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                    ],
-                                                                                    ...List.generate(5, (index) {
-                                                                                      final patientCount = index + 1;
-                                                                                      return Column(
-                                                                                        children: [
-                                                                                          Row(
-                                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                            children: [
-                                                                                              Text(
-                                                                                                'Patient $patientCount',
-                                                                                                style: const TextStyle(
-                                                                                                  color: Colors.black,
-                                                                                                  fontFamily: 'Poppins',
-                                                                                                  fontSize: 14,
-                                                                                                  fontWeight: FontWeight.w500,
-                                                                                                ),
-                                                                                              ),
-                                                                                              Row(
-                                                                                                spacing: 12,
-                                                                                                children: [
-                                                                                                  Text(
-                                                                                                    '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
-                                                                                                    style: const TextStyle(
-                                                                                                      fontSize: 14,
-                                                                                                      fontWeight: FontWeight.w600,
-                                                                                                      fontFamily: "Poppins",
-                                                                                                      color: Colors.black,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Radio<int>(
-                                                                                                    activeColor: primaryColor,
-                                                                                                    value: patientCount,
-                                                                                                    groupValue: modalPatientCount, // Use modal-specific count
-                                                                                                    onChanged: (value) {
-                                                                                                      setModalState(() {
-                                                                                                        modalPatientCount = patientCount; // Update modal state
-                                                                                                      });
-                                                                                                      if(labTests?.existInCart??false){
-                                                                                                        context.read<CartCubit>().updateCart(
-                                                                                                            labTests?.id??"",
-                                                                                                            patientCount
-                                                                                                        );
-                                                                                                      }else{
-                                                                                                        context.read<CartCubit>().addToCart({
-                                                                                                          "test": "${labTests?.id}",
-                                                                                                          'no_of_persons': patientCount
-                                                                                                        });
-                                                                                                      }
-                                                                                                      Navigator.pop(context);
-                                                                                                    },
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                        ],
                                                                                       );
-                                                                                    }),
-                                                                                  ],
+                                                                                    }
+
+                                                                                    final patientIndex = (labTests?.existInCart ?? false) ? index - 1 : index;
+                                                                                    final patientCount = patientIndex + 1;
+
+                                                                                    return Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                      children: [
+                                                                                        Text(
+                                                                                          'Patient $patientCount',
+                                                                                          style: const TextStyle(
+                                                                                            color: Colors.black,
+                                                                                            fontFamily: 'Poppins',
+                                                                                            fontSize: 14,
+                                                                                            fontWeight: FontWeight.w500,
+                                                                                          ),
+                                                                                        ),
+                                                                                        Row(
+                                                                                          spacing: 12,
+                                                                                          children: [
+                                                                                            Text(
+                                                                                              '₹${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
+                                                                                              style: const TextStyle(
+                                                                                                fontSize: 14,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontFamily: "Poppins",
+                                                                                                color: Colors.black,
+                                                                                              ),
+                                                                                            ),
+                                                                                            Radio<int>(
+                                                                                              activeColor: primaryColor,
+                                                                                              value: patientCount,
+                                                                                              groupValue: modalPatientCount,
+                                                                                              onChanged: (value) {
+                                                                                                setModalState(() {
+                                                                                                  modalPatientCount = patientCount;
+                                                                                                });
+                                                                                                if (labTests?.existInCart ?? false) {
+                                                                                                  context.read<CartCubit>().updateCart(
+                                                                                                    labTests?.id ?? "",
+                                                                                                    patientCount,
+                                                                                                  );
+                                                                                                } else {
+                                                                                                  context.read<CartCubit>().addToCart({
+                                                                                                    "test": "${labTests?.id}",
+                                                                                                    'no_of_persons': patientCount,
+                                                                                                  });
+                                                                                                }
+                                                                                                Navigator.pop(context);
+                                                                                              },
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ],
+                                                                                    );
+                                                                                  },
                                                                                 ),
                                                                               ),
                                                                             ],

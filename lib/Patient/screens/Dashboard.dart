@@ -25,6 +25,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   PageController pageController = PageController();
   int _selectedIndex = 0;
+  String latlngs="";
 
   @override
   void initState() {
@@ -57,6 +58,8 @@ class _DashboardState extends State<Dashboard> {
             listener: (context, state) {
               if (state is LocationPermissionDenied) {
                 showLocationBottomSheet(context);
+              }else if(state is LocationLoaded){
+                latlngs= state.latlng;
               }
             },
             child: PageView(
@@ -66,7 +69,7 @@ class _DashboardState extends State<Dashboard> {
               controller: pageController,
               children: [
                 Homescreen(),
-                ServiceCategory(),
+                ServiceCategory(latlngs: latlngs,),
                 ScanReports(),
                 Profile()
               ],

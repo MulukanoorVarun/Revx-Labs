@@ -7,9 +7,23 @@ import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 class ServiceCategory extends StatefulWidget {
-  const ServiceCategory({super.key});
+  final String latlngs;
+  const ServiceCategory({super.key,required this.latlngs});
   @override
   State<ServiceCategory> createState() => _ServiceCategoryState();
+}
+
+// Function to calculate responsive aspect ratio
+double _getResponsiveAspectRatio(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+  // Calculate the width of each grid item (screen width divided by number of columns)
+  const crossAxisCount = 3; // Same as in gridDelegate
+  final itemWidth = screenWidth / crossAxisCount;
+  // Define a desired height relative to the item width or screen height
+  final itemHeight = itemWidth * 1.2; // Example: height is 1.2 times the width
+  // Return the aspect ratio (width / height)
+  return itemWidth / itemHeight;
 }
 
 class _ServiceCategoryState extends State<ServiceCategory> {
@@ -18,6 +32,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
     context.read<CategoryCubit>().fetchCategories();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,63 +52,63 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         elevation: 0,
         iconTheme: IconThemeData(color: primaryColor),
       ),
-      body: BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
+      body:
+          BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {
           return _shimmer(context);
         } else if (state is CategoryLoaded) {
           return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, // Number of columns
-                  childAspectRatio: 0.8, // Aspect ratio for items
+                  childAspectRatio: _getResponsiveAspectRatio(context), // Dynamic aspect ratio
+                  crossAxisSpacing: 10, // Optional: spacing between columns
+                  mainAxisSpacing: 10, // Optional: spacing between rows
                 ),
                 itemCount: state.categories.category?.length, // Total number of items
                 itemBuilder: (context, index) {
-                  final item = state.categories
-                      .category?[index]; // Get the map for the current index
+                  final item = state.categories.category?[index]; // Get the map for the current index
                   return Column(
                     children: [
                       InkResponse(
                         onTap: () {
-                          context.push('/alltests?lat_lang=${''}&catId=${item?.id??''}&catName=${item?.categoryName??''}&diagnosticID=${""}');
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           alltests(lat_lang:'',catId: item?.id??'',catName: item?.categoryName??'',diagnosticID: "",),
-                          //     ));
+                          context.push(
+                            Uri(
+                              path: '/all_tests',
+                              queryParameters: {
+                                'lat_lang': '${widget.latlngs}',
+                                'catId': item?.id ?? "",
+                                'catName': item?.categoryName ?? "",
+                                'diagnosticID': '',
+                              },
+                            ).toString(),
+                          );
                         },
                         child: Container(
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xffE9E9E9), width: 1),
+                            border: Border.all(color: Color(0xffE9E9E9), width: 1),
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
-                            // Padding inside the container
                             child: Image.network(
-                              item?.image ??
-                                  '', // Load the image using imagePath
+                              item?.image ?? '',
                               fit: BoxFit.contain,
-                              // Ensures the image does not stretch
                               height: 45,
-                              // Height of the image
-                              width: 50, // Width of the image
+                              width: 50,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5), // Space between image and text
+                      const SizedBox(height: 5),
                       Text(
                         item?.categoryName ?? '',
                         maxLines: 1,
                         textAlign: TextAlign.center,
-                        // Display the name from the map
                         style: const TextStyle(
                           fontSize: 13,
                           color: Colors.black,
@@ -115,50 +130,48 @@ class _ServiceCategoryState extends State<ServiceCategory> {
 }
 
 Widget _shimmer(BuildContext context) {
-  double w = MediaQuery.of(context).size.width;
-  double h = MediaQuery.of(context).size.height;
-  return Column(
-    children: [
-      Expanded(
-        child: SingleChildScrollView(
-          child: ListView.builder(
-            itemCount: 1,
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // GridView for shimmer placeholders
+          GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: _getResponsiveAspectRatio(context),
+            ),
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 15,
             itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 1.1,
-                        mainAxisSpacing: 5,
-                      ),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 15,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            shimmerContainer(80, 80, context),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            shimmerText(60, 12, context)
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  shimmerContainer(
+                     screenWidth * 0.25,
+                    screenWidth * 0.25,
+                    context
+                  ),
+                  const SizedBox(height: 5),
+                  shimmerText(
+                   screenWidth * 0.2, // 20% of screen width
+                    12,
+                    context
+                  ),
+                ],
               );
             },
           ),
-        ),
+        ],
       ),
-    ],
+    ),
   );
 }
+
+

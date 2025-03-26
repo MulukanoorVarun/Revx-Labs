@@ -39,12 +39,10 @@ class TestDetailsCubit extends Cubit<TestDetailsState> {
         existInCart: isAdded,
         noOfPersons: persons,
       );
-
       testDetailsModel = TestDetailsModel(
         data: updatedData,
         settings: testDetailsModel.settings,
       );
-
       emit(TestDetailsLoaded(testDetailsModel));
     }
   }

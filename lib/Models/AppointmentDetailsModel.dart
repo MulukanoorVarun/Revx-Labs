@@ -88,8 +88,6 @@ class AppointmentData {
 }
 
 class AppointmentReport {
-  // Since the API shows empty array, we'll keep it minimal
-  // Add fields as needed when reports are available
   String? reportId;
   String? reportUrl;
 
