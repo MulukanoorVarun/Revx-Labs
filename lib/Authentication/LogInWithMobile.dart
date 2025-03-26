@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Utils/color.dart';
 
-import 'OtpVerify.dart';
-import '../Patient/screens/UserSelectionScreen.dart';
-
 class LoginMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

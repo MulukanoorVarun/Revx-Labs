@@ -262,7 +262,6 @@ class _ApointmentsState extends State<Apointments> {
             }
             timeSlots = generateTimeSlots(startTime, endTime, _selectedDate!);
           }
-
           if (totalamount != 0 && totalamount != null) {
             return SingleChildScrollView(
               child: Padding(

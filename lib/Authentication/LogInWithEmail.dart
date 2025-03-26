@@ -23,6 +23,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
   TextEditingController _pwdController = TextEditingController();
   String _validateEmail = '';
   String _validatepwd = '';
+
   void _validatefeilds() {
     setState(() {
       _validateEmail =
@@ -57,7 +58,8 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
+      body: BlocConsumer<LoginCubit, LoginState>(
+          listener: (context, state) {
         if (state is LoginSuccessState) {
           if (state.loginModel.settings?.success == 1) {
             PreferenceService().saveString(
@@ -72,7 +74,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                 state.loginModel.data?.access ?? "",
                 state.loginModel.data?.refresh ?? "",
                 state.loginModel.data?.expiryTime ?? 0);
-            context.pushReplacement('/dashboard');
+            context.push('/dashboard');
             CustomSnackBar.show(context, state.message ?? '');
           } else {
             CustomSnackBar.show(context, state.message ?? '');
