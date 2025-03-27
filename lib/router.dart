@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Authentication/ChangePassword.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Authentication/OtpVerify.dart';
+import 'package:revxpharma/Authentication/Register.dart';
 import 'package:revxpharma/Patient/screens/AccountSettings.dart';
 import 'package:revxpharma/Patient/screens/ApointmentDetails.dart';
 import 'package:revxpharma/Patient/screens/Appointment.dart';
@@ -18,7 +19,7 @@ import 'package:revxpharma/Patient/screens/Payment.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Patient/screens/Prescription.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
-import 'package:revxpharma/Patient/screens/Register.dart';
+
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/Splash.dart';

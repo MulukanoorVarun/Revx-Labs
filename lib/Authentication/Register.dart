@@ -3,13 +3,14 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:revxpharma/Authentication/LogInWithEmail.dart';
 import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_state.dart';
 import 'package:revxpharma/Utils/color.dart';
-import '../../Components/ShakeWidget.dart';
+import '../Components/ShakeWidget.dart';
 
 
 class RegisterScreen extends StatefulWidget {
@@ -197,8 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (state is PatientRegisterSuccessState) {
           if (state.successModel.settings?.success == 1) {
             CustomSnackBar.show(context, state.message ?? '');
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => LogInWithEmail()));
+           context.pushReplacement('/login');
           } else {
             CustomSnackBar.show(context, state.message ?? '');
           }

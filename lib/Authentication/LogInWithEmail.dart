@@ -5,13 +5,11 @@ import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Components/ShakeWidget.dart';
 import 'package:revxpharma/Patient/logic/cubit/login/login_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/login/login_state.dart';
-import 'package:revxpharma/Patient/screens/Dashboard.dart';
-import 'package:revxpharma/Patient/screens/Register.dart';
+
 import 'package:revxpharma/Services/AuthService.dart';
-import 'package:revxpharma/Services/UserapiServices.dart';
+
 import 'package:revxpharma/Utils/Preferances.dart';
 import 'package:revxpharma/Utils/color.dart';
-import '../Patient/screens/UserSelectionScreen.dart';
 
 class LogInWithEmail extends StatefulWidget {
   @override
@@ -74,8 +72,11 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                 state.loginModel.data?.access ?? "",
                 state.loginModel.data?.refresh ?? "",
                 state.loginModel.data?.expiryTime ?? 0);
-            context.push('/dashboard');
-            CustomSnackBar.show(context, state.message ?? '');
+            if(state.loginModel.data?.role=='Patient'){
+              context.push('/dashboard');
+              CustomSnackBar.show(context, state.message ?? '');
+            }
+
           } else {
             CustomSnackBar.show(context, state.message ?? '');
           }
