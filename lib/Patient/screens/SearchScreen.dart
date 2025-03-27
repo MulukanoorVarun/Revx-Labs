@@ -74,7 +74,7 @@ class _SearchscreenState extends State<Searchscreen> {
                   searchQuery = c.toLowerCase();
                   context
                       .read<TestCubit>()
-                      .fetchTestList(widget.lat_lang, '', searchQuery,"");
+                      .fetchTestList(widget.lat_lang, '', searchQuery,"","","");
                 } else {
                   searchQuery = "";
                 }
@@ -235,7 +235,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                 scrollInfo.metrics.maxScrollExtent * 0.9) {
                               if (state is TestStateLoaded &&
                                   state.hasNextPage) {
-                                context.read<TestCubit>().fetchMoreTestList(widget.lat_lang, '', searchQuery,"");
+                                context.read<TestCubit>().fetchMoreTestList(widget.lat_lang, '', searchQuery,"","","");
                               }
                               return false;
                             }

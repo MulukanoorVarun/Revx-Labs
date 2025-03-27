@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:revxpharma/Models/AppointmentsModel.dart';
+import 'package:revxpharma/Patient/screens/MyAppointments.dart';
 import 'package:revxpharma/Patient/screens/Prescription.dart';
 import 'package:revxpharma/Patient/screens/ScanReports.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
@@ -70,7 +72,8 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 Homescreen(),
                 ServiceCategory(latlngs: latlngs,),
-                ScanReports(),
+                // ScanReports(),
+                Myappointments(),
                 Profile()
               ],
               physics: const NeverScrollableScrollPhysics(),
@@ -141,16 +144,17 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   )),
               BottomNavigationBarItem(
-                  label: "ScanReports",
+                  label: "My Appointments",
                   icon: Column(
                     children: [
                       _selectedIndex == 2
-                          ? Image.asset("assets/scanreports1.png",
+                          ? Image.asset("assets/apointments.png",
                               width: 25, height: 25, color: primaryColor)
                           : Image.asset(
-                              "assets/FileText.png",
+                              "assets/apointments.png",
                               width: 25,
                               height: 25,
+                        color: Colors.black,
                             )
                     ],
                   )),

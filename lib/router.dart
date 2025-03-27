@@ -123,19 +123,22 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     },
   ),
   GoRoute(
-    path: '/all_tests', // Consider keeping this consistent with your push path
+    path: '/all_tests',
     pageBuilder: (context, state) {
-      // Parse query parameters with proper type safety
       final latLang = state.uri.queryParameters['lat_lang'] ?? '';
       final catId = state.uri.queryParameters['catId'] ?? '';
       final catName = state.uri.queryParameters['catName'] ?? '';
       final diagnosticId = state.uri.queryParameters['diagnosticID'] ?? '';
+      final scanId = state.uri.queryParameters['scanId'] ?? '';
+      final xrayId = state.uri.queryParameters['xrayId'] ?? '';
       return buildSlideTransitionPage(
-        alltests(  // Assuming this is your widget class name
+        alltests(
           lat_lang: latLang,
           catId: catId,
           diagnosticID: diagnosticId,
           catName: catName,
+          scanId: scanId,
+       XrayId: xrayId,
         ),
         state,
       );
@@ -190,7 +193,7 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
     path: '/appointments_details',
     pageBuilder: (context, state) {
       final id = state.uri.queryParameters['id'] ?? "";
-      return buildSlideTransitionPage(ApointmentDetails(id: id), state);
+      return buildSlideTransitionPage(AppointmentDetails(id: id), state);
     },
   ),
   GoRoute(

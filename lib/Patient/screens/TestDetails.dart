@@ -78,261 +78,312 @@ class _TestDetailsState extends State<TestDetails>
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(12), // Inner padding for content
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
                       children: [
-                        // Image Container
-                        Container(
-                          width: w * 0.25,
-                          height: w * 0.3,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Image Container
+                            Container(
+                              width: w * 0.25,
+                              height: w * 0.3,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              state.testDetailsModel.data?.testDetails?.image ?? "",
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => const Icon(
-                                Icons.broken_image,
-                                size: 50,
-                                color: Colors.grey,
-                              ), // Fallback for broken images
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  state.testDetailsModel.data?.testDetails?.image ?? "",
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => const Icon(
+                                    Icons.broken_image,
+                                    size: 50,
+                                    color: Colors.grey,
+                                  ), // Fallback for broken images
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 12), // Spacing between image and text
-                        // Details Column
-                        SizedBox(
-                          width: w * 0.56,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.testDetailsModel.data?.testDetails?.testName ?? "",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins",
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height:5),
-                              Text(
-                                '₹ ${state.testDetailsModel.data?.testDetails?.price ?? 0}/-',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins",
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                'No of tests: ${state.testDetailsModel.data?.testDetails?.noOfTests ?? 0}',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: "Poppins",
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              BlocBuilder<CartCubit, CartState>(
-                                builder: (context, cartState) {
-                                  return ElevatedButton(
-                                    onPressed: cartState is CartLoadingState && cartState.testId == state.testDetailsModel.data?.id
-                                        ? null
-                                        : () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) {
-                                          return StatefulBuilder(
-                                            builder: (BuildContext context, StateSetter setModalState) {
-                                              int modalPatientCount = state.testDetailsModel.data?.noOfPersons??0; // Use the button's current count
-                                              return Container(
-                                                height: MediaQuery.of(context).size.height * 0.5,
-                                                padding: const EdgeInsets.all(16),
-                                                decoration: const BoxDecoration(
-                                                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Center(
-                                                      child: Container(
-                                                        width: 60,
-                                                        height: 3,
-                                                        decoration: BoxDecoration(
-                                                          color: CupertinoColors.inactiveGray,
-                                                          borderRadius: BorderRadius.circular(8),
-                                                        ),
-                                                      ),
+                            const SizedBox(width: 12), // Spacing between image and text
+                            // Details Column
+                            SizedBox(
+                              width: w * 0.56,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.testDetailsModel.data?.testDetails?.testName ?? "",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: "Poppins",
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height:5),
+                                  Text(
+                                    '₹ ${state.testDetailsModel.data?.testDetails?.price ?? 0}/-',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: "Poppins",
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    'No of tests: ${state.testDetailsModel.data?.testDetails?.noOfTests ?? 0}',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Poppins",
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  BlocBuilder<CartCubit, CartState>(
+                                    builder: (context, cartState) {
+                                      return ElevatedButton(
+                                        onPressed: cartState is CartLoadingState && cartState.testId == state.testDetailsModel.data?.id
+                                            ? null
+                                            : () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                builder: (BuildContext context, StateSetter setModalState) {
+                                                  int modalPatientCount = state.testDetailsModel.data?.noOfPersons??0; // Use the button's current count
+                                                  return Container(
+                                                    height: MediaQuery.of(context).size.height * 0.5,
+                                                    padding: const EdgeInsets.all(16),
+                                                    decoration: const BoxDecoration(
+                                                      borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
                                                     ),
-                                                    const SizedBox(height: 10),
-                                                    const Text(
-                                                      'Book For',
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontFamily: 'Poppins',
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    const Divider(height: 2, color: Color(0xffDADADA)),
-                                                    Expanded(
-                                                      child: ListView(
-                                                        children: [
-                                                          if (state.testDetailsModel.data?.existInCart ?? false) ...[
-                                                            Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                const Text(
-                                                                  'Remove Selection',
-                                                                  style: TextStyle(
-                                                                    color: Colors.black,
-                                                                    fontFamily: 'Poppins',
-                                                                    fontSize: 14,
-                                                                    fontWeight: FontWeight.w500,
-                                                                  ),
-                                                                ),
-                                                                IconButton.outlined(
-                                                                  visualDensity: VisualDensity.compact,
-                                                                  onPressed: () {
-                                                                    context.read<CartCubit>().removeFromCart(state.testDetailsModel.data?.id ?? "");
-                                                                    setModalState(() {
-                                                                      modalPatientCount = 1; // Reset to 1 on removal
-                                                                    });
-                                                                    context.pop();
-                                                                  },
-                                                                  icon: const Icon(
-                                                                    Icons.delete_outline,
-                                                                    color: Colors.red,
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Center(
+                                                          child: Container(
+                                                            width: 60,
+                                                            height: 3,
+                                                            decoration: BoxDecoration(
+                                                              color: CupertinoColors.inactiveGray,
+                                                              borderRadius: BorderRadius.circular(8),
                                                             ),
-                                                            const Divider(height: 2, color: Color(0xffDADADA)),
-                                                          ],
-                                                          ...List.generate(5, (index) {
-                                                            final patientCount = index + 1;
-                                                            return Column(
-                                                              children: [
+                                                          ),
+                                                        ),
+                                                        const SizedBox(height: 10),
+                                                        const Text(
+                                                          'Book For',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontFamily: 'Poppins',
+                                                            fontSize: 18,
+                                                            fontWeight: FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        const Divider(height: 2, color: Color(0xffDADADA)),
+                                                        Expanded(
+                                                          child: ListView(
+                                                            children: [
+                                                              if (state.testDetailsModel.data?.existInCart ?? false) ...[
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: [
-                                                                    Text(
-                                                                      'Patient $patientCount',
-                                                                      style: const TextStyle(
+                                                                    const Text(
+                                                                      'Remove Selection',
+                                                                      style: TextStyle(
                                                                         color: Colors.black,
                                                                         fontFamily: 'Poppins',
                                                                         fontSize: 14,
                                                                         fontWeight: FontWeight.w500,
                                                                       ),
                                                                     ),
-                                                                    Row(
-                                                                      spacing: 12,
-                                                                      children: [
-                                                                        Text(
-                                                                          '₹ ${(patientCount) * (state.testDetailsModel.data?.testDetails?.price ?? 0)}',
-                                                                          style: const TextStyle(
-                                                                            fontSize: 14,
-                                                                            fontWeight: FontWeight.w600,
-                                                                            fontFamily: "Poppins",
-                                                                            color: Colors.black,
-                                                                          ),
-                                                                        ),
-                                                                        Radio<int>(
-                                                                          activeColor: primaryColor,
-                                                                          value: patientCount,
-                                                                          groupValue: modalPatientCount, // Use modal-specific count
-                                                                          onChanged: (value) {
-                                                                            setModalState(() {
-                                                                              modalPatientCount = patientCount; // Update modal state
-                                                                            });
-                                                                            if(state.testDetailsModel.data?.existInCart??false){
-                                                                              context.read<CartCubit>().updateCart(
-                                                                                  state.testDetailsModel.data?.id??"",
-                                                                                  patientCount
-                                                                              );
-                                                                            }else{
-                                                                              context.read<CartCubit>().addToCart({
-                                                                                "test": "${state.testDetailsModel.data?.id}",
-                                                                                'no_of_persons': patientCount
-                                                                              });
-                                                                            }
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                        ),
-                                                                      ],
+                                                                    IconButton.outlined(
+                                                                      visualDensity: VisualDensity.compact,
+                                                                      onPressed: () {
+                                                                        context.read<CartCubit>().removeFromCart(state.testDetailsModel.data?.id ?? "");
+                                                                        setModalState(() {
+                                                                          modalPatientCount = 1; // Reset to 1 on removal
+                                                                        });
+                                                                        context.pop();
+                                                                      },
+                                                                      icon: const Icon(
+                                                                        Icons.delete_outline,
+                                                                        color: Colors.red,
+                                                                      ),
                                                                     ),
                                                                   ],
                                                                 ),
                                                                 const Divider(height: 2, color: Color(0xffDADADA)),
                                                               ],
-                                                            );
-                                                          }),
-                                                        ],
-                                                      ),
+                                                              ...List.generate(5, (index) {
+                                                                final patientCount = index + 1;
+                                                                return Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          'Patient $patientCount',
+                                                                          style: const TextStyle(
+                                                                            color: Colors.black,
+                                                                            fontFamily: 'Poppins',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w500,
+                                                                          ),
+                                                                        ),
+                                                                        Row(
+                                                                          spacing: 12,
+                                                                          children: [
+                                                                            Text(
+                                                                              '₹ ${(patientCount) * (state.testDetailsModel.data?.testDetails?.price ?? 0)}',
+                                                                              style: const TextStyle(
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w600,
+                                                                                fontFamily: "Poppins",
+                                                                                color: Colors.black,
+                                                                              ),
+                                                                            ),
+                                                                            Radio<int>(
+                                                                              activeColor: primaryColor,
+                                                                              value: patientCount,
+                                                                              groupValue: modalPatientCount, // Use modal-specific count
+                                                                              onChanged: (value) {
+                                                                                setModalState(() {
+                                                                                  modalPatientCount = patientCount; // Update modal state
+                                                                                });
+                                                                                if(state.testDetailsModel.data?.existInCart??false){
+                                                                                  context.read<CartCubit>().updateCart(
+                                                                                      state.testDetailsModel.data?.id??"",
+                                                                                      patientCount
+                                                                                  );
+                                                                                }else{
+                                                                                  context.read<CartCubit>().addToCart({
+                                                                                    "test": "${state.testDetailsModel.data?.id}",
+                                                                                    'no_of_persons': patientCount
+                                                                                  });
+                                                                                }
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                  ],
+                                                                );
+                                                              }),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  );
+                                                },
                                               );
                                             },
                                           );
                                         },
+                                        style: ElevatedButton.styleFrom(
+                                          visualDensity: VisualDensity.compact,
+                                          backgroundColor: primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                          ),
+                                          elevation: 0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            if (cartState is CartLoadingState && cartState.testId == state.testDetailsModel.data?.id)
+                                              const CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              )
+                                            else
+                                              Text(
+                                                state.testDetailsModel.data?.existInCart ?? false
+                                                    ? '${state.testDetailsModel.data?.noOfPersons} Patient${state.testDetailsModel.data?.noOfPersons != 1 ? 's' : ''}'
+                                                    : 'Add Test',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Poppins",
+                                                ),
+                                              ),
+                                            const SizedBox(width: 10),
+                                            Icon(
+                                              state.testDetailsModel.data?.existInCart ?? false
+                                                  ? Icons.arrow_drop_down_sharp
+                                                  : Icons.add_circle_outline,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     },
-                                    style: ElevatedButton.styleFrom(
-                                      visualDensity: VisualDensity.compact,
-                                      backgroundColor: primaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                      ),
-                                      elevation: 0,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        if (cartState is CartLoadingState && cartState.testId == state.testDetailsModel.data?.id)
-                                          const CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2,
-                                          )
-                                        else
-                                          Text(
-                                            state.testDetailsModel.data?.existInCart ?? false
-                                                ? '${state.testDetailsModel.data?.noOfPersons} Patient${state.testDetailsModel.data?.noOfPersons != 1 ? 's' : ''}'
-                                                : 'Add Test',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Poppins",
-                                            ),
-                                          ),
-                                        const SizedBox(width: 10),
-                                        Icon(
-                                          state.testDetailsModel.data?.existInCart ?? false
-                                              ? Icons.arrow_drop_down_sharp
-                                              : Icons.add_circle_outline,
-                                          color: Colors.white,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
+                        const Divider(
+                          height: 12,
+                          color: Color(0xffE6E6E6),
+                          thickness: 1,
+                        ),
+                        Row(
+                          children: [
+                            if (state.testDetailsModel.data?.testDetails?.fastingRequired == true) ...[
+                              Image.asset('assets/ForkKnife.png', scale: 2.5),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'Fast Required',
+                                style: TextStyle(
+                                  color: Color(0xff555555),
+                                  fontFamily: 'Poppins',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                            Spacer(),
+                            Image.asset('assets/file.png', scale: 2.5),
+                            SizedBox(width: 8),
+                            Text(
+                              'Reports in ${state.testDetailsModel.data?.testDetails?.reportsDeliveredIn ?? 0} min',
+                              style: const TextStyle(
+                                color: Color(0xff555555),
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Spacer(),
+                            Image.asset('assets/bloodtext.png', scale: 10),
+
+                            Text(
+                              'Sample:${state.testDetailsModel.data?.testDetails?.sampleType}',
+                              style: const TextStyle(
+                                color: Color(0xff555555),
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+
                       ],
                     ),
                   ),
