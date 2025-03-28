@@ -547,7 +547,7 @@ class _HomescreenState extends State<Homescreen> {
                     Bounce(
                       scaleFactor:0.9,
                       onTap: () {
-                        context.push('/all_tests?scanId=c7946e950c48429b8908c7f202c274c7');
+                        context.push('/all_tests?scanId=5508f105176b4197943489bcdf434202');
 
                       },
                       child: Container(
@@ -588,7 +588,7 @@ class _HomescreenState extends State<Homescreen> {
                     Bounce(
                       scaleFactor: 0.9,
                       onTap: () {
-                        context.push('/all_tests?xrayId="845bc6e7c2e54343a46bb271b0d03d43"');
+                        context.push('/all_tests?xrayId="1634ee26e18d49fba8cc3c9db77d9049"');
 
 
                       },
