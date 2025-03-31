@@ -190,7 +190,6 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                       borderRadius: BorderRadius.circular(30.0),
                       child: TextField(
                         onTap: () {
-
                           setState(() {
                             _validatepwd = '';
                           });
