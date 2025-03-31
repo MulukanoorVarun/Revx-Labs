@@ -83,8 +83,7 @@ class CartCubit extends Cubit<CartState> {
           if (test.testId == id) {
             print(
                 "[CartCubit] Updating Test ID: $id to noOfPersons: $noOfPersons");
-            return test.copyWith(
-                noOfPersons: noOfPersons); // Correctly update count
+            return test.copyWith(noOfPersons: noOfPersons); // Correctly update count
           }
           return test;
         }).toList();
@@ -107,6 +106,7 @@ class CartCubit extends Cubit<CartState> {
         ));
         // ✅ Emit updated state after modification
         emit(CartLoaded(cartListModel, cartCount));
+        getCartList();
       } else {
         emit(CartErrorState(
             errorMessage:

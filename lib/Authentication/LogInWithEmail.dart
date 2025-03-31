@@ -319,8 +319,7 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                   Container(
                     width: double.infinity, // Full width
                     height: 50.0, // Set height for the button
-                    margin: EdgeInsets.symmetric(
-                        horizontal: 10.0), // Margin for spacing
+                    margin: EdgeInsets.symmetric(horizontal: 10.0), // Margin for spacing
                     child: Material(
                       color: Colors.white, // Button background color
                       borderRadius: BorderRadius.circular(30.0),
@@ -352,7 +351,6 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                     ),
                   ),
                   SizedBox(height: 40),
-
                   // Registration Link
                   InkWell(
                     onTap: () {
