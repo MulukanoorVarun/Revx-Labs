@@ -5,9 +5,7 @@ import 'package:revxpharma/Components/CustomSnackBar.dart';
 import 'package:revxpharma/Components/ShakeWidget.dart';
 import 'package:revxpharma/Patient/logic/cubit/login/login_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/login/login_state.dart';
-
 import 'package:revxpharma/Services/AuthService.dart';
-
 import 'package:revxpharma/Utils/Preferances.dart';
 import 'package:revxpharma/Utils/color.dart';
 
@@ -60,14 +58,10 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
           listener: (context, state) {
         if (state is LoginSuccessState) {
           if (state.loginModel.settings?.success == 1) {
-            PreferenceService().saveString(
-                'access_token', state.loginModel.data?.access ?? "");
-            PreferenceService().saveString(
-                'refresh_token', state.loginModel.data?.refresh ?? "");
-            PreferenceService()
-                .saveInt('expiry_time', state.loginModel.data?.expiryTime ?? 0);
-            PreferenceService()
-                .saveString('role', state.loginModel.data?.role ?? "");
+            PreferenceService().saveString('access_token', state.loginModel.data?.access ?? "");
+            PreferenceService().saveString('refresh_token', state.loginModel.data?.refresh ?? "");
+            PreferenceService().saveInt('expiry_time', state.loginModel.data?.expiryTime ?? 0);
+            PreferenceService().saveString('role', state.loginModel.data?.role ?? "");
             AuthService.saveTokens(
                 state.loginModel.data?.access ?? "",
                 state.loginModel.data?.refresh ?? "",
