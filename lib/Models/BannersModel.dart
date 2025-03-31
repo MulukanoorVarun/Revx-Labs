@@ -5,19 +5,19 @@ class BannersModel {
   BannersModel({this.data, this.settings});
 
   BannersModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
+    if (json['data'] != null && json['data'] is List) {
       data = <Banners>[];
-      json['data'].forEach((v) {
-        data!.add(new Banners.fromJson(v));
+      (json['data'] as List).forEach((v) {
+        data!.add(Banners.fromJson(v as Map<String, dynamic>));
       });
     }
     settings = json['settings'] != null
-        ? new Settings.fromJson(json['settings'])
+        ? Settings.fromJson(json['settings'] as Map<String, dynamic>)
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -44,7 +44,7 @@ class Banners {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['banner_name'] = this.bannerName;
     data['image'] = this.image;
@@ -67,7 +67,7 @@ class Settings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['success'] = this.success;
     data['message'] = this.message;
     data['status'] = this.status;

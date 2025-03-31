@@ -27,7 +27,7 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang, catId, search_Query, page, diagnosticID);
+  Future<TestModel?> fetchTest(latlang, catId, search_Query, page, diagnosticID,scanId,x_rayId);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -270,10 +270,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<TestModel?> fetchTest(
-      latlang, catId, search_Query, page, diagnosticID) async {
+      latlang, catId, search_Query, page, diagnosticID,scanId,x_rayId) async {
     try {
       Response response = await ApiClient.get(
-          "${PatientRemoteUrls.test}?lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
+          "${PatientRemoteUrls.test}?${scanId}&${x_rayId}&lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);

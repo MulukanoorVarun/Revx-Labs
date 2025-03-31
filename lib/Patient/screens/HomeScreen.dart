@@ -545,8 +545,11 @@ class _HomescreenState extends State<Homescreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Bounce(
-                      scaleFactor: 1.1,
-                      onTap: () {},
+                      scaleFactor:0.9,
+                      onTap: () {
+                        context.push('/all_tests?scanId=5508f105176b4197943489bcdf434202');
+
+                      },
                       child: Container(
                         width: screenWidth * 0.435,
                         height: screenWidth * 0.4,
@@ -583,8 +586,12 @@ class _HomescreenState extends State<Homescreen> {
                       width: 11,
                     ),
                     Bounce(
-                      scaleFactor: 1.1,
-                      onTap: () {},
+                      scaleFactor: 0.9,
+                      onTap: () {
+                        context.push('/all_tests?xrayId="1634ee26e18d49fba8cc3c9db77d9049"');
+
+
+                      },
                       child: Container(
                         width: screenWidth * 0.435,
                         height: screenWidth * 0.4,
@@ -736,8 +743,8 @@ class _HomescreenState extends State<Homescreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
+                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+                      decoration: BoxDecoration(color: Color(0xffEAEBF4),
                           borderRadius: BorderRadius.circular(8),
                           border:
                               Border.all(color: Color(0xffEAEBF4), width: 1)),
@@ -765,8 +772,8 @@ class _HomescreenState extends State<Homescreen> {
                         context.push('/prescription');
                       },
                       child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
+                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+                        decoration: BoxDecoration(color: Color(0xffEAEBF4),
                             borderRadius: BorderRadius.circular(8),
                             border:
                                 Border.all(color: Color(0xffEAEBF4), width: 1)),
@@ -790,8 +797,8 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
+                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+                      decoration: BoxDecoration(color: Color(0xffEAEBF4),
                           borderRadius: BorderRadius.circular(8),
                           border:
                               Border.all(color: Color(0xffEAEBF4), width: 1)),

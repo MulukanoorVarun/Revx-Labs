@@ -137,26 +137,30 @@ class _ProfileState extends State<Profile> {
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         fontFamily: "Poppins")),
-                ListTile(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Myappointments()));
-                  },
-                  leading: Image.asset(
-                    "assets/apointments.png",
-                    height: 24,
-                    width: 24,
-                  ),
-                  title: Text(
-                    "My Appointments",
-                    style: TextStyle(
-                      color: Color(0xff151515),
-                      fontSize: 17,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "Poppins",
-                    ),
-                  ),
-                  trailing: Icon(Icons.arrow_forward_ios_rounded, size: 20),
-                ),
+                // ListTile(
+                //   onTap: () {
+                //     Navigator.push(context, MaterialPageRoute(builder: (context) => Myappointments()));
+                //   },
+                //   leading: Image.asset(
+                //     "assets/apointments.png",
+                //     height: 24,
+                //     width: 24,
+                //   ),
+                //   title: Text(
+                //     "My Appointments",
+                //     style: TextStyle(
+                //       color: Color(0xff151515),
+                //       fontSize: 17,
+                //       fontWeight: FontWeight.w400,
+                //       fontFamily: "Poppins",
+                //     ),
+                //   ),
+                //   trailing: Icon(Icons.arrow_forward_ios_rounded, size: 20),
+                // ),
+
+
+
+
                 // ListTile(
                 //   onTap: () {
                 //     Navigator.push(context, MaterialPageRoute(builder: (context) => Accountsettings()));

@@ -8,7 +8,7 @@ import 'package:revxpharma/Utils/color.dart';
 
 import '../Components/ShakeWidget.dart';
 import '../Patient/screens/Dashboard.dart';
-import '../Patient/screens/Register.dart';
+import 'Register.dart';
 
 class OtpVerify extends StatefulWidget {
   @override
