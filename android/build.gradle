@@ -1,14 +1,4 @@
-buildscript {
-    ext.kotlin_version = '1.9.24'
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+
 allprojects {
     repositories {
         google()
@@ -20,6 +10,21 @@ rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+// Add this part -------------->
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    namespace project.group
+                }
+            }
+        }
+    }
+}
+// until here
+
 subprojects {
     afterEvaluate { project ->
         if (project.plugins.hasPlugin("com.android.application") ||
@@ -31,10 +36,10 @@ subprojects {
         }
     }
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
-
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
