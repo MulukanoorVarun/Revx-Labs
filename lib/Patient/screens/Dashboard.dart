@@ -2,20 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:revxpharma/Models/AppointmentsModel.dart';
 import 'package:revxpharma/Patient/screens/MyAppointments.dart';
-import 'package:revxpharma/Patient/screens/Prescription.dart';
-import 'package:revxpharma/Patient/screens/ScanReports.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Utils/color.dart';
-import '../../Utils/NoInternet.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
 import '../logic/cubit/Location/location_cubit.dart';
 import '../logic/cubit/Location/location_state.dart';
-import 'ChatSupport.dart';
 import 'HomeScreen.dart';
-import 'Notification.dart';
 import 'Profile.dart';
 
 class Dashboard extends StatefulWidget {
@@ -27,7 +22,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   PageController pageController = PageController();
   int _selectedIndex = 0;
-  String latlngs="";
+  String latlngs = "";
 
   @override
   void initState() {
@@ -60,8 +55,8 @@ class _DashboardState extends State<Dashboard> {
             listener: (context, state) {
               if (state is LocationPermissionDenied) {
                 showLocationBottomSheet(context);
-              }else if(state is LocationLoaded){
-                latlngs= state.latlng;
+              } else if (state is LocationLoaded) {
+                latlngs = state.latlng;
               }
             },
             child: PageView(
@@ -71,7 +66,9 @@ class _DashboardState extends State<Dashboard> {
               controller: pageController,
               children: [
                 Homescreen(),
-                ServiceCategory(latlngs: latlngs,),
+                ServiceCategory(
+                  latlngs: latlngs,
+                ),
                 // ScanReports(),
                 Myappointments(),
                 Profile()
@@ -154,7 +151,7 @@ class _DashboardState extends State<Dashboard> {
                               "assets/apointments.png",
                               width: 25,
                               height: 25,
-                        color: Colors.black,
+                              color: Colors.black,
                             )
                     ],
                   )),
@@ -226,51 +223,92 @@ class _DashboardState extends State<Dashboard> {
       context: context,
       isDismissible: false,
       enableDrag: false,
+      isScrollControlled: true, // Allow dynamic height
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       builder: (BuildContext bottomSheetContext) {
         return BlocConsumer<LocationCubit, LocationState>(
           listener: (context, state) {
             if (state is LocationLoaded) {
-              // Close the bottom sheet when location is successfully fetched
               Navigator.pop(bottomSheetContext);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Location fetched successfully!')),
+              );
+            } else if (state is LocationError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
             }
           },
           builder: (context, state) {
             bool isLoading = state is LocationLoading;
+            String message = 'Granting location permission will ensure accurate address and hassle-free service.';
+
+            if (state is LocationPermissionDenied) {
+              message = 'Location permission is required to proceed.';
+            } else if (state is LocationError) {
+              message = state.message;
+            }
+
             return WillPopScope(
               onWillPop: () async => !isLoading,
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.gps_fixed_sharp, size: 18),
+                        const Icon(Icons.gps_fixed_sharp, size: 18),
                         const SizedBox(width: 10),
-                        Text(
-                          'Location Permission is Off',
-                          style: TextStyle(fontWeight: FontWeight.w400),
+                        const Text(
+                          'Location Permission',
+                          style: TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         ElevatedButton(
                           onPressed: isLoading
                               ? null
-                              : () async {
-                                  context
-                                      .read<LocationCubit>()
-                                      .requestLocationPermission();
-                                },
+                              : () {
+                            if (state is LocationError &&
+                                state.message.contains('permanently denied')) {
+                              Geolocator.openAppSettings();
+                            } else {
+                              context.read<LocationCubit>().requestLocationPermission();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                           child: isLoading
-                              ? CircularProgressIndicator(strokeWidth: 2)
-                              : const Text('GRANT'),
+                              ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                              : Text(state is LocationError &&
+                              state.message.contains('permanently denied')
+                              ? 'OPEN SETTINGS'
+                              : 'GRANT'),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Granting location permission will ensure accurate address and hassle-free service.',
-                      style: TextStyle(fontSize: 14),
+                    const SizedBox(height: 12),
+                    Text(
+                      message,
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
+                    if (state is LocationError) ...[
+                      const SizedBox(height: 12),
+                      TextButton(
+                        onPressed: () => context.read<LocationCubit>().checkLocationPermission(),
+                        child: const Text('Retry'),
+                      ),
+                    ],
                   ],
                 ),
               ),

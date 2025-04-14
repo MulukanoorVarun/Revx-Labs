@@ -14,7 +14,10 @@ class LocationLoaded extends LocationState {
   });
 }
 
-class LocationPermissionDenied extends LocationState {} // New state for denied permission
+class LocationPermissionDenied extends LocationState {
+  final String? message;
+  LocationPermissionDenied({this.message});
+}
 
 class LocationError extends LocationState {
   final String message;

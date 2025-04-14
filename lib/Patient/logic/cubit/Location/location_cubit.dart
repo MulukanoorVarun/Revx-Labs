@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,24 +10,32 @@ import 'location_state.dart';
 class LocationCubit extends Cubit<LocationState> {
   LocationCubit() : super(LocationInitial());
 
-  /// Check if location permission & services are enabled
+  /// Check if location permission and services are enabled
   Future<void> checkLocationPermission() async {
     emit(LocationLoading());
 
     try {
-      String locationName = await PreferenceService().getString('LocName') ?? "Gachibowli, Hyderabad";
       bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
       LocationPermission permission = await Geolocator.checkPermission();
 
-      if (!isServiceEnabled || permission == LocationPermission.denied) {
-        emit(LocationPermissionDenied()); // Emit denied state instead of error
-      } else if (permission == LocationPermission.deniedForever) {
-        emit(LocationError("Permission permanently denied. Enable it in settings."));
-      } else {
-        await getLatLong();
+      if (!isServiceEnabled) {
+        emit(LocationPermissionDenied(message: 'Please enable GPS/location services.'));
+        return;
       }
+
+      if (permission == LocationPermission.denied) {
+        emit(LocationPermissionDenied());
+        return;
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        emit(LocationError('Location permission is permanently denied. Please enable it in settings.'));
+        return;
+      }
+
+      await _getLatLong();
     } catch (e) {
-      emit(LocationError("Failed to check location permissions"));
+      emit(LocationError('Failed to check location permissions: ${e.toString()}'));
     }
   }
 
@@ -35,14 +45,15 @@ class LocationCubit extends Cubit<LocationState> {
 
     try {
       bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-      LocationPermission permission = await Geolocator.checkPermission();
-
       if (!isServiceEnabled) {
-        // Do not return here, instead call GPS permission request
-        await requestGpsPermission();
-        return;
+        isServiceEnabled = await Geolocator.openLocationSettings();
+        if (!isServiceEnabled) {
+          emit(LocationPermissionDenied(message: 'GPS must be enabled to proceed.'));
+          return;
+        }
       }
 
+      LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
@@ -52,52 +63,54 @@ class LocationCubit extends Cubit<LocationState> {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        emit(LocationError("Permission permanently denied. Enable it in settings."));
+        emit(LocationError('Location permission is permanently denied. Please enable it in settings.'));
         return;
       }
 
-      // If permission is granted, directly request GPS to be turned on
-      await requestGpsPermission();
+      await _getLatLong();
     } catch (e) {
-      emit(LocationError("Failed to request location permission"));
+      emit(LocationError('Failed to request location permission: ${e.toString()}'));
     }
   }
 
-
-  /// Request GPS to be turned on
-  Future<void> requestGpsPermission() async {
-    final location = loc.Location();
-    bool serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        emit(LocationPermissionDenied()); // Emit denied state if GPS is not enabled
-        return;
-      }
-    }
-    await getLatLong();
-  }
-
-  /// Fetch user's current latitude & longitude
-  Future<void> getLatLong() async {
+  /// Fetch user's current latitude and longitude
+  Future<void> _getLatLong() async {
     try {
+      // Set platform-specific accuracy
+      LocationAccuracy accuracy = Platform.isAndroid ? LocationAccuracy.high : LocationAccuracy.best;
+
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+        desiredAccuracy: accuracy,
+        timeLimit: const Duration(seconds: 10),
+      ).timeout(const Duration(seconds: 15), onTimeout: () {
+        throw Exception('Location fetch timed out');
+      });
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-      String locationName = placemarks.isNotEmpty
-          ? "${placemarks[0].street}, ${placemarks[0].subLocality}"
-          : "Address not found";
+      // Reverse geocode with fallback
+      String locationName = await _getLocationName(position.latitude, position.longitude);
+      String latlngs = '${position.latitude},${position.longitude}';
 
-      String latlngs= "${position.latitude},${position.longitude}";
-
+      // Save to preferences
        PreferenceService().saveString('LocName', locationName);
        PreferenceService().saveString('latlngs', latlngs);
 
-      emit(LocationLoaded(locationName: locationName,latlng: latlngs));
+      emit(LocationLoaded(locationName: locationName, latlng: latlngs));
     } catch (e) {
-      emit(LocationError("Failed to fetch location"));
+      emit(LocationError('Failed to fetch location: ${e.toString()}'));
+    }
+  }
+
+  /// Reverse geocode coordinates to a readable address
+  Future<String> _getLocationName(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        final placemark = placemarks.first;
+        return '${placemark.street ?? ''}, ${placemark.subLocality ?? placemark.locality ?? 'Unknown'}'.trim();
+      }
+      return await PreferenceService().getString('LocName') ?? 'Gachibowli, Hyderabad';
+    } catch (e) {
+      return await PreferenceService().getString('LocName') ?? 'Gachibowli, Hyderabad';
     }
   }
 }
