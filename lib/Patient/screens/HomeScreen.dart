@@ -545,10 +545,10 @@ class _HomescreenState extends State<Homescreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Bounce(
-                      scaleFactor:0.9,
+                      scaleFactor: 0.9,
                       onTap: () {
-                        context.push('/all_tests?scanId=5508f105176b4197943489bcdf434202');
-
+                        context.push(
+                            '/all_tests?scanId=5508f105176b4197943489bcdf434202');
                       },
                       child: Container(
                         width: screenWidth * 0.435,
@@ -588,9 +588,8 @@ class _HomescreenState extends State<Homescreen> {
                     Bounce(
                       scaleFactor: 0.9,
                       onTap: () {
-                        context.push('/all_tests?xrayId="1634ee26e18d49fba8cc3c9db77d9049"');
-
-
+                        context.push(
+                            '/all_tests?xrayId="1634ee26e18d49fba8cc3c9db77d9049"');
                       },
                       child: Container(
                         width: screenWidth * 0.435,
@@ -599,7 +598,7 @@ class _HomescreenState extends State<Homescreen> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border:
-                            Border.all(color: Color(0xff2D3894), width: 1)),
+                                Border.all(color: Color(0xff2D3894), width: 1)),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 10,
@@ -743,8 +742,10 @@ class _HomescreenState extends State<Homescreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
-                      decoration: BoxDecoration(color: Color(0xffEAEBF4),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Color(0xffEAEBF4),
                           borderRadius: BorderRadius.circular(8),
                           border:
                               Border.all(color: Color(0xffEAEBF4), width: 1)),
@@ -772,8 +773,10 @@ class _HomescreenState extends State<Homescreen> {
                         context.push('/prescription');
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
-                        decoration: BoxDecoration(color: Color(0xffEAEBF4),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        decoration: BoxDecoration(
+                            color: Color(0xffEAEBF4),
                             borderRadius: BorderRadius.circular(8),
                             border:
                                 Border.all(color: Color(0xffEAEBF4), width: 1)),
@@ -797,8 +800,10 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
-                      decoration: BoxDecoration(color: Color(0xffEAEBF4),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Color(0xffEAEBF4),
                           borderRadius: BorderRadius.circular(8),
                           border:
                               Border.all(color: Color(0xffEAEBF4), width: 1)),
@@ -907,11 +912,12 @@ class _HomescreenState extends State<Homescreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: primaryColor, width: 1),
-                              // Adjusted size to fit the circle
                             ),
-                            child: Image.network(
-                              dignosticCenter?.image ?? '',
-                              fit: BoxFit.contain,
+                            child: ClipOval(
+                              child: Image.network(
+                                dignosticCenter?.image ?? '',
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
@@ -993,7 +999,6 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-
   Widget _buildCategoryItem(String image, String label, String catId) {
     return Column(
       children: [
@@ -1003,20 +1008,26 @@ class _HomescreenState extends State<Homescreen> {
           onTap: () {
             // Delay navigation to allow ripple effect to show
             Future.delayed(const Duration(milliseconds: 200), () {
-              context.push('/all_tests?catId=${catId}&lat_lang=${lat_lang}&catName=${label}');
+              context.push(
+                  '/all_tests?catId=${catId}&lat_lang=${lat_lang}&catName=${label}');
             });
           },
           child: Container(
             width: 70,
             height: 70,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8), // Rounded square outer container
               border: Border.all(color: Color(0xffE9E9E9), width: 1),
             ),
             child: Center(
-              child: Image.network(image, width: 45, height: 45),
+              child: CircleAvatar(
+                radius: 25, // Make it slightly smaller than the container
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(image),
+                onBackgroundImageError: (_, __) => debugPrint('Image load error'),
+              ),
             ),
-          ),
+          )
         ),
         SizedBox(height: 8),
         Text(

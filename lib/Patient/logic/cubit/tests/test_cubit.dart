@@ -40,7 +40,7 @@ class TestCubit extends Cubit<TestState> {
     try {
       final newTests = await testRepository.getTest(latlang, catId, searchQuery, _currentPage, diagnosticID,scanId,x_rayId);
       if (newTests != null && newTests.data!.isNotEmpty) {
-        final updatedTests = List<Data>.from(testModel!.data!)..addAll(newTests.data!);
+        final updatedTests = List<Data>.from(testModel.data!)..addAll(newTests.data!);
         testModel = TestModel(data: updatedTests, settings: newTests.settings);
         _hasNextPage = newTests.settings?.nextPage ?? false;
         emit(TestStateLoaded(testModel, _hasNextPage));

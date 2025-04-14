@@ -93,13 +93,12 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Image.network(
-                              item?.image ?? '',
-                              fit: BoxFit.contain,
-                              height: 45,
-                              width: 50,
+                          child:  Center(
+                            child: CircleAvatar(
+                              radius: 38, // Make it slightly smaller than the container
+                              backgroundColor: Colors.white,
+                              backgroundImage: NetworkImage(item?.image??""),
+                              onBackgroundImageError: (_, __) => debugPrint('Image load error'),
                             ),
                           ),
                         ),
