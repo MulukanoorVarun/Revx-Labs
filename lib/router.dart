@@ -28,6 +28,8 @@ import 'package:revxpharma/Patient/screens/UserSelectionScreen.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/NoInternet.dart';
 
+import 'Patient/screens/servicecategory.dart';
+
 final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(path: '/', builder: (context, state) => Splash()),
   GoRoute(
@@ -211,6 +213,15 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
               endtime: end_time,
               totalamount: totel_amount),
           state);
+    },
+  ),
+  GoRoute(
+    path: '/categories',
+    pageBuilder: (context, state) {
+      final query = state.uri.queryParameters['query'] ?? '';
+      final latlngs = state.uri.queryParameters['latlngs'] ?? '';
+      return buildSlideTransitionPage(
+          ServiceCategory(query: query,latlngs: latlngs,), state);
     },
   ),
 ]);

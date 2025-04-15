@@ -547,12 +547,12 @@ class _HomescreenState extends State<Homescreen> {
                     Bounce(
                       scaleFactor: 0.9,
                       onTap: () {
-                        context.push(
-                            '/all_tests?scanId=5508f105176b4197943489bcdf434202');
+                        context
+                            .push("/categories?query=mri&latlngs=${lat_lang}");
                       },
                       child: Container(
                         width: screenWidth * 0.435,
-                        height: screenWidth * 0.4,
+                        height: screenWidth * 0.3,
                         padding: EdgeInsets.only(left: 15, right: 15),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -567,11 +567,11 @@ class _HomescreenState extends State<Homescreen> {
                             Image.asset(
                               'assets/ct-scan.png',
                               fit: BoxFit.contain,
-                              height: screenWidth * 0.24,
+                              height: screenWidth * 0.2,
                               width: screenWidth * 0.24,
                             ),
                             Text(
-                              'Book My Scan',
+                              "MRI's",
                               style: TextStyle(
                                   color: Color(0xff000000),
                                   fontSize: 14,
@@ -589,11 +589,11 @@ class _HomescreenState extends State<Homescreen> {
                       scaleFactor: 0.9,
                       onTap: () {
                         context.push(
-                            '/all_tests?xrayId="1634ee26e18d49fba8cc3c9db77d9049"');
+                            "/categories?query=scans&latlngs=${lat_lang}");
                       },
                       child: Container(
                         width: screenWidth * 0.435,
-                        height: screenWidth * 0.4,
+                        height: screenWidth * 0.3,
                         padding: EdgeInsets.only(left: 15, right: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -606,7 +606,7 @@ class _HomescreenState extends State<Homescreen> {
                             Image.asset(
                               'assets/x-rays 1.png',
                               fit: BoxFit.contain,
-                              height: screenWidth * 0.24,
+                              height: screenWidth * 0.2,
                               width: screenWidth * 0.24,
                             ),
                             Text(
@@ -738,98 +738,98 @@ class _HomescreenState extends State<Homescreen> {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      decoration: BoxDecoration(
-                          color: Color(0xffEAEBF4),
-                          borderRadius: BorderRadius.circular(8),
-                          border:
-                              Border.all(color: Color(0xffEAEBF4), width: 1)),
-                      child: Row(
-                        spacing: 8,
-                        children: [
-                          Icon(
-                            Icons.call,
-                            size: 16,
-                          ),
-                          Text(
-                            'Call',
-                            style: TextStyle(
-                                color: Color(0xff1D1D1D),
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Poppins',
-                                fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Bounce(
-                      scaleFactor: 0.8,
-                      onTap: () {
-                        context.push('/prescription');
-                      },
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                        decoration: BoxDecoration(
-                            color: Color(0xffEAEBF4),
-                            borderRadius: BorderRadius.circular(8),
-                            border:
-                                Border.all(color: Color(0xffEAEBF4), width: 1)),
-                        child: Row(
-                          spacing: 8,
-                          children: [
-                            Icon(
-                              Icons.file_present_sharp,
-                              size: 16,
-                            ),
-                            Text(
-                              'Upload Prescription',
-                              style: TextStyle(
-                                  color: Color(0xff1D1D1D),
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 10),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      decoration: BoxDecoration(
-                          color: Color(0xffEAEBF4),
-                          borderRadius: BorderRadius.circular(8),
-                          border:
-                              Border.all(color: Color(0xffEAEBF4), width: 1)),
-                      child: Row(
-                        spacing: 8,
-                        children: [
-                          Image.asset(
-                            'assets/whatsp.png',
-                            scale: 5,
-                          ),
-                          Text(
-                            'What’s up call',
-                            style: TextStyle(
-                                color: Color(0xff1D1D1D),
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Poppins',
-                                fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Container(
+                //       padding:
+                //           EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                //       decoration: BoxDecoration(
+                //           color: Color(0xffEAEBF4),
+                //           borderRadius: BorderRadius.circular(8),
+                //           border:
+                //               Border.all(color: Color(0xffEAEBF4), width: 1)),
+                //       child: Row(
+                //         spacing: 8,
+                //         children: [
+                //           Icon(
+                //             Icons.call,
+                //             size: 16,
+                //           ),
+                //           Text(
+                //             'Call',
+                //             style: TextStyle(
+                //                 color: Color(0xff1D1D1D),
+                //                 fontWeight: FontWeight.w600,
+                //                 fontFamily: 'Poppins',
+                //                 fontSize: 10),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //     Bounce(
+                //       scaleFactor: 0.8,
+                //       onTap: () {
+                //         context.push('/prescription');
+                //       },
+                //       child: Container(
+                //         padding:
+                //             EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                //         decoration: BoxDecoration(
+                //             color: Color(0xffEAEBF4),
+                //             borderRadius: BorderRadius.circular(8),
+                //             border:
+                //                 Border.all(color: Color(0xffEAEBF4), width: 1)),
+                //         child: Row(
+                //           spacing: 8,
+                //           children: [
+                //             Icon(
+                //               Icons.file_present_sharp,
+                //               size: 16,
+                //             ),
+                //             Text(
+                //               'Upload Prescription',
+                //               style: TextStyle(
+                //                   color: Color(0xff1D1D1D),
+                //                   fontWeight: FontWeight.w600,
+                //                   fontFamily: 'Poppins',
+                //                   fontSize: 10),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     Container(
+                //       padding:
+                //           EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                //       decoration: BoxDecoration(
+                //           color: Color(0xffEAEBF4),
+                //           borderRadius: BorderRadius.circular(8),
+                //           border:
+                //               Border.all(color: Color(0xffEAEBF4), width: 1)),
+                //       child: Row(
+                //         spacing: 8,
+                //         children: [
+                //           Image.asset(
+                //             'assets/whatsp.png',
+                //             scale: 5,
+                //           ),
+                //           Text(
+                //             'What’s up call',
+                //             style: TextStyle(
+                //                 color: Color(0xff1D1D1D),
+                //                 fontWeight: FontWeight.w600,
+                //                 fontFamily: 'Poppins',
+                //                 fontSize: 10),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 16,
+                // ),
                 Text(
                   'Categories',
                   style: TextStyle(
@@ -858,76 +858,75 @@ class _HomescreenState extends State<Homescreen> {
                   },
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Diagnostic Centres',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: primaryColor,
-                          fontFamily: "Poppins"),
-                    ),
-                    InkResponse(
-                      onTap: () {
-                        context.push('/diagnostic_center/$lat_lang');
-                      },
-                      child: Text(
-                        'See All',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: primaryColor,
-                            fontFamily: "Poppins"),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 5,
-                  ),
-                  itemCount: state.diagnosticCenters.data?.length,
-                  itemBuilder: (context, index) {
-                    final dignosticCenter =
-                        state.diagnosticCenters.data?[index];
-                    var w = MediaQuery.of(context).size.width;
-                    return Column(
-                      children: [
-                        InkResponse(
-                          onTap: () {
-                            context.push(
-                                '/diognostic_information?diognosticId=${dignosticCenter?.id ?? ''}');
-                          },
-                          child: Container(
-                            width: w * 0.435,
-                            height: w * 0.4,
-                            padding: EdgeInsets.only(left: 15, right: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: primaryColor, width: 1),
-                            ),
-                            child: ClipOval(
-                              child: Image.network(
-                                dignosticCenter?.image ?? '',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(height: 8),
-
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Diagnostic Centres',
+                //       style: TextStyle(
+                //           fontSize: 18,
+                //           fontWeight: FontWeight.w500,
+                //           color: primaryColor,
+                //           fontFamily: "Poppins"),
+                //     ),
+                //     InkResponse(
+                //       onTap: () {
+                //         context.push('/diagnostic_center/$lat_lang');
+                //       },
+                //       child: Text(
+                //         'See All',
+                //         style: TextStyle(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w500,
+                //             color: primaryColor,
+                //             fontFamily: "Poppins"),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 8),
+                // GridView.builder(
+                //   physics: NeverScrollableScrollPhysics(),
+                //   shrinkWrap: true,
+                //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //     crossAxisCount: 2,
+                //     childAspectRatio: 1,
+                //     crossAxisSpacing: 5,
+                //   ),
+                //   itemCount: state.diagnosticCenters.data?.length,
+                //   itemBuilder: (context, index) {
+                //     final dignosticCenter =
+                //         state.diagnosticCenters.data?[index];
+                //     var w = MediaQuery.of(context).size.width;
+                //     return Column(
+                //       children: [
+                //         InkResponse(
+                //           onTap: () {
+                //             context.push(
+                //                 '/diognostic_information?diognosticId=${dignosticCenter?.id ?? ''}');
+                //           },
+                //           child: Container(
+                //             width: w * 0.435,
+                //             height: w * 0.4,
+                //             padding: EdgeInsets.only(left: 15, right: 15),
+                //             decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(10),
+                //               border: Border.all(color: primaryColor, width: 1),
+                //             ),
+                //             child: ClipOval(
+                //               child: Image.network(
+                //                 dignosticCenter?.image ?? '',
+                //                 fit: BoxFit.contain,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //         SizedBox(height: 8),
+                //       ],
+                //     );
+                //   },
+                // ),
+                // SizedBox(height: 8),
                 InkWell(
                   onTap: () {
                     context.push('/all_tests');
@@ -1003,32 +1002,33 @@ class _HomescreenState extends State<Homescreen> {
     return Column(
       children: [
         TouchRipple(
-          rippleBorderRadius: BorderRadius.circular(8),
-          previewDuration: Duration(milliseconds: 1000),
-          onTap: () {
-            // Delay navigation to allow ripple effect to show
-            Future.delayed(const Duration(milliseconds: 200), () {
-              context.push(
-                  '/all_tests?catId=${catId}&lat_lang=${lat_lang}&catName=${label}');
-            });
-          },
-          child: Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8), // Rounded square outer container
-              border: Border.all(color: Color(0xffE9E9E9), width: 1),
-            ),
-            child: Center(
-              child: CircleAvatar(
-                radius: 25, // Make it slightly smaller than the container
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(image),
-                onBackgroundImageError: (_, __) => debugPrint('Image load error'),
+            rippleBorderRadius: BorderRadius.circular(8),
+            previewDuration: Duration(milliseconds: 1000),
+            onTap: () {
+              // Delay navigation to allow ripple effect to show
+              Future.delayed(const Duration(milliseconds: 200), () {
+                context.push(
+                    '/all_tests?catId=${catId}&lat_lang=${lat_lang}&catName=${label}');
+              });
+            },
+            child: Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(8), // Rounded square outer container
+                border: Border.all(color: Color(0xffE9E9E9), width: 1),
               ),
-            ),
-          )
-        ),
+              child: Center(
+                child: CircleAvatar(
+                  radius: 25, // Make it slightly smaller than the container
+                  backgroundColor: Colors.white,
+                  backgroundImage: NetworkImage(image),
+                  onBackgroundImageError: (_, __) =>
+                      debugPrint('Image load error'),
+                ),
+              ),
+            )),
         SizedBox(height: 8),
         Text(
           label,

@@ -23,7 +23,7 @@ import '../../Models/TestDetailsModel.dart';
 abstract class RemoteDataSource {
   Future<LoginModel?> loginApi(Map<String, dynamic> data);
   Future<SuccessModel?> registerApi(Map<String, dynamic> data);
-  Future<CategoryModel?> fetchCategories();
+  Future<CategoryModel?> fetchCategories(String query);
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
@@ -222,9 +222,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<CategoryModel?> fetchCategories() async {
+  Future<CategoryModel?> fetchCategories(String query) async {
     try {
-      Response response = await ApiClient.get(PatientRemoteUrls.categorieslist);
+      Response response = await ApiClient.get("${PatientRemoteUrls.categorieslist}?search=$query");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchCategories:', response.data);
         return CategoryModel.fromJson(response.data);

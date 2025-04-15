@@ -68,6 +68,7 @@ class _DashboardState extends State<Dashboard> {
                 Homescreen(),
                 ServiceCategory(
                   latlngs: latlngs,
+                  query: "",
                 ),
                 // ScanReports(),
                 Myappointments(),

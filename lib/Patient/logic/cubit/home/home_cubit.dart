@@ -29,7 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     try {
       final results = await Future.wait([
-        categoryRepository.getCategories(),
+        categoryRepository.getCategories(""),
         bannersRepository.getBanners(),
         diagnosticCentersRepository.getDiagnosticCenters(lat_lang),
         profileRepository.getProfileDetails()

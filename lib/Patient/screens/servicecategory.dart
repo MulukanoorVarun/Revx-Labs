@@ -8,7 +8,9 @@ import 'package:revxpharma/Utils/color.dart';
 
 class ServiceCategory extends StatefulWidget {
   final String latlngs;
-  const ServiceCategory({super.key,required this.latlngs});
+  final String query;
+  const ServiceCategory(
+      {super.key, required this.latlngs, required this.query});
   @override
   State<ServiceCategory> createState() => _ServiceCategoryState();
 }
@@ -29,7 +31,7 @@ double _getResponsiveAspectRatio(BuildContext context) {
 class _ServiceCategoryState extends State<ServiceCategory> {
   @override
   void initState() {
-    context.read<CategoryCubit>().fetchCategories();
+    context.read<CategoryCubit>().fetchCategories(widget.query);
     super.initState();
   }
 
@@ -37,7 +39,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: widget.query != "" ? true : false,
         title: Text(
           "Service Category",
           style: TextStyle(
@@ -62,13 +64,16 @@ class _ServiceCategoryState extends State<ServiceCategory> {
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, // Number of columns
-                  childAspectRatio: _getResponsiveAspectRatio(context), // Dynamic aspect ratio
+                  childAspectRatio: _getResponsiveAspectRatio(
+                      context), // Dynamic aspect ratio
                   crossAxisSpacing: 10, // Optional: spacing between columns
                   mainAxisSpacing: 10, // Optional: spacing between rows
                 ),
-                itemCount: state.categories.category?.length, // Total number of items
+                itemCount:
+                    state.categories.category?.length, // Total number of items
                 itemBuilder: (context, index) {
-                  final item = state.categories.category?[index]; // Get the map for the current index
+                  final item = state.categories
+                      .category?[index]; // Get the map for the current index
                   return Column(
                     children: [
                       InkResponse(
@@ -89,16 +94,19 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffE9E9E9), width: 1),
+                            border:
+                                Border.all(color: Color(0xffE9E9E9), width: 1),
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
                           ),
-                          child:  Center(
+                          child: Center(
                             child: CircleAvatar(
-                              radius: 38, // Make it slightly smaller than the container
+                              radius:
+                                  38, // Make it slightly smaller than the container
                               backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(item?.image??""),
-                              onBackgroundImageError: (_, __) => debugPrint('Image load error'),
+                              backgroundImage: NetworkImage(item?.image ?? ""),
+                              onBackgroundImageError: (_, __) =>
+                                  debugPrint('Image load error'),
                             ),
                           ),
                         ),
@@ -153,16 +161,12 @@ Widget _shimmer(BuildContext context) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   shimmerContainer(
-                     screenWidth * 0.25,
-                    screenWidth * 0.25,
-                    context
-                  ),
+                      screenWidth * 0.25, screenWidth * 0.25, context),
                   const SizedBox(height: 5),
                   shimmerText(
-                   screenWidth * 0.2, // 20% of screen width
-                    12,
-                    context
-                  ),
+                      screenWidth * 0.2, // 20% of screen width
+                      12,
+                      context),
                 ],
               );
             },
@@ -172,5 +176,3 @@ Widget _shimmer(BuildContext context) {
     ),
   );
 }
-
-
