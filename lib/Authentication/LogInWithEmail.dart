@@ -54,23 +54,25 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<LoginCubit, LoginState>(
-          listener: (context, state) {
+      body: BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
         if (state is LoginSuccessState) {
           if (state.loginModel.settings?.success == 1) {
-            PreferenceService().saveString('access_token', state.loginModel.data?.access ?? "");
-            PreferenceService().saveString('refresh_token', state.loginModel.data?.refresh ?? "");
-            PreferenceService().saveInt('expiry_time', state.loginModel.data?.expiryTime ?? 0);
-            PreferenceService().saveString('role', state.loginModel.data?.role ?? "");
+            PreferenceService().saveString(
+                'access_token', state.loginModel.data?.access ?? "");
+            PreferenceService().saveString(
+                'refresh_token', state.loginModel.data?.refresh ?? "");
+            PreferenceService()
+                .saveInt('expiry_time', state.loginModel.data?.expiryTime ?? 0);
+            PreferenceService()
+                .saveString('role', state.loginModel.data?.role ?? "");
             AuthService.saveTokens(
                 state.loginModel.data?.access ?? "",
                 state.loginModel.data?.refresh ?? "",
                 state.loginModel.data?.expiryTime ?? 0);
-            if(state.loginModel.data?.role=='Patient'){
+            if (state.loginModel.data?.role == 'Patient') {
               context.push('/dashboard');
               CustomSnackBar.show(context, state.message ?? '');
             }
-
           } else {
             CustomSnackBar.show(context, state.message ?? '');
           }
@@ -92,8 +94,8 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                     'Welcome!',
                     style: TextStyle(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Inter"),
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Poppins"),
                   ),
 
                   SizedBox(height: 20),
@@ -261,91 +263,90 @@ class _LogInWithEmailState extends State<LogInWithEmail> {
                             ),
                     ),
                   ),
-
-                  SizedBox(height: 20),
-                  // OR Text
-                  Text(
-                    'Or',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // Sign in with Google Button
-                  Container(
-                    width: double.infinity, // Full width
-                    height: 50.0, // Set height for the button
-                    margin: EdgeInsets.symmetric(
-                        horizontal: 10.0), // Margin for spacing
-                    child: Material(
-                      color: Colors.white, // Button background color
-                      borderRadius: BorderRadius.circular(30.0),
-                      elevation: 2, // Shadow effect
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(30.0),
-                        onTap: () {
-                          // Implement Sign in with Google functionality
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/google.png', // Google icon asset
-                              height: 24.0,
-                            ),
-                            SizedBox(
-                                width: 12.0), // Spacing between icon and text
-                            Text(
-                              'Sign in with Google',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    width: double.infinity, // Full width
-                    height: 50.0, // Set height for the button
-                    margin: EdgeInsets.symmetric(horizontal: 10.0), // Margin for spacing
-                    child: Material(
-                      color: Colors.white, // Button background color
-                      borderRadius: BorderRadius.circular(30.0),
-                      elevation: 2, // Shadow effect
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(30.0),
-                        onTap: () {
-                          // Implement Sign in with Apple functionality
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/apple.png', // Apple icon asset
-                              height: 24.0,
-                            ),
-                            SizedBox(
-                                width: 12.0), // Spacing between icon and text
-                            Text(
-                              'Sign in with Apple',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 40),
+                  // SizedBox(height: 20),
+                  // // OR Text
+                  // Text(
+                  //   'Or',
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     color: Colors.grey,
+                  //   ),
+                  // ),
+                  // SizedBox(height: 20),
+                  //
+                  // // Sign in with Google Button
+                  // Container(
+                  //   width: double.infinity, // Full width
+                  //   height: 50.0, // Set height for the button
+                  //   margin: EdgeInsets.symmetric(
+                  //       horizontal: 10.0), // Margin for spacing
+                  //   child: Material(
+                  //     color: Colors.white, // Button background color
+                  //     borderRadius: BorderRadius.circular(30.0),
+                  //     elevation: 2, // Shadow effect
+                  //     child: InkWell(
+                  //       borderRadius: BorderRadius.circular(30.0),
+                  //       onTap: () {
+                  //         // Implement Sign in with Google functionality
+                  //       },
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Image.asset(
+                  //             'assets/google.png', // Google icon asset
+                  //             height: 24.0,
+                  //           ),
+                  //           SizedBox(
+                  //               width: 12.0), // Spacing between icon and text
+                  //           Text(
+                  //             'Sign in with Google',
+                  //             style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.w400,
+                  //               color: Colors.black,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 15),
+                  // Container(
+                  //   width: double.infinity, // Full width
+                  //   height: 50.0, // Set height for the button
+                  //   margin: EdgeInsets.symmetric(horizontal: 10.0), // Margin for spacing
+                  //   child: Material(
+                  //     color: Colors.white, // Button background color
+                  //     borderRadius: BorderRadius.circular(30.0),
+                  //     elevation: 2, // Shadow effect
+                  //     child: InkWell(
+                  //       borderRadius: BorderRadius.circular(30.0),
+                  //       onTap: () {
+                  //         // Implement Sign in with Apple functionality
+                  //       },
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Image.asset(
+                  //             'assets/apple.png', // Apple icon asset
+                  //             height: 24.0,
+                  //           ),
+                  //           SizedBox(
+                  //               width: 12.0), // Spacing between icon and text
+                  //           Text(
+                  //             'Sign in with Apple',
+                  //             style: TextStyle(
+                  //                 fontSize: 18,
+                  //                 color: Colors.black,
+                  //                 fontWeight: FontWeight.w400),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(height: 10),
                   // Registration Link
                   InkWell(
                     onTap: () {

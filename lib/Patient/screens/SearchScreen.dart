@@ -13,10 +13,7 @@ import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
-import 'package:revxpharma/Patient/screens/DiagnosticInformation.dart';
-import 'package:revxpharma/Patient/screens/Diagnosticcenter.dart';
 import 'package:revxpharma/Utils/color.dart';
-import 'package:speech_to_text/speech_to_text.dart%20' as stt;
 
 import 'Appointment.dart';
 
@@ -29,10 +26,6 @@ class Searchscreen extends StatefulWidget {
 }
 
 class _SearchscreenState extends State<Searchscreen> {
-  stt.SpeechToText _speechToText = stt.SpeechToText();
-  bool _isListening = false;
-  bool _isLoding = false;
-
   TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
 

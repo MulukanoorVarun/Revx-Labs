@@ -6,50 +6,75 @@
 .packages
 .pub-cache/
 .pub/
+coverage/
+*.g.dart
+*.freezed.dart
+*.config.dart
+
+# IDE/Editor
 .idea/
 *.iml
+.vscode/
+*.code-workspace
 
 # Android
 android/.cxx/
 android/.gradle/
+android/build/
+android/app/.cxx/
+android/app/build/
 android/captures/
 android/local.properties
 android/key.properties
 android/**/*.keystore
 android/**/*.jks
+android/gradlew
+android/gradlew.bat
+android/gradle/wrapper/gradle-wrapper.jar
 
 # iOS
 ios/.symlinks/
 ios/Pods/
 ios/.generated/
-
-# Web
-web/.dart_tool/
-
-# Linux
-linux/flutter/ephemeral/
-linux/.dart_tool/
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+ios/Podfile.lock
 
 # macOS
 macos/.dart_tool/
 macos/Flutter/ephemeral/
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Flutter/flutter_export_environment.sh
+.DS_Store
+
+# Web
+web/.dart_tool/
+web/build/
+
+# Linux
+linux/.dart_tool/
+linux/flutter/ephemeral/
 
 # Windows
-windows/flutter/ephemeral/
 windows/.dart_tool/
+windows/flutter/ephemeral/
 
-# Gradle
-gradle/wrapper/gradle-wrapper.jar
-.gradle/
-gradlew
-gradlew.bat
-
-# Other
-GeneratedPluginRegistrant.java
-.DS_Store
+# Logs and Temporary Files
 *.log
-*.lock
+*.log.*
 *.bak
 *.swp
 *.swo
 *.swn
+*.tmp
+*.temp
+
+# Other Generated Files
+GeneratedPluginRegistrant.java
+GeneratedPluginRegistrant.h
+GeneratedPluginRegistrant.m
+*.pbxproj.bak
+
+# Miscellaneous
+.env
+*.DS_Store

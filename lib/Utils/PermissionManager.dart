@@ -1,12 +1,9 @@
 import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/cupertino.dart';
 
 class PermissionManager {
-  static const int _android13Sdk = 33;
-
   /// Checks and requests permissions for Android and iOS, returning true if all are granted.
   static Future<bool> checkPermissions(
       BuildContext context, {
@@ -63,25 +60,8 @@ class PermissionManager {
     // Core permissions for both platforms
     permissions.addAll([
       Permission.locationWhenInUse,
-      Permission.camera,
       Permission.notification,
     ]);
-
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt < _android13Sdk) {
-        permissions.add(Permission.storage); // Legacy storage for Android < 13
-      } else {
-        permissions.addAll([
-          Permission.photos, // Granular media access for Android 13+
-          Permission.videos,
-        ]);
-      }
-    } else if (Platform.isIOS) {
-      permissions.add(Permission.photos); // Full photo access
-      // Optionally: Permission.photosAddOnly for write-only access
-    }
-
     return permissions;
   }
 

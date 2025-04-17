@@ -111,13 +111,13 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 0
                           ? Image.asset(
-                              "assets/activehome.png",
+                              "assets/homefilled.png",
                               width: 25,
                               height: 25,
                               color: primaryColor,
                             )
                           : Image.asset(
-                              "assets/home.png",
+                              "assets/homeoutline.png",
                               width: 25,
                               height: 25,
                             )
@@ -129,13 +129,13 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 1
                           ? Image.asset(
-                              "assets/activeservicecatogry.png",
+                              "assets/categoryfilled.png",
                               width: 25,
                               height: 25,
                               color: primaryColor,
                             )
                           : Image.asset(
-                              "assets/servicecatagory.png",
+                              "assets/categoryoutline.png",
                               width: 25,
                               height: 25,
                             )
@@ -146,13 +146,12 @@ class _DashboardState extends State<Dashboard> {
                   icon: Column(
                     children: [
                       _selectedIndex == 2
-                          ? Image.asset("assets/apointments.png",
+                          ? Image.asset("assets/CalendarDots1.png",
                               width: 25, height: 25, color: primaryColor)
                           : Image.asset(
-                              "assets/apointments.png",
+                              "assets/CalendarDots.png",
                               width: 25,
                               height: 25,
-                              color: Colors.black,
                             )
                     ],
                   )),
@@ -198,13 +197,13 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 3
                           ? Image.asset(
-                              "assets/activeprofile.png",
+                              "assets/User.png",
                               width: 25,
                               height: 25,
                               color: primaryColor,
                             )
                           : Image.asset(
-                              "assets/profile.png",
+                              "assets/User1.png",
                               width: 25,
                               height: 25,
                             )
@@ -244,7 +243,8 @@ class _DashboardState extends State<Dashboard> {
           },
           builder: (context, state) {
             bool isLoading = state is LocationLoading;
-            String message = 'Granting location permission will ensure accurate address and hassle-free service.';
+            String message =
+                'Granting location permission will ensure accurate address and hassle-free service.';
 
             if (state is LocationPermissionDenied) {
               message = 'Location permission is required to proceed.';
@@ -273,13 +273,16 @@ class _DashboardState extends State<Dashboard> {
                           onPressed: isLoading
                               ? null
                               : () {
-                            if (state is LocationError &&
-                                state.message.contains('permanently denied')) {
-                              Geolocator.openAppSettings();
-                            } else {
-                              context.read<LocationCubit>().requestLocationPermission();
-                            }
-                          },
+                                  if (state is LocationError &&
+                                      state.message
+                                          .contains('permanently denied')) {
+                                    Geolocator.openAppSettings();
+                                  } else {
+                                    context
+                                        .read<LocationCubit>()
+                                        .requestLocationPermission();
+                                  }
+                                },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -287,14 +290,16 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           child: isLoading
                               ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
+                                  height: 20,
+                                  width: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
                               : Text(state is LocationError &&
-                              state.message.contains('permanently denied')
-                              ? 'OPEN SETTINGS'
-                              : 'GRANT'),
+                                      state.message
+                                          .contains('permanently denied')
+                                  ? 'OPEN SETTINGS'
+                                  : 'GRANT'),
                         ),
                       ],
                     ),
@@ -306,7 +311,9 @@ class _DashboardState extends State<Dashboard> {
                     if (state is LocationError) ...[
                       const SizedBox(height: 12),
                       TextButton(
-                        onPressed: () => context.read<LocationCubit>().checkLocationPermission(),
+                        onPressed: () => context
+                            .read<LocationCubit>()
+                            .checkLocationPermission(),
                         child: const Text('Retry'),
                       ),
                     ],

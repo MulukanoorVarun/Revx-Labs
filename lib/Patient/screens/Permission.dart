@@ -82,17 +82,12 @@ class _MyPermissionState extends State<MyPermission> {
                     "Access your location to provide region-specific features and services, ensuring accurate functionality and better user experience.",
                   ),
                   _buildPermissionItem(
-                    icon: "assets/camera.png",
-                    title: "Camera",
+                    icon: "assets/notification.png",
+                    title: "Notifications",
                     description:
-                    "Allow access to your camera to capture photos or videos for in-app functionality such as profile pictures or real-time media use.",
+                    "Enable notifications to receive important updates about your test bookings, reminders, and promotional offers — ensuring you never miss a thing.",
                   ),
-                  _buildPermissionItem(
-                    icon: "assets/gallery.png",
-                    title: "Photo / Media / Files",
-                    description:
-                    "Grant access to your storage to upload or save media, documents, and files, supporting seamless interaction with app features.",
-                  ),
+
                 ],
               ),
             ),
