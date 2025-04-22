@@ -38,218 +38,9 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-    // Future.delayed(Duration.zero, () {
-    // _checkAndShowPopup();
-    // });
     context.read<HomeCubit>().fetchHomeData(lat_lang);
     context.read<CartCubit>().getCartList();
     super.initState();
-  }
-
-  Future<void> _checkAndShowPopup() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // bool? isFirstTime = prefs.getBool('isFirstTime') ?? true;
-    //
-    // if (isFirstTime == null || isFirstTime) {
-    _showPopup(context);
-    // prefs.setBool('isFirstTime', false);
-    // }
-  }
-
-  void _showPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Dialog(
-                insetPadding:
-                    EdgeInsets.symmetric(horizontal: 24, vertical: 200),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Bounce(
-                            scaleFactor: 1.3,
-                            onTap: () {},
-                            child: Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0.5, color: Color(0xff2D3894)),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/ct-scan.png',
-                                    fit: BoxFit.contain,
-                                    height: 48,
-                                    width: 48,
-                                  ),
-                                  Text(
-                                    'Scan',
-                                    style: TextStyle(
-                                      color: Color(0xff000000),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 11),
-                          Bounce(
-                            scaleFactor: 1.3,
-                            onTap: () {
-                              context.pop();
-                              context.push('/all_tests');
-                            },
-                            child: Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0.5, color: Color(0xff2D3894)),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/blood-test 1.png',
-                                    fit: BoxFit.contain,
-                                    height: 48,
-                                    width: 48,
-                                  ),
-                                  Text(
-                                    'Test’s',
-                                    style: TextStyle(
-                                      color: Color(0xff000000),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 11),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Bounce(
-                            scaleFactor: 1.3,
-                            onTap: () {},
-                            child: Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0.5, color: Color(0xff2D3894)),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/x-rays 1.png',
-                                    fit: BoxFit.contain,
-                                    height: 48,
-                                    width: 48,
-                                  ),
-                                  Text(
-                                    'X-Ray’s',
-                                    style: TextStyle(
-                                      color: Color(0xff000000),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 11),
-                          Bounce(
-                            scaleFactor: 1.3,
-                            onTap: () {},
-                            child: Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0.5, color: Color(0xff2D3894)),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/healthcare 1.png',
-                                    fit: BoxFit.contain,
-                                    height: 48,
-                                    width: 48,
-                                  ),
-                                  Text(
-                                    'Package’s',
-                                    style: TextStyle(
-                                      color: Color(0xff000000),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 160,
-              left: MediaQuery.of(context).size.width * 0.42,
-              child: IconButton(
-                onPressed: () {
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.cancel,
-                  size: 40,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -424,7 +215,9 @@ class _HomescreenState extends State<Homescreen> {
                 ),
                 InkResponse(
                   onTap: () {
-                    context.push('/search_screen');
+                    context.push(Uri(
+                        path: '/search_screen',
+                        queryParameters: {'lat_lang': lat_lang}).toString());
                   },
                   child: Container(
                     padding: EdgeInsets.all(8),
@@ -552,8 +345,12 @@ class _HomescreenState extends State<Homescreen> {
                       },
                       child: Container(
                         width: screenWidth * 0.435,
-                        height: screenWidth * 0.3,
-                        padding: EdgeInsets.only(left: 15, right: 15),
+                        height: screenWidth * 0.33,
+                        padding: EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          top: 10,
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border:
@@ -564,11 +361,14 @@ class _HomescreenState extends State<Homescreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 10,
                           children: [
-                            Image.asset(
-                              'assets/ct-scan.png',
-                              fit: BoxFit.contain,
-                              height: screenWidth * 0.2,
-                              width: screenWidth * 0.24,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: Image.asset(
+                                'assets/Scan.png',
+                                fit: BoxFit.cover,
+                                height: screenWidth * 0.2,
+                                width: screenWidth * 0.24,
+                              ),
                             ),
                             Text(
                               "MRI's",
@@ -588,13 +388,17 @@ class _HomescreenState extends State<Homescreen> {
                     Bounce(
                       scaleFactor: 0.9,
                       onTap: () {
-                        context.push(
-                            "/categories?query=scans&latlngs=${lat_lang}");
+                        context
+                            .push("/categories?query=scan&latlngs=${lat_lang}");
                       },
                       child: Container(
                         width: screenWidth * 0.435,
-                        height: screenWidth * 0.3,
-                        padding: EdgeInsets.only(left: 15, right: 15),
+                        height: screenWidth * 0.33,
+                        padding: EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          top: 10,
+                        ),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border:
@@ -603,11 +407,14 @@ class _HomescreenState extends State<Homescreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 10,
                           children: [
-                            Image.asset(
-                              'assets/x-rays 1.png',
-                              fit: BoxFit.contain,
-                              height: screenWidth * 0.2,
-                              width: screenWidth * 0.24,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: Image.asset(
+                                'assets/xray.png',
+                                fit: BoxFit.cover,
+                                height: screenWidth * 0.2,
+                                width: screenWidth * 0.24,
+                              ),
                             ),
                             Text(
                               'X-Ray’s',
@@ -849,7 +656,7 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: state.categories.category?.length,
+                  itemCount: 12,
                   // Number of category items
                   itemBuilder: (context, index) {
                     final category = state.categories.category?[index];
@@ -929,7 +736,7 @@ class _HomescreenState extends State<Homescreen> {
                 // SizedBox(height: 8),
                 InkWell(
                   onTap: () {
-                    context.push('/all_tests');
+                    context.push('/all_tests?lat_lang=$lat_lang');
                   },
                   child: Container(
                     width: double.infinity,
@@ -1014,19 +821,34 @@ class _HomescreenState extends State<Homescreen> {
             child: Container(
               width: 70,
               height: 70,
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(8), // Rounded square outer container
                 border: Border.all(color: Color(0xffE9E9E9), width: 1),
               ),
               child: Center(
-                child: CircleAvatar(
-                  radius: 25, // Make it slightly smaller than the container
-                  backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(image),
-                  onBackgroundImageError: (_, __) =>
-                      debugPrint('Image load error'),
-                ),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    child: CachedNetworkImage(
+                      imageUrl: image,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Center(
+                            child: spinkits
+                                .getSpinningLinespinkit(),
+                          ),
+                      errorWidget:
+                          (context, url, error) =>
+                          Container(
+                            color: Colors.grey[200],
+                            child: Icon(
+                              Icons.broken_image,
+                              color: Colors.grey[400],
+                              size: 40,
+                            ),
+                          ),
+                    )),
               ),
             )),
         SizedBox(height: 8),

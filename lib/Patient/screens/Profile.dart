@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
@@ -74,32 +75,28 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
-                          // Positioned(
-                          //     bottom: 0,
-                          //     right: 5,
-                          //     child: Container(
-                          //         decoration: BoxDecoration(
-                          //           shape: BoxShape.circle,
-                          //           color: Colors.grey.shade200,
-                          //         ),
-                          //         child: IconButton(
-                          //           visualDensity: VisualDensity.compact,
-                          //           onPressed: () {
-                          //             Navigator.push(
-                          //                 context,
-                          //                 MaterialPageRoute(
-                          //                     builder: (context) =>
-                          //                         ProfileSettings()));
-                          //           },
-                          //           style: ButtonStyle(
-                          //               padding: MaterialStateProperty.all(
-                          //                   EdgeInsets.zero)),
-                          //           icon: Icon(
-                          //             Icons.edit,
-                          //             color: primaryColor,
-                          //             size: 20,
-                          //           ),
-                          //         ))),
+                          Positioned(
+                              bottom: 0,
+                              right: 5,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.grey.shade200,
+                                  ),
+                                  child: IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    onPressed: () {
+                                      context.push("/edit_profile");
+                                    },
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.zero)),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: primaryColor,
+                                      size: 20,
+                                    ),
+                                  ))),
                         ],
                       ),
                       SizedBox(

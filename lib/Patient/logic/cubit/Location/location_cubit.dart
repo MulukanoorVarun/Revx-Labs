@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,109 +11,207 @@ import '../../../../Utils/Preferances.dart';
 import 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
+  final loc.Location _location = loc.Location();
+
   LocationCubit() : super(LocationInitial());
 
-  /// Check if location permission and services are enabled
+  /// Check and handle permission + location
   Future<void> checkLocationPermission() async {
     emit(LocationLoading());
-
     try {
-      bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-      LocationPermission permission = await Geolocator.checkPermission();
-
-      if (!isServiceEnabled) {
-        emit(LocationPermissionDenied(message: 'Please enable GPS/location services.'));
+      if (!await _ensureServiceEnabled()) {
+        emit(LocationServiceDisabled());
         return;
       }
 
-      if (permission == LocationPermission.denied) {
+      final permission = await _location.hasPermission();
+      if (permission == loc.PermissionStatus.denied) {
         emit(LocationPermissionDenied());
-        return;
+      } else if (permission == loc.PermissionStatus.deniedForever) {
+        await _emitSavedOrError("Location permissions are permanently denied.");
+      } else {
+        await getLatLong();
       }
-
-      if (permission == LocationPermission.deniedForever) {
-        emit(LocationError('Location permission is permanently denied. Please enable it in settings.'));
-        return;
-      }
-
-      await _getLatLong();
-    } catch (e) {
-      emit(LocationError('Failed to check location permissions: ${e.toString()}'));
+    } catch (e, stack) {
+      debugPrint('checkLocationPermission error: $e\n$stack');
+      await _emitSavedOrError("Failed to check location permissions.");
     }
   }
 
-  /// Request location permission from user
+  /// Request permission & handle result
   Future<void> requestLocationPermission() async {
     emit(LocationLoading());
-
     try {
-      bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!isServiceEnabled) {
-        isServiceEnabled = await Geolocator.openLocationSettings();
-        if (!isServiceEnabled) {
-          emit(LocationPermissionDenied(message: 'GPS must be enabled to proceed.'));
-          return;
-        }
-      }
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          emit(LocationPermissionDenied());
-          return;
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        emit(LocationError('Location permission is permanently denied. Please enable it in settings.'));
+      if (!await _ensureServiceEnabled()) {
+        emit(LocationServiceDisabled());
         return;
       }
 
-      await _getLatLong();
-    } catch (e) {
-      emit(LocationError('Failed to request location permission: ${e.toString()}'));
-    }
-  }
-
-  /// Fetch user's current latitude and longitude
-  Future<void> _getLatLong() async {
-    try {
-      // Set platform-specific accuracy
-      LocationAccuracy accuracy = Platform.isAndroid ? LocationAccuracy.high : LocationAccuracy.best;
-
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: accuracy,
-        timeLimit: const Duration(seconds: 10),
-      ).timeout(const Duration(seconds: 15), onTimeout: () {
-        throw Exception('Location fetch timed out');
-      });
-
-      // Reverse geocode with fallback
-      String locationName = await _getLocationName(position.latitude, position.longitude);
-      String latlngs = '${position.latitude},${position.longitude}';
-
-      // Save to preferences
-       PreferenceService().saveString('LocName', locationName);
-       PreferenceService().saveString('latlngs', latlngs);
-
-      emit(LocationLoaded(locationName: locationName, latlng: latlngs));
-    } catch (e) {
-      emit(LocationError('Failed to fetch location: ${e.toString()}'));
-    }
-  }
-
-  /// Reverse geocode coordinates to a readable address
-  Future<String> _getLocationName(double latitude, double longitude) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
-      if (placemarks.isNotEmpty) {
-        final placemark = placemarks.first;
-        return '${placemark.street ?? ''}, ${placemark.subLocality ?? placemark.locality ?? 'Unknown'}'.trim();
+      var permission = await _location.hasPermission();
+      if (permission == loc.PermissionStatus.denied) {
+        permission = await _location.requestPermission();
+        if (permission == loc.PermissionStatus.denied) {
+          await _emitSavedOrDenied();
+          return;
+        }
       }
-      return await PreferenceService().getString('LocName') ?? 'Gachibowli, Hyderabad';
-    } catch (e) {
-      return await PreferenceService().getString('LocName') ?? 'Gachibowli, Hyderabad';
+
+      if (permission == loc.PermissionStatus.deniedForever) {
+        await _emitSavedOrError("Location permissions are permanently denied.");
+        return;
+      }
+
+      await getLatLong();
+    } catch (e, stack) {
+      debugPrint('requestLocationPermission error: $e\n$stack');
+      await _emitSavedOrError("Failed to request location.");
+    }
+  }
+
+  /// Fetch current lat/lng & reverse geocode
+  Future<void> getLatLong() async {
+    emit(LocationLoading());
+    try {
+      final permission = await _location.hasPermission();
+      if (permission == loc.PermissionStatus.denied || permission == loc.PermissionStatus.deniedForever) {
+        await _emitSavedOrError("Location permission not granted.");
+        return;
+      }
+
+      if (!await _location.serviceEnabled()) {
+        emit(LocationServiceDisabled());
+        return;
+      }
+
+      final locationData = await _getLocationWithRetry();
+      final latitude = locationData.latitude;
+      final longitude = locationData.longitude;
+
+      if (latitude == null || longitude == null) {
+        throw Exception('Invalid coordinates received');
+      }
+
+      final latlng = "$latitude,$longitude";
+      final isConnected = (await Connectivity().checkConnectivity()) != ConnectivityResult.none;
+      final locationName = await _geocode(latitude, longitude, isConnected);
+
+       PreferenceService().saveString('LocName', locationName);
+       PreferenceService().saveString('latlngs', latlng);
+
+      emit(LocationLoaded(locationName: locationName, latlng: latlng));
+    } catch (e, stack) {
+      debugPrint('getLatLong error: $e\n$stack');
+      await _emitSavedOrDefault();
+    }
+  }
+
+  /// Retry logic + timeout for fetching location
+  Future<loc.LocationData> _getLocationWithRetry({int retries = 2}) async {
+    for (int i = 0; i <= retries; i++) {
+      try {
+        return await _location.getLocation().timeout(
+          const Duration(seconds: 15),
+          onTimeout: () => throw TimeoutException("Timeout getting location"),
+        );
+      } catch (e) {
+        if (i == retries) rethrow;
+        await Future.delayed(const Duration(seconds: 1));
+      }
+    }
+    throw Exception("Location fetch failed");
+  }
+
+  /// Retry geocoding with fallback
+  Future<String> _geocode(double lat, double lon, bool isConnected) async {
+    for (int attempt = 0; attempt <= 2; attempt++) {
+      try {
+        if (!isConnected) {
+          return (await _getCachedAddress('$lat,$lon')) ?? 'Current location';
+        }
+
+        await Future.delayed(const Duration(milliseconds: 500)); // iOS-friendly delay
+
+        final placemarks = await placemarkFromCoordinates(lat, lon).timeout(
+          const Duration(seconds: 10),
+        );
+
+        if (placemarks.isNotEmpty) {
+          final p = placemarks.first;
+          final address = [p.street, p.subLocality]
+              .where((e) => e != null && e.isNotEmpty)
+              .join(', ');
+          return address.isEmpty ? 'Current location' : address;
+        }
+      } catch (e) {
+        if (attempt == 2) {
+          return (await _getCachedAddress('$lat,$lon')) ?? 'Current location';
+        }
+        await Future.delayed(const Duration(seconds: 1));
+      }
+    }
+    return 'Current location';
+  }
+
+  /// Return cached address if matched
+  Future<String?> _getCachedAddress(String latlng) async {
+    final savedLatLng = await PreferenceService().getString('latlngs');
+    final savedName = await PreferenceService().getString('LocName');
+    if (savedLatLng == latlng && savedName != null && savedName != 'Current location') {
+      return savedName;
+    }
+    return null;
+  }
+
+  /// Check and prompt for service
+  Future<bool> _ensureServiceEnabled() async {
+    bool enabled = await _location.serviceEnabled();
+    if (!enabled) {
+      enabled = await _location.requestService();
+    }
+    return enabled;
+  }
+
+  Future<void> _emitSavedOrError(String message) async {
+    final name = await PreferenceService().getString('LocName');
+    final coords = await PreferenceService().getString('latlngs');
+    if (name != null && coords != null && name != 'Current location') {
+      emit(LocationLoaded(locationName: name, latlng: coords));
+    } else {
+      emit(LocationError(message));
+    }
+  }
+
+  Future<void> _emitSavedOrDefault() async {
+    final name = await PreferenceService().getString('LocName');
+    final coords = await PreferenceService().getString('latlngs');
+    if (name != null && coords != null && name != 'Current location') {
+      emit(LocationLoaded(locationName: name, latlng: coords));
+    } else {
+      emit(LocationLoaded(locationName: 'Gachibowli, Hyderabad', latlng: '17.4401,78.3489'));
+    }
+  }
+
+  Future<void> _emitSavedOrDenied() async {
+    final name = await PreferenceService().getString('LocName');
+    final coords = await PreferenceService().getString('latlngs');
+    if (name != null && coords != null && name != 'Current location') {
+      emit(LocationLoaded(locationName: name, latlng: coords));
+    } else {
+      emit(LocationPermissionDenied());
+    }
+  }
+
+  Future<void> useSavedLocation(String locationName, String latlng) async {
+    emit(LocationLoaded(locationName: locationName, latlng: latlng));
+  }
+
+  Future<void> handlePermissionDismissed() async {
+    final name = await PreferenceService().getString('LocName');
+    final coords = await PreferenceService().getString('latlngs');
+    if (name != null && coords != null && name != 'Current location') {
+      emit(LocationLoaded(locationName: name, latlng: coords));
+    } else {
+      emit(LocationLoaded(locationName: 'Gachibowli, Hyderabad', latlng: '17.4401,78.3489'));
     }
   }
 }

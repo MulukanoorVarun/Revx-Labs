@@ -223,102 +223,160 @@ class _DashboardState extends State<Dashboard> {
       context: context,
       isDismissible: false,
       enableDrag: false,
-      isScrollControlled: true, // Allow dynamic height
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
+      backgroundColor: Colors.white,
       builder: (BuildContext bottomSheetContext) {
+        bool hasRequestedPermission = false; // Prevent multiple requests
         return BlocConsumer<LocationCubit, LocationState>(
           listener: (context, state) {
             if (state is LocationLoaded) {
-              Navigator.pop(bottomSheetContext);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Location fetched successfully!')),
-              );
-            } else if (state is LocationError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)),
-              );
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(bottomSheetContext).pop();
+              });
             }
           },
           builder: (context, state) {
             bool isLoading = state is LocationLoading;
-            String message =
-                'Granting location permission will ensure accurate address and hassle-free service.';
+            bool isServiceDisabled = state is LocationServiceDisabled;
 
-            if (state is LocationPermissionDenied) {
-              message = 'Location permission is required to proceed.';
-            } else if (state is LocationError) {
-              message = state.message;
-            }
-
-            return WillPopScope(
-              onWillPop: () async => !isLoading,
-              child: Container(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.gps_fixed_sharp, size: 18),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Location Permission',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const Spacer(),
-                        ElevatedButton(
-                          onPressed: isLoading
-                              ? null
-                              : () {
-                                  if (state is LocationError &&
-                                      state.message
-                                          .contains('permanently denied')) {
-                                    Geolocator.openAppSettings();
-                                  } else {
-                                    context
-                                        .read<LocationCubit>()
-                                        .requestLocationPermission();
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : Text(state is LocationError &&
-                                      state.message
-                                          .contains('permanently denied')
-                                  ? 'OPEN SETTINGS'
-                                  : 'GRANT'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      message,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                    if (state is LocationError) ...[
-                      const SizedBox(height: 12),
-                      TextButton(
-                        onPressed: () => context
-                            .read<LocationCubit>()
-                            .checkLocationPermission(),
-                        child: const Text('Retry'),
-                      ),
-                    ],
+            return Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.grey[50]!,
                   ],
                 ),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: primaryColor.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.location_on,
+                          color: primaryColor,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          isServiceDisabled
+                              ? 'Location Services Disabled'
+                              : 'Location Permission Needed',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                            fontFamily: "lexend",
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    isServiceDisabled
+                        ? 'Please enable location services to allow us to find your accurate location for better service.'
+                        : 'We need your location to provide personalized services and accurate delivery information.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                      height: 1.5,
+                      fontFamily: "lexend",
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                context
+                                    .read<LocationCubit>()
+                                    .handlePermissionDismissed();
+                              },
+                        child: Text(
+                          'NOT NOW',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "lexend",
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: isLoading || hasRequestedPermission
+                            ? null
+                            : () {
+                                hasRequestedPermission = true;
+                                context
+                                    .read<LocationCubit>()
+                                    .requestLocationPermission();
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                ),
+                              )
+                            : const Text(
+                                'ENABLE LOCATION',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  fontFamily: "lexend",
+                                  color: Colors.white,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
             );
           },

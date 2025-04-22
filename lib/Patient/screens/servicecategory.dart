@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,8 @@ import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/color.dart';
+
+import '../../Utils/constants.dart';
 
 class ServiceCategory extends StatefulWidget {
   final String latlngs;
@@ -60,73 +63,99 @@ class _ServiceCategoryState extends State<ServiceCategory> {
           return _shimmer(context);
         } else if (state is CategoryLoaded) {
           return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, // Number of columns
-                  childAspectRatio: _getResponsiveAspectRatio(
-                      context), // Dynamic aspect ratio
-                  crossAxisSpacing: 10, // Optional: spacing between columns
-                  mainAxisSpacing: 10, // Optional: spacing between rows
-                ),
-                itemCount:
-                    state.categories.category?.length, // Total number of items
-                itemBuilder: (context, index) {
-                  final item = state.categories
-                      .category?[index]; // Get the map for the current index
-                  return Column(
-                    children: [
-                      InkResponse(
-                        onTap: () {
-                          context.push(
-                            Uri(
-                              path: '/all_tests',
-                              queryParameters: {
-                                'lat_lang': '${widget.latlngs}',
-                                'catId': item?.id ?? "",
-                                'catName': item?.categoryName ?? "",
-                                'diagnosticID': '',
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding:
+                      EdgeInsets.all(10), // Consistent padding around the grid
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, // Number of columns
+                      childAspectRatio: _getResponsiveAspectRatio(context),
+                      crossAxisSpacing: 10, // Spacing between columns
+                      mainAxisSpacing: 10, // Spacing between rows
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final item =
+                            state.categories.category?[index]; // Current item
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                context.push(
+                                  Uri(
+                                    path: '/all_tests',
+                                    queryParameters: {
+                                      'lat_lang': '${widget.latlngs}',
+                                      'catId': item?.id ?? "",
+                                      'catName': item?.categoryName ?? "",
+                                      'diagnosticID': '',
+                                    },
+                                  ).toString(),
+                                );
                               },
-                            ).toString(),
-                          );
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xffE9E9E9), width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: CircleAvatar(
-                              radius:
-                                  38, // Make it slightly smaller than the container
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(item?.image ?? ""),
-                              onBackgroundImageError: (_, __) =>
-                                  debugPrint('Image load error'),
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color: Color(0xffE9E9E9), width: 1),
+                                ),
+                                child: Center(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: CachedNetworkImage(
+                                            imageUrl: item!.image!,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                Center(
+                                              child: spinkits
+                                                  .getSpinningLinespinkit(),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Container(
+                                              color: Colors.grey[200],
+                                              child: Icon(
+                                                Icons.broken_image,
+                                                color: Colors.grey[400],
+                                                size: 40,
+                                              ),
+                                            ),
+                                          )
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        item?.categoryName ?? '',
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.black,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ));
+                            SizedBox(height: 5),
+                            Text(
+                              item?.categoryName ?? 'Unknown',
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      childCount:
+                          state.categories.category?.length ?? 0, // Total items
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         } else if (state is CategoryError) {
           return Center(child: Text(state.message));
         }

@@ -24,7 +24,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
 
-
   FocusNode focusfullname = FocusNode();
   FocusNode focusemail = FocusNode();
   FocusNode focusphone = FocusNode();
@@ -62,14 +61,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   String _validateFullname = '';
   String _validatePhone = '';
 
-  void validateFeilds(){
+  void validateFeilds() {
     _validateEmail =
-    !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-        .hasMatch(email.text)
-        ? 'Please enter a valid email'
-        : '';
-    _validateFullname=fullname.text.isEmpty?'Please enter a full name':'' ;
-    _validatePhone=phone.text.isEmpty?'Please enter a mobile Number':'' ;
+        !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+                .hasMatch(email.text)
+            ? 'Please enter a valid email'
+            : '';
+    _validateFullname = fullname.text.isEmpty ? 'Please enter a full name' : '';
+    _validatePhone = phone.text.isEmpty ? 'Please enter a mobile Number' : '';
   }
 
   @override
@@ -81,308 +80,198 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       appBar: CustomAppBar(title: "Edit Profile", actions: []),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-          child: BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, state) {
-              if (state is ProfileStateLoading) {
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: primaryColor,
-                ));
-              } else if (state is ProfileStateLoaded) {
-                String profile_image =
-                    state.profileDetailModel.data?.image ?? '';
-                String fullName = state.profileDetailModel.data?.fullName ?? '';
-                String emailValue = state.profileDetailModel.data?.email ?? '';
-                String phoneValue = state.profileDetailModel.data?.mobile ?? '';
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey.withOpacity(0.5),
-                                backgroundImage: _image != null
-                                    ? FileImage(_image!)
-                                        as ImageProvider<Object>
-                                    : (profile_image.isNotEmpty)
-                                        ? NetworkImage(profile_image)
-                                            as ImageProvider<Object>
-                                        : AssetImage('assets/person.png')
-                                            as ImageProvider<Object>,
-                                child: (_image == null && profile_image.isEmpty)
-                                    ? Text(
-                                        fullName.isNotEmpty
-                                            ? fullName[0].toUpperCase()
-                                            : '',
-                                        style: TextStyle(
-                                            fontSize: 30, color: Colors.white),
-                                      )
-                                    : null,
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: InkWell(
-                                  onTap: _pickImage,
-                                  child: CircleAvatar(
-                                    radius: 12,
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.camera_alt,
-                                      color: primaryColor,
-                                      size: 15, // Size of the camera icon
+            padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            child: BlocConsumer<ProfileCubit, ProfileState>(
+              listener: (context, state) {
+                if (state is ProfileStateLoaded) {
+                  fullname.text = state.profileDetailModel.data?.fullName ?? '';
+                  email.text = state.profileDetailModel.data?.email ?? '';
+                  phone.text = state.profileDetailModel.data?.mobile ?? '';
+                }
+              },
+              builder: (context, state) {
+                if (state is ProfileStateLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(color: primaryColor),
+                  );
+                } else if (state is ProfileStateLoaded) {
+                  String profile_image =
+                      state.profileDetailModel.data?.image ?? '';
+                  String full_name =
+                      state.profileDetailModel.data?.fullName ?? '';
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: Colors.grey.withOpacity(0.5),
+                                  backgroundImage: _image != null
+                                      ? FileImage(_image!)
+                                          as ImageProvider<Object>
+                                      : (profile_image.isNotEmpty)
+                                          ? NetworkImage(profile_image)
+                                              as ImageProvider<Object>
+                                          : AssetImage('assets/person.png')
+                                              as ImageProvider<Object>,
+                                  child:
+                                      (_image == null && profile_image.isEmpty)
+                                          ? Text(
+                                              full_name.isNotEmpty
+                                                  ? full_name[0].toUpperCase()
+                                                  : '',
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  color: Colors.white),
+                                            )
+                                          : null,
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: InkWell(
+                                    onTap: _pickImage,
+                                    child: CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: Colors.white,
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        color: primaryColor,
+                                        size: 15,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "Full Name",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w300,
-                          color: Color(0xff868686)),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            spreadRadius: 0.5,
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        elevation: 0, // Set elevation to 0 when using BoxShadow
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: TextField(
-                          onTap: () {
-                            setState(() {
-                              _validateFullname = '';
-                            });
-                          },
-                          controller: fullname..text,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            prefixIcon:
-                                Icon(Icons.person, color: Color(0xff808080)),
-                            hintText: 'enter full name',
-                            hintStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                              ],
                             ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 12.0),
-                            border:
-                                InputBorder.none, // Removes the default border
-                          ),
+                            SizedBox(height: 10),
+                          ],
                         ),
                       ),
-                    ),
-                    if (_validateFullname.isNotEmpty) ...[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-                        width: MediaQuery.of(context).size.width,
-                        child: ShakeWidget(
-                          key: Key("value"),
-                          duration: Duration(milliseconds: 700),
-                          child: Text(
-                            _validateFullname,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+
+                      /// Full Name
+                      _buildLabel("Full Name"),
+                      _buildInputField(
+                        controller: fullname,
+                        icon: Icons.person,
+                        hint: 'enter full name',
+                        onTap: () => setState(() => _validateFullname = ''),
                       ),
-                    ] else ...[
-                      SizedBox(height: 15),
+                      _buildError(_validateFullname),
+
+                      /// Email
+                      _buildLabel("Email"),
+                      _buildInputField(
+                        controller: email,
+                        icon: Icons.mail_outline,
+                        hint: 'email',
+                        onTap: () => setState(() => _validateEmail = ''),
+                      ),
+                      _buildError(_validateEmail),
+                      _buildLabel("Phone Number"),
+                      _buildInputField(
+                        controller: phone,
+                        icon: Icons.phone,
+                        hint: 'enter mobile number',
+                        keyboardType: TextInputType.phone,
+                        onTap: () => setState(() => _validatePhone = ''),
+                      ),
+                      _buildError(_validatePhone),
                     ],
-                    Text(
-                      "Email",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w300,
-                          color: Color(0xff868686)),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            spreadRadius: 0.5,
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        elevation: 0, // Set elevation to 0 when using BoxShadow
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: TextField(
-                          onTap: () {
-                            setState(() {
-                              _validateEmail = '';
-                            });
-                          },
-                          controller: email,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.mail_outline,
-                                color: Color(0xff808080)),
-                            hintText: 'email',
-                            hintStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 12.0),
-                            border:
-                                InputBorder.none, // Removes the default border
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (_validateEmail.isNotEmpty) ...[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-                        width: MediaQuery.of(context).size.width,
-                        child: ShakeWidget(
-                          key: Key("value"),
-                          duration: Duration(milliseconds: 700),
-                          child: Text(
-                            _validateEmail,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ] else ...[
-                      SizedBox(height: 15),
-                    ],
-                    Text(
-                      "Phone Number",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w300,
-                          color: Color(0xff868686)),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            spreadRadius: 0.5,
-                            blurRadius: 1,
-                            offset: Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        elevation: 0, // Set elevation to 0 when using BoxShadow
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: TextField(
-                          onTap: () {
-                            setState(() {
-                              _validatePhone = '';
-                            });
-                          },
-                          controller: phone..text,
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            prefixIcon:
-                                Icon(Icons.phone, color: Color(0xff808080)),
-                            hintText: "enter mobile number",
-                            hintStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 12.0),
-                            border:
-                                InputBorder.none, // Removes the default border
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (_validatePhone.isNotEmpty) ...[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
-                        width: MediaQuery.of(context).size.width,
-                        child: ShakeWidget(
-                          key: Key("value"),
-                          duration: Duration(milliseconds: 700),
-                          child: Text(
-                            _validatePhone,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ] else ...[
-                      SizedBox(height: 15),
-                    ],
-                  ],
-                );
-              } else if (state is ProfileStateError) {
-                return Center(child: Text(state.message));
-              }
-              return Center(child: Text("No Data"));
-            },
-          ),
-        ),
+                  );
+                }
+
+                return Center(child: Text("No Data"));
+              },
+            )),
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: CustomAppButton(text: 'Change settings', onPlusTap: () {
-
-          validateFeilds();
-
-
-        }),
+        child: CustomAppButton(
+            text: 'Change settings',
+            onPlusTap: () {
+              validateFeilds();
+            }),
       ),
     );
   }
+
+  Widget _buildLabel(String text) => Text(
+        text,
+        style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+          color: Color(0xff868686),
+        ),
+      );
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required IconData icon,
+    required String hint,
+    TextInputType keyboardType = TextInputType.text,
+    required VoidCallback onTap,
+  }) =>
+      Container(
+        margin: EdgeInsets.only(top: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              spreadRadius: 0.5,
+              blurRadius: 1,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Material(
+          elevation: 0,
+          borderRadius: BorderRadius.circular(30.0),
+          child: TextField(
+            onTap: onTap,
+            controller: controller,
+            keyboardType: keyboardType,
+            decoration: InputDecoration(
+              prefixIcon: Icon(icon, color: Color(0xff808080)),
+              hintText: hint,
+              hintStyle: TextStyle(
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildError(String errorText) => errorText.isNotEmpty
+      ? Container(
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(left: 8, bottom: 10, top: 5),
+          child: ShakeWidget(
+            key: Key("value"),
+            duration: Duration(milliseconds: 700),
+            child: Text(
+              errorText,
+              style: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 12,
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        )
+      : SizedBox(height: 15);
 
   @override
   void dispose() {

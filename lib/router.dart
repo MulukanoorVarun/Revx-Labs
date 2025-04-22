@@ -19,6 +19,7 @@ import 'package:revxpharma/Patient/screens/Payment.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Patient/screens/Prescription.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
+import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
 
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
@@ -141,16 +142,17 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
           diagnosticID: diagnosticId,
           catName: catName,
           scanId: scanId,
-       XrayId: xrayId,
+          XrayId: xrayId,
         ),
         state,
       );
     },
   ),
+// Router configuration
   GoRoute(
     path: '/search_screen',
     pageBuilder: (context, state) {
-      final latLang = state.pathParameters['lat_lang'] ?? '';
+      final latLang = state.uri.queryParameters['lat_lang'] ?? '';
       return buildSlideTransitionPage(Searchscreen(lat_lang: latLang), state);
     },
   ),
@@ -221,7 +223,18 @@ final GoRouter goRouter = GoRouter(initialLocation: '/', routes: [
       final query = state.uri.queryParameters['query'] ?? '';
       final latlngs = state.uri.queryParameters['latlngs'] ?? '';
       return buildSlideTransitionPage(
-          ServiceCategory(query: query,latlngs: latlngs,), state);
+          ServiceCategory(
+            query: query,
+            latlngs: latlngs,
+          ),
+          state);
+    },
+  ),
+
+  GoRoute(
+    path: '/edit_profile',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(ProfileSettings(), state);
     },
   ),
 ]);

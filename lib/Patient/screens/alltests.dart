@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:revxpharma/Utils/NoInternet.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 import '../../Components/CustomSnackBar.dart';
+import '../../Utils/constants.dart';
 import 'Appointment.dart';
 
 class alltests extends StatefulWidget {
@@ -182,7 +184,7 @@ class _alltestsState extends State<alltests> {
                                           });
                                         },
                                         child: Container(
-                                          padding: const EdgeInsets.all(16),
+                                          padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                                 color: const Color(0xff949494),
@@ -201,24 +203,37 @@ class _alltestsState extends State<alltests> {
                                                 children: [
                                                   Container(
                                                     width: w * 0.25,
-                                                    height: w * 0.31,
+                                                    height: w * 0.28,
                                                     decoration: BoxDecoration(),
                                                     child: ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8),
-                                                      child: Image.network(
-                                                        labTests?.testDetails
-                                                                ?.image ??
-                                                            '',
+                                                      child:CachedNetworkImage(
+                                                        imageUrl: labTests?.testDetails?.image??"",
                                                         fit: BoxFit.cover,
-                                                      ),
+                                                        placeholder: (context, url) =>
+                                                            Center(
+                                                              child: spinkits
+                                                                  .getSpinningLinespinkit(),
+                                                            ),
+                                                        errorWidget:
+                                                            (context, url, error) =>
+                                                            Container(
+                                                              color: Colors.grey[200],
+                                                              child: Icon(
+                                                                Icons.broken_image,
+                                                                color: Colors.grey[400],
+                                                                size: 40,
+                                                              ),
+                                                            ),
+                                                      )
                                                     ),
                                                   ),
                                                   Container(
                                                     width: w * 0.53,
                                                     child: Column(
-                                                      spacing: 5,
+                                                      spacing: 2,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
@@ -235,7 +250,7 @@ class _alltestsState extends State<alltests> {
                                                           style: TextStyle(
                                                             fontSize: 15,
                                                             fontWeight:
-                                                                FontWeight.w600,
+                                                                FontWeight.w500,
                                                             fontFamily:
                                                                 "Poppins",
                                                             color: Colors.black,
@@ -850,48 +865,48 @@ class _alltestsState extends State<alltests> {
                                                   )
                                                 ],
                                               ),
-                                              const Divider(
-                                                height: 12,
-                                                color: Color(0xffE6E6E6),
-                                                thickness: 1,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  if (labTests?.testDetails
-                                                          ?.fastingRequired ==
-                                                      true) ...[
-                                                    Image.asset(
-                                                        'assets/ForkKnife.png',
-                                                        scale: 2.5),
-                                                    const SizedBox(width: 8),
-                                                    const Text(
-                                                      'Fast Required',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff555555),
-                                                        fontFamily: 'Poppins',
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  Spacer(),
-                                                  Image.asset('assets/file.png',
-                                                      scale: 2.5),
-                                                  SizedBox(width: 8),
-                                                  Text(
-                                                    'Reports in ${labTests?.testDetails?.reportsDeliveredIn ?? 0} min',
-                                                    style: const TextStyle(
-                                                      color: Color(0xff555555),
-                                                      fontFamily: 'Poppins',
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                              // const Divider(
+                                              //   height: 12,
+                                              //   color: Color(0xffE6E6E6),
+                                              //   thickness: 1,
+                                              // ),
+                                              // Row(
+                                              //   children: [
+                                              //     if (labTests?.testDetails
+                                              //             ?.fastingRequired ==
+                                              //         true) ...[
+                                              //       Image.asset(
+                                              //           'assets/ForkKnife.png',
+                                              //           scale: 2.5),
+                                              //       const SizedBox(width: 8),
+                                              //       const Text(
+                                              //         'Fast Required',
+                                              //         style: TextStyle(
+                                              //           color:
+                                              //               Color(0xff555555),
+                                              //           fontFamily: 'Poppins',
+                                              //           fontSize: 12,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //         ),
+                                              //       ),
+                                              //     ],
+                                              //     Spacer(),
+                                              //     Image.asset('assets/file.png',
+                                              //         scale: 2.5),
+                                              //     SizedBox(width: 8),
+                                              //     Text(
+                                              //       'Reports in ${labTests?.testDetails?.reportsDeliveredIn ?? 0} min',
+                                              //       style: const TextStyle(
+                                              //         color: Color(0xff555555),
+                                              //         fontFamily: 'Poppins',
+                                              //         fontSize: 12,
+                                              //         fontWeight:
+                                              //             FontWeight.w400,
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
 
                                               // SizedBox(height: 5),
                                               // Row(
@@ -1039,7 +1054,7 @@ class _alltestsState extends State<alltests> {
                                                   margin: const EdgeInsets.only(
                                                       top: 10),
                                                   padding:
-                                                      const EdgeInsets.all(3),
+                                                      const EdgeInsets.all(2),
                                                   decoration:
                                                       const BoxDecoration(
                                                           color: Color(
@@ -1060,7 +1075,7 @@ class _alltestsState extends State<alltests> {
                                                               const TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 12),
+                                                                  fontSize: 10),
                                                         ),
                                                       ),
                                                     ],
@@ -1191,87 +1206,87 @@ class _alltestsState extends State<alltests> {
           } else if (cartState is CartLoadingState) {
             isLoading = true;
           }
-
           // Hide the bottom bar when cartCount is 0
           if (cartCount == 0 && !isLoading) {
             return const SizedBox.shrink(); // Hides the widget completely
           }
-
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: const Offset(0, -2),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Cart count with loader side by side
-                    Row(
-                      children: [
-                        const Text(
-                          "No of Tests: ",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                          ),
-                        ),
-                        if (isLoading)
-                          const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        else
-                          Text(
-                            "$cartCount",
+          return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        offset: const Offset(0, -2),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Cart count with loader side by side
+                      Row(
+                        children: [
+                          const Text(
+                            "No of Tests: ",
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
                             ),
                           ),
-                      ],
-                    ),
+                          if (isLoading)
+                            const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          else
+                            Text(
+                              "$cartCount",
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                            ),
+                        ],
+                      ),
 
-                    ElevatedButton(
-                      onPressed: () {
-                        context.pushReplacement('/appointments');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(36),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pushReplacement('/appointments');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(36),
+                          ),
+                          elevation: 6,
+                          shadowColor: Colors.black.withOpacity(0.3),
                         ),
-                        elevation: 6,
-                        shadowColor: Colors.black.withOpacity(0.3),
-                      ),
-                      child: const Text(
-                        'Continue',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Poppins",
+                        child: const Text(
+                          'Continue',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
