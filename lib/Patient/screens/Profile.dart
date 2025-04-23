@@ -11,6 +11,7 @@ import 'package:revxpharma/Utils/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Authentication/LogInWithEmail.dart';
+import '../../Models/ProfileDetailModel.dart';
 import '../../Utils/constants.dart';
 import 'AccountSettings.dart';
 import 'MyAppointments.dart';
@@ -33,10 +34,15 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Profile", actions: []),
-      body: BlocBuilder<ProfileCubit,ProfileState>(builder: (context, state) {
-        if(state is ProfileStateLoading){
-          return _shimmerList();
-        }else if(state is ProfileStateLoaded){
+      body: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          if (state is ProfileStateLoading) {
+            return _shimmerList();
+          } else if (state is ProfileStateError) {
+            return Center(child: Text(state.message));
+          }
+          ProfileDetailModel? profileData =
+              state is ProfileStateLoaded ? state.profileDetailModel : null;
           return Padding(
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 20),
             child: Column(
@@ -49,31 +55,28 @@ class _ProfileState extends State<Profile> {
                       Stack(
                         children: [
                           CircleAvatar(
-                            radius:60,
-                            backgroundColor: primaryColor, // Set background color for initials
-                            child:
-                            // state.prfileDetails.data?.image != null &&
-                            //     state.prfileDetails.data!.image!.isNotEmpty
-                            //     ? ClipRRect(
-                            //   borderRadius: BorderRadius.circular(50), // Ensures it's circular
-                            //   child: Image.network(
-                            //     state.prfileDetails.data!.image!,
-                            //     fit: BoxFit.cover,
-                            //     width: double.infinity,
-                            //     height: double.infinity,
-                            //   ),
-                            // )
-                            //     :
-                            Text(
-                              state.profileDetailModel.data?.fullName?.isNotEmpty == true
-                                  ? state.profileDetailModel.data!.fullName![0].toUpperCase()
-                                  : "?",
-                              style: TextStyle(
-                                fontSize: 45,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
+                            radius: 60,
+                            backgroundColor: Colors.grey.withOpacity(0.5),
+                            backgroundImage: (profileData != null &&
+                                    profileData.data?.image?.isNotEmpty == true)
+                                ? NetworkImage(profileData.data!.image!)
+                                    as ImageProvider<Object>
+                                : AssetImage('assets/person.png')
+                                    as ImageProvider<Object>,
+                            child: (profileData == null ||
+                                    profileData.data?.image?.isEmpty != false)
+                                ? Text(
+                                    (profileData != null &&
+                                            profileData.data?.fullName
+                                                    ?.isNotEmpty ==
+                                                true)
+                                        ? profileData.data!.fullName![0]
+                                            .toUpperCase()
+                                        : '',
+                                    style: TextStyle(
+                                        fontSize: 30, color: Colors.white),
+                                  )
+                                : null,
                           ),
                           Positioned(
                               bottom: 0,
@@ -103,22 +106,23 @@ class _ProfileState extends State<Profile> {
                         height: 10,
                       ),
                       Text(
-                        StringUtils.capitalizeFirstLetter(state.profileDetailModel.data?.fullName),
+                        StringUtils.capitalizeFirstLetter(
+                            profileData?.data?.fullName),
                         style: TextStyle(
                           color: Color(0xff151515),
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                           fontFamily: "Poppins",
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 6,
                       ),
                       Text(
-                        state.profileDetailModel.data?.mobile??'',
+                        profileData?.data?.mobile ?? "",
                         style: TextStyle(
                             color: Color(0xff151515),
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             fontFamily: "Poppins"),
                       )
@@ -155,9 +159,6 @@ class _ProfileState extends State<Profile> {
                 //   trailing: Icon(Icons.arrow_forward_ios_rounded, size: 20),
                 // ),
 
-
-
-
                 // ListTile(
                 //   onTap: () {
                 //     Navigator.push(context, MaterialPageRoute(builder: (context) => Accountsettings()));
@@ -182,7 +183,10 @@ class _ProfileState extends State<Profile> {
                   onTap: () {
                     _showLogoutDialog(context);
                   },
-                  leading: Icon(Icons.logout_outlined,size: 24,),
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    size: 24,
+                  ),
                   title: Text(
                     "Logout",
                     style: TextStyle(
@@ -197,19 +201,14 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           );
-        }else if(state is ProfileStateError){
-          return Center(child: Text(state.message));
-        }
-        return Center(child: Text("No Data"));
-
-      },
-
+        },
       ),
     );
   }
-Widget _shimmerList(){
+
+  Widget _shimmerList() {
     return Padding(
-      padding:  EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,16 +218,17 @@ Widget _shimmerList(){
               children: [
                 Stack(
                   children: [
-                    shimmerCircle(100,context),
+                    shimmerCircle(100, context),
                   ],
                 ),
                 SizedBox(
                   height: 10,
                 ),
-               shimmerText(100, 12, context),
+                shimmerText(100, 12, context),
                 SizedBox(
                   height: 10,
-                ), shimmerText(150, 12, context),
+                ),
+                shimmerText(150, 12, context),
               ],
             ),
           ),
@@ -236,20 +236,22 @@ Widget _shimmerList(){
             height: 20,
           ),
           shimmerText(80, 12, context),
-          ListView.builder(shrinkWrap: true,itemCount: 7,
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: 7,
             itemBuilder: (context, index) {
-            return  ListTile(
-              leading: shimmerRectangle(30, context),
-              title: shimmerText(70, 12, context),
-              trailing: shimmerRectangle(20, context),
-            );
-          },
+              return ListTile(
+                leading: shimmerRectangle(30, context),
+                title: shimmerText(70, 12, context),
+                trailing: shimmerRectangle(20, context),
+              );
+            },
           ),
         ],
       ),
     );
+  }
 
-}
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -258,7 +260,7 @@ Widget _shimmerList(){
           elevation: 4.0,
           insetPadding: const EdgeInsets.symmetric(horizontal: 14.0),
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           child: SizedBox(
             width: 300.0,
             height: 200.0,
@@ -302,8 +304,7 @@ Widget _shimmerList(){
                               fontSize: 24.0,
                               fontWeight: FontWeight.w600,
                               color: primaryColor,
-                              fontFamily: "Poppins"
-                          ),
+                              fontFamily: "Poppins"),
                         ),
                         const SizedBox(height: 10.0),
                         const Text(
@@ -312,8 +313,7 @@ Widget _shimmerList(){
                           style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.black54,
-                              fontFamily: "Poppins"
-                          ),
+                              fontFamily: "Poppins"),
                         ),
                         const SizedBox(height: 20.0),
 
@@ -329,17 +329,17 @@ Widget _shimmerList(){
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor:
-                                  primaryColor, // Filled button color
+                                      primaryColor, // Filled button color
                                   foregroundColor: Colors.white, // Text color
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
                                 ),
-                                child: const Text("No",
+                                child: const Text(
+                                  "No",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16,
-                                      fontFamily: "Poppins"
-                                  ),
+                                      fontFamily: "Poppins"),
                                 ),
                               ),
                             ),
@@ -350,7 +350,7 @@ Widget _shimmerList(){
                               child: OutlinedButton(
                                 onPressed: () async {
                                   SharedPreferences sharedPreferences =
-                                  await SharedPreferences.getInstance();
+                                      await SharedPreferences.getInstance();
                                   sharedPreferences.remove('access_token');
                                   Navigator.push(
                                       context,
@@ -359,8 +359,7 @@ Widget _shimmerList(){
                                               LogInWithEmail()));
                                 },
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor:
-                                  primaryColor, // Text color
+                                  foregroundColor: primaryColor, // Text color
                                   side: BorderSide(
                                       color: primaryColor), // Border color
                                   padding: const EdgeInsets.symmetric(
@@ -368,7 +367,8 @@ Widget _shimmerList(){
                                 ),
                                 child: const Text(
                                   "Yes",
-                                  style: TextStyle( fontWeight: FontWeight.w600,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
                                       fontSize: 16,
                                       fontFamily: "Poppins"),
                                 ),

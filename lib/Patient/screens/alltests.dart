@@ -12,24 +12,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
-import 'package:revxpharma/Models/CartListModel.dart';
 import 'package:revxpharma/Patient/logic/bloc/internet_status/internet_status_bloc.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
-import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
-import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/prescritpionUpload/PrescriptionUploadCubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/prescritpionUpload/PrescriptionUploadStates.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
-import 'package:revxpharma/Patient/screens/TestDetails.dart';
-import 'package:revxpharma/Utils/NoInternet.dart';
 import 'package:revxpharma/Utils/color.dart';
-
 import '../../Components/CustomSnackBar.dart';
 import '../../Utils/ImageUtils.dart';
 import '../../Utils/constants.dart';
-import 'Appointment.dart';
 
 class alltests extends StatefulWidget {
   String lat_lang;
@@ -38,6 +31,7 @@ class alltests extends StatefulWidget {
   String diagnosticID;
   String scanId;
   String XrayId;
+
   alltests({
     super.key,
     required this.lat_lang,

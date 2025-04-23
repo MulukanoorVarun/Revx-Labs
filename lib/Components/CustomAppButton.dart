@@ -8,6 +8,7 @@ class CustomAppButton extends StatelessWidget implements PreferredSizeWidget {
   final double? width;
   final double? height;
   final VoidCallback? onPlusTap;
+  final bool? loading;
 
   CustomAppButton(
       {Key? key,
@@ -15,6 +16,7 @@ class CustomAppButton extends StatelessWidget implements PreferredSizeWidget {
       required this.onPlusTap,
       this.color,
       this.height,
+      this.loading,
       this.width})
       : super(key: key);
 
@@ -23,26 +25,26 @@ class CustomAppButton extends StatelessWidget implements PreferredSizeWidget {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     return SizedBox(
-      width:
-          width??w,
-      height: height??42,
+      width: width ?? w,
+      height: height ?? 42,
       child: ElevatedButton(
           style: ButtonStyle(
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100))),
-            backgroundColor:
-                MaterialStateProperty.all(color ?? primaryColor),
+            backgroundColor: MaterialStateProperty.all(color ?? primaryColor),
           ),
           onPressed: onPlusTap,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Color(0xffFFFFFF),
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'Poppins',
-            ),
-          )),
+          child: loading ?? false
+              ? Center(child: CircularProgressIndicator(strokeWidth: 1,color: Colors.white,))
+              : Text(
+                  text,
+                  style: TextStyle(
+                    color: Color(0xffFFFFFF),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Poppins',
+                  ),
+                )),
     );
   }
 

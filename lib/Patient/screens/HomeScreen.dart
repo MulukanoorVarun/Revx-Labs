@@ -363,7 +363,7 @@ class _HomescreenState extends State<Homescreen> {
                                   'assets/Scan.png',
                                   fit: BoxFit.cover,
                                   height: screenWidth * 0.2,
-                                  width: screenWidth * 0.24,
+                                  width: screenWidth * 0.2,
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -402,10 +402,10 @@ class _HomescreenState extends State<Homescreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(4),
                                 child: Image.asset(
-                                  'assets/xray.png',
+                                  'assets/ct scan.jfif',
                                   fit: BoxFit.cover,
                                   height: screenWidth * 0.2,
-                                  width: screenWidth * 0.24,
+                                  width: screenWidth * 0.2,
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -440,11 +440,14 @@ class _HomescreenState extends State<Homescreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                'assets/blood-test 1.png',
-                                fit: BoxFit.contain,
-                                height: screenWidth * 0.24,
-                                width: screenWidth * 0.24,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.asset(
+                                  'assets/pet_scan.jpg',
+                                  fit: BoxFit.contain,
+                                  height: screenWidth * 0.2,
+                                  width: screenWidth * 0.2,
+                                ),
                               ),
                               SizedBox(height: 10),
                               Text(
@@ -459,86 +462,50 @@ class _HomescreenState extends State<Homescreen> {
                           ),
                         ),
                       ),
+                      SizedBox(width: 11),
+                      Bounce(
+                        scaleFactor: 0.9,
+                        onTap: () {
+                          context.push(
+                              "/categories?query=ultrasound scan&latlngs=${lat_lang}");
+                        },
+                        child: Container(
+                          width: screenWidth * 0.42,
+                          height: screenWidth * 0.33,
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border:
+                            Border.all(color: Color(0xff2D3894), width: 1),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.asset(
+                                  'assets/ultrasound.jfif',
+                                  fit: BoxFit.cover,
+                                  height: screenWidth * 0.2,
+                                  width: screenWidth * 0.2,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Ultrasound Scan',
+                                style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                // SizedBox(
-                //   height: 11,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     Bounce(
-                //       scaleFactor: 1.1,
-                //       onTap: () {},
-                //       child: Container(
-                //         width: screenWidth * 0.435,
-                //         height: screenWidth * 0.4,
-                //         padding: EdgeInsets.only(left: 15, right: 15),
-                //         decoration: BoxDecoration(
-                //             borderRadius: BorderRadius.circular(10),
-                //             border:
-                //                 Border.all(color: Color(0xff2D3894), width: 1)),
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           spacing: 10,
-                //           children: [
-                //             Image.asset(
-                //               'assets/x-rays 1.png',
-                //               fit: BoxFit.contain,
-                //               height: screenWidth * 0.24,
-                //               width: screenWidth * 0.24,
-                //             ),
-                //             Text(
-                //               'X-Ray’s',
-                //               style: TextStyle(
-                //                   color: Color(0xff000000),
-                //                   fontSize: 14,
-                //                   fontFamily: 'Poppins',
-                //                   fontWeight: FontWeight.w600),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 11,
-                //     ),
-                //     Bounce(
-                //       scaleFactor: 1.1,
-                //       onTap: () {},
-                //       child: Container(
-                //         width: screenWidth * 0.435,
-                //         height: screenWidth * 0.4,
-                //         padding: EdgeInsets.only(left: 15, right: 15),
-                //         decoration: BoxDecoration(
-                //             borderRadius: BorderRadius.circular(10),
-                //             border:
-                //                 Border.all(color: Color(0xff2D3894), width: 1)),
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           spacing: 10,
-                //           children: [
-                //             Image.asset(
-                //               'assets/healthcare 1.png',
-                //               fit: BoxFit.contain,
-                //               height: screenWidth * 0.24,
-                //               width: screenWidth * 0.24,
-                //             ),
-                //             Text(
-                //               'Package’s',
-                //               style: TextStyle(
-                //                   color: Color(0xff000000),
-                //                   fontSize: 14,
-                //                   fontFamily: 'Poppins',
-                //                   fontWeight: FontWeight.w600),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 SizedBox(
                   height: 16,
                 ),
