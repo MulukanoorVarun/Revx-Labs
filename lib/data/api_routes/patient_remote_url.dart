@@ -3,6 +3,7 @@ class PatientRemoteUrls {
   // static const String baseUrl = 'http://192.168.0.20:8080/';
   static const String userLogin = 'auth/login';
   static const String userRegister = 'auth/patient-register';
+  static const String refreshtoken = 'auth/refresh-token';
   static const String categorieslist = 'api/categories';
   static const String bannerslist = 'api/banners';
   static const String diagnosticCenterslist = 'api/diagnostic-centres';
@@ -24,4 +25,5 @@ class PatientRemoteUrls {
   static const String appopintment_list ='api/my-appointments';
   static const String appopintment_details ='api/my-appointment-detail';
   static const String profile_details ='auth/user-detail';
+  static const String update_profile_details ='auth/user-detail';
 }

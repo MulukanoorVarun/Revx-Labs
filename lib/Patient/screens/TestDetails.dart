@@ -119,11 +119,9 @@ class _TestDetailsState extends State<TestDetails>
                                 children: [
                                   Text(
                                     state.testDetailsModel.data?.testDetails?.testName ?? "",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                       fontFamily: "Poppins",
                                       color: Colors.black,
                                     ),
@@ -142,7 +140,7 @@ class _TestDetailsState extends State<TestDetails>
                                   Text(
                                     'No of tests: ${state.testDetailsModel.data?.testDetails?.noOfTests ?? 0}',
                                     style: const TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w500,
                                       fontFamily: "Poppins",
                                       color: Colors.black54,
@@ -346,7 +344,7 @@ class _TestDetailsState extends State<TestDetails>
                           children: [
                             if (state.testDetailsModel.data?.testDetails?.fastingRequired == true) ...[
                               Image.asset('assets/ForkKnife.png', scale: 2.5),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 5),
                               const Text(
                                 'Fast Required',
                                 style: TextStyle(
@@ -359,7 +357,7 @@ class _TestDetailsState extends State<TestDetails>
                             ],
                             Spacer(),
                             Image.asset('assets/file.png', scale: 2.5),
-                            SizedBox(width: 8),
+                            SizedBox(width: 5),
                             Text(
                               'Reports in ${state.testDetailsModel.data?.testDetails?.reportsDeliveredIn ?? 0} min',
                               style: const TextStyle(

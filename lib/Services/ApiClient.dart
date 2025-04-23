@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import '../data/api_routes/patient_remote_url.dart';
 import 'AuthService.dart';
 
@@ -15,19 +16,57 @@ class ApiClient {
     ),
   );
 
+  static const List<String> _unauthenticatedEndpoints = [
+    'auth/login',
+    'auth/patient-register',
+    '/auth/refresh-token',
+  ];
+
   static void setupInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        bool isTokenExpired = await AuthService.isTokenExpired();
-        if (isTokenExpired) {
-          bool refreshed = await _refreshToken();
+        debugPrint('Interceptor triggered for: ${options.uri}');
+        // Check if the request is for an unauthenticated endpoint
+        final isUnauthenticated = _unauthenticatedEndpoints.any(
+              (endpoint) => options.uri.path.endsWith(endpoint),
+        );
+        if (isUnauthenticated) {
+          debugPrint('Unauthenticated endpoint, skipping token check: ${options.uri}');
+          return handler.next(options); // Skip token check and proceed
+        }
+        // Check if token is expired for authenticated endpoints
+        final isExpired = await AuthService.isTokenExpired();
+        if (isExpired) {
+          debugPrint('Token is expired, attempting to refresh...');
+          final refreshed = await _refreshToken();
           if (!refreshed) {
-            return handler.reject(DioException(requestOptions: options, message: "Token refresh failed"));
+            debugPrint('❌ Token refresh failed, redirecting to login...');
+            await AuthService.logout();
+            return handler.reject(
+              DioException(
+                requestOptions: options,
+                error: 'Token refresh failed, please log in again',
+                type: DioExceptionType.cancel,
+              ),
+            );
           }
         }
+
+        // Get the access token after possible refresh
         final accessToken = await AuthService.getAccessToken();
+        debugPrint('Token retrieved for request: $accessToken');
         if (accessToken != null) {
           options.headers["Authorization"] = "Bearer $accessToken";
+        } else {
+          debugPrint('❌ No access token available, redirecting to login...');
+          await AuthService.logout();
+          return handler.reject(
+            DioException(
+              requestOptions: options,
+              error: 'No access token available, please log in again',
+              type: DioExceptionType.cancel,
+            ),
+          );
         }
         return handler.next(options);
       },

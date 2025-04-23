@@ -24,3 +24,5 @@ class StringUtils {
     return text[0].toUpperCase() + text.substring(1);
   }
 }
+// Shared navigator key for GoRouter
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

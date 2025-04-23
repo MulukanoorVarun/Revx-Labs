@@ -62,13 +62,15 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   String _validatePhone = '';
 
   void validateFeilds() {
-    _validateEmail =
-        !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-                .hasMatch(email.text)
-            ? 'Please enter a valid email'
-            : '';
-    _validateFullname = fullname.text.isEmpty ? 'Please enter a full name' : '';
-    _validatePhone = phone.text.isEmpty ? 'Please enter a mobile Number' : '';
+    setState(() {
+      _validateEmail =
+      !RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+          .hasMatch(email.text)
+          ? 'Please enter a valid email'
+          : '';
+      _validateFullname = fullname.text.isEmpty ? 'Please enter a full name' : '';
+      _validatePhone = phone.text.isEmpty ? 'Please enter a mobile Number' : '';
+    });
   }
 
   @override
@@ -83,7 +85,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
             child: BlocConsumer<ProfileCubit, ProfileState>(
               listener: (context, state) {
-                if (state is ProfileStateLoaded) {
+                if(state is ProfileStateSuccess){
+
+                } else if (state is ProfileStateLoaded) {
                   fullname.text = state.profileDetailModel.data?.fullName ?? '';
                   email.text = state.profileDetailModel.data?.email ?? '';
                   phone.text = state.profileDetailModel.data?.mobile ?? '';

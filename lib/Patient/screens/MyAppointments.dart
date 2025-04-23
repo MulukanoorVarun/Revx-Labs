@@ -37,7 +37,52 @@ class _MyappointmentsState extends State<Myappointments> {
                     } else if (state is AppointmentListLoaded) {
                       final appointments = state.appointmentsList.appointments;
                       if (appointments == null || appointments.isEmpty) {
-                        return Center(child: Text("No Appointments Available"));
+                        return Center(
+                          child: SingleChildScrollView(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: MediaQuery.of(context).size.height * 0.55,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset("assets/noappointments.png", width: 250, height: 250),
+                                  Text(
+                                    'No Appointments Yet!',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                    child: Text(
+                                      'You haven’t booked any diagnostic tests yet. 🧬🩺',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Tap the search bar and find the right test for you.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
                       }
                       return CustomScrollView(
                         slivers: [
@@ -131,7 +176,42 @@ class _MyappointmentsState extends State<Myappointments> {
                         ],
                       );
                     }
-                    return Center(child: Text("No Data"));
+                    return Center(
+                      child: SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height * 0.55,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/noappointments.png", width: 250, height: 250),
+                              Text(
+                                'No Appointments Yet!',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                child: Text(
+                                  'You haven’t booked any diagnostic tests yet. 🧬🩺',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),

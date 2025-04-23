@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:revxpharma/Services/AuthService.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
 
@@ -48,7 +49,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   void fetchDetails() async {
     var status = await PreferenceService().getString('on_boarding');
     var status1 = await PreferenceService().getString('on_boarding1');
-    var token = await PreferenceService().getString('access_token');
+    var token = await AuthService.getAccessToken();
     var Role = await PreferenceService().getString('role');
 
     setState(() {

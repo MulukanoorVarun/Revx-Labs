@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 import 'package:revxpharma/Utils/color.dart';
 
+import '../../Utils/constants.dart';
 import 'Appointment.dart';
 
 class Searchscreen extends StatefulWidget {
@@ -34,13 +36,12 @@ class _SearchscreenState extends State<Searchscreen> {
     super.initState();
   }
 
-
   Timer? _debounce; // Declare debounce timer at class level
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color(0xffEFF4F8),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 70,
@@ -65,9 +66,8 @@ class _SearchscreenState extends State<Searchscreen> {
               setState(() {
                 if (c.length > 2) {
                   searchQuery = c.toLowerCase();
-                  context
-                      .read<TestCubit>()
-                      .fetchTestList(widget.lat_lang, '', searchQuery,"","","");
+                  context.read<TestCubit>().fetchTestList(
+                      widget.lat_lang, '', searchQuery, "", "", "");
                 } else {
                   searchQuery = "";
                 }
@@ -118,45 +118,44 @@ class _SearchscreenState extends State<Searchscreen> {
             if (_searchController.text == "") ...[
               Center(
                 child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.5, // Limit height
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min, // Use minimum size
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.width * 0.6,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/nosearchtests.png",
+                          width: 250, height: 250),
+                      Text(
+                        'No Tests Found!',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
                         ),
-                        Text(
-                          'Oops !',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 8.0),
+                        child: Text(
+                          'We couldn’t find any diagnostic tests matching your search. 🧪🔍',
                           textAlign: TextAlign.center,
-                          'No Data Found.',
                           style: TextStyle(
                             fontSize: 17,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Text(
-                          'Try Searching with a different name.',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
+                      ),
+                      Text(
+                        'Try searching with a different keyword or category.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -182,42 +181,45 @@ class _SearchscreenState extends State<Searchscreen> {
                         if ((testModel.data?.isEmpty ?? true)) {
                           return Center(
                             child: SingleChildScrollView(
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: MediaQuery.of(context).size.height * 0.5, // Limit height
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min, // Use minimum size
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Oops !',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                              child: Column(
+                                mainAxisSize:
+                                    MainAxisSize.min, // Use minimum size
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset("assets/nosearchtests.png",
+                                      width: 250, height: 250),
+                                  Text(
+                                    'No Tests Found!',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    Text(
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 8.0),
+                                    child: Text(
+                                      'We couldn’t find any diagnostic tests matching your search. 🧪🔍',
                                       textAlign: TextAlign.center,
-                                      'No Data Found.',
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontFamily: 'Poppins',
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    Text(
-                                      'Try Searching with a different name.',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.grey,
-                                      ),
+                                  ),
+                                  Text(
+                                    'Try searching with a different keyword or category.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -228,7 +230,13 @@ class _SearchscreenState extends State<Searchscreen> {
                                 scrollInfo.metrics.maxScrollExtent * 0.9) {
                               if (state is TestStateLoaded &&
                                   state.hasNextPage) {
-                                context.read<TestCubit>().fetchMoreTestList(widget.lat_lang, '', searchQuery,"","","");
+                                context.read<TestCubit>().fetchMoreTestList(
+                                    widget.lat_lang,
+                                    '',
+                                    searchQuery,
+                                    "",
+                                    "",
+                                    "");
                               }
                               return false;
                             }
@@ -238,7 +246,7 @@ class _SearchscreenState extends State<Searchscreen> {
                             slivers: [
                               SliverList(
                                 delegate: SliverChildBuilderDelegate(
-                                      (context, index) {
+                                  (context, index) {
                                     final labTests = testModel.data?[index];
                                     return Padding(
                                       padding: EdgeInsets.only(bottom: 10),
@@ -247,9 +255,9 @@ class _SearchscreenState extends State<Searchscreen> {
                                           lowerPercent: 0.00001,
                                         ),
                                         rippleBorderRadius:
-                                        BorderRadius.circular(10),
+                                            BorderRadius.circular(10),
                                         previewDuration:
-                                        Duration(milliseconds: 1000),
+                                            Duration(milliseconds: 1000),
                                         onTap: () {
                                           // Delay navigation to allow ripple effect to show
                                           Future.delayed(
@@ -259,86 +267,106 @@ class _SearchscreenState extends State<Searchscreen> {
                                           });
                                         },
                                         child: Container(
-                                          padding: const EdgeInsets.all(16),
+                                          padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                                 color: const Color(0xff949494),
                                                 width: 0.5),
                                             borderRadius:
-                                            BorderRadius.circular(10),
+                                                BorderRadius.circular(10),
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.start,
                                                 spacing: 10,
                                                 children: [
                                                   Container(
                                                     width: w * 0.25,
-                                                    height: w * 0.31,
+                                                    height: w * 0.28,
                                                     decoration: BoxDecoration(),
                                                     child: ClipRRect(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          8),
-                                                      child: Image.network(
-                                                        labTests?.testDetails
-                                                            ?.image ??
-                                                            '',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl: labTests
+                                                                  ?.testDetails
+                                                                  ?.image ??
+                                                              "",
+                                                          fit: BoxFit.cover,
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Center(
+                                                            child: spinkits
+                                                                .getSpinningLinespinkit(),
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Container(
+                                                            color: Colors
+                                                                .grey[200],
+                                                            child: Icon(
+                                                              Icons
+                                                                  .broken_image,
+                                                              color: Colors
+                                                                  .grey[400],
+                                                              size: 40,
+                                                            ),
+                                                          ),
+                                                        )),
                                                   ),
                                                   Container(
                                                     width: w * 0.53,
                                                     child: Column(
-                                                      spacing: 6,
+                                                      spacing: 2,
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text(
                                                           textAlign:
-                                                          TextAlign.start,
+                                                              TextAlign.start,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           labTests?.testDetails
-                                                              ?.testName ??
+                                                                  ?.testName ??
                                                               '',
-                                                          maxLines: 2,
+                                                          maxLines: 1,
                                                           style: TextStyle(
                                                             fontSize: 15,
                                                             fontWeight:
-                                                            FontWeight.w600,
+                                                                FontWeight.w500,
                                                             fontFamily:
-                                                            "Poppins",
+                                                                "Poppins",
                                                             color: Colors.black,
                                                           ),
                                                         ),
                                                         Text(
                                                           '₹ ${labTests?.testDetails?.price ?? 0}/-',
                                                           style:
-                                                          const TextStyle(
+                                                              const TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
-                                                            FontWeight.w600,
+                                                                FontWeight.w600,
                                                             fontFamily:
-                                                            "Poppins",
+                                                                "Poppins",
                                                             color: Colors.black,
                                                           ),
                                                         ),
                                                         Text(
                                                           'No of tests : ${labTests?.testDetails?.noOfTests ?? 0}',
                                                           style:
-                                                          const TextStyle(
+                                                              const TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
-                                                            FontWeight.w500,
+                                                                FontWeight.w500,
                                                             fontFamily:
-                                                            "Poppins",
+                                                                "Poppins",
                                                             color: Colors.black,
                                                           ),
                                                         ),
@@ -698,183 +726,218 @@ class _SearchscreenState extends State<Searchscreen> {
                                                         //     );
                                                         //   },
                                                         // ),
-                                                        BlocBuilder<CartCubit, CartState>(
-                                                          builder: (context, cartState) {
+                                                        BlocBuilder<CartCubit,
+                                                            CartState>(
+                                                          builder: (context,
+                                                              cartState) {
                                                             return ElevatedButton(
-                                                              onPressed: cartState is CartLoadingState && cartState.testId == labTests?.id
+                                                              onPressed: cartState
+                                                                          is CartLoadingState &&
+                                                                      cartState
+                                                                              .testId ==
+                                                                          labTests
+                                                                              ?.id
                                                                   ? null
                                                                   : () {
-                                                                showModalBottomSheet(
-                                                                  context: context,
-                                                                  builder: (context) {
-                                                                    return StatefulBuilder(
-                                                                      builder: (BuildContext context, StateSetter setModalState) {
-                                                                        int modalPatientCount = labTests?.noOfPersons??0; // Use the button's current count
-                                                                        return Container(
-                                                                          height: MediaQuery.of(context).size.height * 0.5,
-                                                                          padding: const EdgeInsets.all(16),
-                                                                          decoration: const BoxDecoration(
-                                                                            borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                                                                          ),
-                                                                          child: Column(
-                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Center(
-                                                                                child: Container(
-                                                                                  width: 60,
-                                                                                  height: 3,
-                                                                                  decoration: BoxDecoration(
-                                                                                    color: CupertinoColors.inactiveGray,
-                                                                                    borderRadius: BorderRadius.circular(8),
-                                                                                  ),
+                                                                      showModalBottomSheet(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          return StatefulBuilder(
+                                                                            builder:
+                                                                                (BuildContext context, StateSetter setModalState) {
+                                                                              int modalPatientCount = labTests?.noOfPersons ?? 0; // Use the button's current count
+                                                                              return Container(
+                                                                                height: MediaQuery.of(context).size.height * 0.5,
+                                                                                padding: const EdgeInsets.all(16),
+                                                                                decoration: const BoxDecoration(
+                                                                                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
                                                                                 ),
-                                                                              ),
-                                                                              const SizedBox(height: 10),
-                                                                              const Text(
-                                                                                'Book For',
-                                                                                style: TextStyle(
-                                                                                  color: Colors.black,
-                                                                                  fontFamily: 'Poppins',
-                                                                                  fontSize: 18,
-                                                                                  fontWeight: FontWeight.w500,
-                                                                                ),
-                                                                              ),
-                                                                              const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                              Expanded(
-                                                                                child: ListView(
+                                                                                child: Column(
+                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
-                                                                                    if (labTests?.existInCart ?? false) ...[
-                                                                                      Row(
-                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    Center(
+                                                                                      child: Container(
+                                                                                        width: 60,
+                                                                                        height: 3,
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: CupertinoColors.inactiveGray,
+                                                                                          borderRadius: BorderRadius.circular(8),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    const SizedBox(height: 10),
+                                                                                    const Text(
+                                                                                      'Book For',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.black,
+                                                                                        fontFamily: 'Poppins',
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                      ),
+                                                                                    ),
+                                                                                    const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                    Expanded(
+                                                                                      child: ListView(
                                                                                         children: [
-                                                                                          const Text(
-                                                                                            'Remove Selection',
-                                                                                            style: TextStyle(
-                                                                                              color: Colors.black,
-                                                                                              fontFamily: 'Poppins',
-                                                                                              fontSize: 14,
-                                                                                              fontWeight: FontWeight.w500,
+                                                                                          if (labTests?.existInCart ?? false) ...[
+                                                                                            Row(
+                                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                              children: [
+                                                                                                const Text(
+                                                                                                  'Remove Selection',
+                                                                                                  style: TextStyle(
+                                                                                                    color: Colors.black,
+                                                                                                    fontFamily: 'Poppins',
+                                                                                                    fontSize: 14,
+                                                                                                    fontWeight: FontWeight.w500,
+                                                                                                  ),
+                                                                                                ),
+                                                                                                IconButton.outlined(
+                                                                                                  visualDensity: VisualDensity.compact,
+                                                                                                  onPressed: () {
+                                                                                                    context.read<CartCubit>().removeFromCart(labTests?.id ?? "");
+                                                                                                    setModalState(() {
+                                                                                                      modalPatientCount = 1; // Reset to 1 on removal
+                                                                                                    });
+                                                                                                    context.pop();
+                                                                                                  },
+                                                                                                  icon: const Icon(
+                                                                                                    Icons.delete_outline,
+                                                                                                    color: Colors.red,
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ],
                                                                                             ),
-                                                                                          ),
-                                                                                          IconButton.outlined(
-                                                                                            visualDensity: VisualDensity.compact,
-                                                                                            onPressed: () {
-                                                                                              context.read<CartCubit>().removeFromCart(labTests?.id ?? "");
-                                                                                              setModalState(() {
-                                                                                                modalPatientCount = 1; // Reset to 1 on removal
-                                                                                              });
-                                                                                              context.pop();
-                                                                                            },
-                                                                                            icon: const Icon(
-                                                                                              Icons.delete_outline,
-                                                                                              color: Colors.red,
-                                                                                            ),
-                                                                                          ),
+                                                                                            const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                          ],
+                                                                                          ...List.generate(5, (index) {
+                                                                                            final patientCount = index + 1;
+                                                                                            return Column(
+                                                                                              children: [
+                                                                                                Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                                  children: [
+                                                                                                    Text(
+                                                                                                      'Patient $patientCount',
+                                                                                                      style: const TextStyle(
+                                                                                                        color: Colors.black,
+                                                                                                        fontFamily: 'Poppins',
+                                                                                                        fontSize: 14,
+                                                                                                        fontWeight: FontWeight.w500,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      spacing: 12,
+                                                                                                      children: [
+                                                                                                        Text(
+                                                                                                          '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
+                                                                                                          style: const TextStyle(
+                                                                                                            fontSize: 14,
+                                                                                                            fontWeight: FontWeight.w600,
+                                                                                                            fontFamily: "Poppins",
+                                                                                                            color: Colors.black,
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        Radio<int>(
+                                                                                                          activeColor: primaryColor,
+                                                                                                          value: patientCount,
+                                                                                                          groupValue: modalPatientCount, // Use modal-specific count
+                                                                                                          onChanged: (value) {
+                                                                                                            setModalState(() {
+                                                                                                              modalPatientCount = patientCount; // Update modal state
+                                                                                                            });
+                                                                                                            if (labTests?.existInCart ?? false) {
+                                                                                                              context.read<CartCubit>().updateCart(labTests?.id ?? "", patientCount);
+                                                                                                            } else {
+                                                                                                              context.read<CartCubit>().addToCart({
+                                                                                                                "test": "${labTests?.id}",
+                                                                                                                'no_of_persons': patientCount
+                                                                                                              });
+                                                                                                            }
+                                                                                                            Navigator.pop(context);
+                                                                                                          },
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                                const Divider(height: 2, color: Color(0xffDADADA)),
+                                                                                              ],
+                                                                                            );
+                                                                                          }),
                                                                                         ],
                                                                                       ),
-                                                                                      const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                    ],
-                                                                                    ...List.generate(5, (index) {
-                                                                                      final patientCount = index + 1;
-                                                                                      return Column(
-                                                                                        children: [
-                                                                                          Row(
-                                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                            children: [
-                                                                                              Text(
-                                                                                                'Patient $patientCount',
-                                                                                                style: const TextStyle(
-                                                                                                  color: Colors.black,
-                                                                                                  fontFamily: 'Poppins',
-                                                                                                  fontSize: 14,
-                                                                                                  fontWeight: FontWeight.w500,
-                                                                                                ),
-                                                                                              ),
-                                                                                              Row(
-                                                                                                spacing: 12,
-                                                                                                children: [
-                                                                                                  Text(
-                                                                                                    '₹ ${(patientCount) * (labTests?.testDetails?.price ?? 0)}',
-                                                                                                    style: const TextStyle(
-                                                                                                      fontSize: 14,
-                                                                                                      fontWeight: FontWeight.w600,
-                                                                                                      fontFamily: "Poppins",
-                                                                                                      color: Colors.black,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Radio<int>(
-                                                                                                    activeColor: primaryColor,
-                                                                                                    value: patientCount,
-                                                                                                    groupValue: modalPatientCount, // Use modal-specific count
-                                                                                                    onChanged: (value) {
-                                                                                                      setModalState(() {
-                                                                                                        modalPatientCount = patientCount; // Update modal state
-                                                                                                      });
-                                                                                                      if(labTests?.existInCart??false){
-                                                                                                        context.read<CartCubit>().updateCart(
-                                                                                                            labTests?.id??"",
-                                                                                                            patientCount
-                                                                                                        );
-                                                                                                      }else{
-                                                                                                        context.read<CartCubit>().addToCart({
-                                                                                                          "test": "${labTests?.id}",
-                                                                                                          'no_of_persons': patientCount
-                                                                                                        });
-                                                                                                      }
-                                                                                                      Navigator.pop(context);
-                                                                                                    },
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          const Divider(height: 2, color: Color(0xffDADADA)),
-                                                                                        ],
-                                                                                      );
-                                                                                    }),
+                                                                                    ),
                                                                                   ],
                                                                                 ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                  },
-                                                                );
-                                                              },
-                                                              style: ElevatedButton.styleFrom(
-                                                                visualDensity: VisualDensity.compact,
-                                                                backgroundColor: primaryColor,
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(30),
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                visualDensity:
+                                                                    VisualDensity
+                                                                        .compact,
+                                                                backgroundColor:
+                                                                    primaryColor,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              30),
                                                                 ),
                                                                 elevation: 0,
                                                               ),
                                                               child: Row(
-                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
                                                                 children: [
-                                                                  if (cartState is CartLoadingState && cartState.testId == labTests?.id)
+                                                                  if (cartState
+                                                                          is CartLoadingState &&
+                                                                      cartState
+                                                                              .testId ==
+                                                                          labTests
+                                                                              ?.id)
                                                                     const CircularProgressIndicator(
-                                                                      color: Colors.white,
-                                                                      strokeWidth: 2,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      strokeWidth:
+                                                                          2,
                                                                     )
                                                                   else
                                                                     Text(
-                                                                      labTests?.existInCart ?? false
+                                                                      labTests?.existInCart ??
+                                                                              false
                                                                           ? '${labTests?.noOfPersons} Patient${labTests?.noOfPersons != 1 ? 's' : ''}'
                                                                           : 'Add Test',
-                                                                      style: TextStyle(
-                                                                        color: Colors.white,
-                                                                        fontFamily: "Poppins",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            "Poppins",
                                                                       ),
                                                                     ),
-                                                                  const SizedBox(width: 10),
+                                                                  const SizedBox(
+                                                                      width:
+                                                                          10),
                                                                   Icon(
-                                                                    labTests?.existInCart ?? false
-                                                                        ? Icons.arrow_drop_down_sharp
-                                                                        : Icons.add_circle_outline,
-                                                                    color: Colors.white,
+                                                                    labTests?.existInCart ??
+                                                                            false
+                                                                        ? Icons
+                                                                            .arrow_drop_down_sharp
+                                                                        : Icons
+                                                                            .add_circle_outline,
+                                                                    color: Colors
+                                                                        .white,
                                                                   ),
                                                                 ],
                                                               ),
@@ -1030,13 +1093,13 @@ class _SearchscreenState extends State<Searchscreen> {
                                               if (labTests?.distance !=
                                                   null) ...[
                                                 Container(
-                                                  margin: const EdgeInsets.only(top: 10),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10),
                                                   padding:
-                                                  const EdgeInsets.all(3),
-                                                  decoration:
-                                                  const BoxDecoration(
-                                                      color: Color(
-                                                          0xffD40000)),
+                                                      const EdgeInsets.all(1),
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffD40000)
+                                                          .withOpacity(0.6)),
                                                   child: Row(
                                                     children: [
                                                       const Icon(
@@ -1050,10 +1113,10 @@ class _SearchscreenState extends State<Searchscreen> {
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style:
-                                                          const TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize: 12),
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10),
                                                         ),
                                                       ),
                                                     ],
@@ -1170,7 +1233,7 @@ class _SearchscreenState extends State<Searchscreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:  primaryColor,
+                        backgroundColor: primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 8),

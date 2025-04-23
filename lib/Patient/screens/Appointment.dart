@@ -895,7 +895,39 @@ class _ApointmentsState extends State<Apointments> {
               ),
             );
           } else {
-            return Center(child: Text("No Tests in Cart"));
+            return Center(
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.55,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/cartempty.png", width: 250, height: 250),
+                      Text(
+                        'No tests booked yet!',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        '🧪Book your diagnostic tests now!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
           }
         }
         return Center(child: Text("No Data Available"));

@@ -22,12 +22,10 @@ class ServiceCategory extends StatefulWidget {
 double _getResponsiveAspectRatio(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
-  // Calculate the width of each grid item (screen width divided by number of columns)
   const crossAxisCount = 3; // Same as in gridDelegate
   final itemWidth = screenWidth / crossAxisCount;
-  // Define a desired height relative to the item width or screen height
-  final itemHeight = itemWidth * 1.2; // Example: height is 1.2 times the width
-  // Return the aspect ratio (width / height)
+  // Increased height multiplier to accommodate multi-line text
+  final itemHeight = itemWidth * 1.42; // Adjusted from 1.2 to 1.5
   return itemWidth / itemHeight;
 }
 
@@ -57,8 +55,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
         elevation: 0,
         iconTheme: IconThemeData(color: primaryColor),
       ),
-      body:
-          BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
+      body: BlocBuilder<CategoryCubit, CategoryState>(builder: (context, state) {
         if (state is CategoryLoading) {
           return _shimmer(context);
         } else if (state is CategoryLoaded) {
@@ -67,21 +64,20 @@ class _ServiceCategoryState extends State<ServiceCategory> {
             child: CustomScrollView(
               slivers: [
                 SliverPadding(
-                  padding:
-                      EdgeInsets.all(10), // Consistent padding around the grid
+                  padding: EdgeInsets.all(10),
                   sliver: SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // Number of columns
+                      crossAxisCount: 3,
                       childAspectRatio: _getResponsiveAspectRatio(context),
-                      crossAxisSpacing: 10, // Spacing between columns
-                      mainAxisSpacing: 10, // Spacing between rows
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 5,
                     ),
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final item =
-                            state.categories.category?[index]; // Current item
+                          (context, index) {
+                        final item = state.categories.category?[index];
                         return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             InkWell(
                               onTap: () {
@@ -90,8 +86,8 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                                     path: '/all_tests',
                                     queryParameters: {
                                       'lat_lang': '${widget.latlngs}',
-                                      'catId': item?.id ?? "",
-                                      'catName': item?.categoryName ?? "",
+                                      'catId': item.id ?? "",
+                                      'catName': item.categoryName ?? "",
                                       'diagnosticID': '',
                                     },
                                   ).toString(),
@@ -106,50 +102,60 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
                                       color: Color(0xffE9E9E9), width: 1),
+                                  color: Colors.white, // Added for better contrast
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
                                 child: Center(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(4),
                                     child: CachedNetworkImage(
-                                            imageUrl: item!.image!,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                Center(
-                                              child: spinkits
-                                                  .getSpinningLinespinkit(),
+                                      imageUrl: item!.image!,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Center(
+                                        child: spinkits.getSpinningLinespinkit(),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                            color: Colors.grey[200],
+                                            child: Icon(
+                                              Icons.broken_image,
+                                              color: Colors.grey[400],
+                                              size: 40,
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Container(
-                                              color: Colors.grey[200],
-                                              child: Icon(
-                                                Icons.broken_image,
-                                                color: Colors.grey[400],
-                                                size: 40,
-                                              ),
-                                            ),
-                                          )
+                                          ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                            SizedBox(height: 5),
-                            Text(
-                              item?.categoryName ?? 'Unknown',
-                              maxLines: 1,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w500,
+                            SizedBox(height: 8), // Increased spacing
+                            Flexible(
+                              // Added Flexible to allow text to wrap
+                              child: Text(
+                                item.categoryName ?? 'Unknown',
+                                maxLines: 2, // Allow up to 2 lines
+                                overflow: TextOverflow.ellipsis, // Handle overflow gracefully
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12, // Slightly reduced for balance
+                                  color: Colors.black87,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.3, // Improved line height for readability
+                                ),
                               ),
                             ),
                           ],
                         );
                       },
-                      childCount:
-                          state.categories.category?.length ?? 0, // Total items
+                      childCount: state.categories.category?.length ?? 0,
                     ),
                   ),
                 ),

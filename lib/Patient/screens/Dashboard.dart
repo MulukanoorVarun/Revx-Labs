@@ -41,8 +41,19 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        SystemNavigator.pop();
-        return false;
+        if (_selectedIndex > 0) {
+          // Navigate to the previous tab
+          final newIndex = _selectedIndex - 1;
+          pageController.jumpToPage(newIndex);
+          setState(() {
+            _selectedIndex = newIndex;
+          });
+          return false;
+        } else {
+          // Exit the app if on Home tab
+          SystemNavigator.pop();
+          return false;
+        }
       },
       child: Scaffold(
         body: BlocListener<InternetStatusBloc, InternetStatusState>(
@@ -70,7 +81,6 @@ class _DashboardState extends State<Dashboard> {
                   latlngs: latlngs,
                   query: "",
                 ),
-                // ScanReports(),
                 Myappointments(),
                 Profile()
               ],
@@ -111,16 +121,16 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 0
                           ? Image.asset(
-                              "assets/homefilled.png",
-                              width: 25,
-                              height: 25,
-                              color: primaryColor,
-                            )
+                        "assets/homefilled.png",
+                        width: 25,
+                        height: 25,
+                        color: primaryColor,
+                      )
                           : Image.asset(
-                              "assets/homeoutline.png",
-                              width: 25,
-                              height: 25,
-                            )
+                        "assets/homeoutline.png",
+                        width: 25,
+                        height: 25,
+                      )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -129,16 +139,16 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 1
                           ? Image.asset(
-                              "assets/categoryfilled.png",
-                              width: 25,
-                              height: 25,
-                              color: primaryColor,
-                            )
+                        "assets/categoryfilled.png",
+                        width: 25,
+                        height: 25,
+                        color: primaryColor,
+                      )
                           : Image.asset(
-                              "assets/categoryoutline.png",
-                              width: 25,
-                              height: 25,
-                            )
+                        "assets/categoryoutline.png",
+                        width: 25,
+                        height: 25,
+                      )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -147,66 +157,30 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 2
                           ? Image.asset("assets/CalendarDots1.png",
-                              width: 25, height: 25, color: primaryColor)
+                          width: 25, height: 25, color: primaryColor)
                           : Image.asset(
-                              "assets/CalendarDots.png",
-                              width: 25,
-                              height: 25,
-                            )
+                        "assets/CalendarDots.png",
+                        width: 25,
+                        height: 25,
+                      )
                     ],
                   )),
-              // BottomNavigationBarItem(
-              //     label: "Notification",
-              //     icon: Column(
-              //       children: [
-              //         _selectedIndex == 3
-              //             ? Image.asset(
-              //                 "assets/activenotification.png",
-              //                 width: 25,
-              //                 height: 25,
-              //               )
-              //             : Image.asset(
-              //                 "assets/notification.png",
-              //                 width: 25,
-              //                 height: 25,
-              //               )
-              //       ],
-              //     )
-              // ),
-              // BottomNavigationBarItem(
-              //     label: "Reports",
-              //     icon: Column(
-              //       children: [
-              //         _selectedIndex == 2
-              //             ? Image.asset(
-              //           "assets/active_reports.png",
-              //           width: 25,
-              //           height: 25,
-              //           color: primaryColor,
-              //         )
-              //             : Image.asset(
-              //           "assets/reports.png",
-              //           width: 25,
-              //           height: 25,
-              //         )
-              //       ],
-              //     )),
               BottomNavigationBarItem(
                   label: "Profile",
                   icon: Column(
                     children: [
                       _selectedIndex == 3
                           ? Image.asset(
-                              "assets/User.png",
-                              width: 25,
-                              height: 25,
-                              color: primaryColor,
-                            )
+                        "assets/User.png",
+                        width: 25,
+                        height: 25,
+                        color: primaryColor,
+                      )
                           : Image.asset(
-                              "assets/User1.png",
-                              width: 25,
-                              height: 25,
-                            )
+                        "assets/User1.png",
+                        width: 25,
+                        height: 25,
+                      )
                     ],
                   )),
             ],
@@ -253,7 +227,7 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
                 borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(24)),
+                const BorderRadius.vertical(top: Radius.circular(24)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -320,10 +294,10 @@ class _DashboardState extends State<Dashboard> {
                         onPressed: isLoading
                             ? null
                             : () {
-                                context
-                                    .read<LocationCubit>()
-                                    .handlePermissionDismissed();
-                              },
+                          context
+                              .read<LocationCubit>()
+                              .handlePermissionDismissed();
+                        },
                         child: Text(
                           'NOT NOW',
                           style: TextStyle(
@@ -337,11 +311,11 @@ class _DashboardState extends State<Dashboard> {
                         onPressed: isLoading || hasRequestedPermission
                             ? null
                             : () {
-                                hasRequestedPermission = true;
-                                context
-                                    .read<LocationCubit>()
-                                    .requestLocationPermission();
-                              },
+                          hasRequestedPermission = true;
+                          context
+                              .read<LocationCubit>()
+                              .requestLocationPermission();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                           padding: const EdgeInsets.symmetric(
@@ -355,23 +329,23 @@ class _DashboardState extends State<Dashboard> {
                         ),
                         child: isLoading
                             ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white),
-                                ),
-                              )
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                            AlwaysStoppedAnimation(Colors.white),
+                          ),
+                        )
                             : const Text(
-                                'ENABLE LOCATION',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  fontFamily: "lexend",
-                                  color: Colors.white,
-                                ),
-                              ),
+                          'ENABLE LOCATION',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontFamily: "lexend",
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ],
                   ),

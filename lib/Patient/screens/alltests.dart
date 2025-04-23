@@ -1056,9 +1056,8 @@ class _alltestsState extends State<alltests> {
                                                   padding:
                                                       const EdgeInsets.all(2),
                                                   decoration:
-                                                      const BoxDecoration(
-                                                          color: Color(
-                                                              0xffD40000)),
+                                                       BoxDecoration(
+                                                          color: Color(0xffD40000).withOpacity(0.6)),
                                                   child: Row(
                                                     children: [
                                                       const Icon(
@@ -1071,8 +1070,7 @@ class _alltestsState extends State<alltests> {
                                                           '${labTests?.diagnosticCentre} - ${labTests?.distance} away',
                                                           overflow: TextOverflow
                                                               .ellipsis,
-                                                          style:
-                                                              const TextStyle(
+                                                          style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize: 10),

@@ -41,12 +41,40 @@ abstract class RemoteDataSource {
   Future<SuccessModel?> RemoveFromCart(id);
   Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data);
   Future<ProfileDetailModel?> getProfileDetails();
+  Future<SuccessModel?> updateProfileDetails(Map<String, dynamic> data);
   Future<AppointmentsModel?> fetchAppointments();
   Future<AppointmentDetailsModel?> AppointmentDetails(id);
   Future<TestDetailsModel?> getTestDetailsApi(id);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
+
+  Future<FormData> buildFormData(Map<String, dynamic> data) async {
+    final formMap = <String, dynamic>{};
+    for (final entry in data.entries) {
+      final key = entry.key;
+      final value = entry.value;
+
+      if (value == null) continue;
+
+      // Check if the value looks like a file path and key suggests an image
+      final isFile =
+          value is String &&
+              value.contains('/') &&
+              (key.contains('image') || key.contains('file') || key.contains('picture'));
+
+      if (isFile) {
+        formMap[key] = await MultipartFile.fromFile(
+          value,
+          filename: value.split('/').last,
+        );
+      } else {
+        formMap[key] = value;
+      }
+    }
+
+    return FormData.fromMap(formMap);
+  }
 
   @override
   Future<TestDetailsModel?> getTestDetailsApi(id) async {
@@ -380,6 +408,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       LogHelper.printLog('Error GetPatientDetails data:', e);
+      return null;
+    }
+  }
+
+  @override
+  Future<SuccessModel?> updateProfileDetails(Map<String,dynamic> data) async {
+    FormData formData = await buildFormData(data);
+    try {
+      Response response =
+      await ApiClient.put('${PatientRemoteUrls.profile_details}',data: formData);
+      if (response.statusCode == 200) {
+        LogHelper.printLog('updateProfileDetails:', response.data);
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error getProifileDetails data:', e);
       return null;
     }
   }

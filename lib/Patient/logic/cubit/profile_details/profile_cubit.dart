@@ -20,4 +20,18 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ProfileStateError(''));
     }
   }
+
+ Future<void> updateProfileDetails(Map<String,dynamic> data) async {
+   emit(ProfileStateLoading());
+   try {
+     final profile= await profileRepository.updateProfileDetails(data);
+     if(profile!= null){
+       emit(ProfileStateSuccess(profile));
+     }else{
+       emit(ProfileStateError(profile?.settings?.message??''));
+     }
+   } catch (e) {
+     emit(ProfileStateError(''));
+   }
+ }
 }
