@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(
-                      5.0)), // Set the border radius of the dialog
+                      5.0)),
                 ),
               ),
               buttonTheme: const ButtonThemeData(),

@@ -26,7 +26,12 @@ class ProfileCubit extends Cubit<ProfileState> {
    try {
      final profile= await profileRepository.updateProfileDetails(data);
      if(profile!= null){
-       emit(ProfileStateSuccess(profile));
+       if(profile.settings?.success==1){
+         emit(ProfileStateSuccess(profile));
+         getProfileDetails();
+       }else{
+         emit(ProfileStateError(profile.settings?.message??''));
+       }
      }else{
        emit(ProfileStateError(profile?.settings?.message??''));
      }
