@@ -158,27 +158,6 @@ class _ProfileState extends State<Profile> {
                 //   ),
                 //   trailing: Icon(Icons.arrow_forward_ios_rounded, size: 20),
                 // ),
-
-                // ListTile(
-                //   onTap: () {
-                //     Navigator.push(context, MaterialPageRoute(builder: (context) => Accountsettings()));
-                //   },
-                //   leading: Image.asset(
-                //     "assets/settings.png",
-                //     height: 24,
-                //     width: 24,
-                //   ),
-                //   title: Text(
-                //     "Settings",
-                //     style: TextStyle(
-                //       color: Color(0xff151515),
-                //       fontSize: 17,
-                //       fontWeight: FontWeight.w500,
-                //       fontFamily: "Poppins",
-                //     ),
-                //   ),
-                //   trailing: Icon(Icons.arrow_forward_ios_rounded, size: 20),
-                // ),
                 ListTile(
                   onTap: () {
                     _showLogoutDialog(context);
