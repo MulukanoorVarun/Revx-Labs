@@ -152,13 +152,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           ],
                         ),
                       ),
-
                       /// Full Name
                       _buildLabel("Full Name"),
                       _buildInputField(
                         controller: fullname,
                         icon: Icons.person,
-                        hint: 'enter full name',
+                        hint: 'Enter full name',
                         onTap: () => setState(() => _validateFullname = ''),
                       ),
                       _buildError(_validateFullname),
@@ -168,7 +167,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       _buildInputField(
                         controller: email,
                         icon: Icons.mail_outline,
-                        hint: 'email',
+                        hint: 'Enter your Email',
                         onTap: () => setState(() => _validateEmail = ''),
                       ),
                       _buildError(_validateEmail),
@@ -176,7 +175,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       _buildInputField(
                         controller: phone,
                         icon: Icons.phone,
-                        hint: 'enter mobile number',
+                        hint: 'Enter Mobile Number',
                         keyboardType: TextInputType.phone,
                         onTap: () => setState(() => _validatePhone = ''),
                       ),

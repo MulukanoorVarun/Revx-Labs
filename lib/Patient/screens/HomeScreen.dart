@@ -334,136 +334,133 @@ class _HomescreenState extends State<Homescreen> {
                   ],
                 ),
                 SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Bounce(
-                      scaleFactor: 0.9,
-                      onTap: () {
-                        context
-                            .push("/categories?query=mri&latlngs=${lat_lang}");
-                      },
-                      child: Container(
-                        width: screenWidth * 0.435,
-                        height: screenWidth * 0.33,
-                        padding: EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                          top: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border:
-                              Border.all(color: Color(0xff2D3894), width: 1),
-                          // Adjusted size to fit the circle
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 10,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: Image.asset(
-                                'assets/Scan.png',
-                                fit: BoxFit.cover,
-                                height: screenWidth * 0.2,
-                                width: screenWidth * 0.24,
-                              ),
-                            ),
-                            Text(
-                              "MRI's",
-                              style: TextStyle(
-                                  color: Color(0xff000000),
-                                  fontSize: 14,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 11,
-                    ),
-                    Bounce(
-                      scaleFactor: 0.9,
-                      onTap: () {
-                        context
-                            .push("/categories?query=scan&latlngs=${lat_lang}");
-                      },
-                      child: Container(
-                        width: screenWidth * 0.435,
-                        height: screenWidth * 0.33,
-                        padding: EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                          top: 10,
-                        ),
-                        decoration: BoxDecoration(
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Bounce(
+                        scaleFactor: 0.9,
+                        onTap: () {
+                          context.push(
+                              "/categories?query=mri&latlngs=${lat_lang}");
+                        },
+                        child: Container(
+                          width: screenWidth * 0.42,
+                          height: screenWidth * 0.33,
+                          padding:
+                              EdgeInsets.only(left: 15, right: 15, top: 10),
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border:
-                                Border.all(color: Color(0xff2D3894), width: 1)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 10,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: Image.asset(
-                                'assets/xray.png',
-                                fit: BoxFit.cover,
-                                height: screenWidth * 0.2,
-                                width: screenWidth * 0.24,
+                                Border.all(color: Color(0xff2D3894), width: 1),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.asset(
+                                  'assets/Scan.png',
+                                  fit: BoxFit.cover,
+                                  height: screenWidth * 0.2,
+                                  width: screenWidth * 0.24,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'X-Ray’s',
-                              style: TextStyle(
-                                  color: Color(0xff000000),
-                                  fontSize: 14,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
+                              SizedBox(height: 10),
+                              Text(
+                                "MRI Scan",
+                                style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    // Bounce(
-                    //   scaleFactor: 1.1,
-                    //   onTap: () {
-                    //     context.push('/all_tests');
-                    //   },
-                    //   child: Container(
-                    //     width: screenWidth * 0.435,
-                    //     height: screenWidth * 0.4,
-                    //     padding: EdgeInsets.only(left: 15, right: 15),
-                    //     decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(10),
-                    //         border:
-                    //             Border.all(color: Color(0xff2D3894), width: 1)),
-                    //     child: Column(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       spacing: 10,
-                    //       children: [
-                    //         Image.asset(
-                    //           'assets/blood-test 1.png',
-                    //           fit: BoxFit.contain,
-                    //           height: screenWidth * 0.24,
-                    //           width: screenWidth * 0.24,
-                    //         ),
-                    //         Text(
-                    //           'Test’s',
-                    //           style: TextStyle(
-                    //               color: Color(0xff000000),
-                    //               fontSize: 14,
-                    //               fontFamily: 'Poppins',
-                    //               fontWeight: FontWeight.w600),
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                      SizedBox(width: 11),
+                      Bounce(
+                        scaleFactor: 0.9,
+                        onTap: () {
+                          context.push(
+                              "/categories?query=ct scan&latlngs=${lat_lang}");
+                        },
+                        child: Container(
+                          width: screenWidth * 0.42,
+                          height: screenWidth * 0.33,
+                          padding:
+                              EdgeInsets.only(left: 15, right: 15, top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border:
+                                Border.all(color: Color(0xff2D3894), width: 1),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.asset(
+                                  'assets/xray.png',
+                                  fit: BoxFit.cover,
+                                  height: screenWidth * 0.2,
+                                  width: screenWidth * 0.24,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'CT Scan',
+                                style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 11),
+                      Bounce(
+                        scaleFactor: 0.9,
+                        onTap: () {
+                          context.push(
+                              "/categories?query=pet scan&latlngs=${lat_lang}");
+                        },
+                        child: Container(
+                          width: screenWidth * 0.42,
+                          height: screenWidth * 0.33,
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border:
+                                Border.all(color: Color(0xff2D3894), width: 1),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/blood-test 1.png',
+                                fit: BoxFit.contain,
+                                height: screenWidth * 0.24,
+                                width: screenWidth * 0.24,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'PET Scan',
+                                style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 // SizedBox(
                 //   height: 11,
@@ -833,21 +830,17 @@ class _HomescreenState extends State<Homescreen> {
                     child: CachedNetworkImage(
                       imageUrl: image,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          Center(
-                            child: spinkits
-                                .getSpinningLinespinkit(),
-                          ),
-                      errorWidget:
-                          (context, url, error) =>
-                          Container(
-                            color: Colors.grey[200],
-                            child: Icon(
-                              Icons.broken_image,
-                              color: Colors.grey[400],
-                              size: 40,
-                            ),
-                          ),
+                      placeholder: (context, url) => Center(
+                        child: spinkits.getSpinningLinespinkit(),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.grey[200],
+                        child: Icon(
+                          Icons.broken_image,
+                          color: Colors.grey[400],
+                          size: 40,
+                        ),
+                      ),
                     )),
               ),
             )),
