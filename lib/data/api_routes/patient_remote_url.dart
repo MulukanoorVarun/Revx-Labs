@@ -26,4 +26,5 @@ class PatientRemoteUrls {
   static const String appopintment_details ='api/my-appointment-detail';
   static const String profile_details ='auth/user-detail';
   static const String update_profile_details ='auth/user-detail';
+  static const String upload_prescription ='api/upload-prescription';
 }

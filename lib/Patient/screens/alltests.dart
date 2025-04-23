@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_touch_ripple/components/touch_ripple_behavior.dart';
 import 'package:flutter_touch_ripple/widgets/touch_ripple.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:revxpharma/Components/CutomAppBar.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Models/CartListModel.dart';
@@ -13,6 +18,8 @@ import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_state.dart';
+import 'package:revxpharma/Patient/logic/cubit/prescritpionUpload/PrescriptionUploadCubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/prescritpionUpload/PrescriptionUploadStates.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_state.dart';
 import 'package:revxpharma/Patient/screens/TestDetails.dart';
@@ -20,6 +27,7 @@ import 'package:revxpharma/Utils/NoInternet.dart';
 import 'package:revxpharma/Utils/color.dart';
 
 import '../../Components/CustomSnackBar.dart';
+import '../../Utils/ImageUtils.dart';
 import '../../Utils/constants.dart';
 import 'Appointment.dart';
 
@@ -63,6 +71,43 @@ class _alltestsState extends State<alltests> {
       return "Scans";
     } else {
       return "All Tests";
+    }
+  }
+
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImageFromGallery() async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      // Compress the image
+      File? compressedFile = await ImageUtils.compressImage(
+        File(pickedFile.path),
+      );
+      if (compressedFile != null) {
+        setState(() {
+          _image = compressedFile;
+        });
+      }
+    }
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.camera,
+    );
+    if (pickedFile != null) {
+      // Compress the image
+      File? compressedFile = await ImageUtils.compressImage(
+        File(pickedFile.path),
+      );
+      if (compressedFile != null) {
+        setState(() {
+          _image = compressedFile;
+        });
+      }
     }
   }
 
@@ -1089,6 +1134,50 @@ class _alltestsState extends State<alltests> {
                                   childCount: testModel.data?.length ?? 0,
                                 ),
                               ),
+                              // Show "Upload Prescription" card only when pagination ends
+                              if (state is TestStateLoaded && !state.hasNextPage)
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xff949494), width: 0.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.upload_file,
+                                          size: 50,
+                                          color: primaryColor,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        ElevatedButton.icon(
+                                          onPressed: () {
+                                            _showBottomSheet(context);
+                                          },
+                                          icon: const Icon(Icons.cloud_upload, color: Colors.white),
+                                          label: const Text(
+                                            "Upload Prescription",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: "Poppins",
+                                            ),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: primaryColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              // Loading indicator for when more tests are being loaded
                               if (state is TestStateLoadingMore)
                                 SliverToBoxAdapter(
                                   child: Padding(
@@ -1283,6 +1372,300 @@ class _alltestsState extends State<alltests> {
                     ],
                   ),
                 ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showImageViewer(BuildContext context) {
+    if (_image != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) => Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+              leading: IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: const Text('Payment Proof'),
+            ),
+            body: Center(
+              child: PhotoView(
+                imageProvider: FileImage(_image!),
+                backgroundDecoration: const BoxDecoration(
+                  color: Colors.black,
+                ),
+                minScale: PhotoViewComputedScale.contained,
+                maxScale: PhotoViewComputedScale.covered * 2,
+                heroAttributes: const PhotoViewHeroAttributes(
+                  tag: 'payment-image',
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    bool showImageOptions = false; // Track if buttons should be shown
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder:
+          (context) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter bottomSheetSetState) {
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: 16,
+              right: 16,
+              top: 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                // _buildTextField(
+                //   icon: Icons.payment,
+                //   controller: _transectionController,
+                //   validation: _validateTransection,
+                //   hintText: 'Enter Transaction ID',
+                //   keyboardType: TextInputType.text,
+                // ),
+                const SizedBox(height: 16),
+                Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (_image == null) {
+                          bottomSheetSetState(() {
+                            showImageOptions =
+                            !showImageOptions; // Toggle visibility
+                          });
+                        } else {
+                          _showImageViewer(
+                            context,
+                          ); // Show full image if already selected
+                        }
+                      },
+                      child: DottedBorder(
+                        color: Colors.grey,
+                        strokeWidth: 1,
+                        dashPattern: const [6, 3],
+                        borderType: BorderType.RRect,
+                        radius: const Radius.circular(12),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _image == null
+                                  ? Icon(
+                                Icons.upload_file,
+                                color: Colors.grey[600],
+                                size: 30,
+                              )
+                                  : ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(
+                                  _image!,
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                _image == null
+                                    ? 'Choose File'
+                                    : 'Prescription',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 16,
+                                  fontFamily: 'lexend',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_image != null)
+                      Positioned(
+                        top: 5,
+                        right: 5,
+                        child: GestureDetector(
+                          onTap: () {
+                            bottomSheetSetState(() {
+                              setState(() {
+                                _image = null;
+                              });
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                if (showImageOptions && _image == null) ...[
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () async {
+                            await _pickImageFromCamera();
+                            bottomSheetSetState(() {
+                              showImageOptions =
+                              false; // Hide after selection
+                            });
+                          },
+                          icon: Icon(Icons.camera_alt, color: primaryColor),
+                          label: Text(
+                            'Camera',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: primaryColor,
+                              fontFamily: "lexend",
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              side: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () async {
+                            await _pickImageFromGallery();
+                            bottomSheetSetState(() {
+                              showImageOptions =
+                              false; // Hide after selection
+                            });
+                          },
+                          icon: Icon(Icons.photo_library, color: primaryColor),
+                          label: Text(
+                            'Gallery',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: primaryColor,
+                              fontFamily: "lexend",
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              side: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                const SizedBox(height: 24),
+                BlocConsumer<UploadPrescriptionCubit, UploadPrescriptionState>(
+                  listener: (context, state) {
+                    if (state is UploadPrescriptionStateSuccessState) {
+                      context.pushReplacement('/booking_successfully');
+                      CustomSnackBar.show(
+                        context,
+                        state.successModel.settings?.message ?? 'Booking successful',
+                      );
+                    } else if (state is UploadPrescriptionStateError) {
+                      CustomSnackBar.show(context, state.message);
+                    }
+                  },
+                  builder: (context, state) {
+                    bool isLoading = state is UploadPrescriptionStateLoading;
+                    bool isFormValid = _image != null;
+                    return SizedBox(
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: isFormValid && !isLoading
+                            ? () {
+                          Map<String,dynamic> data={
+                            "prescription_image": _image!.path
+                          };
+                          context.read<UploadPrescriptionCubit>().uploadPrescription(data);
+                        }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: primaryColor,
+                          foregroundColor: Colors.white, // Text/icon color when enabled
+                          disabledBackgroundColor: primaryColor.withOpacity(0.5), // When disabled
+                          disabledForegroundColor: Colors.white.withOpacity(0.5), // When disabled
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: isLoading
+                            ? const Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                            : const Text(
+                          'Submit',
+                          style: TextStyle(
+                            fontFamily: "lexend",
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           );

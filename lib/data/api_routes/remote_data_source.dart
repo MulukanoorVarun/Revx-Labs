@@ -27,7 +27,8 @@ abstract class RemoteDataSource {
   Future<BannersModel?> fetchBanners();
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
-  Future<TestModel?> fetchTest(latlang, catId, search_Query, page, diagnosticID,scanId,x_rayId);
+  Future<TestModel?> fetchTest(
+      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -37,7 +38,7 @@ abstract class RemoteDataSource {
   Future<getPatientDetailModel?> GetDefaultPatientDetails();
   Future<CartListModel?> fetchCartList();
   Future<SuccessModel?> AddToCart(Map<String, dynamic> Data);
-  Future<SuccessModel?> updateCart(String id,int noOfPersons);
+  Future<SuccessModel?> updateCart(String id, int noOfPersons);
   Future<SuccessModel?> RemoveFromCart(id);
   Future<SuccessModel?> bookAppointment(Map<String, dynamic> Data);
   Future<ProfileDetailModel?> getProfileDetails();
@@ -45,10 +46,10 @@ abstract class RemoteDataSource {
   Future<AppointmentsModel?> fetchAppointments();
   Future<AppointmentDetailsModel?> AppointmentDetails(id);
   Future<TestDetailsModel?> getTestDetailsApi(id);
+  Future<SuccessModel?> uploadPrescription(Map<String, dynamic> data);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-
   Future<FormData> buildFormData(Map<String, dynamic> data) async {
     final formMap = <String, dynamic>{};
     for (final entry in data.entries) {
@@ -58,10 +59,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       if (value == null) continue;
 
       // Check if the value looks like a file path and key suggests an image
-      final isFile =
-          value is String &&
-              value.contains('/') &&
-              (key.contains('image') || key.contains('file') || key.contains('picture'));
+      final isFile = value is String &&
+          value.contains('/') &&
+          (key.contains('image') ||
+              key.contains('file') ||
+              key.contains('picture') ||
+              key.contains('prescription_image'));
 
       if (isFile) {
         formMap[key] = await MultipartFile.fromFile(
@@ -77,9 +80,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
+  Future<SuccessModel?> uploadPrescription(Map<String, dynamic> data) async {
+    FormData formData = await buildFormData(data);
+    try {
+      Response response = await ApiClient.post(
+          '${PatientRemoteUrls.upload_prescription}',
+          data: formData);
+      if (response.statusCode == 200) {
+        LogHelper.printLog('uploadPrescription:', response.data);
+        return SuccessModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error uploadPrescription data:', e);
+      return null;
+    }
+  }
+
+  @override
   Future<TestDetailsModel?> getTestDetailsApi(id) async {
     try {
-      Response response = await ApiClient.get("${PatientRemoteUrls.test_details}/${id}");
+      Response response =
+          await ApiClient.get("${PatientRemoteUrls.test_details}/${id}");
       if (response.statusCode == 200) {
         debugPrint("${response.data}");
         return TestDetailsModel.fromJson(response.data);
@@ -110,7 +132,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<LoginModel?> loginApi(Map<String, dynamic> data) async {
     try {
-      Response response = await ApiClient.post("${PatientRemoteUrls.userLogin}", data: data);
+      Response response =
+          await ApiClient.post("${PatientRemoteUrls.userLogin}", data: data);
       if (response.statusCode == 200) {
         LogHelper.printLog('loginApi:', response.data);
         return LoginModel.fromJson(response.data);
@@ -186,12 +209,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-
   @override
-  Future<SuccessModel?> updateCart(String id,int noofPersons) async {
+  Future<SuccessModel?> updateCart(String id, int noofPersons) async {
     try {
-      Response response =
-      await ApiClient.put("${PatientRemoteUrls.updateCart}/${id}?no_of_persons=${noofPersons}");
+      Response response = await ApiClient.put(
+          "${PatientRemoteUrls.updateCart}/${id}?no_of_persons=${noofPersons}");
       if (response.statusCode == 200) {
         LogHelper.printLog('updateCart:', response.data);
         return SuccessModel.fromJson(response.data);
@@ -252,7 +274,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<CategoryModel?> fetchCategories(String query) async {
     try {
-      Response response = await ApiClient.get("${PatientRemoteUrls.categorieslist}?search=$query");
+      Response response = await ApiClient.get(
+          "${PatientRemoteUrls.categorieslist}?search=$query");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchCategories:', response.data);
         return CategoryModel.fromJson(response.data);
@@ -298,7 +321,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<TestModel?> fetchTest(
-      latlang, catId, search_Query, page, diagnosticID,scanId,x_rayId) async {
+      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId) async {
     try {
       Response response = await ApiClient.get(
           "${PatientRemoteUrls.test}?${scanId}&${x_rayId}&lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
@@ -413,18 +436,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<SuccessModel?> updateProfileDetails(Map<String,dynamic> data) async {
+  Future<SuccessModel?> updateProfileDetails(Map<String, dynamic> data) async {
     FormData formData = await buildFormData(data);
     try {
-      Response response =
-      await ApiClient.put('${PatientRemoteUrls.profile_details}',data: formData);
+      Response response = await ApiClient.put(
+          '${PatientRemoteUrls.profile_details}',
+          data: formData);
       if (response.statusCode == 200) {
         LogHelper.printLog('updateProfileDetails:', response.data);
         return SuccessModel.fromJson(response.data);
       }
       return null;
     } catch (e) {
-      LogHelper.printLog('Error getProifileDetails data:', e);
+      LogHelper.printLog('Error updateProfileDetails data:', e);
       return null;
     }
   }

@@ -12,6 +12,7 @@ import 'package:revxpharma/Patient/logic/cubit/home/home_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/login/login_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient/patient_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/patient_register/patient_register_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/prescritpionUpload/PrescriptionUploadCubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/test_details/test_details_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:revxpharma/Patient/logic/cubit/tests/test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/tests/test_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/DiagnosticDetailsRepository.dart';
 import 'package:revxpharma/Patient/logic/repository/LoginRepository.dart';
+import 'package:revxpharma/Patient/logic/repository/PrescriptionUploadRepository.dart';
 import 'package:revxpharma/Patient/logic/repository/appointment_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/banners_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/cart_repository.dart';
@@ -102,6 +104,9 @@ class StateInjector {
         create: (context) =>
             TestDetailsRepositoryImpl(remoteDataSource: context.read())),
 
+    RepositoryProvider<PrescriptionUploadRepository>(
+        create: (context) =>
+            PrescriptionUploadRepositoryImpl(remoteDataSource: context.read())),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -173,6 +178,9 @@ class StateInjector {
     ),
     BlocProvider<PatientRegisterCubit>(
       create: (context) => PatientRegisterCubit(context.read<PatientRegisterRepository>()),
+    ),
+    BlocProvider<UploadPrescriptionCubit>(
+      create: (context) => UploadPrescriptionCubit(context.read<PrescriptionUploadRepository>()),
     ),
     // ... other providers ...
   ];
