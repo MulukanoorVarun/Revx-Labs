@@ -32,11 +32,14 @@ import 'package:revxpharma/Utils/NoInternet.dart';
 import 'Patient/screens/servicecategory.dart';
 import 'Utils/constants.dart';
 
-final GoRouter goRouter = GoRouter(
-    initialLocation: '/',
-    navigatorKey: navigatorKey,
-    routes: [
-  GoRoute(path: '/', builder: (context, state) => Splash()),
+final GoRouter goRouter =
+    GoRouter(initialLocation: '/', navigatorKey: navigatorKey, routes: [
+  GoRoute(
+    path: '/',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(Splash(), state);
+    },
+  ),
   GoRoute(
     path: '/on_board',
     pageBuilder: (context, state) {

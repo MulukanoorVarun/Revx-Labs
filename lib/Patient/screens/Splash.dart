@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:revxpharma/Services/AuthService.dart';
 import 'package:revxpharma/Utils/Preferances.dart';
+import '../../Utils/PermissionManager.dart';
 import '../logic/bloc/internet_status/internet_status_bloc.dart';
 
 class Splash extends StatefulWidget {
@@ -61,20 +62,17 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _checkPermissions() async {
-    Map<Permission, PermissionStatus> statuses = {
-      Permission.location: await Permission.location.status,
-      Permission.notification: await Permission.notification.status,
-    };
-
-    bool allPermissionsGranted =
-        statuses.values.every((status) => status.isGranted);
+    final statuses = await PermissionManager.checkPermissionStatuses();
+    final allPermissionsGranted = statuses.values.every((status) => status.isGranted);
 
     setState(() {
       permissions_granted = allPermissionsGranted;
-      print("permissions_granted:${permissions_granted}");
+      debugPrint("permissions_granted: $permissions_granted");
     });
+
     _navigateToNextScreen();
   }
+
 
   void _navigateToNextScreen() {
     Future.microtask(() {

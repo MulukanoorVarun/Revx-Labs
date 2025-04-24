@@ -65,6 +65,21 @@ class PermissionManager {
     return permissions;
   }
 
+  /// Checks the status of required permissions without requesting them.
+  static Future<Map<Permission, PermissionStatus>> checkPermissionStatuses() async {
+    try {
+      final permissions = await _getRequiredPermissions();
+      final statuses = <Permission, PermissionStatus>{};
+      for (var permission in permissions) {
+        statuses[permission] = await permission.status;
+      }
+      return statuses;
+    } catch (e) {
+      debugPrint('Error checking permission statuses: $e');
+      return {};
+    }
+  }
+
   /// Checks if any permission requires a rationale.
   static Future<bool> _shouldShowRationale(List<Permission> permissions) async {
     if (Platform.isIOS) return false; // iOS handles rationale via Info.plist

@@ -29,8 +29,6 @@ class _MyPermissionState extends State<MyPermission> {
     setState(() {
       token = tokenValue;
     });
-    print("Token: $token");
-    // Check permissions
     await _checkPermissions();
   }
 

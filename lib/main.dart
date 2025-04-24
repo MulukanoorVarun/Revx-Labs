@@ -75,7 +75,8 @@ class MyApp extends StatelessWidget {
             ),
             title: 'Revx Labs',
             debugShowCheckedModeBanner: false,
-            routerConfig: goRouter),
+            routerConfig: goRouter
+        ),
       ),
     );
   }

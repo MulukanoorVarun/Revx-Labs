@@ -45,10 +45,10 @@ android {
 
     defaultConfig {
         applicationId = "com.revx.labs"
-        minSdk = 21 // Update as needed
-        targetSdk = 33 // Update as needed
-        versionCode = 1 // Update as needed
-        versionName = "1.0" // Update as needed
+        minSdk = 21
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     signingConfigs {
