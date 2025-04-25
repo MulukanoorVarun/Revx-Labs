@@ -37,8 +37,9 @@ class ScanOption {
   final String name;
   final String imagePath;
   final String query;
+  final String? categoryId;
 
-  ScanOption({required this.name, required this.imagePath, required this.query});
+  ScanOption({required this.name, required this.imagePath, required this.query,this.categoryId,});
 }
 
 class _HomescreenState extends State<Homescreen> {
@@ -56,8 +57,8 @@ class _HomescreenState extends State<Homescreen> {
     ScanOption(name: 'MRI Scan', imagePath: 'assets/Scan.png', query: 'mri'),
     ScanOption(name: 'CT Scan', imagePath: 'assets/ct scan.jfif', query: 'ct scan'),
     ScanOption(name: 'PET Scan', imagePath: 'assets/pet_scan.jpg', query: 'pet scan'),
-    ScanOption(name: 'Ultrasound Scan', imagePath: 'assets/ultrasound.jfif', query: 'ultrasound scan'),
-    ScanOption(name: 'X Ray', imagePath: 'assets/xray.png', query: 'xray'),
+    ScanOption(name: 'Ultrasound Scan', imagePath: 'assets/ultrasound.jfif', query: 'ultrasound scan',categoryId: '6420d355-f757-4f51-800e-3d99b8929047',),
+    ScanOption(name: 'X Ray', imagePath: 'assets/xray.png', query: 'xray',categoryId:'03edb31f-1b47-4e80-b34d-54a6b539c93f',),
   ];
 
   @override

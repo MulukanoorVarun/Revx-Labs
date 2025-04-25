@@ -7,18 +7,21 @@ class ScanCard extends StatefulWidget {
   final ScanOption scan;
   final double screenWidth;
   final String latLang;
+  final String? categoryId;
 
   const ScanCard({
     required this.scan,
     required this.screenWidth,
     required this.latLang,
+    this.categoryId,
   });
 
   @override
   _ScanCardState createState() => _ScanCardState();
 }
 
-class _ScanCardState extends State<ScanCard> with SingleTickerProviderStateMixin {
+class _ScanCardState extends State<ScanCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -62,9 +65,15 @@ class _ScanCardState extends State<ScanCard> with SingleTickerProviderStateMixin
         onTapUp: _onTapUp,
         onTapCancel: _onTapCancel,
         onTap: () {
-          context.push(
-            '/categories?query=${widget.scan.query}&latlngs=${widget.latLang}',
-          );
+          if (widget.scan.categoryId != null) {
+            context.push(
+              '/all_tests?catId=${widget.scan.categoryId}&lat_lang=${widget.latLang}&catName=${widget.scan.name}',
+            );
+          } else {
+            context.push(
+              '/categories?query=${widget.scan.query}&latlngs=${widget.latLang}',
+            );
+          }
         },
         child: ScaleTransition(
           scale: _scaleAnimation,
