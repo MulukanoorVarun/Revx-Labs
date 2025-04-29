@@ -6,6 +6,8 @@ import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/category/category_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/conditionbased/condition_repository.dart';
+import 'package:revxpharma/Patient/logic/cubit/delete_account/DeleteAccountCubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/delete_account/DeleteAccountRepository.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_centers/diagnostic_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/diagnostic_detail/diagnostic_detail_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/home/home_cubit.dart';
@@ -85,28 +87,26 @@ class StateInjector {
     ),
     RepositoryProvider<ProfileRepository>(
         create: (context) => ProfileImpl(remoteDataSource: context.read())),
-
     RepositoryProvider<AppointmentRepository>(
       create: (context) =>
           AppointmentRepositoryImpl(remoteDataSource: context.read()),
     ),
-
     RepositoryProvider<LoginRepository>(
       create: (context) => LoginImpl(remoteDataSource: context.read()),
     ),
-
     RepositoryProvider<PatientRegisterRepository>(
       create: (context) =>
           PatientRegisterImpl(remoteDataSource: context.read()),
     ),
-
     RepositoryProvider<TestDetailsRepository>(
         create: (context) =>
             TestDetailsRepositoryImpl(remoteDataSource: context.read())),
-
     RepositoryProvider<PrescriptionUploadRepository>(
         create: (context) =>
             PrescriptionUploadRepositoryImpl(remoteDataSource: context.read())),
+    RepositoryProvider<Deleteaccountrepository>(
+        create: (context) =>
+            DeleteaccountrepositoryImpl(remoteDataSource: context.read())),
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -155,7 +155,8 @@ class StateInjector {
     ),
     // Moved TestDetailsCubit BEFORE CartCubit
     BlocProvider<TestDetailsCubit>(
-      create: (context) => TestDetailsCubit(context.read<TestDetailsRepository>()),
+      create: (context) =>
+          TestDetailsCubit(context.read<TestDetailsRepository>()),
     ),
     BlocProvider<CartCubit>(
       create: (context) => CartCubit(
@@ -165,23 +166,31 @@ class StateInjector {
       ),
     ),
     BlocProvider<ProfileCubit>(
-      create: (context) => ProfileCubit(profileRepository: context.read<ProfileRepository>()),
+      create: (context) =>
+          ProfileCubit(profileRepository: context.read<ProfileRepository>()),
     ),
     BlocProvider<AppointmentCubit>(
-      create: (context) => AppointmentCubit(context.read<AppointmentRepository>()),
+      create: (context) =>
+          AppointmentCubit(context.read<AppointmentRepository>()),
     ),
     BlocProvider<AppointmentDetailsCubit>(
-      create: (context) => AppointmentDetailsCubit(context.read<AppointmentRepository>()),
+      create: (context) =>
+          AppointmentDetailsCubit(context.read<AppointmentRepository>()),
     ),
     BlocProvider<LoginCubit>(
       create: (context) => LoginCubit(context.read<LoginRepository>()),
     ),
     BlocProvider<PatientRegisterCubit>(
-      create: (context) => PatientRegisterCubit(context.read<PatientRegisterRepository>()),
+      create: (context) =>
+          PatientRegisterCubit(context.read<PatientRegisterRepository>()),
     ),
     BlocProvider<UploadPrescriptionCubit>(
-      create: (context) => UploadPrescriptionCubit(context.read<PrescriptionUploadRepository>()),
+      create: (context) =>
+          UploadPrescriptionCubit(context.read<PrescriptionUploadRepository>()),
     ),
-    // ... other providers ...
+    BlocProvider<DeleteAccountCubit>(
+      create: (context) =>
+          DeleteAccountCubit(context.read<Deleteaccountrepository>()),
+    ),
   ];
 }

@@ -128,6 +128,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             });
           }
         },
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

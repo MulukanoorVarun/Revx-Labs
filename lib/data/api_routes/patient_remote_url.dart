@@ -4,6 +4,7 @@ class PatientRemoteUrls {
   static const String userLogin = 'auth/login';
   static const String userRegister = 'auth/patient-register';
   static const String refreshtoken = 'auth/refresh-token';
+  static const String delete_account = 'auth/user-detail';
   static const String categorieslist = 'api/categories';
   static const String bannerslist = 'api/banners';
   static const String diagnosticCenterslist = 'api/diagnostic-centres';

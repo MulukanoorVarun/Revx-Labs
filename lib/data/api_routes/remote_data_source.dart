@@ -47,6 +47,7 @@ abstract class RemoteDataSource {
   Future<AppointmentDetailsModel?> AppointmentDetails(id);
   Future<TestDetailsModel?> getTestDetailsApi(id);
   Future<SuccessModel?> uploadPrescription(Map<String, dynamic> data);
+  Future<LoginModel?> deleteAccount();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -77,6 +78,21 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
 
     return FormData.fromMap(formMap);
+  }
+
+  @override
+  Future<LoginModel?> deleteAccount() async {
+    Response response = await ApiClient.delete("${PatientRemoteUrls.delete_account}");
+    try {
+      if (response.statusCode == 200) {
+        debugPrint('deleteAccount:${response.data}');
+        return LoginModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error deleteAccount::$e');
+      return null;
+    }
   }
 
   @override
