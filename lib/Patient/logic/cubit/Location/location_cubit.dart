@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as loc;
+import 'package:permission_handler/permission_handler.dart' as OpenAppSettings;
 import '../../../../Utils/Preferances.dart';
 import 'location_state.dart';
 
@@ -57,6 +58,8 @@ class LocationCubit extends Cubit<LocationState> {
       }
 
       if (permission == loc.PermissionStatus.deniedForever) {
+        // Open app settings when permission is permanently denied
+        await OpenAppSettings.openAppSettings();
         await _emitSavedOrError("Location permissions are permanently denied.");
         return;
       }

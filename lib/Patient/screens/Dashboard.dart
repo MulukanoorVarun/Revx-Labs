@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart' as OpenAppSettings;
 import 'package:revxpharma/Patient/screens/MyAppointments.dart';
 import 'package:revxpharma/Patient/screens/servicecategory.dart';
 import 'package:revxpharma/Utils/color.dart';
@@ -214,6 +215,8 @@ class _DashboardState extends State<Dashboard> {
           builder: (context, state) {
             bool isLoading = state is LocationLoading;
             bool isServiceDisabled = state is LocationServiceDisabled;
+            bool isPermanentlyDenied = state is LocationError &&
+                state.message.contains("permanently denied");
 
             return Container(
               padding: const EdgeInsets.all(24),
@@ -226,8 +229,7 @@ class _DashboardState extends State<Dashboard> {
                     Colors.grey[50]!,
                   ],
                 ),
-                borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -263,6 +265,8 @@ class _DashboardState extends State<Dashboard> {
                         child: Text(
                           isServiceDisabled
                               ? 'Location Services Disabled'
+                              : isPermanentlyDenied
+                              ? 'Location Permissions Denied'
                               : 'Location Permission Needed',
                           style: const TextStyle(
                             fontSize: 18,
@@ -278,6 +282,8 @@ class _DashboardState extends State<Dashboard> {
                   Text(
                     isServiceDisabled
                         ? 'Please enable location services to allow us to find your accurate location for better service.'
+                        : isPermanentlyDenied
+                        ? 'Location permissions are permanently denied. Please enable them in the app settings.'
                         : 'We need your location to provide personalized services and accurate delivery information.',
                     style: TextStyle(
                       fontSize: 14,
@@ -288,33 +294,34 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   const SizedBox(height: 24),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        onPressed: isLoading
-                            ? null
-                            : () {
-                          context
-                              .read<LocationCubit>()
-                              .handlePermissionDismissed();
-                        },
-                        child: Text(
-                          'NOT NOW',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "lexend",
-                          ),
-                        ),
-                      ),
+                      // if (!isPermanentlyDenied)
+                      //   TextButton(
+                      //     onPressed: isLoading
+                      //         ? null
+                      //         : () {
+                      //       context.read<LocationCubit>().handlePermissionDismissed();
+                      //     },
+                      //     child: Text(
+                      //       'NOT NOW',
+                      //       style: TextStyle(
+                      //         color: Colors.grey[600],
+                      //         fontWeight: FontWeight.w600,
+                      //         fontFamily: "lexend",
+                      //       ),
+                      //     ),
+                      //   ),
                       ElevatedButton(
                         onPressed: isLoading || hasRequestedPermission
                             ? null
                             : () {
                           hasRequestedPermission = true;
-                          context
-                              .read<LocationCubit>()
-                              .requestLocationPermission();
+                          if (isPermanentlyDenied) {
+                            OpenAppSettings.openAppSettings();
+                          } else {
+                            context.read<LocationCubit>().requestLocationPermission();
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
@@ -333,13 +340,12 @@ class _DashboardState extends State<Dashboard> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                            AlwaysStoppedAnimation(Colors.white),
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
                           ),
                         )
-                            : const Text(
-                          'ENABLE LOCATION',
-                          style: TextStyle(
+                            : Text(
+                          isPermanentlyDenied ? 'OPEN SETTINGS' : 'ENABLE LOCATION',
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
                             fontFamily: "lexend",
