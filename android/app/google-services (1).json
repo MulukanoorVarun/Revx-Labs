@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "987805631234",
+    "project_id": "revx-labs",
+    "storage_bucket": "revx-labs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987805631234:android:254900181738d103c5381b",
+        "android_client_info": {
+          "package_name": "com.revx.labs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJx7GVCwtcRE7s2BGcQat2tOKCtCHak3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
