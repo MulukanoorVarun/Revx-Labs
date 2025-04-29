@@ -87,50 +87,52 @@ class _PaymentState extends State<Payment> {
 
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: SizedBox(
-                    width: w,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: state is AppointmentLoading
-                          ? null
-                          : () {
-                              if (_selectedPaymentOption != null) {
-                                widget.data['payment_mode'] =
-                                    _selectedPaymentOption;
-                                debugPrint("Final Data: ${widget.data}");
-                                context
-                                    .read<AppointmentCubit>()
-                                    .bookAppointment(widget.data);
-                              } else {
-                                debugPrint("Please select a payment option.");
-                              }
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        disabledBackgroundColor: primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: SizedBox(
+                      width: w,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: state is AppointmentLoading
+                            ? null
+                            : () {
+                                if (_selectedPaymentOption != null) {
+                                  widget.data['payment_mode'] =
+                                      _selectedPaymentOption;
+                                  debugPrint("Final Data: ${widget.data}");
+                                  context
+                                      .read<AppointmentCubit>()
+                                      .bookAppointment(widget.data);
+                                } else {
+                                  debugPrint("Please select a payment option.");
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          disabledBackgroundColor: primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          elevation: 0,
                         ),
-                        elevation: 0,
+                        child: state is AppointmentLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text(
+                                'Confirm & Pay',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                       ),
-                      child: state is AppointmentLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 1,
-                                color: Colors.white,
-                              ),
-                            )
-                          : const Text(
-                              'Confirm & Pay',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Poppins",
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                     ),
                   ),
                 ),

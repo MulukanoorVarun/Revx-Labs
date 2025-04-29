@@ -92,41 +92,43 @@ class _MyPermissionState extends State<MyPermission> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
-        child: InkResponse(
-          onTap: () async {
-            if (allPermissionsGranted) {
-              _navigateToAppropriateScreen();
-            } else {
-              // Retry permission request or open settings
-              final granted = await PermissionManager.checkPermissions(
-                context,
-                onPermissionStatusChanged: (granted) {
-                  setState(() {
-                    allPermissionsGranted = granted;
-                  });
-                },
-              );
-              if (granted) {
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
+          child: InkResponse(
+            onTap: () async {
+              if (allPermissionsGranted) {
                 _navigateToAppropriateScreen();
+              } else {
+                // Retry permission request or open settings
+                final granted = await PermissionManager.checkPermissions(
+                  context,
+                  onPermissionStatusChanged: (granted) {
+                    setState(() {
+                      allPermissionsGranted = granted;
+                    });
+                  },
+                );
+                if (granted) {
+                  _navigateToAppropriateScreen();
+                }
               }
-            }
-          },
-          child: Container(
-            width: w,
-            height: 45,
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              allPermissionsGranted ? 'GET STARTED' : 'GRANT PERMISSIONS',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
+            },
+            child: Container(
+              width: w,
+              height: 45,
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                allPermissionsGranted ? 'GET STARTED' : 'GRANT PERMISSIONS',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
               ),
             ),
           ),

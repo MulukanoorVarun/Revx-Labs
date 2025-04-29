@@ -1272,13 +1272,6 @@ class _SearchscreenState extends State<Searchscreen> {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        offset: const Offset(0, -2),
-                        blurRadius: 6,
-                      ),
-                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1398,247 +1391,249 @@ class _SearchscreenState extends State<Searchscreen> {
       builder:
           (context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter bottomSheetSetState) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                // _buildTextField(
-                //   icon: Icons.payment,
-                //   controller: _transectionController,
-                //   validation: _validateTransection,
-                //   hintText: 'Enter Transaction ID',
-                //   keyboardType: TextInputType.text,
-                // ),
-                const SizedBox(height: 16),
-                Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (_image == null) {
-                          bottomSheetSetState(() {
-                            showImageOptions =
-                            !showImageOptions; // Toggle visibility
-                          });
-                        } else {
-                          _showImageViewer(
-                            context,
-                          ); // Show full image if already selected
-                        }
-                      },
-                      child: DottedBorder(
-                        color: Colors.grey,
-                        strokeWidth: 1,
-                        dashPattern: const [6, 3],
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(12),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _image == null
-                                  ? Icon(
-                                Icons.upload_file,
-                                color: Colors.grey[600],
-                                size: 30,
-                              )
-                                  : ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  _image!,
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                _image == null
-                                    ? 'Choose File'
-                                    : 'Prescription',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 16,
-                                  fontFamily: 'lexend',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+          return SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                left: 16,
+                right: 16,
+                top: 16,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
                     ),
-                    if (_image != null)
-                      Positioned(
-                        top: 5,
-                        right: 5,
-                        child: GestureDetector(
-                          onTap: () {
-                            bottomSheetSetState(() {
-                              setState(() {
-                                _image = null;
-                              });
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                if (showImageOptions && _image == null) ...[
+                  ),
+                  // _buildTextField(
+                  //   icon: Icons.payment,
+                  //   controller: _transectionController,
+                  //   validation: _validateTransection,
+                  //   hintText: 'Enter Transaction ID',
+                  //   keyboardType: TextInputType.text,
+                  // ),
                   const SizedBox(height: 16),
-                  Row(
+                  Stack(
+                    alignment: Alignment.topRight,
                     children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () async {
-                            await _pickImageFromCamera();
+                      GestureDetector(
+                        onTap: () {
+                          if (_image == null) {
                             bottomSheetSetState(() {
                               showImageOptions =
-                              false; // Hide after selection
+                              !showImageOptions; // Toggle visibility
                             });
-                          },
-                          icon: Icon(Icons.camera_alt, color: primaryColor),
-                          label: Text(
-                            'Camera',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: primaryColor,
-                              fontFamily: "lexend",
-                            ),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              side: BorderSide(color: primaryColor),
+                          } else {
+                            _showImageViewer(
+                              context,
+                            ); // Show full image if already selected
+                          }
+                        },
+                        child: DottedBorder(
+                          color: Colors.grey,
+                          strokeWidth: 1,
+                          dashPattern: const [6, 3],
+                          borderType: BorderType.RRect,
+                          radius: const Radius.circular(12),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _image == null
+                                    ? Icon(
+                                  Icons.upload_file,
+                                  color: Colors.grey[600],
+                                  size: 30,
+                                )
+                                    : ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    _image!,
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  _image == null
+                                      ? 'Choose File'
+                                      : 'Prescription',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 16,
+                                    fontFamily: 'lexend',
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () async {
-                            await _pickImageFromGallery();
-                            bottomSheetSetState(() {
-                              showImageOptions =
-                              false; // Hide after selection
-                            });
-                          },
-                          icon: Icon(Icons.photo_library, color: primaryColor),
-                          label: Text(
-                            'Gallery',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: primaryColor,
-                              fontFamily: "lexend",
-                            ),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              side: BorderSide(color: primaryColor),
+                      if (_image != null)
+                        Positioned(
+                          top: 5,
+                          right: 5,
+                          child: GestureDetector(
+                            onTap: () {
+                              bottomSheetSetState(() {
+                                setState(() {
+                                  _image = null;
+                                });
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
-                ],
-                const SizedBox(height: 24),
-                BlocConsumer<UploadPrescriptionCubit, UploadPrescriptionState>(
-                  listener: (context, state) {
-                    if (state is UploadPrescriptionStateSuccessState) {
-                      context.pop();
-                      CustomSnackBar.show(
-                        context,
-                        state.successModel.settings?.message ?? 'Uploaded successfully!',
+                  if (showImageOptions && _image == null) ...[
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              await _pickImageFromCamera();
+                              bottomSheetSetState(() {
+                                showImageOptions =
+                                false; // Hide after selection
+                              });
+                            },
+                            icon: Icon(Icons.camera_alt, color: primaryColor),
+                            label: Text(
+                              'Camera',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: primaryColor,
+                                fontFamily: "lexend",
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                side: BorderSide(color: primaryColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              await _pickImageFromGallery();
+                              bottomSheetSetState(() {
+                                showImageOptions =
+                                false; // Hide after selection
+                              });
+                            },
+                            icon: Icon(Icons.photo_library, color: primaryColor),
+                            label: Text(
+                              'Gallery',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: primaryColor,
+                                fontFamily: "lexend",
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                side: BorderSide(color: primaryColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  const SizedBox(height: 24),
+                  BlocConsumer<UploadPrescriptionCubit, UploadPrescriptionState>(
+                    listener: (context, state) {
+                      if (state is UploadPrescriptionStateSuccessState) {
+                        context.pop();
+                        CustomSnackBar.show(
+                          context,
+                          state.successModel.settings?.message ?? 'Uploaded successfully!',
+                        );
+                      } else if (state is UploadPrescriptionStateError) {
+                        CustomSnackBar.show(context, state.message);
+                      }
+                    },
+                    builder: (context, state) {
+                      bool isLoading = state is UploadPrescriptionStateLoading;
+                      bool isFormValid = _image != null;
+                      return SizedBox(
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: isFormValid && !isLoading
+                              ? () {
+                            Map<String,dynamic> data={
+                              "prescription_image": _image!.path
+                            };
+                            context.read<UploadPrescriptionCubit>().uploadPrescription(data);
+                          }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50),
+                            backgroundColor: primaryColor,
+                            foregroundColor: Colors.white, // Text/icon color when enabled
+                            disabledBackgroundColor: primaryColor.withOpacity(0.5), // When disabled
+                            disabledForegroundColor: Colors.white.withOpacity(0.5), // When disabled
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: isLoading
+                              ? const Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                              : const Text(
+                            'Submit',
+                            style: TextStyle(
+                              fontFamily: "lexend",
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       );
-                    } else if (state is UploadPrescriptionStateError) {
-                      CustomSnackBar.show(context, state.message);
-                    }
-                  },
-                  builder: (context, state) {
-                    bool isLoading = state is UploadPrescriptionStateLoading;
-                    bool isFormValid = _image != null;
-                    return SizedBox(
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: isFormValid && !isLoading
-                            ? () {
-                          Map<String,dynamic> data={
-                            "prescription_image": _image!.path
-                          };
-                          context.read<UploadPrescriptionCubit>().uploadPrescription(data);
-                        }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: primaryColor,
-                          foregroundColor: Colors.white, // Text/icon color when enabled
-                          disabledBackgroundColor: primaryColor.withOpacity(0.5), // When disabled
-                          disabledForegroundColor: Colors.white.withOpacity(0.5), // When disabled
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                            : const Text(
-                          'Submit',
-                          style: TextStyle(
-                            fontFamily: "lexend",
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-              ],
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           );
         },

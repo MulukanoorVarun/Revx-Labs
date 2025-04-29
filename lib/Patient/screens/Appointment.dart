@@ -937,28 +937,30 @@ class _ApointmentsState extends State<Apointments> {
           if (cartState is CartLoaded) {
             final cartTests = cartState.cartList?.data?.cartTests ?? [];
             if (cartTests.isNotEmpty) {
-              return Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(color: Colors.white),
-                child: ElevatedButton(
-                  onPressed: () {
-                    submitData();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+              return SafeArea(
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      submitData();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      minimumSize: const Size(double.infinity, 50),
                     ),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  child: const Text(
-                    'Save & Continue',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "Poppins",
-                      fontSize: 18,
+                    child: const Text(
+                      'Save & Continue',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Poppins",
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
