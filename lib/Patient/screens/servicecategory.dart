@@ -112,10 +112,12 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                                     ),
                                   ],
                                 ),
+
                                 child: Center(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(4),
-                                    child: CachedNetworkImage(
+                                    child:
+                                    CachedNetworkImage(
                                       imageUrl: item!.image!,
                                       fit: BoxFit.cover,
                                       placeholder: (context, url) => Center(

@@ -29,6 +29,10 @@ abstract class RemoteDataSource {
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
   Future<TestModel?> fetchTest(
       latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId);
+  Future<TestModel?> fetchRegularTest(
+      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId);
+  Future<TestModel?> radiologyTest(
+      latlang);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -82,7 +86,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<LoginModel?> deleteAccount() async {
-    Response response = await ApiClient.delete("${PatientRemoteUrls.delete_account}");
+    Response response =
+        await ApiClient.delete("${PatientRemoteUrls.delete_account}");
     try {
       if (response.statusCode == 200) {
         debugPrint('deleteAccount:${response.data}');
@@ -341,6 +346,37 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       Response response = await ApiClient.get(
           "${PatientRemoteUrls.test}?${scanId}&${x_rayId}&lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
+      if (response.statusCode == 200) {
+        LogHelper.printLog('fetchTest:', response.data);
+        return TestModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error fetching test data: ', e);
+      return null;
+    }
+  }
+
+  Future<TestModel?> fetchRegularTest(
+      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId) async {
+    try {
+      Response response = await ApiClient.get(
+          "${PatientRemoteUrls.regularTests}?${scanId}&${x_rayId}&lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
+      if (response.statusCode == 200) {
+        LogHelper.printLog('fetchTest:', response.data);
+        return TestModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error fetching test data: ', e);
+      return null;
+    }
+  }
+
+  Future<TestModel?> radiologyTest(latlang) async {
+    try {
+      Response response = await ApiClient.get(
+          "${PatientRemoteUrls.regularTests}?lat_long=${latlang}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);

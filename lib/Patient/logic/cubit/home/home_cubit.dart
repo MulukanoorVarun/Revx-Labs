@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:revxpharma/Models/ProfileDetailModel.dart';
+import 'package:revxpharma/Models/TestModel.dart';
+import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/profile_details/profile_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/diagnostic_center_repository.dart';
 import '../../../../Models/BannersModel.dart';
@@ -8,6 +10,7 @@ import '../../../../Models/CategoryModel.dart';
 import '../../../../Models/DiognisticCenterModel.dart';
 import '../../repository/category_repository.dart';
 import '../../repository/banners_repository.dart';
+import '../RegularTest/regular_test_repository.dart';
 
 part 'home_state.dart';
 
@@ -16,12 +19,16 @@ class HomeCubit extends Cubit<HomeState> {
   final BannersRepository bannersRepository;
   final DiagnosticCenterRepository diagnosticCentersRepository;
   final ProfileRepository profileRepository;
+  final RegularTestRepository regularTestRepository;
+  final RadiologyTestRepository radiologyTestRepository;
 
   HomeCubit({
     required this.categoryRepository,
     required this.bannersRepository,
     required this.diagnosticCentersRepository,
     required this.profileRepository,
+    required this.regularTestRepository,
+    required this.radiologyTestRepository,
   }) : super(HomeInitial());
 
   Future<void> fetchHomeData(lat_lang) async {
@@ -32,15 +39,20 @@ class HomeCubit extends Cubit<HomeState> {
         categoryRepository.getCategories(""),
         bannersRepository.getBanners(),
         diagnosticCentersRepository.getDiagnosticCenters(lat_lang),
-        profileRepository.getProfileDetails()
+        profileRepository.getProfileDetails(),
+        regularTestRepository.getRegularTest(lat_lang, '', '', '', '', '', ''),
+        radiologyTestRepository.getRadiologyTest(lat_lang)
       ]);
 
       final categories = results[0] as CategoryModel;
       final banners = results[1] as BannersModel;
       final diagnosticCenters = results[2] as DiognisticCenterModel;
       final profileDetails = results[3] as ProfileDetailModel;
+      final fetchRegularTest = results[4] as TestModel;
+      final fetchRadiology = results[5] as TestModel;
 
-      emit(HomeLoaded(categories, banners, diagnosticCenters,profileDetails));
+      emit(HomeLoaded(categories, banners, diagnosticCenters, profileDetails,
+          fetchRegularTest, fetchRadiology));
     } catch (e) {
       emit(HomeError("Failed to fetch home data"));
     }

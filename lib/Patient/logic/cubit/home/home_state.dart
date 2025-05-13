@@ -17,11 +17,13 @@ class HomeLoaded extends HomeState {
   final BannersModel banners;
   final DiognisticCenterModel diagnosticCenters;
   final ProfileDetailModel prfileDetails;
+  final TestModel regulartestModel;
+  final TestModel radiologyTestModel;
 
-  const HomeLoaded(this.categories, this.banners, this.diagnosticCenters,this.prfileDetails);
+  const HomeLoaded(this.categories, this.banners, this.diagnosticCenters,this.prfileDetails,this.regulartestModel,this.radiologyTestModel);
 
   @override
-  List<Object?> get props => [categories, banners, diagnosticCenters, prfileDetails];
+  List<Object?> get props => [categories, banners, diagnosticCenters, prfileDetails,regulartestModel,radiologyTestModel];
 }
 
 class HomeError extends HomeState {

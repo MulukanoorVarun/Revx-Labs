@@ -32,9 +32,8 @@ class ApiClient {
         );
         if (isUnauthenticated) {
           debugPrint('Unauthenticated endpoint, skipping token check: ${options.uri}');
-          return handler.next(options); // Skip token check and proceed
+          return handler.next(options);
         }
-        // Check if token is expired for authenticated endpoints
         final isExpired = await AuthService.isTokenExpired();
         if (isExpired) {
           debugPrint('Token is expired, attempting to refresh...');
