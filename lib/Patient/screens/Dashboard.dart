@@ -122,16 +122,16 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 0
                           ? Image.asset(
-                        "assets/homefilled.png",
-                        width: 25,
-                        height: 25,
-                        color: primaryColor,
-                      )
+                              "assets/homefilled.png",
+                              width: 25,
+                              height: 25,
+                              color: primaryColor,
+                            )
                           : Image.asset(
-                        "assets/homeoutline.png",
-                        width: 25,
-                        height: 25,
-                      )
+                              "assets/homeoutline.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -140,16 +140,16 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 1
                           ? Image.asset(
-                        "assets/categoryfilled.png",
-                        width: 25,
-                        height: 25,
-                        color: primaryColor,
-                      )
+                              "assets/categoryfilled.png",
+                              width: 25,
+                              height: 25,
+                              color: primaryColor,
+                            )
                           : Image.asset(
-                        "assets/categoryoutline.png",
-                        width: 25,
-                        height: 25,
-                      )
+                              "assets/categoryoutline.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -158,12 +158,12 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 2
                           ? Image.asset("assets/CalendarDots1.png",
-                          width: 25, height: 25, color: primaryColor)
+                              width: 25, height: 25, color: primaryColor)
                           : Image.asset(
-                        "assets/CalendarDots.png",
-                        width: 25,
-                        height: 25,
-                      )
+                              "assets/CalendarDots.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
               BottomNavigationBarItem(
@@ -172,16 +172,16 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       _selectedIndex == 3
                           ? Image.asset(
-                        "assets/User.png",
-                        width: 25,
-                        height: 25,
-                        color: primaryColor,
-                      )
+                              "assets/User.png",
+                              width: 25,
+                              height: 25,
+                              color: primaryColor,
+                            )
                           : Image.asset(
-                        "assets/User1.png",
-                        width: 25,
-                        height: 25,
-                      )
+                              "assets/User1.png",
+                              width: 25,
+                              height: 25,
+                            )
                     ],
                   )),
             ],
@@ -229,7 +229,8 @@ class _DashboardState extends State<Dashboard> {
                     Colors.grey[50]!,
                   ],
                 ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(24)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -266,8 +267,8 @@ class _DashboardState extends State<Dashboard> {
                           isServiceDisabled
                               ? 'Location Services Disabled'
                               : isPermanentlyDenied
-                              ? 'Location Permissions Denied'
-                              : 'Location Permission Needed',
+                                  ? 'Location Permissions Denied'
+                                  : 'Location Permission Needed',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -283,8 +284,8 @@ class _DashboardState extends State<Dashboard> {
                     isServiceDisabled
                         ? 'Please enable location services to allow us to find your accurate location for better service.'
                         : isPermanentlyDenied
-                        ? 'Location permissions are permanently denied. Please enable them in the app settings.'
-                        : 'We need your location to provide personalized services and accurate delivery information.',
+                            ? 'Location permissions are permanently denied. Please enable them in the app settings.'
+                            : 'We need your location to provide personalized services and accurate delivery information.',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
@@ -316,13 +317,15 @@ class _DashboardState extends State<Dashboard> {
                         onPressed: isLoading || hasRequestedPermission
                             ? null
                             : () {
-                          hasRequestedPermission = true;
-                          if (isPermanentlyDenied) {
-                            OpenAppSettings.openAppSettings();
-                          } else {
-                            context.read<LocationCubit>().requestLocationPermission();
-                          }
-                        },
+                                hasRequestedPermission = true;
+                                if (isPermanentlyDenied) {
+                                  OpenAppSettings.openAppSettings();
+                                } else {
+                                  context
+                                      .read<LocationCubit>()
+                                      .requestLocationPermission();
+                                }
+                              },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                           padding: const EdgeInsets.symmetric(
@@ -336,22 +339,25 @@ class _DashboardState extends State<Dashboard> {
                         ),
                         child: isLoading
                             ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation(Colors.white),
-                          ),
-                        )
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
+                                ),
+                              )
                             : Text(
-                          isPermanentlyDenied ? 'OPEN SETTINGS' : 'ENABLE LOCATION',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            fontFamily: "lexend",
-                            color: Colors.white,
-                          ),
-                        ),
+                                isPermanentlyDenied
+                                    ? 'OPEN SETTINGS'
+                                    : 'ENABLE LOCATION',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  fontFamily: "lexend",
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     ],
                   ),

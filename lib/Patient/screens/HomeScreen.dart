@@ -11,6 +11,8 @@ import 'package:revxpharma/Components/CustomAppButton.dart';
 import 'package:revxpharma/Components/Shimmers.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_state.dart';
+import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_state.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/cart/cart_state.dart';
 import 'package:revxpharma/Patient/screens/Appointment.dart';
@@ -21,6 +23,8 @@ import 'package:revxpharma/Patient/screens/widgets/ScanCard.dart';
 import 'package:revxpharma/Utils/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/constants.dart';
+import '../logic/cubit/RegularTest/regular_test_cubit.dart';
+import '../logic/cubit/RegularTest/regular_test_state.dart';
 import '../logic/cubit/home/home_cubit.dart';
 import 'DiagnosticInformation.dart';
 import 'Diagnosticcenter.dart';
@@ -95,7 +99,9 @@ class _HomescreenState extends State<Homescreen> {
           setState(() {
             lat_lang = locationState.latlng;
           });
-          context.read<HomeCubit>().fetchHomeData(locationState.latlng);
+          context.read<HomeCubit>().fetchHomeData(locationState.latlng, 1);
+          context.read<RadiologyTestCubit>().fetchRadiologyTests(lat_lang, '', '', '', '', '', 1);
+          context.read<RegularTestCubit>().fetchRegularTestList(lat_lang, '', '', '', '', '', 1);
         }
       },
       child: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
@@ -390,6 +396,16 @@ class _HomescreenState extends State<Homescreen> {
                     ],
                   ),
                   SizedBox(height: 12),
+
+                  Text(
+                    'Radiology Tests',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: primaryColor,
+                        fontFamily: "Poppins"),
+                  ),
+                  SizedBox(height: 12),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -410,336 +426,269 @@ class _HomescreenState extends State<Homescreen> {
                           .toList(),
                     ),
                   ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Radiology Tests',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: primaryColor,
-                        fontFamily: "Poppins"),
-                  ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 12),
                   SizedBox(
                     height: screenWidth * 0.41,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.radiologyTestModel.data?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final radiologyTest =
-                            state.radiologyTestModel.data?[index];
-                        return InkResponse(
-                          onTap: () {
-                            Future.delayed(Duration(milliseconds: 200), () {
-                              context.push(
-                                  '/test_details?location=${radiologyTest?.diagnosticCentre} - ${radiologyTest?.distance}&id=${radiologyTest?.id ?? ""}');
-                            });
-                          },
-                          child: Container(
-                            width: screenWidth * 0.8,
-                            margin: EdgeInsets.only(
-                                right: 12), // Add spacing between items
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xff949494), width: 0.5),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 10,
-                                  children: [
-                                    Container(
-                                      width: screenWidth * 0.25,
-                                      height: screenWidth * 0.28,
-                                      decoration: BoxDecoration(),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            imageUrl: radiologyTest
-                                                    ?.testDetails?.image ??
-                                                "",
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                Center(
-                                              child: spinkits
-                                                  .getSpinningLinespinkit(),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Container(
-                                              color: Colors.grey[200],
-                                              child: Icon(
-                                                Icons.broken_image,
-                                                color: Colors.grey[400],
-                                                size: 40,
-                                              ),
-                                            ),
-                                          )),
+                    child: BlocBuilder<RadiologyTestCubit, RadiologyTestState>(
+                      builder: (context, radiologyState) {
+                        if (radiologyState is RadiologyTestStateLoading) {
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 3,
+                            itemBuilder: (context, index) => shimmerContainer(screenWidth * 0.8, screenWidth * 0.41, context),
+                          );
+                        } else if (radiologyState is RadiologyTestStateLoaded || radiologyState is RadiologyTestStateLoadingMore) {
+                          final testModel = radiologyState is RadiologyTestStateLoaded
+                              ? radiologyState.testModel
+                              : (radiologyState as RadiologyTestStateLoadingMore).testModel;
+                          if ((testModel.data?.isEmpty ?? true)) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Oops !',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    Container(
-                                      width: screenWidth * 0.47,
-                                      child: Column(
-                                        spacing: 2,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.ellipsis,
-                                            radiologyTest
-                                                    ?.testDetails?.testName ??
-                                                '',
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '₹ ${radiologyTest?.testDetails?.price ?? 0}/-',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            'No of tests : ${radiologyTest?.testDetails?.noOfTests ?? 0}',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                // const Divider(
-                                //   height: 12,
-                                //   color: Color(0xffE6E6E6),
-                                //   thickness: 1,
-                                // ),
-                                // Row(
-                                //   children: [
-                                //     if (labTests?.testDetails
-                                //             ?.fastingRequired ==
-                                //         true) ...[
-                                //       Image.asset(
-                                //           'assets/ForkKnife.png',
-                                //           scale: 2.5),
-                                //       const SizedBox(width: 8),
-                                //       const Text(
-                                //         'Fast Required',
-                                //         style: TextStyle(
-                                //           color:
-                                //               Color(0xff555555),
-                                //           fontFamily: 'Poppins',
-                                //           fontSize: 12,
-                                //           fontWeight:
-                                //               FontWeight.w400,
-                                //         ),
-                                //       ),
-                                //     ],
-                                //     Spacer(),
-                                //     Image.asset('assets/file.png',
-                                //         scale: 2.5),
-                                //     SizedBox(width: 8),
-                                //     Text(
-                                //       'Reports in ${labTests?.testDetails?.reportsDeliveredIn ?? 0} min',
-                                //       style: const TextStyle(
-                                //         color: Color(0xff555555),
-                                //         fontFamily: 'Poppins',
-                                //         fontSize: 12,
-                                //         fontWeight:
-                                //             FontWeight.w400,
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
-
-                                // SizedBox(height: 5),
-                                // Row(
-                                //   mainAxisAlignment:
-                                //       MainAxisAlignment
-                                //           .spaceBetween,
-                                //   children: [
-                                //     ElevatedButton(
-                                //       onPressed: () {
-                                //         // Navigator.push(
-                                //         //     context,
-                                //         //     MaterialPageRoute(
-                                //         //         builder: (context) =>
-                                //         //             TestDetails()));
-                                //
-                                //         // showSubTestsDialog(context,
-                                //         //     labTests.subTests ?? []);
-                                //       },
-                                //       style: ElevatedButton
-                                //           .styleFrom(
-                                //         backgroundColor:
-                                //             Colors.white,
-                                //         side: BorderSide(
-                                //             color: primaryColor),
-                                //         shape:
-                                //             RoundedRectangleBorder(
-                                //           borderRadius:
-                                //               BorderRadius
-                                //                   .circular(30),
-                                //         ),
-                                //         elevation: 0,
-                                //         visualDensity:
-                                //             VisualDensity.compact,
-                                //       ),
-                                //       child: Text(
-                                //         'View Detail',
-                                //         style: TextStyle(
-                                //             color: primaryColor,
-                                //             fontFamily:
-                                //                 "Poppins"),
-                                //       ),
-                                //     ),
-                                //     BlocBuilder<CartCubit,
-                                //         CartState>(
-                                //       builder:
-                                //           (context, cartState) {
-                                //         bool isLoading = cartState
-                                //                 is CartLoadingState &&
-                                //             cartState.testId ==
-                                //                 labTests.id;
-                                //         return ElevatedButton(
-                                //           onPressed: isLoading
-                                //               ? null
-                                //               : () {
-                                //                   if (labTests
-                                //                           .existInCart ??
-                                //                       false) {
-                                //                     context
-                                //                         .read<
-                                //                             CartCubit>()
-                                //                         .removeFromCart(
-                                //                             labTests.id ??
-                                //                                 "",
-                                //                             context);
-                                //                   } else {
-                                //                     context
-                                //                         .read<
-                                //                             CartCubit>()
-                                //                         .addToCart({
-                                //                       "test":
-                                //                           "${labTests.id}"
-                                //                     }, context);
-                                //                   }
-                                //                 },
-                                //           style: ElevatedButton
-                                //               .styleFrom(
-                                //                   visualDensity:
-                                //                       VisualDensity
-                                //                           .compact,
-                                //                   backgroundColor:
-                                //                       labTests.existInCart ??
-                                //                               false
-                                //                           ? primaryColor
-                                //                           : primaryColor,
-                                //                   shape:
-                                //                       RoundedRectangleBorder(
-                                //                     borderRadius:
-                                //                         BorderRadius
-                                //                             .circular(
-                                //                                 30),
-                                //                   ),
-                                //                   elevation: 0),
-                                //           child: isLoading
-                                //               ? const SizedBox(
-                                //                   width: 20,
-                                //                   height: 20,
-                                //                   child:
-                                //                       CircularProgressIndicator(
-                                //                     color: Colors
-                                //                         .white,
-                                //                     strokeWidth:
-                                //                         2,
-                                //                   ),
-                                //                 )
-                                //               : Row(
-                                //                   children: [
-                                //                     Text(
-                                //                       labTests.existInCart ??
-                                //                               false
-                                //                           ? 'Remove'
-                                //                           : 'Add Test',
-                                //                       style: TextStyle(
-                                //                           color: Colors
-                                //                               .white,
-                                //                           fontFamily:
-                                //                               "Poppins"),
-                                //                     ),
-                                //                     SizedBox(
-                                //                       width: 10,
-                                //                     ),
-                                //                     labTests.existInCart ??
-                                //                             false
-                                //                         ? Icon(
-                                //                             Icons
-                                //                                 .cancel_outlined,
-                                //                             color:
-                                //                                 Colors.white,
-                                //                           )
-                                //                         : Icon(
-                                //                             Icons
-                                //                                 .add_circle_outline,
-                                //                             color:
-                                //                                 Colors.white,
-                                //                           )
-                                //                   ],
-                                //                 ),
-                                //         );
-                                //       },
-                                //     ),
-                                //   ],
-                                // ),
-                                if (radiologyTest?.distance != null) ...[
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color(0xffD40000).withOpacity(0.6)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.location_on,
-                                            color: Colors.white, size: 15),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                          child: Text(
-                                            '${radiologyTest?.diagnosticCentre} - ${radiologyTest?.distance} away',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10),
-                                          ),
-                                        ),
-                                      ],
+                                  ),
+                                  Text(
+                                    'No Data Found!',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Try Searching with a different name.',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
                                     ),
                                   ),
                                 ],
+                              ),
+                            );
+                          }
+
+                          return NotificationListener<ScrollNotification>(
+                            onNotification: (scrollInfo) {
+                              if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent * 0.9) {
+                                if (radiologyState is RadiologyTestStateLoaded && radiologyState.hasNextPage) {
+                                  print('Fetching more radiology tests with lat_lang: $lat_lang');
+                                  context.read<RadiologyTestCubit>().fetchRadiologyTestsMore(
+                                    lat_lang,
+                                    '',
+                                    '',
+                                    '',
+                                    '',
+                                    '',
+                                    '',
+                                  );
+                                }
+                              }
+                              return false;
+                            },
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              itemCount: (testModel.data?.length ?? 0) + (radiologyState is RadiologyTestStateLoadingMore ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (radiologyState is RadiologyTestStateLoadingMore && index == (testModel.data?.length ?? 0)) {
+                                  return SizedBox(
+                                    width: screenWidth * 0.2,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                final radiologyTest = testModel.data![index];
+                                return InkWell(
+                                  onTap: () {
+                                    Future.delayed(const Duration(milliseconds: 200), () {
+                                      context.push(
+                                        '/test_details?location=${radiologyTest.diagnosticCentre} - ${radiologyTest.distance}&id=${radiologyTest.id ?? ""}',
+                                      );
+                                    });
+                                  },
+                                  child: Container(
+                                    width: screenWidth * 0.8,
+                                    margin: const EdgeInsets.only(right: 12),
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xFF949494), width: 0.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: screenWidth * 0.25,
+                                              height: screenWidth * 0.28,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(8),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: radiologyTest.testDetails?.image ?? "",
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) => Center(
+                                                    child: spinkits.getSpinningLinespinkit(),
+                                                  ),
+                                                  errorWidget: (context, url, error) {
+                                                    print('Image load error for ${radiologyTest.testDetails?.image}: $error');
+                                                    return Container(
+                                                      color: Colors.grey[200],
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey[400],
+                                                        size: 40,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: screenWidth * 0.47,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    radiologyTest.testDetails?.testName ?? '',
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '₹ ${radiologyTest.testDetails?.price ?? 0}/-',
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w600,
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'No of tests: ${radiologyTest.testDetails?.noOfTests ?? 0}',
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        if (radiologyTest.distance != null) ...[
+                                          const SizedBox(height: 10),
+                                          Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFD40000).withOpacity(0.6),
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.white,
+                                                  size: 15,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    '${radiologyTest.diagnosticCentre} - ${radiologyTest.distance} away',
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10,
+                                                      fontFamily: "Poppins",
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        } else if (radiologyState is RadiologyTestStateError) {
+                          print('RadiologyTestStateError: ${radiologyState.message}');
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Error',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  radiologyState.message,
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.read<RadiologyTestCubit>().fetchRadiologyTests(
+                                      lat_lang,
+                                      '',
+                                      '',
+                                      '',
+                                      '',
+                                      '',
+                                      1,
+                                    );
+                                  },
+                                  child: Text('Retry'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryColor,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        );
+                          );
+                        }
+                        return Center(child: Text("No Radiology Data Available"));
                       },
                     ),
                   ),
@@ -857,340 +806,609 @@ class _HomescreenState extends State<Homescreen> {
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: 12,
-                    // Number of category items
+                    itemCount: state.conditionModel.conditionTests?.length,
                     itemBuilder: (context, index) {
-                      final category = state.categories.category?[index];
-                      return _buildCategoryItem(category?.image ?? '',
-                          category?.categoryName ?? '', category?.id ?? '');
+                      final conditionTest =
+                          state.conditionModel.conditionTests?[index];
+                      return _buildCategoryItem(conditionTest?.image ?? '',
+                          conditionTest?.name ?? '', conditionTest?.id ?? '');
                     },
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Regular Tests',
+                    'Regular',
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                         color: primaryColor,
                         fontFamily: "Poppins"),
                   ),
-                  SizedBox(height: 8),
+                  // SizedBox(height: 8),
+                  // SizedBox(
+                  //   height: screenWidth * 0.41,
+                  //   child: ListView.builder(
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemCount: state.regulartestModel.data?.length ?? 0,
+                  //     itemBuilder: (context, index) {
+                  //       final regularTest = state.regulartestModel.data?[index];
+                  //       return InkResponse(
+                  //         onTap: () {
+                  //           Future.delayed(Duration(milliseconds: 200), () {
+                  //             context.push(
+                  //                 '/test_details?location=${regularTest?.diagnosticCentre} - ${regularTest?.distance}&id=${regularTest?.id ?? ""}');
+                  //           });
+                  //         },
+                  //         child: Container(
+                  //           width: screenWidth * 0.8,
+                  //           margin: EdgeInsets.only(
+                  //               right: 12), // Add spacing between items
+                  //           padding: const EdgeInsets.all(10),
+                  //           decoration: BoxDecoration(
+                  //             border: Border.all(
+                  //                 color: const Color(0xff949494), width: 0.5),
+                  //             borderRadius: BorderRadius.circular(10),
+                  //           ),
+                  //           child: Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               Row(
+                  //                 crossAxisAlignment: CrossAxisAlignment.start,
+                  //                 spacing: 10,
+                  //                 children: [
+                  //                   Container(
+                  //                     width: screenWidth * 0.25,
+                  //                     height: screenWidth * 0.28,
+                  //                     decoration: BoxDecoration(),
+                  //                     child: ClipRRect(
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(8),
+                  //                         child: CachedNetworkImage(
+                  //                           imageUrl: regularTest
+                  //                                   ?.testDetails?.image ??
+                  //                               "",
+                  //                           fit: BoxFit.cover,
+                  //                           placeholder: (context, url) =>
+                  //                               Center(
+                  //                             child: spinkits
+                  //                                 .getSpinningLinespinkit(),
+                  //                           ),
+                  //                           errorWidget:
+                  //                               (context, url, error) =>
+                  //                                   Container(
+                  //                             color: Colors.grey[200],
+                  //                             child: Icon(
+                  //                               Icons.broken_image,
+                  //                               color: Colors.grey[400],
+                  //                               size: 40,
+                  //                             ),
+                  //                           ),
+                  //                         )),
+                  //                   ),
+                  //                   Container(
+                  //                     width: screenWidth * 0.47,
+                  //                     child: Column(
+                  //                       spacing: 2,
+                  //                       crossAxisAlignment:
+                  //                           CrossAxisAlignment.start,
+                  //                       children: [
+                  //                         Text(
+                  //                           textAlign: TextAlign.start,
+                  //                           overflow: TextOverflow.ellipsis,
+                  //                           regularTest
+                  //                                   ?.testDetails?.testName ??
+                  //                               '',
+                  //                           maxLines: 1,
+                  //                           style: TextStyle(
+                  //                             fontSize: 15,
+                  //                             fontWeight: FontWeight.w500,
+                  //                             fontFamily: "Poppins",
+                  //                             color: Colors.black,
+                  //                           ),
+                  //                         ),
+                  //                         Text(
+                  //                           '₹ ${regularTest?.testDetails?.price ?? 0}/-',
+                  //                           style: const TextStyle(
+                  //                             fontSize: 14,
+                  //                             fontWeight: FontWeight.w600,
+                  //                             fontFamily: "Poppins",
+                  //                             color: Colors.black,
+                  //                           ),
+                  //                         ),
+                  //                         Text(
+                  //                           'No of tests : ${regularTest?.testDetails?.noOfTests ?? 0}',
+                  //                           style: const TextStyle(
+                  //                             fontSize: 14,
+                  //                             fontWeight: FontWeight.w500,
+                  //                             fontFamily: "Poppins",
+                  //                             color: Colors.black,
+                  //                           ),
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   )
+                  //                 ],
+                  //               ),
+                  //               // const Divider(
+                  //               //   height: 12,
+                  //               //   color: Color(0xffE6E6E6),
+                  //               //   thickness: 1,
+                  //               // ),
+                  //               // Row(
+                  //               //   children: [
+                  //               //     if (labTests?.testDetails
+                  //               //             ?.fastingRequired ==
+                  //               //         true) ...[
+                  //               //       Image.asset(
+                  //               //           'assets/ForkKnife.png',
+                  //               //           scale: 2.5),
+                  //               //       const SizedBox(width: 8),
+                  //               //       const Text(
+                  //               //         'Fast Required',
+                  //               //         style: TextStyle(
+                  //               //           color:
+                  //               //               Color(0xff555555),
+                  //               //           fontFamily: 'Poppins',
+                  //               //           fontSize: 12,
+                  //               //           fontWeight:
+                  //               //               FontWeight.w400,
+                  //               //         ),
+                  //               //       ),
+                  //               //     ],
+                  //               //     Spacer(),
+                  //               //     Image.asset('assets/file.png',
+                  //               //         scale: 2.5),
+                  //               //     SizedBox(width: 8),
+                  //               //     Text(
+                  //               //       'Reports in ${labTests?.testDetails?.reportsDeliveredIn ?? 0} min',
+                  //               //       style: const TextStyle(
+                  //               //         color: Color(0xff555555),
+                  //               //         fontFamily: 'Poppins',
+                  //               //         fontSize: 12,
+                  //               //         fontWeight:
+                  //               //             FontWeight.w400,
+                  //               //       ),
+                  //               //     ),
+                  //               //   ],
+                  //               // ),
+                  //
+                  //               // SizedBox(height: 5),
+                  //               // Row(
+                  //               //   mainAxisAlignment:
+                  //               //       MainAxisAlignment
+                  //               //           .spaceBetween,
+                  //               //   children: [
+                  //               //     ElevatedButton(
+                  //               //       onPressed: () {
+                  //               //         // Navigator.push(
+                  //               //         //     context,
+                  //               //         //     MaterialPageRoute(
+                  //               //         //         builder: (context) =>
+                  //               //         //             TestDetails()));
+                  //               //
+                  //               //         // showSubTestsDialog(context,
+                  //               //         //     labTests.subTests ?? []);
+                  //               //       },
+                  //               //       style: ElevatedButton
+                  //               //           .styleFrom(
+                  //               //         backgroundColor:
+                  //               //             Colors.white,
+                  //               //         side: BorderSide(
+                  //               //             color: primaryColor),
+                  //               //         shape:
+                  //               //             RoundedRectangleBorder(
+                  //               //           borderRadius:
+                  //               //               BorderRadius
+                  //               //                   .circular(30),
+                  //               //         ),
+                  //               //         elevation: 0,
+                  //               //         visualDensity:
+                  //               //             VisualDensity.compact,
+                  //               //       ),
+                  //               //       child: Text(
+                  //               //         'View Detail',
+                  //               //         style: TextStyle(
+                  //               //             color: primaryColor,
+                  //               //             fontFamily:
+                  //               //                 "Poppins"),
+                  //               //       ),
+                  //               //     ),
+                  //               //     BlocBuilder<CartCubit,
+                  //               //         CartState>(
+                  //               //       builder:
+                  //               //           (context, cartState) {
+                  //               //         bool isLoading = cartState
+                  //               //                 is CartLoadingState &&
+                  //               //             cartState.testId ==
+                  //               //                 labTests.id;
+                  //               //         return ElevatedButton(
+                  //               //           onPressed: isLoading
+                  //               //               ? null
+                  //               //               : () {
+                  //               //                   if (labTests
+                  //               //                           .existInCart ??
+                  //               //                       false) {
+                  //               //                     context
+                  //               //                         .read<
+                  //               //                             CartCubit>()
+                  //               //                         .removeFromCart(
+                  //               //                             labTests.id ??
+                  //               //                                 "",
+                  //               //                             context);
+                  //               //                   } else {
+                  //               //                     context
+                  //               //                         .read<
+                  //               //                             CartCubit>()
+                  //               //                         .addToCart({
+                  //               //                       "test":
+                  //               //                           "${labTests.id}"
+                  //               //                     }, context);
+                  //               //                   }
+                  //               //                 },
+                  //               //           style: ElevatedButton
+                  //               //               .styleFrom(
+                  //               //                   visualDensity:
+                  //               //                       VisualDensity
+                  //               //                           .compact,
+                  //               //                   backgroundColor:
+                  //               //                       labTests.existInCart ??
+                  //               //                               false
+                  //               //                           ? primaryColor
+                  //               //                           : primaryColor,
+                  //               //                   shape:
+                  //               //                       RoundedRectangleBorder(
+                  //               //                     borderRadius:
+                  //               //                         BorderRadius
+                  //               //                             .circular(
+                  //               //                                 30),
+                  //               //                   ),
+                  //               //                   elevation: 0),
+                  //               //           child: isLoading
+                  //               //               ? const SizedBox(
+                  //               //                   width: 20,
+                  //               //                   height: 20,
+                  //               //                   child:
+                  //               //                       CircularProgressIndicator(
+                  //               //                     color: Colors
+                  //               //                         .white,
+                  //               //                     strokeWidth:
+                  //               //                         2,
+                  //               //                   ),
+                  //               //                 )
+                  //               //               : Row(
+                  //               //                   children: [
+                  //               //                     Text(
+                  //               //                       labTests.existInCart ??
+                  //               //                               false
+                  //               //                           ? 'Remove'
+                  //               //                           : 'Add Test',
+                  //               //                       style: TextStyle(
+                  //               //                           color: Colors
+                  //               //                               .white,
+                  //               //                           fontFamily:
+                  //               //                               "Poppins"),
+                  //               //                     ),
+                  //               //                     SizedBox(
+                  //               //                       width: 10,
+                  //               //                     ),
+                  //               //                     labTests.existInCart ??
+                  //               //                             false
+                  //               //                         ? Icon(
+                  //               //                             Icons
+                  //               //                                 .cancel_outlined,
+                  //               //                             color:
+                  //               //                                 Colors.white,
+                  //               //                           )
+                  //               //                         : Icon(
+                  //               //                             Icons
+                  //               //                                 .add_circle_outline,
+                  //               //                             color:
+                  //               //                                 Colors.white,
+                  //               //                           )
+                  //               //                   ],
+                  //               //                 ),
+                  //               //         );
+                  //               //       },
+                  //               //     ),
+                  //               //   ],
+                  //               // ),
+                  //               if (regularTest?.distance != null) ...[
+                  //                 Container(
+                  //                   margin: const EdgeInsets.only(top: 10),
+                  //                   padding: const EdgeInsets.all(2),
+                  //                   decoration: BoxDecoration(
+                  //                       color:
+                  //                           Color(0xffD40000).withOpacity(0.6)),
+                  //                   child: Row(
+                  //                     children: [
+                  //                       const Icon(Icons.location_on,
+                  //                           color: Colors.white, size: 15),
+                  //                       const SizedBox(width: 8),
+                  //                       Expanded(
+                  //                         child: Text(
+                  //                           '${regularTest?.diagnosticCentre} - ${regularTest?.distance} away',
+                  //                           overflow: TextOverflow.ellipsis,
+                  //                           style: const TextStyle(
+                  //                               color: Colors.white,
+                  //                               fontSize: 10),
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 12,
+                  // ),
+                  SizedBox(height: 12),
                   SizedBox(
                     height: screenWidth * 0.41,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.regulartestModel.data?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final regularTest = state.regulartestModel.data?[index];
-                        return InkResponse(
-                          onTap: () {
-                            Future.delayed(Duration(milliseconds: 200), () {
-                              context.push(
-                                  '/test_details?location=${regularTest?.diagnosticCentre} - ${regularTest?.distance}&id=${regularTest?.id ?? ""}');
-                            });
-                          },
-                          child: Container(
-                            width: screenWidth * 0.8,
-                            margin: EdgeInsets.only(
-                                right: 12), // Add spacing between items
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xff949494), width: 0.5),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 10,
-                                  children: [
-                                    Container(
-                                      width: screenWidth * 0.25,
-                                      height: screenWidth * 0.28,
-                                      decoration: BoxDecoration(),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            imageUrl: regularTest
-                                                    ?.testDetails?.image ??
-                                                "",
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                Center(
-                                              child: spinkits
-                                                  .getSpinningLinespinkit(),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Container(
-                                              color: Colors.grey[200],
-                                              child: Icon(
-                                                Icons.broken_image,
-                                                color: Colors.grey[400],
-                                                size: 40,
-                                              ),
-                                            ),
-                                          )),
+                    child: BlocBuilder<RegularTestCubit, RegularTestState>(
+                      builder: (context, regularState) {
+                        if (regularState is RegularTestLoading) {
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 3,
+                            itemBuilder: (context, index) => shimmerContainer(screenWidth * 0.8, screenWidth * 0.41, context),
+                          );
+                        } else if (regularState is RegularTestLoaded || regularState is RegularTestStateLoadingMore) {
+                          final testModel = regularState is RegularTestLoaded
+                              ? regularState.testModel
+                              : (regularState as RegularTestStateLoadingMore).testModel;
+                          if ((testModel.data?.isEmpty ?? true)) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Oops !',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    Container(
-                                      width: screenWidth * 0.47,
-                                      child: Column(
-                                        spacing: 2,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.ellipsis,
-                                            regularTest
-                                                    ?.testDetails?.testName ??
-                                                '',
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '₹ ${regularTest?.testDetails?.price ?? 0}/-',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            'No of tests : ${regularTest?.testDetails?.noOfTests ?? 0}',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins",
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                // const Divider(
-                                //   height: 12,
-                                //   color: Color(0xffE6E6E6),
-                                //   thickness: 1,
-                                // ),
-                                // Row(
-                                //   children: [
-                                //     if (labTests?.testDetails
-                                //             ?.fastingRequired ==
-                                //         true) ...[
-                                //       Image.asset(
-                                //           'assets/ForkKnife.png',
-                                //           scale: 2.5),
-                                //       const SizedBox(width: 8),
-                                //       const Text(
-                                //         'Fast Required',
-                                //         style: TextStyle(
-                                //           color:
-                                //               Color(0xff555555),
-                                //           fontFamily: 'Poppins',
-                                //           fontSize: 12,
-                                //           fontWeight:
-                                //               FontWeight.w400,
-                                //         ),
-                                //       ),
-                                //     ],
-                                //     Spacer(),
-                                //     Image.asset('assets/file.png',
-                                //         scale: 2.5),
-                                //     SizedBox(width: 8),
-                                //     Text(
-                                //       'Reports in ${labTests?.testDetails?.reportsDeliveredIn ?? 0} min',
-                                //       style: const TextStyle(
-                                //         color: Color(0xff555555),
-                                //         fontFamily: 'Poppins',
-                                //         fontSize: 12,
-                                //         fontWeight:
-                                //             FontWeight.w400,
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
-
-                                // SizedBox(height: 5),
-                                // Row(
-                                //   mainAxisAlignment:
-                                //       MainAxisAlignment
-                                //           .spaceBetween,
-                                //   children: [
-                                //     ElevatedButton(
-                                //       onPressed: () {
-                                //         // Navigator.push(
-                                //         //     context,
-                                //         //     MaterialPageRoute(
-                                //         //         builder: (context) =>
-                                //         //             TestDetails()));
-                                //
-                                //         // showSubTestsDialog(context,
-                                //         //     labTests.subTests ?? []);
-                                //       },
-                                //       style: ElevatedButton
-                                //           .styleFrom(
-                                //         backgroundColor:
-                                //             Colors.white,
-                                //         side: BorderSide(
-                                //             color: primaryColor),
-                                //         shape:
-                                //             RoundedRectangleBorder(
-                                //           borderRadius:
-                                //               BorderRadius
-                                //                   .circular(30),
-                                //         ),
-                                //         elevation: 0,
-                                //         visualDensity:
-                                //             VisualDensity.compact,
-                                //       ),
-                                //       child: Text(
-                                //         'View Detail',
-                                //         style: TextStyle(
-                                //             color: primaryColor,
-                                //             fontFamily:
-                                //                 "Poppins"),
-                                //       ),
-                                //     ),
-                                //     BlocBuilder<CartCubit,
-                                //         CartState>(
-                                //       builder:
-                                //           (context, cartState) {
-                                //         bool isLoading = cartState
-                                //                 is CartLoadingState &&
-                                //             cartState.testId ==
-                                //                 labTests.id;
-                                //         return ElevatedButton(
-                                //           onPressed: isLoading
-                                //               ? null
-                                //               : () {
-                                //                   if (labTests
-                                //                           .existInCart ??
-                                //                       false) {
-                                //                     context
-                                //                         .read<
-                                //                             CartCubit>()
-                                //                         .removeFromCart(
-                                //                             labTests.id ??
-                                //                                 "",
-                                //                             context);
-                                //                   } else {
-                                //                     context
-                                //                         .read<
-                                //                             CartCubit>()
-                                //                         .addToCart({
-                                //                       "test":
-                                //                           "${labTests.id}"
-                                //                     }, context);
-                                //                   }
-                                //                 },
-                                //           style: ElevatedButton
-                                //               .styleFrom(
-                                //                   visualDensity:
-                                //                       VisualDensity
-                                //                           .compact,
-                                //                   backgroundColor:
-                                //                       labTests.existInCart ??
-                                //                               false
-                                //                           ? primaryColor
-                                //                           : primaryColor,
-                                //                   shape:
-                                //                       RoundedRectangleBorder(
-                                //                     borderRadius:
-                                //                         BorderRadius
-                                //                             .circular(
-                                //                                 30),
-                                //                   ),
-                                //                   elevation: 0),
-                                //           child: isLoading
-                                //               ? const SizedBox(
-                                //                   width: 20,
-                                //                   height: 20,
-                                //                   child:
-                                //                       CircularProgressIndicator(
-                                //                     color: Colors
-                                //                         .white,
-                                //                     strokeWidth:
-                                //                         2,
-                                //                   ),
-                                //                 )
-                                //               : Row(
-                                //                   children: [
-                                //                     Text(
-                                //                       labTests.existInCart ??
-                                //                               false
-                                //                           ? 'Remove'
-                                //                           : 'Add Test',
-                                //                       style: TextStyle(
-                                //                           color: Colors
-                                //                               .white,
-                                //                           fontFamily:
-                                //                               "Poppins"),
-                                //                     ),
-                                //                     SizedBox(
-                                //                       width: 10,
-                                //                     ),
-                                //                     labTests.existInCart ??
-                                //                             false
-                                //                         ? Icon(
-                                //                             Icons
-                                //                                 .cancel_outlined,
-                                //                             color:
-                                //                                 Colors.white,
-                                //                           )
-                                //                         : Icon(
-                                //                             Icons
-                                //                                 .add_circle_outline,
-                                //                             color:
-                                //                                 Colors.white,
-                                //                           )
-                                //                   ],
-                                //                 ),
-                                //         );
-                                //       },
-                                //     ),
-                                //   ],
-                                // ),
-                                if (regularTest?.distance != null) ...[
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color(0xffD40000).withOpacity(0.6)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.location_on,
-                                            color: Colors.white, size: 15),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                          child: Text(
-                                            '${regularTest?.diagnosticCentre} - ${regularTest?.distance} away',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10),
-                                          ),
-                                        ),
-                                      ],
+                                  ),
+                                  Text(
+                                    'No Data Found!',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Try Searching with a different name.',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey,
                                     ),
                                   ),
                                 ],
+                              ),
+                            );
+                          }
+
+                          return NotificationListener<ScrollNotification>(
+                            onNotification: (scrollInfo) {
+                              if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent * 0.9) {
+                                if (regularState is RegularTestLoaded && regularState.hasNextPage) {
+                                  print('Fetching more radiology tests with lat_lang: $lat_lang');
+                                  context.read<RadiologyTestCubit>().fetchRadiologyTestsMore(
+                                    lat_lang,
+                                    '',
+                                    '',
+                                    '',
+                                    '',
+                                    '',
+                                    '',
+                                  );
+                                }
+                              }
+                              return false;
+                            },
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              itemCount: (testModel.data?.length ?? 0) + (regularState is RegularTestStateLoadingMore ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (regularState is RegularTestStateLoadingMore && index == (testModel.data?.length ?? 0)) {
+                                  return SizedBox(
+                                    width: screenWidth * 0.2,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                final radiologyTest = testModel.data![index];
+                                return InkWell(
+                                  onTap: () {
+                                    Future.delayed(const Duration(milliseconds: 200), () {
+                                      context.push(
+                                        '/test_details?location=${radiologyTest.diagnosticCentre} - ${radiologyTest.distance}&id=${radiologyTest.id ?? ""}',
+                                      );
+                                    });
+                                  },
+                                  child: Container(
+                                    width: screenWidth * 0.8,
+                                    margin: const EdgeInsets.only(right: 12),
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xFF949494), width: 0.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: screenWidth * 0.25,
+                                              height: screenWidth * 0.28,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(8),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: radiologyTest.testDetails?.image ?? "",
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) => Center(
+                                                    child: spinkits.getSpinningLinespinkit(),
+                                                  ),
+                                                  errorWidget: (context, url, error) {
+                                                    print('Image load error for ${radiologyTest.testDetails?.image}: $error');
+                                                    return Container(
+                                                      color: Colors.grey[200],
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey[400],
+                                                        size: 40,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            SizedBox(
+                                              width: screenWidth * 0.47,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    radiologyTest.testDetails?.testName ?? '',
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '₹ ${radiologyTest.testDetails?.price ?? 0}/-',
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w600,
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'No of tests: ${radiologyTest.testDetails?.noOfTests ?? 0}',
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        if (radiologyTest.distance != null) ...[
+                                          const SizedBox(height: 10),
+                                          Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFD40000).withOpacity(0.6),
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.white,
+                                                  size: 15,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    '${radiologyTest.diagnosticCentre} - ${radiologyTest.distance} away',
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10,
+                                                      fontFamily: "Poppins",
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        } else if (regularState is RegularTestStateError) {
+                          print('RadiologyTestStateError: ${regularState.message}');
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Error',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  regularState.message,
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.read<RadiologyTestCubit>().fetchRadiologyTests(
+                                      lat_lang,
+                                      '',
+                                      '',
+                                      '',
+                                      '',
+                                      '',
+                                      1,
+                                    );
+                                  },
+                                  child: Text('Retry'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryColor,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        );
+                          );
+                        }
+                        return Center(child: Text("No Rwegular Test Data Available"));
                       },
                     ),
                   ),
@@ -1340,7 +1558,7 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
-  Widget _buildCategoryItem(String image, String label, String catId) {
+  Widget _buildCategoryItem(String image, String label, String conditionId) {
     return Column(
       children: [
         TouchRipple(
@@ -1350,7 +1568,7 @@ class _HomescreenState extends State<Homescreen> {
               // Delay navigation to allow ripple effect to show
               Future.delayed(const Duration(milliseconds: 200), () {
                 context.push(
-                    '/all_tests?catId=${catId}&lat_lang=${lat_lang}&catName=${label}');
+                    '/all_tests?condition=${conditionId}&lat_lang=${lat_lang}&catName=${label}');
               });
             },
             child: Container(

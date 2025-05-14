@@ -27,6 +27,7 @@ import '../../Utils/constants.dart';
 class alltests extends StatefulWidget {
   String lat_lang;
   String catId;
+  String conditionId;
   String catName;
   String diagnosticID;
   String scanId;
@@ -36,6 +37,7 @@ class alltests extends StatefulWidget {
     super.key,
     required this.lat_lang,
     required this.catId,
+    required this.conditionId,
     required this.diagnosticID,
     required this.catName,
     required this.scanId,
@@ -50,7 +52,7 @@ class _alltestsState extends State<alltests> {
   @override
   void initState() {
     context.read<TestCubit>().fetchTestList(
-        widget.lat_lang ?? '', widget.catId ?? '', '', widget.diagnosticID,widget.scanId,widget.XrayId);
+        widget.lat_lang ?? '', widget.catId ?? '', widget.conditionId ?? '', '', widget.diagnosticID,widget.scanId,widget.XrayId);
     print("ScanID::${widget.scanId}");
     print("XrayID::${widget.XrayId}");
     context.read<CartCubit>().getCartList();
@@ -190,8 +192,9 @@ class _alltestsState extends State<alltests> {
                                   state.hasNextPage) {
                                 context.read<TestCubit>().fetchMoreTestList(
                                     widget.lat_lang ?? '',
-                                    widget.catId ?? '',
-                                    '',
+                                    widget.catId ?? '',  widget.conditionId ?? '',
+                                    "",
+
                                     widget.diagnosticID,widget.scanId,widget.XrayId);
                               }
                               return false;

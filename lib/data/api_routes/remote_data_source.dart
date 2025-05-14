@@ -14,6 +14,7 @@ import 'package:revxpharma/data/api_routes/patient_remote_url.dart';
 
 import '../../Components/debugPrint.dart';
 import '../../Models/CategoryModel.dart';
+import '../../Models/ConditionModel.dart';
 import '../../Models/DiognisticCenterModel.dart';
 import '../../Models/LoginModel.dart';
 import '../../Models/PatientsListModel.dart';
@@ -28,11 +29,11 @@ abstract class RemoteDataSource {
   Future<DiognisticCenterModel?> fetchDiagnosticCenters(latlng);
   Future<DiognisticDetailModel?> fetchDiagnosticDetails(id);
   Future<TestModel?> fetchTest(
-      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId);
+      latlang, catId,conditionId, search_Query, page, diagnosticID, scanId, x_rayId);
   Future<TestModel?> fetchRegularTest(
       latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId);
   Future<TestModel?> radiologyTest(
-      latlang);
+      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId);
   Future<ConditionBasedModel?> fetchConditionBased();
   Future<PatientsListModel?> fetchPatients();
   Future<SuccessModel?> AddPatient(Map<String, dynamic> patientData);
@@ -52,6 +53,7 @@ abstract class RemoteDataSource {
   Future<TestDetailsModel?> getTestDetailsApi(id);
   Future<SuccessModel?> uploadPrescription(Map<String, dynamic> data);
   Future<LoginModel?> deleteAccount();
+  Future<ConditionModel?> conditionTests();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -342,10 +344,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<TestModel?> fetchTest(
-      latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId) async {
+      latlang, catId,conditionId, search_Query, page, diagnosticID, scanId, x_rayId) async {
     try {
       Response response = await ApiClient.get(
-          "${PatientRemoteUrls.test}?${scanId}&${x_rayId}&lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
+          "${PatientRemoteUrls.test}?${scanId}&${x_rayId}&lat_long=${latlang}&condition=${conditionId}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);
@@ -373,10 +375,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     }
   }
 
-  Future<TestModel?> radiologyTest(latlang) async {
+  Future<TestModel?> radiologyTest(latlang, catId, search_Query, page, diagnosticID, scanId, x_rayId) async {
     try {
       Response response = await ApiClient.get(
-          "${PatientRemoteUrls.regularTests}?lat_long=${latlang}");
+          "${PatientRemoteUrls.radiologyTests}?${scanId}&${x_rayId}&lat_long=${latlang}&category=${catId}&search=${search_Query}&page=${page}&diagnostic_center=${diagnosticID}");
       if (response.statusCode == 200) {
         LogHelper.printLog('fetchTest:', response.data);
         return TestModel.fromJson(response.data);
@@ -384,6 +386,21 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       return null;
     } catch (e) {
       LogHelper.printLog('Error fetching test data: ', e);
+      return null;
+    }
+  }
+
+  Future<ConditionModel?> conditionTests() async {
+    try {
+      Response response = await ApiClient.get(
+          "${PatientRemoteUrls.conditionTests}");
+      if (response.statusCode == 200) {
+        LogHelper.printLog('conditionTests:', response.data);
+        return ConditionModel.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      LogHelper.printLog('Error fetching conditionTests data: ', e);
       return null;
     }
   }

@@ -19,11 +19,13 @@ class HomeLoaded extends HomeState {
   final ProfileDetailModel prfileDetails;
   final TestModel regulartestModel;
   final TestModel radiologyTestModel;
+  final ConditionModel conditionModel;
 
-  const HomeLoaded(this.categories, this.banners, this.diagnosticCenters,this.prfileDetails,this.regulartestModel,this.radiologyTestModel);
+
+  const HomeLoaded(this.categories, this.banners, this.diagnosticCenters,this.prfileDetails,this.regulartestModel,this.radiologyTestModel,this.conditionModel,);
 
   @override
-  List<Object?> get props => [categories, banners, diagnosticCenters, prfileDetails,regulartestModel,radiologyTestModel];
+  List<Object?> get props => [categories, banners, diagnosticCenters, prfileDetails,regulartestModel,radiologyTestModel,conditionModel,];
 }
 
 class HomeError extends HomeState {

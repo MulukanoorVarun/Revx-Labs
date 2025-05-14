@@ -30,4 +30,5 @@ class PatientRemoteUrls {
   static const String upload_prescription ='api/upload-prescription';
   static const String regularTests ='api/regular-tests';
   static const String radiologyTests ='api/radiology-tests';
+  static const String conditionTests ='api/conditions';
 }

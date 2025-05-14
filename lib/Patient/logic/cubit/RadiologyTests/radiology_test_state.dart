@@ -14,11 +14,22 @@ class RadiologyTestStateLoading extends RadiologyTestState {}
 
 class RadiologyTestStateLoaded extends RadiologyTestState {
   final TestModel testModel;
-
-  const RadiologyTestStateLoaded(this.testModel,);
+  final bool hasNextPage;
+  const RadiologyTestStateLoaded(
+    this.testModel,this.hasNextPage
+  );
 
   @override
-  List<Object?> get props => [testModel];
+  List<Object?> get props => [testModel,hasNextPage];
+}
+
+class RadiologyTestStateLoadingMore extends RadiologyTestState {
+  final TestModel testModel;
+  final bool hasNextPage;
+  const RadiologyTestStateLoadingMore(this.testModel, this.hasNextPage);
+
+  @override
+  List<Object?> get props => [testModel, hasNextPage];
 }
 
 class RadiologyTestStateError extends RadiologyTestState {
@@ -29,4 +40,3 @@ class RadiologyTestStateError extends RadiologyTestState {
   @override
   List<Object?> get props => [message];
 }
-

@@ -138,6 +138,7 @@ final GoRouter goRouter =
     pageBuilder: (context, state) {
       final latLang = state.uri.queryParameters['lat_lang'] ?? '';
       final catId = state.uri.queryParameters['catId'] ?? '';
+      final ConditionId = state.uri.queryParameters['condition'] ?? '';
       final catName = state.uri.queryParameters['catName'] ?? '';
       final diagnosticId = state.uri.queryParameters['diagnosticID'] ?? '';
       final scanId = state.uri.queryParameters['scanId'] ?? '';
@@ -146,6 +147,7 @@ final GoRouter goRouter =
         alltests(
           lat_lang: latLang,
           catId: catId,
+          conditionId: ConditionId,
           diagnosticID: diagnosticId,
           catName: catName,
           scanId: scanId,

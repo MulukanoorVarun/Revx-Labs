@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Patient/logic/cubit/ConditionTests/condition_test_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/ConditionTests/condition_test_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_repository.dart';
@@ -46,6 +48,11 @@ class StateInjector {
     ),
     RepositoryProvider<CategoryRepository>(
       create: (context) => CategoryRepositoryImpl(
+        remoteDataSource: context.read(),
+      ),
+    ),
+    RepositoryProvider<ConditionTestRepository>(
+      create: (context) => ConditionTestRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
@@ -119,6 +126,7 @@ class StateInjector {
     RepositoryProvider<Deleteaccountrepository>(
         create: (context) =>
             DeleteaccountrepositoryImpl(remoteDataSource: context.read())),
+
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -156,7 +164,8 @@ class StateInjector {
               context.read<DiagnosticCenterRepository>(),
           profileRepository: context.read<ProfileRepository>(),
           regularTestRepository: context.read<RegularTestRepository>(),
-          radiologyTestRepository: context.read<RadiologyTestRepository>()),
+          radiologyTestRepository: context.read<RadiologyTestRepository>(),
+          conditionTestRepository: context.read<ConditionTestRepository>()),
     ),
     BlocProvider<TestCubit>(
       create: (context) => TestCubit(context.read<TestRepository>()),
@@ -213,6 +222,10 @@ class StateInjector {
     BlocProvider<DeleteAccountCubit>(
       create: (context) =>
           DeleteAccountCubit(context.read<Deleteaccountrepository>()),
+    ),
+    BlocProvider<ConditionTestCubit>(
+      create: (context) =>
+          ConditionTestCubit(context.read<ConditionTestRepository>()),
     ),
   ];
 }
