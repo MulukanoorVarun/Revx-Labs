@@ -788,7 +788,7 @@ class _HomescreenState extends State<Homescreen> {
                   //   height: 16,
                   // ),
                   Text(
-                    'Categories',
+                      "Test Packages",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
