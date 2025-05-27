@@ -111,7 +111,7 @@ class _SearchscreenState extends State<Searchscreen> {
                 if (c.length > 2) {
                   searchQuery = c.toLowerCase();
                   context.read<TestCubit>().fetchTestList(
-                      widget.lat_lang, '', searchQuery, "", "", "");
+                      widget.lat_lang, '', "",searchQuery, "", "", "");
                 } else {
                   searchQuery = "";
                 }
@@ -280,7 +280,7 @@ class _SearchscreenState extends State<Searchscreen> {
                                     searchQuery,
                                     "",
                                     "",
-                                    "");
+                                    "","");
                               }
                               return false;
                             }

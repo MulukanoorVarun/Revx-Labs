@@ -1,5 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revxpharma/Patient/logic/cubit/ConditionTests/condition_test_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/ConditionTests/condition_test_repository.dart';
 import 'package:revxpharma/Patient/logic/cubit/Location/location_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_cubit.dart';
+import 'package:revxpharma/Patient/logic/cubit/RadiologyTests/radiology_test_repository.dart';
+import 'package:revxpharma/Patient/logic/cubit/RegularTest/regular_test_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment/appointment_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/appointment_details/appointment_details_cubit.dart';
 import 'package:revxpharma/Patient/logic/cubit/banners/banners_cubit.dart';
@@ -31,6 +36,7 @@ import 'package:revxpharma/Patient/logic/repository/patient_register_repository.
 import 'package:revxpharma/Patient/logic/repository/patient_repository.dart';
 import 'package:revxpharma/Patient/logic/repository/test_details_repository.dart';
 import 'Patient/logic/bloc/internet_status/internet_status_bloc.dart';
+import 'Patient/logic/cubit/RegularTest/regular_test_repository.dart';
 import 'Patient/logic/cubit/cart/cart_cubit.dart';
 import 'Patient/logic/repository/category_repository.dart';
 import 'data/api_routes/remote_data_source.dart';
@@ -42,6 +48,11 @@ class StateInjector {
     ),
     RepositoryProvider<CategoryRepository>(
       create: (context) => CategoryRepositoryImpl(
+        remoteDataSource: context.read(),
+      ),
+    ),
+    RepositoryProvider<ConditionTestRepository>(
+      create: (context) => ConditionTestRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
@@ -62,6 +73,11 @@ class StateInjector {
     ),
     RepositoryProvider<TestRepository>(
       create: (context) => TestRepositoryImpl(
+        remoteDataSource: context.read(),
+      ),
+    ),
+    RepositoryProvider<RegularTestRepository>(
+      create: (context) => RegularTestRepositoryImpl(
         remoteDataSource: context.read(),
       ),
     ),
@@ -101,12 +117,16 @@ class StateInjector {
     RepositoryProvider<TestDetailsRepository>(
         create: (context) =>
             TestDetailsRepositoryImpl(remoteDataSource: context.read())),
+    RepositoryProvider<RadiologyTestRepository>(
+        create: (context) =>
+            RadiologyTestRepositoryImpl(remoteDataSource: context.read())),
     RepositoryProvider<PrescriptionUploadRepository>(
         create: (context) =>
             PrescriptionUploadRepositoryImpl(remoteDataSource: context.read())),
     RepositoryProvider<Deleteaccountrepository>(
         create: (context) =>
             DeleteaccountrepositoryImpl(remoteDataSource: context.read())),
+
   ];
 
   static final blocProviders = <BlocProvider>[
@@ -138,14 +158,25 @@ class StateInjector {
     ),
     BlocProvider<HomeCubit>(
       create: (context) => HomeCubit(
-        categoryRepository: context.read<CategoryRepository>(),
-        bannersRepository: context.read<BannersRepository>(),
-        diagnosticCentersRepository: context.read<DiagnosticCenterRepository>(),
-        profileRepository: context.read<ProfileRepository>(),
-      ),
+          categoryRepository: context.read<CategoryRepository>(),
+          bannersRepository: context.read<BannersRepository>(),
+          diagnosticCentersRepository:
+              context.read<DiagnosticCenterRepository>(),
+          profileRepository: context.read<ProfileRepository>(),
+          regularTestRepository: context.read<RegularTestRepository>(),
+          radiologyTestRepository: context.read<RadiologyTestRepository>(),
+          conditionTestRepository: context.read<ConditionTestRepository>()),
     ),
     BlocProvider<TestCubit>(
       create: (context) => TestCubit(context.read<TestRepository>()),
+    ),
+    BlocProvider<RadiologyTestCubit>(
+      create: (context) =>
+          RadiologyTestCubit(context.read<RadiologyTestRepository>()),
+    ),
+    BlocProvider<RegularTestCubit>(
+      create: (context) =>
+          RegularTestCubit(context.read<RegularTestRepository>()),
     ),
     BlocProvider<ConditionCubit>(
       create: (context) => ConditionCubit(context.read<ConditionRepository>()),
@@ -191,6 +222,10 @@ class StateInjector {
     BlocProvider<DeleteAccountCubit>(
       create: (context) =>
           DeleteAccountCubit(context.read<Deleteaccountrepository>()),
+    ),
+    BlocProvider<ConditionTestCubit>(
+      create: (context) =>
+          ConditionTestCubit(context.read<ConditionTestRepository>()),
     ),
   ];
 }

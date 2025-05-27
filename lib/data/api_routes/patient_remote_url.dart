@@ -1,6 +1,6 @@
 class PatientRemoteUrls {
   static const String baseUrl = 'https://revx.ozrit.in/';
-  // static const String baseUrl = 'http://192.168.0.20:8080/';
+  // static const String baseUrl = 'http://192.168.80.100:8090/';
   static const String userLogin = 'auth/login';
   static const String userRegister = 'auth/patient-register';
   static const String refreshtoken = 'auth/refresh-token';
@@ -28,4 +28,7 @@ class PatientRemoteUrls {
   static const String profile_details ='auth/user-detail';
   static const String update_profile_details ='auth/user-detail';
   static const String upload_prescription ='api/upload-prescription';
+  static const String regularTests ='api/regular-tests';
+  static const String radiologyTests ='api/radiology-tests';
+  static const String conditionTests ='api/conditions';
 }

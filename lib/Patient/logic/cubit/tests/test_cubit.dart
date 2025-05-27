@@ -14,11 +14,11 @@ class TestCubit extends Cubit<TestState> {
 
   TestCubit(this.testRepository) : super(TestStateInitially());
 
-  Future<void> fetchTestList(String latlang, String catId, String searchQuery, String diagnosticID,String scanId,String x_rayId) async {
+  Future<void> fetchTestList(String latlang, String catId,String conditionId, String searchQuery, String diagnosticID,String scanId,String x_rayId) async {
     emit(TestStateLoading());
     _currentPage = 1;
     try {
-      final tests = await testRepository.getTest(latlang, catId, searchQuery, _currentPage,diagnosticID,scanId,x_rayId);
+      final tests = await testRepository.getTest(latlang, catId, conditionId,searchQuery, _currentPage,diagnosticID,scanId,x_rayId);
       if (tests != null) {
         testModel = tests;
         _hasNextPage = tests.settings?.nextPage ?? false;
@@ -31,14 +31,14 @@ class TestCubit extends Cubit<TestState> {
     }
   }
 
-  Future<void> fetchMoreTestList(String latlang, String catId, String searchQuery, String diagnosticID,String scanId, String x_rayId) async {
+  Future<void> fetchMoreTestList(String latlang, String catId,String conditionId, String searchQuery, String diagnosticID,String scanId, String x_rayId) async {
     if (_isLoadingMore || !_hasNextPage) return;
     _isLoadingMore = true;
     _currentPage++;
     emit(TestStateLoadingMore(testModel, _hasNextPage));
 
     try {
-      final newTests = await testRepository.getTest(latlang, catId, searchQuery, _currentPage, diagnosticID,scanId,x_rayId);
+      final newTests = await testRepository.getTest(latlang, catId,conditionId, searchQuery, _currentPage, diagnosticID,scanId,x_rayId);
       if (newTests != null && newTests.data!.isNotEmpty) {
         final updatedTests = List<Data>.from(testModel.data!)..addAll(newTests.data!);
         testModel = TestModel(data: updatedTests, settings: newTests.settings);
