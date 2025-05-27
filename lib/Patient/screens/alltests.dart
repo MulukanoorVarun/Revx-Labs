@@ -1132,6 +1132,7 @@ class _alltestsState extends State<alltests> {
                                 SliverToBoxAdapter(
                                   child: Container(
                                     padding: const EdgeInsets.all(16),
+                                    margin: const EdgeInsets.symmetric(vertical: 16),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: const Color(0xff949494), width: 0.5),
                                       borderRadius: BorderRadius.circular(10),
@@ -1330,7 +1331,6 @@ class _alltestsState extends State<alltests> {
                             ),
                         ],
                       ),
-
                       ElevatedButton(
                         onPressed: () {
                           context.pushReplacement('/appointments');

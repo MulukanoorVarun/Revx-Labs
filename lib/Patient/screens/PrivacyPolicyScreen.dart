@@ -1,167 +1,113 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../Components/CutomAppBar.dart';
+
 class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
+  const PrivacyPolicyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Privacy Policy'),
-        backgroundColor: Colors.blue[800],
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Text(
-              'Revx Privacy Policy',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 16),
+      backgroundColor: Colors.white, // Dark background
+      appBar:CustomAppBar(
+      title: 'Privacy Policy',
+      actions: [],
+    ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(), // Smooth scrolling
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Revx Privacy Policy',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Last Updated: May 27, 2025',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    color: Colors.grey[400],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '''
+Revx ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use the Revx app to book diagnostic test appointments. By using the app, you consent to the practices described in this policy.
 
-            // Introduction
-            Text(
-              'Introduction',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'At Revx, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our platform to book appointments for diagnostic tests. By using the Revx Platform, you agree to the terms outlined in this Privacy Policy.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+1. Information We Collect
+We collect the following types of information:
+- **Personal Information**: Name, email address, phone number, date of birth, and payment details provided during account creation or booking.
+- **Health-Related Information**: Information related to your diagnostic test bookings, such as test types and appointment details, shared with your consent.
+- **Usage Data**: Information about how you interact with the app, including IP address, device information, and app usage patterns.
+- **Location Data**: Approximate location (if permitted) to suggest nearby healthcare providers.
 
-            // Data Collection
-            Text(
-              '1. Information We Collect',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We collect the following types of information to provide and improve our services:\n'
-                  '- **Personal Information**: When you register on the Platform, we collect details such as your name, phone number, email address, birth date, and gender.\n'
-                  '- **Booking Information**: Details related to your diagnostic test appointments, including test type, date, and diagnostic center.\n'
-                  '- **Usage Data**: Information about how you interact with the Platform, such as IP address, device information, and browsing activity.\n'
-                  '- **Health-Related Information**: Any health information you provide to facilitate diagnostic test bookings, used solely for service delivery.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+2. How We Use Your Information
+We use your information to:
+- Facilitate booking and management of diagnostic test appointments.
+- Process payments through secure third-party payment gateways.
+- Communicate with you about bookings, updates, or support issues.
+- Improve the app’s functionality and user experience through analytics.
+- Comply with legal obligations and protect against fraudulent activities.
 
-            // Data Usage
-            Text(
-              '2. How We Use Your Information',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We use your information for the following purposes:\n'
-                  '- To create and manage your account.\n'
-                  '- To facilitate booking, rescheduling, or cancellation of diagnostic test appointments.\n'
-                  '- To communicate with you regarding your bookings or account.\n'
-                  '- For analysis, research, and training to improve our services, as permitted by law.\n'
-                  '- To comply with legal obligations or respond to government authorities, where required.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+3. Sharing Your Information
+We may share your information with:
+- **Healthcare Providers**: To facilitate your diagnostic test bookings and appointments.
+- **Payment Processors**: To securely process payments for bookings.
+- **Service Providers**: Third-party vendors who assist with app operations, such as cloud storage or analytics, under strict confidentiality agreements.
+- **Legal Authorities**: If required by law or to protect the rights and safety of Revx, its users, or the public.
 
-            // Data Sharing
-            Text(
-              '3. Sharing Your Information',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We may share your information with:\n'
-                  '- **Diagnostic Service sökors**: To fulfill your booking requests.\n'
-                  '- **Affiliates and Partners**: For analysis, research, or service improvement, as per our Terms of Use.\n'
-                  '- **Legal Authorities**: When required by law or to protect our rights.\n'
-                  'We do not sell or rent your personal information to third parties for marketing purposes.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+4. Data Security
+We implement industry-standard security measures, including encryption and secure servers, to protect your personal information. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
 
-            // Data Security
-            Text(
-              '4. Data Security',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We implement industry-standard security measures to protect your personal information from unauthorized access, use, or disclosure. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+5. Your Choices
+- **Account Information**: You may update or delete your account information through the app’s settings.
+- **Location Data**: You can disable location services in your device settings, though this may limit some app features.
+- **Marketing Communications**: You can opt out of promotional emails by following the unsubscribe instructions in those emails.
 
-            // User Rights
-            Text(
-              '5. Your Rights',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'You have the following rights regarding your personal information:\n'
-                  '- **Access**: View your booking records and personal details on the Platform.\n'
-                  '- **Correction**: Update inaccurate or incomplete information in your account.\n'
-                  '- **Deletion**: Permanently delete your account and personal information by following these steps: Go to My Account > Help/Need Help > Account & Booking Records > I want to delete my account > My Issue is still not resolved > type “Delete my account” > raise an enquiry. Note that deletion is irreversible, and you will need to create a new account to use our services again.\n'
-                  '- **Objection**: Contact us to object to certain uses of your information, where applicable.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+6. Data Retention
+We retain your personal information only for as long as necessary to fulfill the purposes outlined in this policy or as required by law. Booking-related data may be retained for audit purposes as per applicable regulations.
 
-            // Third-Party Links
-            Text(
-              '6. Third-Party Links',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'The Platform may contain links to third-party websites or services (e.g., diagnostic service providers). We are not responsible for the privacy practices or content of these third parties. Please review their respective privacy policies before sharing information.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+7. Third-Party Links
+The Revx app may contain links to third-party websites or services (e.g., healthcare provider portals). We are not responsible for the privacy practices of these third parties.
 
-            // Changes to Policy
-            Text(
-              '7. Changes to This Privacy Policy',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'We may update this Privacy Policy from time to time. Any changes will be posted on the Platform, and we encourage you to review it periodically to stay informed.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
+8. Children’s Privacy
+The Revx app is not intended for users under 18 without parental or guardian consent. We do not knowingly collect personal information from children under 13.
 
-            // Contact Us
-            Text(
-              '8. Contact Us',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'If you have any questions or concerns about this Privacy Policy, please contact our Grievance Officer:\n'
-                  '- **Name**: [Insert Name]\n'
-                  '- **Email**: grievance@revx.com\n'
-                  '- **Phone**: [Insert Phone Number]\n'
-                  'Grievances will be acknowledged within 48 hours and resolved within 1 month.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 32),
+9. International Users
+If you access Revx from outside [Insert Country], your information may be transferred to and processed in [Insert Country]. By using the app, you consent to this transfer.
 
-            // Footer
-            Center(
-              child: Text(
-                '© 2025 Revx. All Rights Reserved.',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+10. Changes to This Policy
+We may update this Privacy Policy from time to time. Significant changes will be notified via the app or email. Continued use of the app constitutes acceptance of the updated policy.
+
+11. Contact Us
+For questions or concerns about this Privacy Policy, please contact us at:
+- Email: info@revxlabs.in
+- Mobile Number : 98850 12656
+- Address: REV X LABS,H NO 1-8-472/1,FLAT NO 202,CHIKKADAPALLY, CIRCLE 20,HYDERABAD
+
+Thank you for trusting Revx with your personal information.
+                  ''',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: "Poppins",
+                    color: Colors.black,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

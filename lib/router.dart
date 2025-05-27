@@ -18,19 +18,24 @@ import 'package:revxpharma/Patient/screens/Onboard1.dart';
 import 'package:revxpharma/Patient/screens/Payment.dart';
 import 'package:revxpharma/Patient/screens/Permission.dart';
 import 'package:revxpharma/Patient/screens/Prescription.dart';
+import 'package:revxpharma/Patient/screens/PrivacyPolicyScreen.dart';
 import 'package:revxpharma/Patient/screens/Profile.dart';
 import 'package:revxpharma/Patient/screens/ProfileSettings.dart';
 
 import 'package:revxpharma/Patient/screens/ScheduleAppointment.dart';
 import 'package:revxpharma/Patient/screens/SearchScreen.dart';
 import 'package:revxpharma/Patient/screens/Splash.dart';
+import 'package:revxpharma/Patient/screens/TermsAndConditionsScreen.dart';
 import 'package:revxpharma/Patient/screens/TestDetails.dart';
 import 'package:revxpharma/Patient/screens/UserSelectionScreen.dart';
 import 'package:revxpharma/Patient/screens/alltests.dart';
 import 'package:revxpharma/Utils/NoInternet.dart';
 
+import 'Patient/screens/PaymentRefundPolicyScreen.dart';
 import 'Patient/screens/servicecategory.dart';
 import 'Utils/constants.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show Platform;
 
 final GoRouter goRouter =
     GoRouter(initialLocation: '/', navigatorKey: navigatorKey, routes: [
@@ -246,10 +251,28 @@ final GoRouter goRouter =
       return buildSlideTransitionPage(ProfileSettings(), state);
     },
   ),
+  GoRoute(
+    path: '/terms_conditions',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(TermsAndConditionsScreen(), state);
+    },
+  ),
+  GoRoute(
+    path: '/refund_policy',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(RefundPolicyScreen(), state);
+    },
+  ),
+  GoRoute(
+    path: '/privacy_policy',
+    pageBuilder: (context, state) {
+      return buildSlideTransitionPage(PrivacyPolicyScreen(), state);
+    },
+  ),
 ]);
 
 Page<dynamic> buildSlideTransitionPage(Widget child, GoRouterState state) {
-  if (Platform.isIOS) {
+  if ((!kIsWeb && Platform.isIOS)) {
     return CupertinoPage(key: state.pageKey, child: child);
   }
   return CustomTransitionPage(

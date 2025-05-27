@@ -812,7 +812,7 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Regular',
+                    'Regular Tests',
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -1405,7 +1405,7 @@ class _HomescreenState extends State<Homescreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 12,
+                    height: 30,
                   ),
 
                   // Row(
