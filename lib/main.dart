@@ -53,6 +53,7 @@ Future<void> main() async {
           ),
         );
 
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   // Request permissions (iOS)
