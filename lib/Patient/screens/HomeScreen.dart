@@ -554,11 +554,7 @@ class _HomescreenState extends State<Homescreen> {
                                                     print('Image load error for ${radiologyTest.testDetails?.image}: $error');
                                                     return Container(
                                                       color: Colors.grey[200],
-                                                      child: Icon(
-                                                        Icons.broken_image,
-                                                        color: Colors.grey[400],
-                                                        size: 40,
-                                                      ),
+                                                      child: Image.asset('assets/testimg.jpg')
                                                     );
                                                   },
                                                 ),
@@ -1274,11 +1270,7 @@ class _HomescreenState extends State<Homescreen> {
                                                     print('Image load error for ${radiologyTest.testDetails?.image}: $error');
                                                     return Container(
                                                       color: Colors.grey[200],
-                                                      child: Icon(
-                                                        Icons.broken_image,
-                                                        color: Colors.grey[400],
-                                                        size: 40,
-                                                      ),
+                                                      child: Image.asset('assets/testimg.jpg')
                                                     );
                                                   },
                                                 ),
@@ -1591,11 +1583,8 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                       errorWidget: (context, url, error) => Container(
                         color: Colors.grey[200],
-                        child: Icon(
-                          Icons.broken_image,
-                          color: Colors.grey[400],
-                          size: 40,
-                        ),
+                        child: Image.asset('assets/testimg.jpg')
+
                       ),
                     )),
               ),

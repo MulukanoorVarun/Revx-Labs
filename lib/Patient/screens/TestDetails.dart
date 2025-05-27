@@ -102,11 +102,7 @@ class _TestDetailsState extends State<TestDetails>
                                 child: Image.network(
                                   state.testDetailsModel.data?.testDetails?.image ?? "",
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => const Icon(
-                                    Icons.broken_image,
-                                    size: 50,
-                                    color: Colors.grey,
-                                  ), // Fallback for broken images
+                                  errorBuilder: (context, error, stackTrace) =>  Image.asset('assets/testimg.jpg')// Fallback for broken images
                                 ),
                               ),
                             ),

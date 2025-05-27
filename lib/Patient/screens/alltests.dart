@@ -263,11 +263,7 @@ class _alltestsState extends State<alltests> {
                                                             (context, url, error) =>
                                                             Container(
                                                               color: Colors.grey[200],
-                                                              child: Icon(
-                                                                Icons.broken_image,
-                                                                color: Colors.grey[400],
-                                                                size: 40,
-                                                              ),
+                                                              child: Image.asset('assets/testimg.jpg')
                                                             ),
                                                       )
                                                     ),

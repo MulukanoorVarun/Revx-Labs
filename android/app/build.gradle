@@ -56,7 +56,7 @@ android {
         release {
             keyAlias 'upload'
             keyPassword 'revxapp'
-            storeFile file('C:\\Users\\Ozrit\\AndroidStudioProjects\\Revx-Labs\\android\\app\\upload-keystore.jks')
+            storeFile file('C:\\Users\\Dell\\AndroidStudioProjects\\Revx-Labs\\android\\app\\upload-keystore.jks')
             storePassword 'revxapp'
         }
     }
